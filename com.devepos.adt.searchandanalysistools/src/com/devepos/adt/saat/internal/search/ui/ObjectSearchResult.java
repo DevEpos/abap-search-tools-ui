@@ -59,7 +59,8 @@ public class ObjectSearchResult implements ISearchResult {
 		} else {
 			resultsLabel = Messages.ObjectSearch_NoResults_xmsg;
 		}
-		final String label = String.format("ABAP DB Object Search: %s - %s", this.searchQuery.getSearchRequest(), resultsLabel);
+		final String label = NLS.bind(Messages.ObjectSearch_SearchResultLabel_xmsg, this.searchQuery.getSearchRequest(),
+			resultsLabel);
 		return label;
 	}
 

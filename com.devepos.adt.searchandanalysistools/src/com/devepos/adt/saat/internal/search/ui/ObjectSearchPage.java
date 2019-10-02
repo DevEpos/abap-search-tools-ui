@@ -454,7 +454,6 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 				this.searchStatusImageLabel.setImage(null);
 				this.searchStatusTextLabel.setText("");
 			} else {
-//				((GridData) this.searchStatusImageLabel.getLayoutData()).exclude = !status.matches(7);
 				this.searchStatusImageLabel.setImage(StatusUtil.getImageForStatus(status.getSeverity()));
 				this.searchStatusTextLabel.setText(status.getMessage());
 				this.searchStatusTextLabel.setToolTipText(status.getMessage());

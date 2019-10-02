@@ -3,7 +3,6 @@ package com.devepos.adt.saat.internal.search.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
@@ -36,6 +35,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IMemento;
+import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.Page;
 
 import com.devepos.adt.saat.ICommandConstants;
@@ -77,7 +77,6 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 	private IAbapProjectProvider projectProvider;
 	private CopyToClipboardAction copyToClipBoardAction;
 	private boolean isDbBrowserIntegrationAvailable;
-	private IAction removeQueryAction;
 
 	public ObjectSearchResultPage() {
 	}
@@ -103,7 +102,8 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 		final IToolBarManager tbm = actionBars.getToolBarManager();
 		tbm.appendToGroup(IContextMenuConstants.GROUP_NEW, this.openInSearchDialogAction);
 		tbm.appendToGroup(IContextMenuConstants.GROUP_EDIT, this.collapseAllNodesAction);
-		tbm.appendToGroup(IContextMenuConstants.GROUP_REMOVE_MATCHES, this.removeQueryAction);
+		actionBars.setGlobalActionHandler(ActionFactory.COPY.getId(), this.copyToClipBoardAction);
+		actionBars.updateActionBars();
 	}
 
 	@Override
@@ -118,6 +118,9 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 
 	@Override
 	public void setFocus() {
+		if (this.searchResultTree != null && !this.searchResultTree.getControl().isDisposed()) {
+			this.searchResultTree.getControl().setFocus();
+		}
 	}
 
 	@Override
@@ -189,10 +192,16 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 		Display.getDefault().asyncExec(() -> {
 			this.searchViewPart.updateLabel();
 			this.searchResultTree.setInput(e.getSearchResult());
-			this.searchResultTree.refresh();
 			updateUiState();
 		});
 
+	}
+
+	/**
+	 * @return the ID of corresponding Search Dialog Page of this result page
+	 */
+	public String getSearchDialogId() {
+		return "com.devepos.adt.saat.ObjectSearchPage";
 	}
 
 	/**
@@ -224,6 +233,7 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 		this.collapseAllNodesAction = new CollapseAllTreeNodesAction(this.searchResultTree);
 		this.collapseNodesAction = new CollapseTreeNodesAction(this.searchResultTree);
 		this.copyToClipBoardAction = new CopyToClipboardAction();
+		this.copyToClipBoardAction.registerViewer(this.searchResultTree);
 	}
 
 	/*
@@ -304,11 +314,13 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 		if (!adtObjRefs.isEmpty()) {
 			menu.add(new OpenAdtObjectAction(this.projectProvider, adtObjRefs));
 		}
-		if (!previewAdtObjRefs.isEmpty() && this.isDbBrowserIntegrationAvailable) {
+		if (!previewAdtObjRefs.isEmpty()) {
 			menu.add(new OpenAdtDataPreviewAction(this.projectProvider.getProject(), previewAdtObjRefs));
-			menu.add(new Separator(com.devepos.adt.saat.IContextMenuConstants.GROUP_DB_BROWSER));
-			MenuItemFactory.addOpenInDbBrowserCommand(menu, false);
-			MenuItemFactory.addOpenInDbBrowserCommand(menu, true);
+			if (this.isDbBrowserIntegrationAvailable) {
+				menu.add(new Separator(com.devepos.adt.saat.IContextMenuConstants.GROUP_DB_BROWSER));
+				MenuItemFactory.addOpenInDbBrowserCommand(menu, false);
+				MenuItemFactory.addOpenInDbBrowserCommand(menu, true);
+			}
 		}
 
 		if (singleDataPreviewObjectSelected) {
@@ -348,11 +360,11 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 			if (this.searchResultTree == null || this.searchResultTree.getControl().isDisposed()) {
 				return;
 			}
-			if (this.state == null || !(this.state instanceof TreePath[])) {
-				return;
+			if (this.state != null && this.state instanceof TreePath[]) {
+				this.searchResultTree.setExpandedTreePaths((TreePath[]) this.state);
 			}
-			this.searchResultTree.setExpandedTreePaths((TreePath[]) this.state);
 			this.searchResultTree.refresh();
+			this.searchResultTree.getControl().setFocus();
 		});
 	}
 

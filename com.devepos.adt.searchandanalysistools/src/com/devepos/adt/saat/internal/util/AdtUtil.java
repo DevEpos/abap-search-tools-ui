@@ -3,7 +3,9 @@ package com.devepos.adt.saat.internal.util;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IProject;
@@ -305,7 +307,7 @@ public class AdtUtil {
 	/**
 	 * Returns <code>true</code> if the DB Browser Application is available in the
 	 * given project
-	 * 
+	 *
 	 * @param  project the project where the availability of the DB Browser should
 	 *                 be checked
 	 * @return         <code>true</code> if the DB Browser Application is available
@@ -316,6 +318,34 @@ public class AdtUtil {
 
 		final IUriDiscovery uriDiscovery = new DbBrowserIntegrationUriDiscovery(abapProject.getDestinationId());
 		return uriDiscovery.isResourceDiscoverySuccessful();
+	}
+
+	/**
+	 * Returns <code>true</code> if the DB Browser integration feature is availabe
+	 * in the projects of the given ADT Objects
+	 *
+	 * @param  adtObjects a list of ADT Objects
+	 * @return            <code>true</code> if the DB Browser integration feature is
+	 *                    availabe in the projects of the given ADT Objects
+	 */
+	public static boolean isSapGuiDbBrowserAvailable(final List<IAdtObject> adtObjects) {
+		if (adtObjects == null || adtObjects.isEmpty()) {
+			return false;
+		}
+		if (adtObjects.size() == 1) {
+			return isSapGuiDbBrowserAvailable(adtObjects.get(0).getProject());
+		}
+		final Set<IProject> uniqueProjects = new HashSet<>();
+		for (final IAdtObject adtObject : adtObjects) {
+			uniqueProjects.add(adtObject.getProject());
+		}
+
+		for (final IProject project : uniqueProjects) {
+			if (!isSapGuiDbBrowserAvailable(project)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	/**

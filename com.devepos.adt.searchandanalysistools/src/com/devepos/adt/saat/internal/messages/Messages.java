@@ -44,6 +44,7 @@ public class Messages extends NLS {
 	public static String ObjectSearch_Results_xfld;
 	public static String ObjectSearch_Results_xmsg;
 	public static String ObjectSearch_SearchJobProgressText_xmsg;
+	public static String ObjectSearch_SearchResultLabel_xmsg;
 	public static String ObjectSearch_UseAndFilter_xtol;
 	public static String ObjectSearchOpenPreferences_xmit;
 	public static String ObjectSearchResultPage_OpenInSearchDialog_xtol;

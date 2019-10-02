@@ -1,8 +1,6 @@
 package com.devepos.adt.saat.internal.ui;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -73,7 +71,7 @@ public class DynamicOpenInMenuUtility {
 
 		@Override
 		public void menuAboutToShow(final IMenuManager manager) {
-			final boolean isDbBrowserAvailable = isDbBrowserIntegrationAvailable();
+			final boolean isDbBrowserAvailable = AdtUtil.isSapGuiDbBrowserAvailable(this.adtObjects);
 			// Add command "Open In DB Browser"
 			if (isDbBrowserAvailable) {
 				MenuItemFactory.addOpenInDbBrowserCommand(this, false);
@@ -100,24 +98,6 @@ public class DynamicOpenInMenuUtility {
 				}
 			}
 
-		}
-
-		private boolean isDbBrowserIntegrationAvailable() {
-			if (this.adtObjects.size() == 1) {
-				return AdtUtil.isSapGuiDbBrowserAvailable(this.project);
-			} else {
-				final Set<IProject> projects = new HashSet<>();
-				for (final IAdtObject adtObject : this.adtObjects) {
-					projects.add(adtObject.getProject());
-				}
-
-				for (final IProject project : projects) {
-					if (!AdtUtil.isSapGuiDbBrowserAvailable(project)) {
-						return false;
-					}
-				}
-			}
-			return true;
 		}
 
 	}

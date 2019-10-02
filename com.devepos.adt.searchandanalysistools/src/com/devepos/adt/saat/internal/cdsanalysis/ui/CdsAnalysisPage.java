@@ -36,6 +36,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.Page;
 
+import com.devepos.adt.saat.ICommandConstants;
 import com.devepos.adt.saat.IContextMenuConstants;
 import com.devepos.adt.saat.IDataSourceType;
 import com.devepos.adt.saat.IDestinationProvider;
@@ -440,7 +441,7 @@ public abstract class CdsAnalysisPage extends Page {
 			mgr.appendToGroup(IContextMenuConstants.GROUP_EDIT, this.copyToClipBoardAction);
 			return;
 		}
-		if (commandChecker.hasSelection(true)) {
+		if (commandChecker.canCommandBeEnabled(ICommandConstants.OPEN_IN_DB_BROWSER)) {
 			MenuItemFactory.addOpenInDbBrowserCommand(mgr, IContextMenuConstants.GROUP_DB_BROWSER, false);
 			MenuItemFactory.addOpenInDbBrowserCommand(mgr, IContextMenuConstants.GROUP_DB_BROWSER, true);
 		}

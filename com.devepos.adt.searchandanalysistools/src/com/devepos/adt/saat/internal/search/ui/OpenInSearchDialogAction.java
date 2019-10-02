@@ -23,7 +23,7 @@ public class OpenInSearchDialogAction extends Action {
 	@Override
 	public void run() {
 		final IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-		final SearchDialog dialog = new SearchDialog(window, this.page.getID());
+		final SearchDialog dialog = new SearchDialog(window, this.page.getSearchDialogId());
 		dialog.setBlockOnOpen(false);
 		dialog.open();
 		if (dialog.getSelectedPage() instanceof ObjectSearchPage) {
