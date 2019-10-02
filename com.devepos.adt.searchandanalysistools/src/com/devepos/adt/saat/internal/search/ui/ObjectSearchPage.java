@@ -38,13 +38,14 @@ import com.devepos.adt.saat.internal.util.AbapProjectProxy;
 import com.devepos.adt.saat.internal.util.AdtUtil;
 import com.devepos.adt.saat.internal.util.IAbapProjectProvider;
 import com.devepos.adt.saat.internal.util.StatusUtil;
+import com.devepos.adt.saat.internal.util.TextControlUtil;
 import com.sap.adt.tools.core.ui.AbapProjectProposalProvider;
 import com.sap.adt.tools.core.ui.dialogs.AbapProjectSelectionDialog;
 import com.sap.adt.util.ui.SWTUtil;
 
 public class ObjectSearchPage extends DialogPage implements ISearchPage {
 	public static final String LAST_PROJECT_PREF = "com.devepos.adt.saat.objectsearch.lastSelectedProject";
-	private static final int MULTIPLIER = 25;
+	private static final int MULTIPLIER = 50;
 	private static final int MAX_SCALE = 20;
 	private static final int MIN_SCALE = 1;
 	private static final int STATUS_PROJECT = 100;
@@ -55,7 +56,6 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 	private SearchPatternProvider searchPatternProvider;
 	private final IAbapProjectProvider projectProvider;
 
-	private final boolean updateLastProjectPreference;
 	private final IPreferenceStore prefStore;
 	private Composite mainComposite;
 	private ISearchPageContainer pageContainer;
@@ -75,10 +75,10 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 	public ObjectSearchPage() {
 		this.prefStore = SearchAndAnalysisPlugin.getDefault().getPreferenceStore();
 		this.prefStore.setDefault(LAST_PROJECT_PREF, ""); //$NON-NLS-1$
-		this.updateLastProjectPreference = this.prefStore.getBoolean(IPreferences.REMEMBER_LAST_PROJECT_IN_OBJ_EXPLORER);
 		this.projectProvider = new AbapProjectProxy(null);
 		this.searchRequest = new ObjectSearchRequest();
 		this.searchRequest.setProjectProvider(this.projectProvider);
+		this.searchRequest.setReadApiState(true);
 	}
 
 	@Override
@@ -125,6 +125,31 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 		return true;
 	}
 
+	/**
+	 * Sets control input from the given {@link ObjectSearchRequest}
+	 *
+	 * @param request the Object Search Request to be used
+	 */
+	public void setInputFromSearchRequest(final ObjectSearchRequest request) {
+		final boolean doSetCursorToEnd = this.prefStore.getBoolean(IPreferences.CURSOR_AT_END_OF_SEARCH_INPUT);
+		final IAbapProjectProvider projectProvider = request.getProjectProvider();
+		final String searchTerm = request.getSearchTerm();
+		this.searchInput.setText(searchTerm);
+		if (projectProvider != null) {
+			this.projectField.setText(projectProvider.getProjectName());
+		}
+		this.parametersInput.setText(request.getParametersString());
+		this.maxResultsScale.setSelection(request.getMaxResults() / MULTIPLIER);
+		this.maxResults = request.getMaxResults();
+		updateMaxResults();
+
+		if (doSetCursorToEnd) {
+			this.searchInput.setSelection(searchTerm.length());
+		} else {
+			this.searchInput.selectAll();
+		}
+	}
+
 	@Override
 	public void setContainer(final ISearchPageContainer container) {
 		this.pageContainer = container;
@@ -143,9 +168,19 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 	private void setInitialData() {
 		// set the project
 		setInitialProject();
-		// set initital max result values
-		this.maxResultsScale.setSelection(4);
-		this.maxResults = 4 * MULTIPLIER;
+		// set initial max result values
+		final int maxResultPref = this.prefStore.getInt(IPreferences.MAX_SEARCH_RESULTS);
+		if (maxResultPref > 0) {
+			int maxResultScalePref = maxResultPref / MULTIPLIER;
+			if (maxResultScalePref > MAX_SCALE) {
+				maxResultScalePref = MAX_SCALE;
+			}
+			this.maxResultsScale.setSelection(maxResultScalePref);
+			this.maxResults = maxResultPref;
+		} else {
+			this.maxResultsScale.setSelection(1);
+			this.maxResults = 1 * MULTIPLIER;
+		}
 		updateMaxResults();
 	}
 
@@ -172,6 +207,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 			final SearchType selectedSearchType = (SearchType) event.getStructuredSelection().getFirstElement();
 			this.searchPatternProvider.setSearchType(selectedSearchType);
 			this.searchRequest.setSearchType(selectedSearchType);
+			validateParameterPattern();
 		});
 	}
 
@@ -195,27 +231,35 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 		parametersLabel.setText("Search &Filters:");
 
 		this.parametersInput = new Text(parent, SWT.BORDER);
+		TextControlUtil.addWordSupport(this.parametersInput);
 		SWTUtil.addTextEditMenu(this.parametersInput);
 
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).span(2, 1).grab(true, false).applyTo(this.parametersInput);
 
 		this.parametersInput.addModifyListener((event) -> {
-			if (this.searchPatternProvider != null && this.uriDiscovery != null) {
-				final String parameterPattern = this.parametersInput.getText();
-				try {
-					this.searchPatternProvider.checkSearchParametersComplete(parameterPattern);
-					this.searchRequest.setParameters(this.searchPatternProvider.getSearchParameters(parameterPattern),
-						parameterPattern);
-					validateAndSetStatus(
-						new Status(IStatus.OK, SearchAndAnalysisPlugin.PLUGIN_ID, STATUS_PARAMETERS, null, null));
-				} catch (final CoreException e) {
-					this.searchRequest.setParameters(null, "");
-					validateAndSetStatus(
-						new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, STATUS_PARAMETERS, e.getMessage(), e));
-				}
-				updateOKStatus();
-			}
+			validateParameterPattern();
 		});
+	}
+
+	/**
+	 * Validates the entered parameter pattern against the current object type and
+	 * project
+	 */
+	private void validateParameterPattern() {
+		if (this.searchPatternProvider != null && this.uriDiscovery != null) {
+			final String parameterPattern = this.parametersInput.getText();
+			try {
+				this.searchPatternProvider.checkSearchParametersComplete(parameterPattern);
+				this.searchRequest.setParameters(this.searchPatternProvider.getSearchParameters(parameterPattern),
+					parameterPattern);
+				validateAndSetStatus(new Status(IStatus.OK, SearchAndAnalysisPlugin.PLUGIN_ID, STATUS_PARAMETERS, null, null));
+			} catch (final CoreException e) {
+				this.searchRequest.setParameters(null, "");
+				validateAndSetStatus(
+					new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, STATUS_PARAMETERS, e.getMessage(), e));
+			}
+			updateOKStatus();
+		}
 	}
 
 	private void createAndOptionCheckbox(final Composite parent) {
@@ -273,6 +317,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).grab(true, false).applyTo(this.projectField);
 		// register project proposal provider
 		new AbapProjectProposalProvider(this.projectField);
+		SWTUtil.addTextEditMenu(this.projectField);
 
 		final Button projectBrowseButton = new Button(parent, SWT.PUSH);
 		projectBrowseButton.setText("&Browse...");
@@ -299,7 +344,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 	}
 
 	/*
-	 * Updates the project provider with the given project name If no project for
+	 * Updates the project provider with the given project name. If no project for
 	 * the given name can be found the project of the provider will be set to null
 	 */
 	private void setProject(final String projectName) {

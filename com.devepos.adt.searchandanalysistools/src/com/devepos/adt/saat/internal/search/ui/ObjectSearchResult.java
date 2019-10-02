@@ -1,6 +1,9 @@
 package com.devepos.adt.saat.internal.search.ui;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.osgi.util.NLS;
@@ -23,6 +26,7 @@ public class ObjectSearchResult implements ISearchResult {
 	private ITreeNode[] treeResult;
 	private int resultCount;
 	private boolean hasMoreResults;
+	private IAdtObjectReferenceElementInfo[] searchResult;
 
 	public ObjectSearchResult(final ObjectSearchQuery searchQuery) {
 		this.searchQuery = searchQuery;
@@ -87,6 +91,7 @@ public class ObjectSearchResult implements ISearchResult {
 	public void addSearchResult(final IAdtObjectReferenceElementInfo[] searchResult) {
 		final ObjectSearchResultEvent resultEvent = new ObjectSearchResultEvent(this);
 		if (searchResult != null && searchResult.length > 0) {
+			this.searchResult = searchResult;
 			this.treeResult = new IAdtObjectReferenceNode[searchResult.length];
 			this.resultCount = searchResult.length;
 			for (int i = 0; i < searchResult.length; i++) {
@@ -98,6 +103,8 @@ public class ObjectSearchResult implements ISearchResult {
 				this.treeResult[i] = node;
 			}
 		} else {
+			this.searchResult = null;
+			this.treeResult = null;
 			this.resultCount = 0;
 		}
 		informListener(resultEvent);
@@ -108,7 +115,12 @@ public class ObjectSearchResult implements ISearchResult {
 		return this.treeResult != null ? this.treeResult : new ITreeNode[0];
 	}
 
+	public List<IAdtObjectReferenceElementInfo> getResult() {
+		return this.searchResult != null ? Arrays.asList(this.searchResult) : new ArrayList<>();
+	}
+
 	public void cleanup() {
+		this.searchResult = null;
 		this.resultCount = 0;
 		this.hasMoreResults = false;
 		this.treeResult = null;

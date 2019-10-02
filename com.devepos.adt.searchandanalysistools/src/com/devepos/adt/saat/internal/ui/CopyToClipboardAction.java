@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.PlatformUI;
 
+import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.tree.ITreeNode;
 
 public class CopyToClipboardAction extends Action {
@@ -33,8 +34,8 @@ public class CopyToClipboardAction extends Action {
 
 	public CopyToClipboardAction() {
 		super();
-		setText("Copy");
-		setToolTipText("Copy");
+		setText(Messages.General_Copy_xtol);
+		setToolTipText(Messages.General_Copy_xtol);
 		final ISharedImages workbenchImages = PlatformUI.getWorkbench().getSharedImages();
 		setDisabledImageDescriptor(workbenchImages.getImageDescriptor(ISharedImages.IMG_TOOL_COPY_DISABLED));
 		setImageDescriptor(workbenchImages.getImageDescriptor(ISharedImages.IMG_TOOL_COPY));
@@ -162,9 +163,8 @@ public class CopyToClipboardAction extends Action {
 			if (ex.code != DND.ERROR_CANNOT_SET_CLIPBOARD) {
 				throw ex;
 			}
-			final String title = "Problem Copying to Clipboard";
-			final String message = "There was a problem when accessing the system clipboard. Retry?";
-			if (MessageDialog.openQuestion(shell, title, message)) {
+			if (MessageDialog.openQuestion(shell, Messages.CopyToClipboardAction_ErrorMessageTitle_xmsg,
+				Messages.CopyToClipboardAction_ErrorMessageBody_xmsg)) {
 				copyToClipboard(clipboard, str, shell);
 			}
 		}

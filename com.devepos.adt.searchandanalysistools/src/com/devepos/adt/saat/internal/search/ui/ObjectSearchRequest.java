@@ -27,13 +27,9 @@ public class ObjectSearchRequest {
 	private IAbapProjectProvider projectProvider;
 
 	public ObjectSearchRequest() {
-		this(null, SearchType.CDS_VIEW, null);
-	}
-
-	public ObjectSearchRequest(final String query, final SearchType searchType, final String destinationId) {
-		this.query = query;
-		this.searchType = searchType;
-		this.destinationId = destinationId;
+		this.query = null;
+		this.searchType = SearchType.CDS_VIEW;
+		this.destinationId = null;
 		this.readApiState = false;
 		this.readAllEntries = false;
 	}
@@ -132,6 +128,10 @@ public class ObjectSearchRequest {
 
 	public IAbapProjectProvider getProjectProvider() {
 		return this.projectProvider;
+	}
+
+	public String getParametersString() {
+		return this.parametersString != null ? this.parametersString : "";
 	}
 
 }

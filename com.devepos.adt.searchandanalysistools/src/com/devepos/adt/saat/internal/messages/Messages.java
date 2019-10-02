@@ -46,6 +46,7 @@ public class Messages extends NLS {
 	public static String ObjectSearch_SearchJobProgressText_xmsg;
 	public static String ObjectSearch_UseAndFilter_xtol;
 	public static String ObjectSearchOpenPreferences_xmit;
+	public static String ObjectSearchResultPage_OpenInSearchDialog_xtol;
 	public static String OpenInUtil_AnalysisForOfficeNotActive_xmsg;
 	public static String SearchHistorySelectionDialog_AddFavorite_xbut;
 	public static String SearchHistorySelectionDialog_DeleteHistoryEntry_xbut;
@@ -109,6 +110,8 @@ public class Messages extends NLS {
 	public static String CommandParameterValuesShowSelectionScreen;
 	public static String CommandParameterValuesSkipSelectionScreen;
 	public static String ContentProposalProvider_contentAssistTooltip_xtol;
+	public static String CopyToClipboardAction_ErrorMessageBody_xmsg;
+	public static String CopyToClipboardAction_ErrorMessageTitle_xmsg;
 	public static String DbBrowser_featureIsNotAvailable_xmsg;
 	public static String Dialog_InfoTitle_xmsg;
 	public static String ElementInfoProvider_RetrievingElementInfoDescription_xmsg;
@@ -146,6 +149,7 @@ public class Messages extends NLS {
 	public static String FieldHierarchyViewer_FieldOriginModeButton_xtol;
 	public static String FieldHierarchyViewer_FieldReferencesModeButton_xtol;
 	public static String FieldWhereUsedInCdsElementInfoProvider_ProviderDescription_xmsg;
+	public static String General_Copy_xtol;
 	public static String ImportFavoritesAction_AllFilesFileType_xmit;
 	public static String ImportFavoritesAction_ImportFavoritesAction_xmit;
 	public static String ImportFavoritesAction_ImportSuccess_xmsg;

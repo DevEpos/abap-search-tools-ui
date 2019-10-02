@@ -55,7 +55,9 @@ public class ObjectSearchQuery implements ISearchQuery {
 
 		final Map<String, Object> parameterMap = this.searchRequest.getParameters();
 		// add hidden parameters to search query
-		parameterMap.put(QueryParameterName.AND_FILTER.toString(), Boolean.toString(this.searchRequest.isAndSearchActive()));
+		if (this.searchRequest.isAndSearchActive()) {
+			parameterMap.put(QueryParameterName.AND_FILTER.toString(), "X");
+		}
 		// set the search type manually, as it will not be included in the pattern
 		parameterMap.put(QueryParameterName.OBJECT_TYPE.toString(), this.searchRequest.getSearchType().getId());
 		if (this.searchRequest.shouldReadApiState()) {

@@ -1,15 +1,25 @@
 package com.devepos.adt.saat.internal.search.ui;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.preference.JFacePreferences;
 import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider;
 import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider.IStyledLabelProvider;
 import org.eclipse.jface.viewers.IDecoration;
 import org.eclipse.jface.viewers.ILabelProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.search.ui.IContextMenuConstants;
 import org.eclipse.search.ui.ISearchResult;
 import org.eclipse.search.ui.ISearchResultListener;
 import org.eclipse.search.ui.ISearchResultPage;
@@ -23,11 +33,15 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.part.Page;
 
+import com.devepos.adt.saat.ICommandConstants;
+import com.devepos.adt.saat.ObjectType;
 import com.devepos.adt.saat.SearchAndAnalysisPlugin;
+import com.devepos.adt.saat.internal.cdsanalysis.CdsAnalysisUriDiscovery;
 import com.devepos.adt.saat.internal.tree.ActionTreeNode;
 import com.devepos.adt.saat.internal.tree.IAdtObjectReferenceNode;
 import com.devepos.adt.saat.internal.tree.ICollectionTreeNode;
@@ -35,9 +49,18 @@ import com.devepos.adt.saat.internal.tree.IStyledTreeNode;
 import com.devepos.adt.saat.internal.tree.ITreeNode;
 import com.devepos.adt.saat.internal.tree.LazyLoadingTreeContentProvider;
 import com.devepos.adt.saat.internal.tree.LazyLoadingTreeContentProvider.LoadingElement;
+import com.devepos.adt.saat.internal.ui.CollapseAllTreeNodesAction;
+import com.devepos.adt.saat.internal.ui.CollapseTreeNodesAction;
+import com.devepos.adt.saat.internal.ui.CopyToClipboardAction;
+import com.devepos.adt.saat.internal.ui.MenuItemFactory;
+import com.devepos.adt.saat.internal.ui.OpenAdtDataPreviewAction;
+import com.devepos.adt.saat.internal.ui.OpenAdtObjectAction;
 import com.devepos.adt.saat.internal.ui.StylerFactory;
+import com.devepos.adt.saat.internal.util.AdtUtil;
+import com.devepos.adt.saat.internal.util.IAbapProjectProvider;
 import com.devepos.adt.saat.internal.util.IImages;
 import com.devepos.adt.saat.search.model.IExtendedAdtObjectInfo;
+import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 
 public class ObjectSearchResultPage extends Page implements ISearchResultPage, ISearchResultListener {
 
@@ -48,12 +71,39 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 	private TreeViewer searchResultTree;
 	private Composite mainComposite;
 	private ObjectSearchQuery searchQuery;
+	private OpenInSearchDialogAction openInSearchDialogAction;
+	private CollapseAllTreeNodesAction collapseAllNodesAction;
+	private CollapseTreeNodesAction collapseNodesAction;
+	private IAbapProjectProvider projectProvider;
+	private CopyToClipboardAction copyToClipBoardAction;
+	private boolean isDbBrowserIntegrationAvailable;
+	private IAction removeQueryAction;
+
+	public ObjectSearchResultPage() {
+	}
+
+	/**
+	 * @return the {@link ObjectSearchRequest} of this the result page
+	 */
+	public ObjectSearchRequest getSearchRequest() {
+		return this.searchQuery != null ? this.searchQuery.getSearchRequest() : null;
+	}
 
 	@Override
 	public void createControl(final Composite parent) {
 		this.mainComposite = createTreeViewerComposite(parent);
 		createResultTree(this.mainComposite);
+		initializeActions();
+		hookContextMenu();
 		getSite().setSelectionProvider(this.searchResultTree);
+	}
+
+	@Override
+	public void setActionBars(final IActionBars actionBars) {
+		final IToolBarManager tbm = actionBars.getToolBarManager();
+		tbm.appendToGroup(IContextMenuConstants.GROUP_NEW, this.openInSearchDialogAction);
+		tbm.appendToGroup(IContextMenuConstants.GROUP_EDIT, this.collapseAllNodesAction);
+		tbm.appendToGroup(IContextMenuConstants.GROUP_REMOVE_MATCHES, this.removeQueryAction);
 	}
 
 	@Override
@@ -64,12 +114,6 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 	@Override
 	public Control getControl() {
 		return this.mainComposite;
-	}
-
-	@Override
-	public void setActionBars(final IActionBars actionBars) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -97,6 +141,8 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 			this.searchResultTree.setInput(this.result);
 			this.state = uiState;
 			this.searchQuery = (ObjectSearchQuery) this.result.getQuery();
+			this.projectProvider = this.searchQuery.getProjectProvider();
+			checkDbBrowserIntegration();
 			if (!NewSearchUI.isQueryRunning(this.searchQuery)) {
 				updateUiState();
 			}
@@ -166,12 +212,25 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 		return composite;
 	}
 
+	private void checkDbBrowserIntegration() {
+		this.isDbBrowserIntegrationAvailable = false;
+		if (this.projectProvider != null) {
+			this.isDbBrowserIntegrationAvailable = AdtUtil.isSapGuiDbBrowserAvailable(this.projectProvider.getProject());
+		}
+	}
+
+	private void initializeActions() {
+		this.openInSearchDialogAction = new OpenInSearchDialogAction(this);
+		this.collapseAllNodesAction = new CollapseAllTreeNodesAction(this.searchResultTree);
+		this.collapseNodesAction = new CollapseTreeNodesAction(this.searchResultTree);
+		this.copyToClipBoardAction = new CopyToClipboardAction();
+	}
+
 	/*
 	 * Creates the result tree of the object search
 	 */
 	private void createResultTree(final Composite parent) {
 		this.searchResultTree = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
-
 		this.searchResultTree.setContentProvider(new TreeContentProvider());
 		this.searchResultTree.setLabelProvider(new DelegatingStyledCellLabelProvider(new ViewLabelProvider()));
 		this.searchResultTree.addDoubleClickListener(event -> {
@@ -195,6 +254,93 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 			}
 		});
 
+	}
+
+	private void hookContextMenu() {
+		final MenuManager menuMgr = new MenuManager();
+		menuMgr.setRemoveAllWhenShown(true);
+
+		menuMgr.addMenuListener((menu) -> {
+			fillContextMenu(menu);
+		});
+		final Control viewerControl = this.searchResultTree.getControl();
+		final Menu menu = menuMgr.createContextMenu(viewerControl);
+		viewerControl.setMenu(menu);
+	}
+
+	private void fillContextMenu(final IMenuManager menu) {
+		final IStructuredSelection selection = this.searchResultTree.getStructuredSelection();
+		if (selection == null || selection.isEmpty()) {
+			return;
+		}
+		boolean selectionHasExpandedNodes = false;
+		final List<IAdtObjectReference> adtObjRefs = new ArrayList<>();
+		final List<IAdtObjectReference> previewAdtObjRefs = new ArrayList<>();
+		final int selectionSize = selection.size();
+		boolean singleDataPreviewObjectSelected = false;
+		boolean singleCdsViewSelected = false;
+
+		for (final Object selectedObject : selection.toList()) {
+			if (selectedObject instanceof IAdtObjectReferenceNode) {
+				final IAdtObjectReferenceNode objRefNode = (IAdtObjectReferenceNode) selectedObject;
+				final IAdtObjectReference adtObjectRef = objRefNode.getObjectReference();
+				if (objRefNode.supportsDataPreview()) {
+					previewAdtObjRefs.add(adtObjectRef);
+				}
+				adtObjRefs.add(adtObjectRef);
+
+				if (selectionSize == 1) {
+					singleDataPreviewObjectSelected = true;
+					singleCdsViewSelected = objRefNode.getObjectType() == ObjectType.CDS_VIEW;
+				}
+			}
+
+			if (!selectionHasExpandedNodes && selectedObject instanceof ICollectionTreeNode
+				&& this.searchResultTree.getExpandedState(selectedObject)) {
+				selectionHasExpandedNodes = true;
+			}
+		}
+
+		if (!adtObjRefs.isEmpty()) {
+			menu.add(new OpenAdtObjectAction(this.projectProvider, adtObjRefs));
+		}
+		if (!previewAdtObjRefs.isEmpty() && this.isDbBrowserIntegrationAvailable) {
+			menu.add(new OpenAdtDataPreviewAction(this.projectProvider.getProject(), previewAdtObjRefs));
+			menu.add(new Separator(com.devepos.adt.saat.IContextMenuConstants.GROUP_DB_BROWSER));
+			MenuItemFactory.addOpenInDbBrowserCommand(menu, false);
+			MenuItemFactory.addOpenInDbBrowserCommand(menu, true);
+		}
+
+		if (singleDataPreviewObjectSelected) {
+			// check if action is supported in the current project
+			if (new CdsAnalysisUriDiscovery(this.projectProvider.getDestinationId()).getCdsAnalysisUri() != null) {
+				menu.add(new Separator(com.devepos.adt.saat.IContextMenuConstants.GROUP_CDS_ANALYSIS));
+				if (singleCdsViewSelected) {
+					MenuItemFactory.addCdsAnalyzerCommandItem(menu, com.devepos.adt.saat.IContextMenuConstants.GROUP_CDS_ANALYSIS,
+						ICommandConstants.CDS_TOP_DOWN_ANALYSIS);
+				}
+				if (!previewAdtObjRefs.isEmpty()) {
+					MenuItemFactory.addCdsAnalyzerCommandItem(menu, com.devepos.adt.saat.IContextMenuConstants.GROUP_CDS_ANALYSIS,
+						ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS);
+				}
+				if (singleCdsViewSelected) {
+					MenuItemFactory.addCdsAnalyzerCommandItem(menu, com.devepos.adt.saat.IContextMenuConstants.GROUP_CDS_ANALYSIS,
+						ICommandConstants.USED_ENTITIES_ANALYSIS);
+				}
+				if (!previewAdtObjRefs.isEmpty()) {
+					MenuItemFactory.addCdsAnalyzerCommandItem(menu, com.devepos.adt.saat.IContextMenuConstants.GROUP_CDS_ANALYSIS,
+						ICommandConstants.FIELD_ANALYSIS);
+				}
+
+			}
+		}
+		if (selectionHasExpandedNodes) {
+			menu.add(new Separator(com.devepos.adt.saat.IContextMenuConstants.GROUP_NODE_ACTIONS));
+			menu.add(this.collapseNodesAction); // , collapsableNodes));
+		}
+
+		menu.add(new Separator(IContextMenuConstants.GROUP_EDIT));
+		menu.appendToGroup(IContextMenuConstants.GROUP_EDIT, this.copyToClipBoardAction);
 	}
 
 	private void updateUiState() {
