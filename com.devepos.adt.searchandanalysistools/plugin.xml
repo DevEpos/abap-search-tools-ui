@@ -307,9 +307,18 @@
         <page
               class="com.devepos.adt.saat.internal.search.ui.ObjectSearchPage"
               icon="icons/ABAPSearch.png"
-              id="com.devepos.adt.searchandanalysistools.page1"
+              id="com.devepos.adt.saat.ObjectSearchPage"
               label="%searchpage.objectsearch.name"
-              tabPosition="3">
+              tabPosition="1">
         </page>
+     </extension>
+     <extension
+           point="org.eclipse.search.searchResultViewPages">
+        <viewPage
+              class="com.devepos.adt.saat.internal.search.ui.ObjectSearchResultPage"
+              icon="icons/ABAPSearch.png"
+              id="com.devepos.adt.saat.internal.search.ui.ObjectSearchResultPage"
+              searchResultClass="com.devepos.adt.saat.internal.search.ui.ObjectSearchResult">
+        </viewPage>
      </extension>
 </plugin>

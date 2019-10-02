@@ -200,6 +200,10 @@ public interface IImages {
 	 */
 	String SEARCH = "IMG_SEARCH";
 	/**
+	 * Image for the object search
+	 */
+	String OBJECT_SEARCH = "IMG_OBJECT_SEARCH";
+	/**
 	 * Image for Favorites
 	 */
 	String FAVORITES = "IMG_FAVORITES";

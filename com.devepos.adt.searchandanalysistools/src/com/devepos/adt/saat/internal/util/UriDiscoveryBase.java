@@ -17,15 +17,27 @@ import com.sap.adt.compatibility.uritemplate.IAdtUriTemplate;
  *
  * @author stockbal
  */
-public abstract class UriDiscoveryBase {
+public abstract class UriDiscoveryBase implements IUriDiscovery {
 
-	private static final String DISCOVERY_PATH = "/devepos/saat/discovery";
+	private static final String DISCOVERY_PATH = "/devepos/adt/saat/discovery";
 	private final String discoveryScheme;
 	protected final IAdtDiscovery discovery;
 
-	public UriDiscoveryBase(final String destination, final String discoveryScheme) {
+	/**
+	 * @return <code>true</code> if the resource discovery has been successful
+	 */
+	@Override
+	public boolean isResourceDiscoverySuccessful() {
+		return this.discovery != null && this.discovery.getStatus().isOK();
+	}
+
+	protected UriDiscoveryBase(final String destination, final String discoveryScheme) {
+		this(destination, DISCOVERY_PATH, discoveryScheme);
+	}
+
+	protected UriDiscoveryBase(final String destination, final String discoveryPath, final String discoveryScheme) {
 		this.discoveryScheme = discoveryScheme;
-		this.discovery = AdtDiscoveryFactory.createDiscovery(destination, URI.create(DISCOVERY_PATH));
+		this.discovery = AdtDiscoveryFactory.createDiscovery(destination, URI.create(discoveryPath));
 	}
 
 	/**

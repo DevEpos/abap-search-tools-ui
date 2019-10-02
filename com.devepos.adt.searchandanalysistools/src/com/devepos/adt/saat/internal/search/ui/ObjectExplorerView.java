@@ -180,7 +180,7 @@ public class ObjectExplorerView extends ViewPart implements IStatusUpdater, IObj
 			// load last project if available
 			if (!loadLastUsedProject()) {
 				// no last project was found so use the current "selected" project
-				final IProject currentABAPProject = AdtUtil.getCurrentABAPProject();
+				final IProject currentABAPProject = AdtUtil.getCurrentAbapProject();
 				if (currentABAPProject != null) {
 					this.projectViewer.setSelection(new StructuredSelection(currentABAPProject));
 				} else {
@@ -743,7 +743,7 @@ public class ObjectExplorerView extends ViewPart implements IStatusUpdater, IObj
 		// Trigger logon dialog if necessary
 		if (!this.projectProvider.ensureLoggedOn()) {
 			updateStatus(IStatus.ERROR,
-				NLS.bind(Messages.ObjectSearch_ProjetLogonFailed_xmsg, this.projectProvider.getProjectName()));
+				NLS.bind(Messages.ObjectSearch_ProjectLogonFailed_xmsg, this.projectProvider.getProjectName()));
 			return;
 		}
 
@@ -794,7 +794,7 @@ public class ObjectExplorerView extends ViewPart implements IStatusUpdater, IObj
 		if (keepSelection) {
 			oldSelection = (IProject) this.projectViewer.getStructuredSelection().getFirstElement();
 		}
-		final IProject[] abapProjects = AdtUtil.getABAPProjects();
+		final IProject[] abapProjects = AdtUtil.getAbapProjects();
 
 		this.projectViewer.setInput(abapProjects);
 

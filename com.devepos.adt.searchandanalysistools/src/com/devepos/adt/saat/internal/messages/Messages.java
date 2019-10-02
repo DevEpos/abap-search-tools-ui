@@ -35,7 +35,7 @@ public class Messages extends NLS {
 	public static String ObjectSearch_OrganizeFavorites_xmit;
 	public static String ObjectSearch_SearchFavoritesAction_xtol;
 	public static String ObjectSearch_SearchInputPrompt_xfld;
-	public static String ObjectSearch_ProjetLogonFailed_xmsg;
+	public static String ObjectSearch_ProjectLogonFailed_xmsg;
 	public static String ObjectSearch_SearchJobName_xmsg;
 	public static String ObjectSearch_SearchNotSupportedInProject_xmsg;
 	public static String ObjectSearch_SearchTypeInput_xfld;
@@ -109,6 +109,7 @@ public class Messages extends NLS {
 	public static String CommandParameterValuesShowSelectionScreen;
 	public static String CommandParameterValuesSkipSelectionScreen;
 	public static String ContentProposalProvider_contentAssistTooltip_xtol;
+	public static String DbBrowser_featureIsNotAvailable_xmsg;
 	public static String Dialog_InfoTitle_xmsg;
 	public static String ElementInfoProvider_RetrievingElementInfoDescription_xmsg;
 	public static String ElementInformation_AccessControls_xtit;

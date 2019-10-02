@@ -36,6 +36,7 @@ public class SearchPatternAnalyzer {
 	private static final String SOME_VALUE_CHAR = "+"; //$NON-NLS-1$
 	private final ISearchParameterHandler parameterHandler;
 	private List<ISearchParameter> parameters;
+	private boolean isSearchTermAllowed = true;
 
 	/**
 	 * Creates new search pattern analyzer instance
@@ -44,6 +45,15 @@ public class SearchPatternAnalyzer {
 	 */
 	public SearchPatternAnalyzer(final ISearchParameterHandler parameterHandler) {
 		this.parameterHandler = parameterHandler;
+	}
+
+	/**
+	 * Enables/Disables the occurrence of a none parameter inside the search pattern
+	 *
+	 * @param allowSearchTermInPattern
+	 */
+	public void setIsSearchTermAllowed(final boolean allowSearchTermInPattern) {
+		this.isSearchTermAllowed = allowSearchTermInPattern;
 	}
 
 	/**
@@ -57,6 +67,11 @@ public class SearchPatternAnalyzer {
 		updateSearchParameters();
 		final String condensedPattern = condense(searchPattern);
 		final String searchTerm = getSearchTerm(searchPattern);
+
+		if (!this.isSearchTermAllowed && !searchTerm.isEmpty()) {
+			final String errorMessage = NLS.bind(Messages.SearchPatternAnalyzer_ErrorInvalidSearchParameter_xmsg, searchTerm);
+			throw new CoreException(new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, errorMessage));
+		}
 
 		// find the first invalid part in the search pattern
 		for (final String part : condensedPattern.split(SPACE)) {

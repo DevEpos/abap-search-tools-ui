@@ -14,7 +14,7 @@ public class ShowDbObjectExplorerHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
-		final IProject project = AdtUtil.getCurrentABAPProject();
+		final IProject project = AdtUtil.getCurrentAbapProject();
 		final ObjectExplorerView dbObjectSearchView = ViewPartLookup.getDbObjectSearchView();
 		if (dbObjectSearchView != null) {
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().activate(dbObjectSearchView);

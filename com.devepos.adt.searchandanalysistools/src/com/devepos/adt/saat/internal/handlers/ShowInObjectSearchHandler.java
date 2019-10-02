@@ -15,7 +15,7 @@ public class ShowInObjectSearchHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
-		final IProject project = AdtUtil.getCurrentABAPProject();
+		final IProject project = AdtUtil.getCurrentAbapProject();
 		final IAdtObject adtObjectFromEditor = AdtUtil.getAdtObjectFromSelection(true);
 		if (adtObjectFromEditor == null) {
 			return null;

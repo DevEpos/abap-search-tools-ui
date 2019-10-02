@@ -255,6 +255,7 @@ public class SearchAndAnalysisPlugin extends AbstractUIPlugin {
 		registerImage(imageRegistry, IImages.SAP_GUI_LOGO, "icons/SapGuiLogo.png");
 		registerImage(imageRegistry, IImages.INNER_JOIN, "icons/InnerJoin.png");
 		registerImage(imageRegistry, IImages.SEARCH, "icons/Search.png");
+		registerImage(imageRegistry, IImages.OBJECT_SEARCH, "icons/ABAPSearch.png");
 		registerImage(imageRegistry, IImages.FAVORITES, "icons/Favorites.png");
 		registerImage(imageRegistry, IImages.CDS_ANALYZER, "icons/CdsAnalyzerView.png");
 		registerImage(imageRegistry, IImages.SUPER_TYPE, "icons/SuperType.png");

@@ -94,7 +94,7 @@ public class AbapProjectProxy implements IAbapProjectProvider {
 
 	@Override
 	public IProject getProject() {
-		return this.project.get();
+		return hasProject() ? this.project.get() : null;
 	}
 
 	@Override

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swt.widgets.Text;
 
@@ -20,7 +19,6 @@ import com.devepos.adt.saat.internal.search.FieldSearchParameter;
 import com.devepos.adt.saat.internal.search.HasParameterSearchParameter;
 import com.devepos.adt.saat.internal.search.ISearchParameter;
 import com.devepos.adt.saat.internal.search.ISearchParameterHandler;
-import com.devepos.adt.saat.internal.search.MaxRowsSearchParameter;
 import com.devepos.adt.saat.internal.search.NamedItemType;
 import com.devepos.adt.saat.internal.search.ObjectSearchUriDiscovery;
 import com.devepos.adt.saat.internal.search.PackageSearchParameter;
@@ -30,7 +28,6 @@ import com.devepos.adt.saat.internal.search.TypeSearchParameter;
 import com.devepos.adt.saat.internal.search.UserSearchParameter;
 import com.devepos.adt.saat.internal.search.model.QueryParameterName;
 import com.devepos.adt.saat.internal.search.model.SearchType;
-import com.devepos.adt.saat.internal.util.AbapProjectProxy;
 import com.devepos.adt.saat.internal.util.IAbapProjectProvider;
 
 /**
@@ -46,23 +43,18 @@ public class SearchPatternProvider implements ISearchParameterHandler {
 	private SearchType searchType;
 
 	public SearchPatternProvider() {
-		this((IProject) null, null);
-	}
-
-	public SearchPatternProvider(final IProject project) {
-		this(project, null);
+		this((IAbapProjectProvider) null, null);
 	}
 
 	public SearchPatternProvider(final IAbapProjectProvider projectProvider, final SearchType searchType) {
 		this.patternAnalyzer = new SearchPatternAnalyzer(this);
+		this.patternAnalyzer.setIsSearchTermAllowed(true);
 		this.searchType = searchType;
 		this.projectProvider = projectProvider;
 	}
 
-	public SearchPatternProvider(final IProject project, final SearchType searchType) {
-		this.patternAnalyzer = new SearchPatternAnalyzer(this);
-		this.searchType = searchType;
-		this.projectProvider = new AbapProjectProxy(project);
+	public void enableSearchTermInput(final boolean enable) {
+		this.patternAnalyzer.setIsSearchTermAllowed(enable);
 	}
 
 	/**
@@ -116,13 +108,13 @@ public class SearchPatternProvider implements ISearchParameterHandler {
 			} else {
 				parameters.add(new FieldSearchParameter(this.projectProvider, NamedItemType.TABLE_FIELD));
 			}
-			parameters.add(new MaxRowsSearchParameter());
+//			parameters.add(new MaxRowsSearchParameter());
 			this.parameterMap.put(this.searchType, parameters);
 		}
 
 		// filter parameters according to the URI search template
 		if (!this.projectProvider.ensureLoggedOn()) {
-			return null;
+			return new ArrayList<>();
 		}
 		final List<QueryParameterName> supportedParameters = new ObjectSearchUriDiscovery(this.projectProvider.getDestinationId())
 			.getSupportedSearchParameters();

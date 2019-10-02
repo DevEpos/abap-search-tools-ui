@@ -25,6 +25,7 @@ import org.eclipse.ui.part.WorkbenchPart;
 import com.devepos.adt.saat.ObjectType;
 import com.devepos.adt.saat.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.cdsanalysis.CdsAnalysisUriDiscovery;
+import com.devepos.adt.saat.internal.dbbrowserintegration.DbBrowserIntegrationUriDiscovery;
 import com.devepos.adt.saat.internal.elementinfo.ElementInfoRetrievalServiceFactory;
 import com.devepos.adt.saat.internal.elementinfo.IElementInfoRetrievalService;
 import com.devepos.adt.saat.internal.navtargets.NavigationTargetsUriDiscovery;
@@ -231,7 +232,7 @@ public class AdtUtil {
 	 *
 	 * @return List of ABAP projects
 	 */
-	public static IProject[] getABAPProjects() {
+	public static IProject[] getAbapProjects() {
 		return AdtProjectServiceFactory.createProjectService().getAvailableAbapProjects();
 	}
 
@@ -254,7 +255,7 @@ public class AdtUtil {
 	 *
 	 * @return
 	 */
-	public static IProject getCurrentABAPProject() {
+	public static IProject getCurrentAbapProject() {
 		final IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 		if (window == null) {
 			return null;
@@ -299,6 +300,22 @@ public class AdtUtil {
 
 		final CdsAnalysisUriDiscovery uriDiscovery = new CdsAnalysisUriDiscovery(abapProject.getDestinationId());
 		return uriDiscovery.getCdsAnalysisUri() != null;
+	}
+
+	/**
+	 * Returns <code>true</code> if the DB Browser Application is available in the
+	 * given project
+	 * 
+	 * @param  project the project where the availability of the DB Browser should
+	 *                 be checked
+	 * @return         <code>true</code> if the DB Browser Application is available
+	 *                 in the given project
+	 */
+	public static boolean isSapGuiDbBrowserAvailable(final IProject project) {
+		final IAbapProject abapProject = project.getAdapter(IAbapProject.class);
+
+		final IUriDiscovery uriDiscovery = new DbBrowserIntegrationUriDiscovery(abapProject.getDestinationId());
+		return uriDiscovery.isResourceDiscoverySuccessful();
 	}
 
 	/**
