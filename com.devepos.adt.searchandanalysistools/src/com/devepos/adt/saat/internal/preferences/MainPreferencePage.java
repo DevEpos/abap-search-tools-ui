@@ -30,7 +30,6 @@ import com.devepos.adt.saat.internal.messages.Messages;
  */
 public class MainPreferencePage extends PreferencePage implements IWorkbenchPreferencePage, IPropertyChangeListener {
 	private final List<FieldEditor> fields = new ArrayList<>();
-	private IntegerFieldEditor maxHistoryResults;
 
 	@Override
 	public void init(final IWorkbench workbench) {
@@ -79,10 +78,6 @@ public class MainPreferencePage extends PreferencePage implements IWorkbenchPref
 		final FieldEditor maxSearchResultsEditor = new IntegerFieldEditor(IPreferences.MAX_SEARCH_RESULTS,
 			Messages.MainPreferencePage_MaxResultsSetting_xfld, searchGroup, 4);
 		this.fields.add(maxSearchResultsEditor);
-
-		this.maxHistoryResults = new IntegerFieldEditor(IPreferences.MAX_HISTORY_ENTRIES,
-			Messages.MainPreferencePage_SearchHistorySize_xfld, searchGroup, 2);
-		this.fields.add(this.maxHistoryResults);
 
 		addBooleanEditor(IPreferences.CURSOR_AT_END_OF_SEARCH_INPUT, Messages.MainPreferencePage_CursorAtEndSetting_xfld,
 			searchGroup);
@@ -166,8 +161,6 @@ public class MainPreferencePage extends PreferencePage implements IWorkbenchPref
 		for (final FieldEditor field : this.fields) {
 			field.store();
 		}
-		// update the size of the search history
-		SearchAndAnalysisPlugin.getDefault().getHistory().setMaxHistorySize(this.maxHistoryResults.getIntValue());
 		return super.performOk();
 	}
 

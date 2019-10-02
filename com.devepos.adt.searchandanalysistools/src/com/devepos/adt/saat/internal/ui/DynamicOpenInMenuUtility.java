@@ -1,6 +1,8 @@
 package com.devepos.adt.saat.internal.ui;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -61,7 +63,7 @@ public class DynamicOpenInMenuUtility {
 
 		public DynamicOpenInMenuManager(final List<IAdtObject> adtObjects, final IProject project) {
 			super(Messages.AdtObjectMenu_MainMenuEntry,
-				SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.DB_BROWSER_DATA_PREVIEW), ID);
+				SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.CDS_ANALYZER), ID);
 			this.adtObjects = adtObjects;
 			this.project = project;
 			this.cdsAnalysisAvailable = this.adtObjects.size() == 1 && AdtUtil.isCdsAnalysisAvailable(project);
@@ -71,12 +73,17 @@ public class DynamicOpenInMenuUtility {
 
 		@Override
 		public void menuAboutToShow(final IMenuManager manager) {
+			final boolean isDbBrowserAvailable = isDbBrowserIntegrationAvailable();
 			// Add command "Open In DB Browser"
-			MenuItemFactory.addOpenInDbBrowserCommand(this, false);
-			MenuItemFactory.addOpenInDbBrowserCommand(this, true);
+			if (isDbBrowserAvailable) {
+				MenuItemFactory.addOpenInDbBrowserCommand(this, false);
+				MenuItemFactory.addOpenInDbBrowserCommand(this, true);
+			}
 
 			if (this.cdsAnalysisAvailable) {
-				add(new Separator());
+				if (isDbBrowserAvailable) {
+					add(new Separator());
+				}
 				final boolean isCdsView = this.adtObjects.get(0).getObjectType() == ObjectType.CDS_VIEW;
 				if (isCdsView) {
 					MenuItemFactory.addCdsAnalyzerCommandItem(this, null, ICommandConstants.CDS_TOP_DOWN_ANALYSIS);
@@ -93,6 +100,24 @@ public class DynamicOpenInMenuUtility {
 				}
 			}
 
+		}
+
+		private boolean isDbBrowserIntegrationAvailable() {
+			if (this.adtObjects.size() == 1) {
+				return AdtUtil.isSapGuiDbBrowserAvailable(this.project);
+			} else {
+				final Set<IProject> projects = new HashSet<>();
+				for (final IAdtObject adtObject : this.adtObjects) {
+					projects.add(adtObject.getProject());
+				}
+
+				for (final IProject project : projects) {
+					if (!AdtUtil.isSapGuiDbBrowserAvailable(project)) {
+						return false;
+					}
+				}
+			}
+			return true;
 		}
 
 	}

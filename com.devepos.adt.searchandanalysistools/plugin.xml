@@ -25,16 +25,6 @@
       </command>
       <command
             categoryId="com.devepos.adt.saat"
-            id="com.devepos.adt.saat.showDBObjectSearch"
-            name="%command.showdbobjectexplorer.name">
-      </command>
-      <command
-            categoryId="com.devepos.adt.saat"
-            id="com.devepos.adt.saat.showInObjectSearch"
-            name="%command.showindbobjectexplorer.name">
-      </command>
-      <command
-            categoryId="com.devepos.adt.saat"
             id="com.devepos.adt.saat.performCdsTopDown"
             name="%command.cdstopdown.name">
       </command>
@@ -73,30 +63,6 @@
                   definitionId="com.sap.adt.project.ui.adtActive">
             </reference>
          </activeWhen>
-      </handler>
-      <handler
-            class="com.devepos.adt.saat.internal.handlers.ShowDbObjectExplorerHandler"
-            commandId="com.devepos.adt.saat.showDBObjectSearch">
-         <activeWhen>
-            <reference
-                  definitionId="com.sap.adt.project.ui.adtActive">
-            </reference>
-         </activeWhen>
-      </handler>
-      <handler
-            class="com.devepos.adt.saat.internal.handlers.ShowInObjectSearchHandler"
-            commandId="com.devepos.adt.saat.showInObjectSearch">
-         <enabledWhen>
-            <with
-                  variable="activeEditorInput">
-               <adapt
-                     type="com.devepos.adt.saat.internal.util.IAdtObject">
-                  <reference
-                        definitionId="com.sap.adt.project.ui.adtActive">
-                  </reference>
-               </adapt>
-            </with>
-         </enabledWhen>
       </handler>
       <handler
             class="com.devepos.adt.saat.internal.handlers.PerformCdsTopDownAnalysisHandler"
@@ -193,35 +159,6 @@
       </menuContribution>
       <menuContribution
             allPopups="false"
-            locationURI="menu:navigate?after=com.sap.adt.ris.search.ui.callSimpleSearch">
-         <command
-               commandId="com.devepos.adt.saat.showDBObjectSearch"
-               icon="icons/ABAPSearch.png"
-               label="%command.opendbobjectexplorer.label"
-               style="push">
-            <visibleWhen
-                  checkEnabled="false">
-               <reference
-                     definitionId="com.sap.adt.project.ui.adtActive">
-               </reference>
-            </visibleWhen>
-         </command>
-      </menuContribution>
-      <menuContribution
-            allPopups="false"
-            locationURI="popup:org.eclipse.ui.menus.showInMenu">
-         <command
-               commandId="com.devepos.adt.saat.showInObjectSearch"
-               icon="icons/ABAPSearch.png"
-               label="%command.showindbobjectexplorer.label"
-               style="push">
-            <visibleWhen
-                  checkEnabled="true">
-            </visibleWhen>
-         </command>
-      </menuContribution>
-      <menuContribution
-            allPopups="false"
             locationURI="popup:org.eclipse.ui.navigator.ProjectExplorer#PopupMenu?endof=group.open">
          <dynamic
                class="com.devepos.adt.saat.internal.ui.DynamicOpenInMenu"
@@ -274,15 +211,6 @@
      </extension>
      <extension
            point="org.eclipse.ui.views">
-        <view
-              category="com.sap.adt.views"
-              class="com.devepos.adt.saat.internal.search.ui.ObjectExplorerView"
-              icon="icons/ABAPSearch.png"
-              id="com.devepos.adt.saat.views.dbobjectexplorer"
-              inject="true"
-              name="%view.dbobjectexplorer.name"
-              restorable="true">
-        </view>
         <view
               category="com.sap.adt.views"
               class="com.devepos.adt.saat.internal.cdsanalysis.ui.CdsAnalysis"

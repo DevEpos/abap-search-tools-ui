@@ -14,18 +14,14 @@ import org.eclipse.ui.dialogs.SelectionDialog;
 
 import com.devepos.adt.saat.IModificationListener;
 import com.devepos.adt.saat.SearchAndAnalysisPlugin;
-import com.devepos.adt.saat.SearchEngine;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.search.favorites.ExportFavoritesAction;
 import com.devepos.adt.saat.internal.search.favorites.ImportFavoritesAction;
 import com.devepos.adt.saat.internal.search.favorites.ManageSearchFavoritesDialog;
-import com.devepos.adt.saat.internal.search.favorites.NewSearchFavoriteDialog;
-import com.devepos.adt.saat.internal.search.model.ObjectSearchQuery;
 import com.devepos.adt.saat.internal.util.IAbapProjectProvider;
 import com.devepos.adt.saat.internal.util.IImages;
 import com.devepos.adt.saat.search.favorites.IObjectSearchFavorite;
 import com.devepos.adt.saat.search.favorites.IObjectSearchFavorites;
-import com.devepos.adt.saat.search.model.IObjectSearchQuery;
 
 /**
  * An Action for managing the opening/managing the searches favorites
@@ -38,7 +34,8 @@ public class SearchFavoritesAction extends Action implements IMenuCreator, IModi
 	private final IObjectSearchFavorites favoriteManager;
 
 	public SearchFavoritesAction(final IAbapProjectProvider projectProvider) {
-		super(Messages.ObjectSearch_SearchFavoritesAction_xtol, SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.FAVORITES));
+		super(Messages.ObjectSearch_SearchFavoritesAction_xtol,
+			SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.FAVORITES));
 		this.projectProvider = projectProvider;
 		setMenuCreator(this);
 		this.favoriteManager = SearchAndAnalysisPlugin.getDefault().getFavoriteManager();
@@ -74,7 +71,6 @@ public class SearchFavoritesAction extends Action implements IMenuCreator, IModi
 			}
 
 		};
-		createFavoriteAction.setEnabled(SearchAndAnalysisPlugin.getDefault().getHistory().hasActiveEntry());
 
 		if (!this.favoriteManager.hasEntries()) {
 			final IAction noFavoritesAction = new Action(Messages.ObjectSearch_NoSearchFavorites_xmit) {
@@ -94,7 +90,8 @@ public class SearchFavoritesAction extends Action implements IMenuCreator, IModi
 					favoriteAction.setImageDescriptor(SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.CDS_VIEW));
 					break;
 				case DB_TABLE_VIEW:
-					favoriteAction.setImageDescriptor(SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.TABLE_DEFINITION));
+					favoriteAction
+						.setImageDescriptor(SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.TABLE_DEFINITION));
 					break;
 				}
 				addActionToMenu(this.menu, favoriteAction);
@@ -120,19 +117,19 @@ public class SearchFavoritesAction extends Action implements IMenuCreator, IModi
 	 * Executes a new object search for the given favorite
 	 */
 	private void runSearch(final IObjectSearchFavorite favorite) {
-		String destinationId = null;
-		if (favorite.isProjectIndependent()) {
-			destinationId = this.projectProvider.getDestinationId();
-		} else {
-			destinationId = favorite.getDestinationId();
-		}
-		final IObjectSearchQuery searchQuery = new ObjectSearchQuery(favorite.getQuery(), favorite.getSearchType(),
-			destinationId);
-		searchQuery.setAndSearchActice(favorite.isAndSearchActive());
-		searchQuery.setReadApiState(true);
-		searchQuery.setCreateHistory(true);
-		searchQuery.setUpdateView(true);
-		SearchEngine.runObjectSearch(searchQuery);
+//		String destinationId = null;
+//		if (favorite.isProjectIndependent()) {
+//			destinationId = this.projectProvider.getDestinationId();
+//		} else {
+//			destinationId = favorite.getDestinationId();
+//		}
+//		final IObjectSearchQuery searchQuery = new ObjectSearchQuery(favorite.getQuery(), favorite.getSearchType(),
+//			destinationId);
+//		searchQuery.setAndSearchActice(favorite.isAndSearchActive());
+//		searchQuery.setReadApiState(true);
+//		searchQuery.setCreateHistory(true);
+//		searchQuery.setUpdateView(true);
+//		SearchEngine.runObjectSearch(searchQuery);
 	}
 
 	@Override
@@ -179,8 +176,8 @@ public class SearchFavoritesAction extends Action implements IMenuCreator, IModi
 	 * Creates new favorite from the current history entry
 	 */
 	private void createNewFavorite() {
-		new NewSearchFavoriteDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-			SearchAndAnalysisPlugin.getDefault().getHistory().getActiveEntry().getQuery()).open();
+//		new NewSearchFavoriteDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+//			SearchAndAnalysisPlugin.getDefault().getHistory().getActiveEntry().getQuery()).open();
 	}
 
 	/*

@@ -15,14 +15,6 @@ public interface ICommandConstants {
 	 */
 	String OPEN_DB_BROWSER = "com.devepos.adt.saat.opendbbrowser";
 	/**
-	 * Command id to show the view "DB Object Explorer"
-	 */
-	String SWOW_DB_OBJECT_EXPLORER = "com.devepos.adt.saat.showDBObjectSearch";
-	/**
-	 * Command id to show an object in the "DB Object Explorer"
-	 */
-	String SHOW_IN_DB_OBJECT_EXPLORER = "com.devepos.adt.saat.showInObjectSearch";
-	/**
 	 * Command id to execute the CDS Top-Down Analysis
 	 */
 	String CDS_TOP_DOWN_ANALYSIS = "com.devepos.adt.saat.performCdsTopDown";

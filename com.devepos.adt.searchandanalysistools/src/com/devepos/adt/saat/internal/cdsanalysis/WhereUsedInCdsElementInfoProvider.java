@@ -4,22 +4,26 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.osgi.util.NLS;
 
-import com.devepos.adt.saat.SearchEngine;
 import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
 import com.devepos.adt.saat.internal.elementinfo.IElementInfo;
 import com.devepos.adt.saat.internal.elementinfo.IElementInfoProvider;
 import com.devepos.adt.saat.internal.elementinfo.LazyLoadingElementInfo;
 import com.devepos.adt.saat.internal.messages.Messages;
-import com.devepos.adt.saat.internal.search.model.ObjectSearchQuery;
 import com.devepos.adt.saat.internal.search.model.QueryParameterName;
-import com.devepos.adt.saat.internal.search.model.SearchType;
+import com.devepos.adt.saat.internal.search.ui.ObjectSearchQuery;
+import com.devepos.adt.saat.internal.search.ui.ObjectSearchRequest;
+import com.devepos.adt.saat.internal.search.ui.ObjectSearchResult;
+import com.devepos.adt.saat.internal.util.AbapProjectProviderAccessor;
 import com.devepos.adt.saat.internal.util.IImages;
 import com.devepos.adt.saat.internal.util.ObjectContainer;
-import com.devepos.adt.saat.search.model.IObjectSearchQuery;
 
 /**
  * Provider for reading usages of a given ADT object in Select/Association
@@ -96,16 +100,24 @@ public class WhereUsedInCdsElementInfoProvider implements IElementInfoProvider {
 				return Arrays.asList(createLazyWhereUsedProviderElement(true), createLazyWhereUsedProviderElement(false));
 			}
 		}
-		final IObjectSearchQuery searchQuery = createQuery();
-		SearchEngine.runObjectSearch(searchQuery, (result) -> {
-			if (result != null) {
-				for (final IAdtObjectReferenceElementInfo elementInfo : result.getResults()) {
-					elementInfo.setElementInfoProvider(new WhereUsedInCdsElementInfoProvider(this.destinationId,
-						elementInfo.getName(), this.searchSelectFrom, this.searchAssocications));
-					elementInfoWrapper.getObject().add(elementInfo);
-				}
+		final ObjectSearchRequest searchRequest = new ObjectSearchRequest();
+		searchRequest.setProjectProvider(AbapProjectProviderAccessor.getProviderForDestination(this.destinationId));
+		final Map<String, Object> parameters = new HashMap<>();
+		parameters.put(this.searchParameter.toString(), this.adtObjectName);
+		searchRequest.setParameters(parameters, null);
+		searchRequest.setReadAllEntries(true);
+		searchRequest.setReadApiState(true);
+		final ObjectSearchQuery searchQuery = new ObjectSearchQuery(searchRequest);
+		final IStatus queryRunStatus = searchQuery.run(new NullProgressMonitor());
+		if (queryRunStatus.isOK()) {
+			final List<IAdtObjectReferenceElementInfo> result = ((ObjectSearchResult) searchQuery.getSearchResult()).getResult();
+			for (final IAdtObjectReferenceElementInfo elementInfo : result) {
+				elementInfo.setElementInfoProvider(new WhereUsedInCdsElementInfoProvider(this.destinationId,
+					elementInfo.getName(), this.searchSelectFrom, this.searchAssocications));
+				elementInfoWrapper.getObject().add(elementInfo);
 			}
-		}, null, false);
+		}
+
 		return elementInfoWrapper.getObject();
 	}
 
@@ -159,15 +171,6 @@ public class WhereUsedInCdsElementInfoProvider implements IElementInfoProvider {
 		return new LazyLoadingElementInfo(name, name, imageId,
 			new WhereUsedInCdsElementInfoProvider(this.destinationId, this.adtObjectName, this.searchSelectFrom,
 				this.searchAssocications, searchFrom ? QueryParameterName.SELECT_SOURCE_IN : QueryParameterName.ASSOCIATED_IN));
-	}
-
-	private IObjectSearchQuery createQuery() {
-		final IObjectSearchQuery searchQuery = new ObjectSearchQuery(
-			String.format("%s:%s", this.searchParameter.getLowerCaseKey(), this.adtObjectName), SearchType.CDS_VIEW, //$NON-NLS-1$
-			this.destinationId);
-		searchQuery.setReadApiState(true);
-		searchQuery.setReadAllEntries(true);
-		return searchQuery;
 	}
 
 }

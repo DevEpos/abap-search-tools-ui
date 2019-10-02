@@ -22,10 +22,8 @@ import org.osgi.framework.BundleContext;
 
 import com.devepos.adt.saat.internal.search.favorites.ObjectSearchFavoriteStorage;
 import com.devepos.adt.saat.internal.search.favorites.ObjectSearchFavorites;
-import com.devepos.adt.saat.internal.search.history.ObjectSearchHistory;
 import com.devepos.adt.saat.internal.util.IImages;
 import com.devepos.adt.saat.search.favorites.IObjectSearchFavorites;
-import com.devepos.adt.saat.search.history.IObjectSearchHistory;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -36,7 +34,6 @@ public class SearchAndAnalysisPlugin extends AbstractUIPlugin {
 
 	// The shared instance
 	private static SearchAndAnalysisPlugin plugin;
-	private IObjectSearchHistory searchHistory;
 
 	private IObjectSearchFavorites searchFavorites;
 
@@ -62,18 +59,6 @@ public class SearchAndAnalysisPlugin extends AbstractUIPlugin {
 	public void stop(final BundleContext context) throws Exception {
 		plugin = null;
 		super.stop(context);
-	}
-
-	/**
-	 * Returns reference to the history of the Object Search
-	 *
-	 * @return
-	 */
-	public IObjectSearchHistory getHistory() {
-		if (this.searchHistory == null) {
-			this.searchHistory = new ObjectSearchHistory();
-		}
-		return this.searchHistory;
 	}
 
 	/**
