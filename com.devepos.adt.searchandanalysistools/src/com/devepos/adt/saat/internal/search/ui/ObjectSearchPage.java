@@ -139,6 +139,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 		if (projectProvider != null) {
 			this.projectField.setText(projectProvider.getProjectName());
 		}
+		this.searchTypeViewer.setSelection(new StructuredSelection(request.getSearchType()));
 		this.parametersInput.setText(request.getParametersString());
 		this.maxResultsScale.setSelection(request.getMaxResults() / MULTIPLIER);
 		this.maxResults = request.getMaxResults();
