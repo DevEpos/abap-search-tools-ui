@@ -15,6 +15,7 @@ import org.eclipse.jface.viewers.ILabelProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -42,6 +43,7 @@ import com.devepos.adt.saat.ICommandConstants;
 import com.devepos.adt.saat.ObjectType;
 import com.devepos.adt.saat.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.cdsanalysis.CdsAnalysisUriDiscovery;
+import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.tree.ActionTreeNode;
 import com.devepos.adt.saat.internal.tree.IAdtObjectReferenceNode;
 import com.devepos.adt.saat.internal.tree.ICollectionTreeNode;
@@ -71,7 +73,6 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 	private TreeViewer searchResultTree;
 	private Composite mainComposite;
 	private ObjectSearchQuery searchQuery;
-	private OpenInSearchDialogAction openInSearchDialogAction;
 	private CollapseAllTreeNodesAction collapseAllNodesAction;
 	private CollapseTreeNodesAction collapseNodesAction;
 	private IAbapProjectProvider projectProvider;
@@ -100,7 +101,8 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 	@Override
 	public void setActionBars(final IActionBars actionBars) {
 		final IToolBarManager tbm = actionBars.getToolBarManager();
-		tbm.appendToGroup(IContextMenuConstants.GROUP_NEW, this.openInSearchDialogAction);
+		MenuItemFactory.addCommandItem(tbm, IContextMenuConstants.GROUP_NEW, ICommandConstants.OBJECT_SEARCH_OPEN_IN_DIALOG,
+			IImages.SEARCH, Messages.ObjectSearchResultPage_OpenInSearchDialog_xtol, false, null);
 		tbm.appendToGroup(IContextMenuConstants.GROUP_EDIT, this.collapseAllNodesAction);
 		actionBars.setGlobalActionHandler(ActionFactory.COPY.getId(), this.copyToClipBoardAction);
 		actionBars.updateActionBars();
@@ -229,7 +231,6 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 	}
 
 	private void initializeActions() {
-		this.openInSearchDialogAction = new OpenInSearchDialogAction(this);
 		this.collapseAllNodesAction = new CollapseAllTreeNodesAction(this.searchResultTree);
 		this.collapseNodesAction = new CollapseTreeNodesAction(this.searchResultTree);
 		this.copyToClipBoardAction = new CopyToClipboardAction();
@@ -365,6 +366,10 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 			}
 			this.searchResultTree.refresh();
 			this.searchResultTree.getControl().setFocus();
+			final ITreeNode[] result = this.result.getResultForTree();
+			if (result != null && result.length > 0) {
+				this.searchResultTree.setSelection(new StructuredSelection(result[0]));
+			}
 		});
 	}
 

@@ -71,6 +71,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 	private Scale maxResultsScale;
 
 	private final ObjectSearchRequest searchRequest;
+	private Button andOptionCheck;
 
 	public ObjectSearchPage() {
 		this.prefStore = SearchAndAnalysisPlugin.getDefault().getPreferenceStore();
@@ -141,6 +142,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 		this.parametersInput.setText(request.getParametersString());
 		this.maxResultsScale.setSelection(request.getMaxResults() / MULTIPLIER);
 		this.maxResults = request.getMaxResults();
+		this.andOptionCheck.setSelection(request.isAndSearchActive());
 		updateMaxResults();
 
 		if (doSetCursorToEnd) {
@@ -263,14 +265,14 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 	}
 
 	private void createAndOptionCheckbox(final Composite parent) {
-		final Button andOptionCheck = new Button(parent, SWT.CHECK);
-		andOptionCheck.setText(Messages.ObjectSearch_UseAndFilter_xtol);
-		GridDataFactory.fillDefaults().grab(true, false).align(SWT.FILL, SWT.CENTER).span(3, 1).applyTo(andOptionCheck);
+		this.andOptionCheck = new Button(parent, SWT.CHECK);
+		this.andOptionCheck.setText(Messages.ObjectSearch_UseAndFilter_xtol);
+		GridDataFactory.fillDefaults().grab(true, false).align(SWT.FILL, SWT.CENTER).span(3, 1).applyTo(this.andOptionCheck);
 
-		andOptionCheck.addSelectionListener(new SelectionAdapter() {
+		this.andOptionCheck.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				ObjectSearchPage.this.searchRequest.setAndSearchActice(andOptionCheck.getSelection());
+				ObjectSearchPage.this.searchRequest.setAndSearchActice(ObjectSearchPage.this.andOptionCheck.getSelection());
 			}
 		});
 	}

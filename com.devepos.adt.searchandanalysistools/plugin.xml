@@ -4,8 +4,8 @@
  <extension
          point="org.eclipse.ui.commands">
       <command
-            categoryId="com.devepos.adt.saat"
-            id="com.devepos.adt.saat.openindbbrowser"
+            categoryId="com.devepos.adt.saat.dbbrowser.commands.category"
+            id="com.devepos.adt.saat.dbbrowser.command.openInDbBrowser"
             name="%command.openindbbrowser.name">
          <commandParameter
                id="com.devepos.adt.saat.openindbbrowser.skipSelscreenParam"
@@ -15,40 +15,53 @@
          </commandParameter>
       </command>
       <category
-            id="com.devepos.adt.saat"
-            name="%category.name">
+            id="com.devepos.adt.saat.dbbrowser.commands.category"
+            name="%category.dbbrowser.name">
       </category>
       <command
-            categoryId="com.devepos.adt.saat"
-            id="com.devepos.adt.saat.opendbbrowser"
+            categoryId="com.devepos.adt.saat.dbbrowser.commands.category"
+            id="com.devepos.adt.saat.dbbrowser.command.openDbBrowser"
             name="%command.opendbbrowser.name">
       </command>
       <command
-            categoryId="com.devepos.adt.saat"
-            id="com.devepos.adt.saat.performCdsTopDown"
+            categoryId="com.devepos.adt.saat.cdsanalysis.commands.category"
+            id="com.devepos.adt.saat.cdsanalysis.command.performCdsTopDown"
             name="%command.cdstopdown.name">
       </command>
       <command
-            categoryId="com.devepos.adt.saat"
-            id="com.devepos.adt.saat.performWhereUsedInCds"
+            categoryId="com.devepos.adt.saat.cdsanalysis.commands.category"
+            id="com.devepos.adt.saat.cdsanalysis.command.performWhereUsedInCds"
             name="%command.whereusedincds.name">
       </command>
       <command
-            categoryId="com.devepos.adt.saat"
-            id="com.devepos.adt.saat.performCdsUsedEntities"
+            categoryId="com.devepos.adt.saat.cdsanalysis.commands.category"
+            id="com.devepos.adt.saat.cdsanalysis.command.performCdsUsedEntities"
             name="%command.cdsusedentities.name">
       </command>
       <command
-            categoryId="com.devepos.adt.saat"
-            id="com.devepos.adt.saat.performFieldAnalysis"
+            categoryId="com.devepos.adt.saat.cdsanalysis.commands.category"
+            id="com.devepos.adt.saat.cdsanalysis.command.performFieldAnalysis"
             name="%command.fieldanalysis.name">
+      </command>
+      <category
+            id="com.devepos.adt.saat.cdsanalysis.commands.category"
+            name="%category.cdsanalysis.name">
+      </category>
+      <category
+            id="com.devepos.adt.saat.objectsearch.commands.category"
+            name="%category.objectsearch.name">
+      </category>
+      <command
+            categoryId="com.devepos.adt.saat.objectsearch.commands.category"
+            id="com.devepos.adt.saat.objectsearch.command.openInDialog"
+            name="%command.objectsearch.openindialog.name">
       </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
       <handler
             class="com.devepos.adt.saat.internal.handlers.OpenInDbBrowserHandler"
-            commandId="com.devepos.adt.saat.openindbbrowser">
+            commandId="com.devepos.adt.saat.dbbrowser.command.openInDbBrowser">
          <enabledWhen>
             <reference
                   definitionId="com.sap.adt.project.ui.adtActive">
@@ -57,7 +70,7 @@
       </handler>
       <handler
             class="com.devepos.adt.saat.internal.handlers.OpenDbBrowserHandler"
-            commandId="com.devepos.adt.saat.opendbbrowser">
+            commandId="com.devepos.adt.saat.dbbrowser.command.openDbBrowser">
          <activeWhen>
             <reference
                   definitionId="com.sap.adt.project.ui.adtActive">
@@ -66,7 +79,7 @@
       </handler>
       <handler
             class="com.devepos.adt.saat.internal.handlers.PerformCdsTopDownAnalysisHandler"
-            commandId="com.devepos.adt.saat.performCdsTopDown">
+            commandId="com.devepos.adt.saat.cdsanalysis.command.performCdsTopDown">
          <enabledWhen>
             <reference
                   definitionId="com.sap.adt.project.ui.adtActive">
@@ -76,7 +89,7 @@
       </handler>
       <handler
             class="com.devepos.adt.saat.internal.handlers.PerformCdsUsedEntitiesAnalysisHandler"
-            commandId="com.devepos.adt.saat.performCdsUsedEntities">
+            commandId="com.devepos.adt.saat.cdsanalysis.command.performCdsUsedEntities">
          <enabledWhen>
             <reference
                   definitionId="com.sap.adt.project.ui.adtActive">
@@ -85,7 +98,7 @@
       </handler>
       <handler
             class="com.devepos.adt.saat.internal.handlers.PerformWhereUsedInCdsAnalysisHandler"
-            commandId="com.devepos.adt.saat.performWhereUsedInCds">
+            commandId="com.devepos.adt.saat.cdsanalysis.command.performWhereUsedInCds">
          <enabledWhen>
             <reference
                   definitionId="com.sap.adt.project.ui.adtActive">
@@ -94,12 +107,23 @@
       </handler>
       <handler
             class="com.devepos.adt.saat.internal.handlers.PerformFieldAnalysisHandler"
-            commandId="com.devepos.adt.saat.performFieldAnalysis">
+            commandId="com.devepos.adt.saat.cdsanalysis.command.performFieldAnalysis">
          <enabledWhen>
             <reference
                   definitionId="com.sap.adt.project.ui.adtActive">
             </reference>
          </enabledWhen>
+      </handler>
+      <handler
+            class="com.devepos.adt.saat.internal.handlers.OpenInSearchDialogHandler"
+            commandId="com.devepos.adt.saat.objectsearch.command.openInDialog">
+         <enabledWhen>
+            <with
+                  variable="activePart">
+               <instanceof
+                     value="org.eclipse.search2.internal.ui.SearchView">
+               </instanceof>
+            </with></enabledWhen>
       </handler>
    </extension>
    <extension
@@ -107,7 +131,7 @@
       <menuContribution
             locationURI="toolbar:com.sap.adt.ris.search.ui.toolbar">
          <command
-               commandId="com.devepos.adt.saat.opendbbrowser"
+               commandId="com.devepos.adt.saat.dbbrowser.command.openDbBrowser"
                icon="icons/DBBrowser.png"
                id="com.devepos.adt.saat.ui.toolBar"
                style="push"
@@ -123,7 +147,7 @@
       <menuContribution
             locationURI="popup:org.eclipse.ui.navigator.ProjectExplorer#PopupMenu?after=com.sap.adt.datapreview.ui.opendatapreview.fromproject">
          <command
-               commandId="com.devepos.adt.saat.opendbbrowser"
+               commandId="com.devepos.adt.saat.dbbrowser.command.openDbBrowser"
                icon="icons/DBBrowser.png"
                id="com.devepos.adt.saat.menus.openindbbrowser"
                label="%command.opendbbrowser.label"
@@ -194,20 +218,6 @@
      </extension>
      <extension
            point="org.eclipse.core.expressions.propertyTesters">
-        <propertyTester
-              class="com.devepos.adt.saat.internal.propertytester.AdtObjectPropertyTester"
-              id="com.devepos.adt.saat.adtObjectPropertyTester"
-              namespace="com.devepos.adt.saat.adtobject"
-              properties="type"
-              type="com.devepos.adt.saat.internal.util.IAdtObject">
-        </propertyTester>
-        <propertyTester
-              class="com.devepos.adt.saat.internal.propertytester.CdsAnalysisPropertyTester"
-              id="com.devepos.adt.saat.cdsAnalysisPropertyTester"
-              namespace="com.devepos.adt.saat.cdsAnalysis"
-              properties="isFeatureAvailable"
-              type="com.devepos.adt.saat.internal.util.IAdtObject">
-        </propertyTester>
      </extension>
      <extension
            point="org.eclipse.ui.views">
@@ -248,5 +258,17 @@
               id="com.devepos.adt.saat.internal.search.ui.ObjectSearchResultPage"
               searchResultClass="com.devepos.adt.saat.internal.search.ui.ObjectSearchResult">
         </viewPage>
+     </extension>
+     <extension
+           point="org.eclipse.core.expressions.definitions">
+     </extension>
+     <extension
+           point="org.eclipse.ui.bindings">
+        <key
+              commandId="com.devepos.adt.saat.objectsearch.command.openInDialog"
+              contextId="org.eclipse.ui.contexts.window"
+              schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+              sequence="M1+O">
+        </key>
      </extension>
 </plugin>

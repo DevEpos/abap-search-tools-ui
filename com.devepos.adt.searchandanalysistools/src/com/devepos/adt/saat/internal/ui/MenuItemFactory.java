@@ -5,7 +5,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.eclipse.core.runtime.Assert;
+import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.menus.CommandContributionItem;
 import org.eclipse.ui.menus.CommandContributionItemParameter;
@@ -103,18 +105,51 @@ public class MenuItemFactory {
 	 */
 	public static void addCommandItem(final IMenuManager mgr, final String groupId, final String commandId, final String imageId,
 		final String label, final String[][] params) {
+		final IContributionItem commandItem = createCommandContributionItem(groupId, commandId, imageId, label, true, params);
+		if (groupId != null) {
+			mgr.appendToGroup(groupId, commandItem);
+		} else {
+			mgr.add(commandItem);
+		}
+	}
+
+	/**
+	 * Adds a {@link CommandContributionItem} for the given <code>commandId</code>
+	 * to the supplied {@link IToolBarManager}
+	 *
+	 * @param tbm            the toolbar manager instance
+	 * @param groupId        the group id to which the command should be added
+	 * @param commandId      a unique identifier of a command
+	 * @param imageId        an id for an image registered in this plugin
+	 * @param label          the label to be displayed for the command
+	 * @param visibleEnabled if <code>true</code> the visibility of the contribution
+	 *                       item will depend on the <code>enabled</code> state of
+	 *                       the command
+	 * @param params         an optional two dimensional array of command parameters
+	 */
+	public static void addCommandItem(final IToolBarManager tbm, final String groupId, final String commandId,
+		final String imageId, final String label, final boolean visibleEnabled, final String[][] params) {
+
+		final IContributionItem commandItem = createCommandContributionItem(groupId, commandId, imageId, label, visibleEnabled,
+			params);
+
+		if (groupId != null) {
+			tbm.appendToGroup(groupId, commandItem);
+		} else {
+			tbm.add(commandItem);
+		}
+	}
+
+	private static IContributionItem createCommandContributionItem(final String groupId, final String commandId,
+		final String imageId, final String label, final boolean visibleEnabled, final String[][] params) {
 		Map<String, String> paramMap = null;
 		if (params != null) {
 			paramMap = Stream.of(params).collect(Collectors.toMap(key -> key[0], data -> data[1]));
 		}
 		final CommandContributionItemParameter parameter = new CommandContributionItemParameter(
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow(), commandId, commandId, paramMap,
-			imageId != null ? SearchAndAnalysisPlugin.getDefault().getImageDescriptor(imageId) : null, null, null, label, null, null,
-			CommandContributionItem.STYLE_PUSH, null, true);
-		if (groupId != null) {
-			mgr.appendToGroup(groupId, new CommandContributionItem(parameter));
-		} else {
-			mgr.add(new CommandContributionItem(parameter));
-		}
+			imageId != null ? SearchAndAnalysisPlugin.getDefault().getImageDescriptor(imageId) : null, null, null, label, null,
+			null, CommandContributionItem.STYLE_PUSH, null, visibleEnabled);
+		return new CommandContributionItem(parameter);
 	}
 }
