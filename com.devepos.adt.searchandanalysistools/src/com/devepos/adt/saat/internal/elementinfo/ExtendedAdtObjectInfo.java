@@ -9,10 +9,23 @@ public class ExtendedAdtObjectInfo implements IExtendedAdtObjectInfo {
 	private IDataSourceType sourceType;
 
 	/**
-	 * @param isReleased the isReleased to set
+	 * Sets the API State of the ADT Object
+	 *
+	 * @param apiState the API state. It can only have the following values:
+	 *                 <ul>
+	 *                 <li>{@link IExtendedAdtObjectInfo#API_STATE_DEPRECATED}</li>
+	 *                 <li>{@link IExtendedAdtObjectInfo#API_STATE_RELEASED}</li>
+	 *                 </ul>
 	 */
-	public void setReleased(final boolean isReleased) {
-		this.isReleased = isReleased;
+	public void setApiState(final String apiState) {
+		if (apiState == null) {
+			return;
+		}
+		if (apiState == API_STATE_DEPRECATED) {
+			this.isReleased = false;
+		} else if (apiState == API_STATE_RELEASED) {
+			this.isReleased = true;
+		}
 	}
 
 	/**

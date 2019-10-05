@@ -25,4 +25,6 @@ public interface IAdtObjectTypeConstants {
 
 	String METADATA_EXTENSION_TYPE = "DDLX/EX";
 	String ACCESS_CONTROL_TYPE = "DCLS/DL";
+
+	String PACKAGE = "DEVC/K";
 }

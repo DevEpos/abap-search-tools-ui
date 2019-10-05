@@ -1,12 +1,13 @@
-package com.devepos.adt.saat.internal.elementinfo;
+package com.devepos.adt.saat.internal.search;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.devepos.adt.saat.CdsSourceType;
-import com.devepos.adt.saat.IDestinationProvider;
-import com.devepos.adt.saat.internal.search.AdtObjectReferenceDeserializer;
+import com.devepos.adt.saat.internal.elementinfo.AdtObjectReferenceElementInfo;
+import com.devepos.adt.saat.internal.elementinfo.ExtendedAdtObjectInfo;
+import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
 import com.devepos.adt.saat.internal.util.AdtObjectReferenceFactory;
 import com.devepos.adt.saat.internal.util.AdtStaxContentHandlerUtility;
 import com.devepos.adt.saat.internal.util.IXmlElement;
@@ -22,11 +23,6 @@ import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
  * @author stockbal
  */
 public class ObjectSearchContentHandler implements IContentHandler<IAdtObjectReferenceElementInfo[]> {
-	private static final String EL_OBJECT_RESULTS = "objects";
-	private static final String AT_OBJECT_NAME = "objectName";
-	private static final String AT_RAW_OBJECT_NAME = "rawObjectName";
-	private static final String AT_DESCRIPTION = "description";
-	private static final String AT_SOURCE_TYPE = "sourceType";
 	private final String destinationId;
 	protected final AdtStaxContentHandlerUtility utility = new AdtStaxContentHandlerUtility();
 
@@ -41,12 +37,8 @@ public class ObjectSearchContentHandler implements IContentHandler<IAdtObjectRef
 
 		final IXmlElement rootElement = this.utility.parseXML(body, IXmlTags.EL_PROPERTY);
 
-		if (rootElement != null) {
-			if (rootElement.getName().equals(EL_OBJECT_RESULTS)) {
-				deserializeObjectSearchResult(rootElement, result);
-			} else if (rootElement.getName().equals(IXmlTags.EL_ELEMENT_INFOS)) {
-				deserializeElementInfos(rootElement, result);
-			}
+		if (rootElement != null && rootElement.getName().equals(IXmlTags.EL_ELEMENT_INFOS)) {
+			deserializeResult(rootElement, result);
 		}
 
 		return result.toArray(new IAdtObjectReferenceElementInfo[result.size()]);
@@ -67,35 +59,7 @@ public class ObjectSearchContentHandler implements IContentHandler<IAdtObjectRef
 		return null;
 	}
 
-	private void deserializeObjectSearchResult(final IXmlElement rootElement, final List<IAdtObjectReferenceElementInfo> result) {
-		// each child of "objects" is "object"
-		for (final IXmlElement objectElement : rootElement.getChildren()) {
-			final String name = objectElement.getAttributeValue(AT_OBJECT_NAME);
-			final String rawName = objectElement.getAttributeValue(AT_RAW_OBJECT_NAME);
-			final String description = objectElement.getAttributeValue(AT_DESCRIPTION);
-			final String sourceType = objectElement.getAttributeValue(AT_SOURCE_TYPE);
-
-			final IAdtObjectReferenceElementInfo adtObjInfo = new AdtObjectReferenceElementInfo(name, rawName, description);
-
-			// deserialize ADT Object references
-			final IAdtObjectReference objectReference = AdtObjectReferenceDeserializer
-				.deserializeFromElement(objectElement.getFirstChild());
-			if (objectReference != null && objectReference instanceof IDestinationProvider) {
-				((IDestinationProvider) objectReference).setDestinationId(this.destinationId);
-			}
-			adtObjInfo.setAdtObjectReference(objectReference);
-			if (sourceType != null && !sourceType.isEmpty()) {
-				final ExtendedAdtObjectInfo extendedInfo = new ExtendedAdtObjectInfo();
-				extendedInfo.setSourceType(CdsSourceType.getFromId(sourceType));
-				adtObjInfo.setAdditionalInfo(extendedInfo);
-			}
-
-			adtObjInfo.setElementInfoProvider(new ObjectSearchElementInfoProvider(this.destinationId, objectReference));
-			result.add(adtObjInfo);
-		}
-	}
-
-	private void deserializeElementInfos(final IXmlElement rootElement, final List<IAdtObjectReferenceElementInfo> result) {
+	private void deserializeResult(final IXmlElement rootElement, final List<IAdtObjectReferenceElementInfo> result) {
 		for (final IXmlElement elementInfoElement : rootElement.getChildren()) {
 			final String name = elementInfoElement.getAttributeValue(IXmlTags.AT_NAME);
 			final String rawName = elementInfoElement.getAttributeValue(IXmlTags.AT_RAW_NAME);
@@ -136,10 +100,8 @@ public class ObjectSearchContentHandler implements IContentHandler<IAdtObjectRef
 			final String value = propertyEl.getText();
 			switch (key) {
 			case "API_STATE":
-				if (value != null && !value.isEmpty()) {
-					extendedInfo.setReleased(true);
+				extendedInfo.setApiState(value);
 
-				}
 			case "SOURCE_TYPE":
 				if (value != null && !value.isEmpty()) {
 					extendedInfo.setSourceType(CdsSourceType.getFromId(value));

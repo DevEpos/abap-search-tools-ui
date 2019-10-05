@@ -1,9 +1,13 @@
-package com.devepos.adt.saat.internal.elementinfo;
+package com.devepos.adt.saat.internal.search;
 
 import java.util.List;
 
 import org.eclipse.osgi.util.NLS;
 
+import com.devepos.adt.saat.internal.elementinfo.ElementInfoRetrievalServiceFactory;
+import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
+import com.devepos.adt.saat.internal.elementinfo.IElementInfo;
+import com.devepos.adt.saat.internal.elementinfo.IElementInfoProvider;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 

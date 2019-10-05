@@ -2,7 +2,6 @@ package com.devepos.adt.saat.internal.search;
 
 import java.util.List;
 
-import com.devepos.adt.saat.internal.search.model.SearchType;
 import com.devepos.adt.saat.internal.util.IAbapProjectProvider;
 
 /**

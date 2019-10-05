@@ -17,7 +17,7 @@ import com.devepos.adt.saat.internal.elementinfo.IElementInfo;
 import com.devepos.adt.saat.internal.elementinfo.IElementInfoProvider;
 import com.devepos.adt.saat.internal.elementinfo.LazyLoadingElementInfo;
 import com.devepos.adt.saat.internal.messages.Messages;
-import com.devepos.adt.saat.internal.search.model.QueryParameterName;
+import com.devepos.adt.saat.internal.search.QueryParameterName;
 import com.devepos.adt.saat.internal.search.ui.ObjectSearchQuery;
 import com.devepos.adt.saat.internal.search.ui.ObjectSearchRequest;
 import com.devepos.adt.saat.internal.search.ui.ObjectSearchResult;

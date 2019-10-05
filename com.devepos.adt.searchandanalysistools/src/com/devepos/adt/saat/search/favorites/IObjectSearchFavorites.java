@@ -3,7 +3,7 @@ package com.devepos.adt.saat.search.favorites;
 import java.util.List;
 
 import com.devepos.adt.saat.IModificationProvider;
-import com.devepos.adt.saat.internal.search.model.SearchType;
+import com.devepos.adt.saat.internal.search.SearchType;
 import com.devepos.adt.saat.search.model.IObjectSearchQuery;
 
 /**

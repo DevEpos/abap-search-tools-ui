@@ -3,11 +3,9 @@ package com.devepos.adt.saat.internal.search.favorites;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.codehaus.jackson.map.annotate.JsonDeserialize;
-
 import com.devepos.adt.saat.IModificationListener;
 import com.devepos.adt.saat.IModificationListener.ModificationKind;
-import com.devepos.adt.saat.internal.search.model.SearchType;
+import com.devepos.adt.saat.internal.search.SearchType;
 import com.devepos.adt.saat.search.favorites.IObjectSearchFavorite;
 import com.devepos.adt.saat.search.favorites.IObjectSearchFavorites;
 import com.devepos.adt.saat.search.model.IObjectSearchQuery;
@@ -61,7 +59,7 @@ public class ObjectSearchFavorites implements IObjectSearchFavorites {
 	}
 
 	@Override
-	@JsonDeserialize(contentAs = ObjectSearchFavorite.class)
+//	@JsonDeserialize(contentAs = ObjectSearchFavorite.class)
 	public void setFavorites(final List<IObjectSearchFavorite> favorites) {
 		this.entries = favorites;
 	}

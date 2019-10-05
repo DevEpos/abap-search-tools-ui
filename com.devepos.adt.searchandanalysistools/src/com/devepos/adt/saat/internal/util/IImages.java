@@ -132,10 +132,6 @@ public interface IImages {
 	 */
 	String DATE = "IMG_DATE";
 	/**
-	 * Identifies an image for a public component
-	 */
-	String PUBLIC_COMPONENT = "IMG_PUBLIC_COMP";
-	/**
 	 * Identifies an image to signal that something is not released
 	 */
 	String NOT_RELEASED = "IMG_ERROR";
@@ -211,14 +207,6 @@ public interface IImages {
 	 * Image for Cds Hierarchy view
 	 */
 	String CDS_ANALYZER = "IMG_HIERARCHY";
-	/**
-	 * Image for Super type
-	 */
-	String SUPER_TYPE = "IMG_SUPER_TYPE";
-	/**
-	 * Image for sub type
-	 */
-	String SUB_TYPE = "IMG_SUB_TYPE";
 	/**
 	 * Image for Entities that were used in from clause of other CDS views
 	 */

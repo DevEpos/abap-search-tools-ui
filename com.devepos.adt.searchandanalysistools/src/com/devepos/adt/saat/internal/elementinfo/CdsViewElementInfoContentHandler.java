@@ -6,6 +6,7 @@ import com.devepos.adt.saat.internal.analytics.OpenWithAnalysisForOfficeExecutab
 import com.devepos.adt.saat.internal.analytics.OpenWithQueryMonitorExecutable;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.search.AdtObjectReferenceDeserializer;
+import com.devepos.adt.saat.internal.search.ObjectSearchElementInfoProvider;
 import com.devepos.adt.saat.internal.util.AdtObjectReferenceFactory;
 import com.devepos.adt.saat.internal.util.IImages;
 import com.devepos.adt.saat.internal.util.IXmlElement;
@@ -194,13 +195,12 @@ public class CdsViewElementInfoContentHandler extends AdtObjectElementInfoConten
 		final String sourceType = element.getAttributeValue(IXmlTags.AT_SOURCE_TYPE);
 		final String apiState = element.getAttributeValue(IXmlTags.AT_CDS_API_STATE);
 		final boolean sourceTypeFound = sourceType != null && !sourceType.isEmpty();
-		final boolean isReleased = apiState != null && !apiState.isEmpty();
-		if (sourceTypeFound || isReleased) {
+		if (sourceTypeFound || apiState != null) {
 			final ExtendedAdtObjectInfo extendedInfo = new ExtendedAdtObjectInfo();
 			if (sourceTypeFound) {
 				extendedInfo.setSourceType(CdsSourceType.getFromId(sourceType));
 			}
-			extendedInfo.setReleased(isReleased);
+			extendedInfo.setApiState(apiState);
 			objRefInfo.setAdditionalInfo(extendedInfo);
 		}
 	}

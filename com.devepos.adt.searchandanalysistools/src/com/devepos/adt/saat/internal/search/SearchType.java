@@ -1,4 +1,4 @@
-package com.devepos.adt.saat.internal.search.model;
+package com.devepos.adt.saat.internal.search;
 
 public enum SearchType {
 	CDS_VIEW("CDS View", "C"),

@@ -56,7 +56,7 @@ public class BasicElementInfoContentHandler extends AdtObjectElementInfoContentH
 		if (sourceType != null || apiState != null) {
 			final ExtendedAdtObjectInfo extendedInfo = new ExtendedAdtObjectInfo();
 			extendedInfo.setSourceType(sourceType);
-			extendedInfo.setReleased(apiState != null);
+			extendedInfo.setApiState(apiState);
 			this.elementInfo.setAdditionalInfo(extendedInfo);
 		}
 	}

@@ -1,6 +1,6 @@
 package com.devepos.adt.saat.internal.search.favorites;
 
-import com.devepos.adt.saat.internal.search.model.SearchType;
+import com.devepos.adt.saat.internal.search.SearchType;
 import com.devepos.adt.saat.search.favorites.IObjectSearchFavorite;
 
 /**

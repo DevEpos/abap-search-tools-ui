@@ -170,7 +170,7 @@ public class CdsAnalysisContentHandler extends AdtObjectElementInfoContentHandle
 					usageInfo.usedUnionCount = Integer.parseInt(propertyEl.getText().trim());
 					break;
 				case "API_STATE": //$NON-NLS-1$
-					usageInfo.setReleased(propertyEl.getText() != null);
+					usageInfo.setApiState(propertyEl.getText());
 					break;
 				case "SOURCE_TYPE": //$NON-NLS-1$
 					usageInfo.setSourceType(CdsSourceType.getFromId(propertyEl.getText()));
@@ -216,7 +216,7 @@ public class CdsAnalysisContentHandler extends AdtObjectElementInfoContentHandle
 			} else if (attribute.equals("ALIAS")) { //$NON-NLS-1$
 				relationInfo.aliasName = propertyEl.getText();
 			} else if (attribute.equals("API_STATE")) { //$NON-NLS-1$
-				relationInfo.setReleased(propertyEl.getText() != null);
+				relationInfo.setApiState(propertyEl.getText());
 			} else if (attribute.equals("SOURCE_TYPE")) { //$NON-NLS-1$
 				relationInfo.setSourceType(CdsSourceType.getFromId(propertyEl.getText()));
 			}

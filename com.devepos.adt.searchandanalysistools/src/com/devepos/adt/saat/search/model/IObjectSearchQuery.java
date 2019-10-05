@@ -1,7 +1,7 @@
 package com.devepos.adt.saat.search.model;
 
-import com.devepos.adt.saat.internal.search.model.QueryParameterName;
-import com.devepos.adt.saat.internal.search.model.SearchType;
+import com.devepos.adt.saat.internal.search.QueryParameterName;
+import com.devepos.adt.saat.internal.search.SearchType;
 
 /**
  * Represents an entry in the search history

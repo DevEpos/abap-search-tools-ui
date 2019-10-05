@@ -13,10 +13,10 @@ import org.eclipse.search.ui.ISearchResult;
 
 import com.devepos.adt.saat.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
-import com.devepos.adt.saat.internal.elementinfo.ObjectSearchContentHandler;
 import com.devepos.adt.saat.internal.messages.Messages;
+import com.devepos.adt.saat.internal.search.ObjectSearchContentHandler;
 import com.devepos.adt.saat.internal.search.ObjectSearchUriDiscovery;
-import com.devepos.adt.saat.internal.search.model.QueryParameterName;
+import com.devepos.adt.saat.internal.search.QueryParameterName;
 import com.devepos.adt.saat.internal.util.AdtUtil;
 import com.devepos.adt.saat.internal.util.IAbapProjectProvider;
 import com.sap.adt.communication.resources.AdtRestResourceFactory;

@@ -3,7 +3,7 @@ package com.devepos.adt.saat.internal.search.ui;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.devepos.adt.saat.internal.search.model.SearchType;
+import com.devepos.adt.saat.internal.search.SearchType;
 import com.devepos.adt.saat.internal.util.IAbapProjectProvider;
 import com.devepos.adt.saat.search.model.IObjectSearchQuery;
 

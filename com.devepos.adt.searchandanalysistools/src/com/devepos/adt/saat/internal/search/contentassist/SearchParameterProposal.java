@@ -5,7 +5,7 @@ import java.util.Locale;
 import org.eclipse.jface.fieldassist.IContentProposal;
 
 import com.devepos.adt.saat.ObjectType;
-import com.devepos.adt.saat.internal.search.model.QueryParameterName;
+import com.devepos.adt.saat.internal.search.QueryParameterName;
 
 /**
  * Search parameter for the DB object search <br>

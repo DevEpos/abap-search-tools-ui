@@ -1,6 +1,6 @@
 package com.devepos.adt.saat.search.favorites;
 
-import com.devepos.adt.saat.internal.search.model.SearchType;
+import com.devepos.adt.saat.internal.search.SearchType;
 
 /**
  * An object query that was classified as a favorite

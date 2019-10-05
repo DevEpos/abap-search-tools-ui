@@ -15,7 +15,8 @@ public enum ObjectType {
 	CLASS("", IAdtObjectTypeConstants.CLASS_DEFINITION_TYPE),
 	BUSINESS_OBJECT("", IAdtObjectTypeConstants.BUSINESS_OBJECT_TYPE),
 	METADATA_EXT("", IAdtObjectTypeConstants.METADATA_EXTENSION_TYPE),
-	ACCESS_CONTROL("", IAdtObjectTypeConstants.ACCESS_CONTROL_TYPE);
+	ACCESS_CONTROL("", IAdtObjectTypeConstants.ACCESS_CONTROL_TYPE),
+	PACKAGE("", IAdtObjectTypeConstants.PACKAGE);
 
 	private final String id;
 	private final String adtExecutionType;

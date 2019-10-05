@@ -14,7 +14,6 @@ import org.eclipse.jface.fieldassist.IContentProposal;
 
 import com.devepos.adt.saat.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.search.contentassist.SearchParameterProposal;
-import com.devepos.adt.saat.internal.search.model.QueryParameterName;
 import com.devepos.adt.saat.internal.util.IAbapProjectProvider;
 import com.devepos.adt.saat.internal.util.StringUtil;
 
@@ -24,7 +23,6 @@ import com.devepos.adt.saat.internal.util.StringUtil;
  * {@link NamedItemType} to the constructor
  *
  * @author stockbal
- *
  */
 public class NamedItemProposalProvider {
 	protected final IAbapProjectProvider projectProvider;
@@ -38,33 +36,29 @@ public class NamedItemProposalProvider {
 	/**
 	 * Create instance of the named item proposal provider
 	 *
-	 * @param projectProvider
-	 *          provides project/destination for named item queries
-	 * @param parameterName
-	 *          the parameter name to be used for the found named items
-	 * @param namedItemType
-	 *          the type of named item to look for
+	 * @param projectProvider provides project/destination for named item queries
+	 * @param parameterName   the parameter name to be used for the found named
+	 *                        items
+	 * @param namedItemType   the type of named item to look for
 	 */
 	public NamedItemProposalProvider(final IAbapProjectProvider projectProvider, final QueryParameterName parameterName,
-	    final NamedItemType namedItemType) {
+		final NamedItemType namedItemType) {
 		this(projectProvider, parameterName, namedItemType, false);
 	}
 
 	/**
 	 * Create instance of the named item proposal provider
 	 *
-	 * @param projectProvider
-	 *          provides project/destination for named item queries
-	 * @param parameterName
-	 *          the parameter name to be used for the found named items
-	 * @param namedItemType
-	 *          the type of named item to look for
-	 * @param cacheResults
-	 *          use <code>true</code> if you want the results to be cached. Only
-	 *          sensible if the result set is expected to be very small
+	 * @param projectProvider provides project/destination for named item queries
+	 * @param parameterName   the parameter name to be used for the found named
+	 *                        items
+	 * @param namedItemType   the type of named item to look for
+	 * @param cacheResults    use <code>true</code> if you want the results to be
+	 *                        cached. Only sensible if the result set is expected to
+	 *                        be very small
 	 */
 	public NamedItemProposalProvider(final IAbapProjectProvider projectProvider, final QueryParameterName parameterName,
-	    final NamedItemType namedItemType, final boolean cacheResults) {
+		final NamedItemType namedItemType, final boolean cacheResults) {
 		this.projectProvider = projectProvider;
 		this.parameterName = parameterName;
 		this.namedItemType = namedItemType;
@@ -75,8 +69,7 @@ public class NamedItemProposalProvider {
 	 * Gets a list of named items which match the given query string. If the query
 	 * string is empty a maximum of 50 named items will be retrieved
 	 *
-	 * @param query
-	 *          optional query to restrict results
+	 * @param  query         optional query to restrict results
 	 * @return
 	 * @throws CoreException
 	 */
@@ -86,17 +79,16 @@ public class NamedItemProposalProvider {
 
 	/**
 	 * Gets a list of named items which match the given query string. If the query
-	 * string is empty a maximum of 50 named items will be retrieved. If caching
-	 * was enabled via the <code>cacheResults</code> in the Constructor of the
-	 * Provider, the parameter <code>cacheQuery</code> can be used to restrict the
-	 * result list further. <br>
-	 * <strong>Note</strong>: This is only sensible if <code>query</code>
-	 * parameter was supplied with a different value.
+	 * string is empty a maximum of 50 named items will be retrieved. If caching was
+	 * enabled via the <code>cacheResults</code> in the Constructor of the Provider,
+	 * the parameter <code>cacheQuery</code> can be used to restrict the result list
+	 * further. <br>
+	 * <strong>Note</strong>: This is only sensible if <code>query</code> parameter
+	 * was supplied with a different value.
 	 *
-	 * @param query
-	 *          optional query to restrict results
-	 * @param cacheQuery
-	 *          query to further restrict the result returned from the cache
+	 * @param  query         optional query to restrict results
+	 * @param  cacheQuery    query to further restrict the result returned from the
+	 *                       cache
 	 * @return
 	 * @throws CoreException
 	 */
@@ -106,30 +98,27 @@ public class NamedItemProposalProvider {
 
 	/**
 	 * Gets a list of named items which match the given query string. If the query
-	 * string is empty a maximum of 50 named items will be retrieved. If caching
-	 * was enabled via the <code>cacheResults</code> in the Constructor of the
-	 * Provider, the parameter <code>cacheQuery</code> can be used to restrict the
-	 * result list further. <br>
-	 * <strong>Note</strong>: This is only sensible if <code>query</code>
-	 * parameter was supplied with a different value.
+	 * string is empty a maximum of 50 named items will be retrieved. If caching was
+	 * enabled via the <code>cacheResults</code> in the Constructor of the Provider,
+	 * the parameter <code>cacheQuery</code> can be used to restrict the result list
+	 * further. <br>
+	 * <strong>Note</strong>: This is only sensible if <code>query</code> parameter
+	 * was supplied with a different value.
 	 *
-	 * @param query
-	 *          optional query to restrict results
-	 * @param cacheQuery
-	 *          query to further restrict the result returned from the cache
-	 * @param dataFilter
-	 *          optional filter to restrict results to NamedItems which a certain
-	 *          <code>data</code> value
+	 * @param  query         optional query to restrict results
+	 * @param  cacheQuery    query to further restrict the result returned from the
+	 *                       cache
+	 * @param  dataFilter    optional filter to restrict results to NamedItems which
+	 *                       a certain <code>data</code> value
 	 * @return
 	 * @throws CoreException
 	 */
 	protected List<IContentProposal> getProposals(final String query, final String cacheQuery, final String dataFilter)
-	    throws CoreException {
+		throws CoreException {
 		final List<IContentProposal> result = new ArrayList<>();
 
 		try {
-			getNamedItemService();
-			if (this.namedItemService != null) {
+			if (getNamedItemService()) {
 				final INamedItem[] namedItems = getNamedItemsFromCache(query, cacheQuery, dataFilter);
 				if (namedItems != null) {
 					for (final INamedItem item : namedItems) {
@@ -149,8 +138,8 @@ public class NamedItemProposalProvider {
 	/**
 	 * Creates new content proposal from the given named item
 	 *
-	 * @param item
-	 * @param query
+	 * @param  item
+	 * @param  query
 	 * @return
 	 */
 	protected IContentProposal createProposalFromNamedItem(final INamedItem item, final String query) {
@@ -160,13 +149,12 @@ public class NamedItemProposalProvider {
 	/**
 	 * Filters the given named item. If it should be included in the final result
 	 * the value <code>true</code> should be returned. The default implementation
-	 * considers only the <em>Name</em> attribute in the comparison. Clients
-	 * should override this method, if a more comprehensive filtering is needed
+	 * considers only the <em>Name</em> attribute in the comparison. Clients should
+	 * override this method, if a more comprehensive filtering is needed
 	 *
-	 * @param namedItem
-	 *          the named item to be included/excluded
-	 * @return <code>true</code> if the named item should be included in the
-	 *         result
+	 * @param  namedItem the named item to be included/excluded
+	 * @return           <code>true</code> if the named item should be included in
+	 *                   the result
 	 */
 	protected boolean filterResult(final INamedItem namedItem, final String query) {
 		if (query == null || query.isEmpty()) {
@@ -178,14 +166,15 @@ public class NamedItemProposalProvider {
 	/**
 	 * Retrieve named item service for current project destination
 	 */
-	private void getNamedItemService() {
+	private boolean getNamedItemService() {
 		final String currentDestinationId = this.projectProvider.getDestinationId();
 		if (this.destinationId == null || this.destinationId != currentDestinationId) {
 			if (this.projectProvider.ensureLoggedOn()) {
 				this.destinationId = currentDestinationId;
 			} else {
 				this.destinationId = null;
-				return;
+				this.namedItemService = null;
+				return false;
 			}
 			this.namedItemService = NamedItemServiceFactory.createService(this.destinationId);
 			// cache is only relevant for one condition at the moment
@@ -194,19 +183,17 @@ public class NamedItemProposalProvider {
 			}
 			this.cache = null;
 		}
+		return this.namedItemService != null;
 	}
 
 	/**
-	 * Reads a list of named items for the given query from cache. If there are
-	 * not yet in the cache, retrieval from server will be attempted
+	 * Reads a list of named items for the given query from cache. If there are not
+	 * yet in the cache, retrieval from server will be attempted
 	 *
-	 * @param query
-	 *          query to be used for data retrieval
-	 * @param cacheQuery
-	 *          the query string to be used to further filter the found results
-	 *          from the cache
-	 * @param namedItemType
-	 *          named item type to be used for data retrieval
+	 * @param  query         query to be used for data retrieval
+	 * @param  cacheQuery    the query string to be used to further filter the found
+	 *                       results from the cache
+	 * @param  namedItemType named item type to be used for data retrieval
 	 * @return
 	 */
 	private INamedItem[] getNamedItemsFromCache(final String query, final String cacheQuery, final String dataFilter) {
@@ -225,8 +212,8 @@ public class NamedItemProposalProvider {
 		}
 		// filter results from cache before returning them
 		return namedItems != null
-		    ? Stream.of(namedItems).filter((namedItem) -> filterResult(namedItem, cacheQuery)).toArray(INamedItem[]::new)
-		    : null;
+			? Stream.of(namedItems).filter((namedItem) -> filterResult(namedItem, cacheQuery)).toArray(INamedItem[]::new)
+			: null;
 	}
 
 }

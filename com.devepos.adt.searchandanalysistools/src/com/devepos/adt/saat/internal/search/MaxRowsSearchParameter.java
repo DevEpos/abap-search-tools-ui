@@ -14,7 +14,6 @@ import org.eclipse.swt.graphics.Image;
 import com.devepos.adt.saat.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.search.contentassist.SearchParameterProposal;
-import com.devepos.adt.saat.internal.search.model.QueryParameterName;
 import com.devepos.adt.saat.internal.util.IImages;
 
 public class MaxRowsSearchParameter implements ISearchParameter, ISearchProposalProvider, IValidatable {

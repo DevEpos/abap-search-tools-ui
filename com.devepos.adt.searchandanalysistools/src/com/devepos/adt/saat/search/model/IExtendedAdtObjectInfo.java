@@ -9,6 +9,9 @@ import com.devepos.adt.saat.ObjectType;
  * @author stockbal
  */
 public interface IExtendedAdtObjectInfo {
+	String API_STATE_DEPRECATED = "DEPRECATED";
+	String API_STATE_RELEASED = "RELEASED";
+
 	/**
 	 * Returns <code>true</code> if the result object is released
 	 *

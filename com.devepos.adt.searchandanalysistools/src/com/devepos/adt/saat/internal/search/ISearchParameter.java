@@ -2,8 +2,6 @@ package com.devepos.adt.saat.internal.search;
 
 import org.eclipse.swt.graphics.Image;
 
-import com.devepos.adt.saat.internal.search.model.QueryParameterName;
-
 /**
  * Search Parameter for Db Object Search
  *

@@ -136,7 +136,7 @@ public class FieldAnalysisContentHandler extends AdtObjectElementInfoContentHand
 		final String sourceType = properties.get("SOURCE_TYPE"); //$NON-NLS-1$
 		if (apiState != null || sourceType != null) {
 			final ExtendedAdtObjectInfo extendedInfo = new ExtendedAdtObjectInfo();
-			extendedInfo.setReleased(apiState != null && !apiState.isEmpty());
+			extendedInfo.setApiState(apiState);
 			extendedInfo.setSourceType(CdsSourceType.getFromId(sourceType));
 			adtObjInfo.setAdditionalInfo(extendedInfo);
 		}

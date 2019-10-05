@@ -22,12 +22,12 @@ import com.devepos.adt.saat.internal.search.ISearchParameterHandler;
 import com.devepos.adt.saat.internal.search.NamedItemType;
 import com.devepos.adt.saat.internal.search.ObjectSearchUriDiscovery;
 import com.devepos.adt.saat.internal.search.PackageSearchParameter;
+import com.devepos.adt.saat.internal.search.QueryParameterName;
 import com.devepos.adt.saat.internal.search.ReleaseStateSearchParameter;
+import com.devepos.adt.saat.internal.search.SearchType;
 import com.devepos.adt.saat.internal.search.SelectFromSearchParameter;
 import com.devepos.adt.saat.internal.search.TypeSearchParameter;
 import com.devepos.adt.saat.internal.search.UserSearchParameter;
-import com.devepos.adt.saat.internal.search.model.QueryParameterName;
-import com.devepos.adt.saat.internal.search.model.SearchType;
 import com.devepos.adt.saat.internal.util.IAbapProjectProvider;
 
 /**

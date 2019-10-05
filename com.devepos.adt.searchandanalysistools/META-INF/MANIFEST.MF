@@ -34,9 +34,7 @@ Require-Bundle: org.eclipse.ui,
  com.sap.adt.cds.ddl,
  com.sap.adt.ris.search,
  com.sap.adt.ris.model,
- com.sap.adt.util.ui,
- org.codehaus.jackson.core;bundle-version="1.6.0",
- org.codehaus.jackson.mapper;bundle-version="1.6.0"
+ com.sap.adt.util.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: com.devepos.adt.searchandanalysistools
 Bundle-ActivationPolicy: lazy
