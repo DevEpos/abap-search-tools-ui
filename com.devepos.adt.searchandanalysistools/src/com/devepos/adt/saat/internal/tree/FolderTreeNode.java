@@ -48,6 +48,14 @@ public class FolderTreeNode extends TreeNodeBase implements ICollectionTreeNode 
 	}
 
 	@Override
+	public void addChild(final ITreeNode child) {
+		if (this.children == null) {
+			this.children = new ArrayList<>();
+		}
+		this.children.add(child);
+	}
+
+	@Override
 	public String getSizeAsString() {
 		return new DecimalFormat("###,###").format(getChildren().size());
 	}

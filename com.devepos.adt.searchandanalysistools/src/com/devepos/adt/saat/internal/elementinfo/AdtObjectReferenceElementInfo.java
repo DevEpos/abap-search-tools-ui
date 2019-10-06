@@ -38,6 +38,16 @@ public class AdtObjectReferenceElementInfo extends ElementInfoBase implements IA
 	}
 
 	@Override
+	public String getUri() {
+		return this.objectReference != null ? this.objectReference.getUri() : "";
+	}
+
+	@Override
+	public String getAdtType() {
+		return this.objectReference != null ? this.objectReference.getType() : "";
+	}
+
+	@Override
 	public String getImageId() {
 		if (this.objectReference != null) {
 			return AdtUtil.getImageForAdtType(this.objectReference.getType());

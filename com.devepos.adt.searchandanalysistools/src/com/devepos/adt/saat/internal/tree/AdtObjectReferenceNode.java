@@ -98,6 +98,14 @@ public class AdtObjectReferenceNode extends TreeNodeBase implements IAdtObjectRe
 	}
 
 	@Override
+	public void addChild(final ITreeNode child) {
+		if (this.children == null) {
+			this.children = new ArrayList<>();
+		}
+		this.children.add(child);
+	}
+
+	@Override
 	public String getSizeAsString() {
 		return this.children != null ? new DecimalFormat("###,###").format(this.children.size()) : "0";
 	}

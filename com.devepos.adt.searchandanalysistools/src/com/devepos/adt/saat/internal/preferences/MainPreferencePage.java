@@ -81,8 +81,6 @@ public class MainPreferencePage extends PreferencePage implements IWorkbenchPref
 
 		addBooleanEditor(IPreferences.CURSOR_AT_END_OF_SEARCH_INPUT, Messages.MainPreferencePage_CursorAtEndSetting_xfld,
 			searchGroup);
-		addBooleanEditor(IPreferences.REMEMBER_LAST_PROJECT_IN_OBJ_EXPLORER, Messages.MainPreferencePage_RememberLastProject_xfld,
-			searchGroup);
 
 		/*
 		 * Layout of group needs to be set at last as the field editors will change it

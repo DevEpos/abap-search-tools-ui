@@ -67,6 +67,7 @@ public class ObjectSearchContentHandler implements IContentHandler<IAdtObjectRef
 			final String packageName = elementInfoElement.getAttributeValue(IXmlTags.AT_PACKAGE_NAME);
 			final String uri = elementInfoElement.getAttributeValue(IXmlTags.AT_URI);
 			final String type = elementInfoElement.getAttributeValue(IXmlTags.AT_TYPE);
+			final String owner = elementInfoElement.getAttributeValue(IXmlTags.AT_OWNER);
 			final IAdtObjectReferenceElementInfo elementInfo = new AdtObjectReferenceElementInfo(name, rawName, description);
 
 			if (name != null && !name.isEmpty() && uri != null && !uri.isEmpty() && type != null && !type.isEmpty()) {
@@ -77,6 +78,17 @@ public class ObjectSearchContentHandler implements IContentHandler<IAdtObjectRef
 				elementInfo.setElementInfoProvider(new ObjectSearchElementInfoProvider(this.destinationId, adtObjectRef));
 			}
 			addAdditionalResultInformation(elementInfoElement, elementInfo);
+
+			// handle the owner information
+			if (owner != null) {
+				if (elementInfo.hasAdditionalInfo()) {
+					((ExtendedAdtObjectInfo) elementInfo.getAdditionalInfo()).setOwner(owner);
+				} else {
+					final ExtendedAdtObjectInfo extendedElementInfo = new ExtendedAdtObjectInfo();
+					extendedElementInfo.setOwner(owner);
+					elementInfo.setAdditionalInfo(extendedElementInfo);
+				}
+			}
 			result.add(elementInfo);
 		}
 	}

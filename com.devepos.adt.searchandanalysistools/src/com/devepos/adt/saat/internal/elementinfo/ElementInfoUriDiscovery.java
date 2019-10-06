@@ -15,6 +15,7 @@ import com.sap.adt.compatibility.uritemplate.IAdtUriTemplate;
 public class ElementInfoUriDiscovery extends UriDiscoveryBase {
 	private static final String DISCOVERY_SCHEME = "http://www.devepos.com/adt/saat/elementinfo";
 	private static final String DISCOVERY_RELATION_ELEMENT_INFO = "http://www.devepos.com/adt/relations/saat/elementinfo";
+	private static final String DISCOVERY_RELATION_ELEMENT_INFO_BY_URI = "http://www.devepos.com/adt/relations/saat/elementinfo/byUri";
 	private static final String DISCOVERY_RELATION_CDS_SEC_ELEMENT_INFO = "http://www.devepos.com/adt/relations/saat/elementinfo/cds/secondary";
 	private static final String DISCOVERY_TERM_ELEMENT_INFO = "elementinfo";
 
@@ -39,6 +40,13 @@ public class ElementInfoUriDiscovery extends UriDiscoveryBase {
 	 */
 	public IAdtUriTemplate getElementInfoTemplate() {
 		return getTemplate(DISCOVERY_TERM_ELEMENT_INFO, DISCOVERY_RELATION_ELEMENT_INFO);
+	}
+
+	/**
+	 * @return ADT URI template for the element information service
+	 */
+	public IAdtUriTemplate getElementInfoByUriTemplate() {
+		return getTemplate(DISCOVERY_TERM_ELEMENT_INFO, DISCOVERY_RELATION_ELEMENT_INFO_BY_URI);
 	}
 
 	/**
@@ -67,6 +75,26 @@ public class ElementInfoUriDiscovery extends UriDiscoveryBase {
 			}
 			if (template.containsVariable("objectType")) {
 				template.set("objectType", objectType.getId());
+			}
+			fillTemplateWithParams(template, params);
+			uri = URI.create(template.expand());
+		}
+		return uri;
+	}
+
+	/**
+	 * Creates a valid REST resource URI for the given object URI
+	 *
+	 * @param  objectUri the URI of an ADT object
+	 * @param  params    map of additional query parameters
+	 * @return           REST resource URI
+	 */
+	public URI createElementInfoResourceUri(final String objectUri, final Map<String, Object> params) {
+		final IAdtUriTemplate template = getElementInfoByUriTemplate();
+		URI uri = null;
+		if (template != null) {
+			if (template.containsVariable("objectUri")) {
+				template.set("objectUri", objectUri);
 			}
 			fillTemplateWithParams(template, params);
 			uri = URI.create(template.expand());

@@ -60,4 +60,13 @@ public interface IElementInfo extends IPropertyBag {
 	 * @return
 	 */
 	Object getAdditionalInfo();
+
+	/**
+	 * Returns <code>true</code> if this element information has an object with
+	 * additional information
+	 * 
+	 * @return <code>true</code> if this element information has an object with
+	 *         additional information
+	 */
+	boolean hasAdditionalInfo();
 }

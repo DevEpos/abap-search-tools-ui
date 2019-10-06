@@ -31,6 +31,7 @@ import com.sap.adt.communication.session.ISystemSession;
  * @author stockbal
  */
 public class ObjectSearchQuery implements ISearchQuery {
+	private static final String TRUE = "X"; //$NON-NLS-1$
 	private final ObjectSearchRequest searchRequest;
 	private final ObjectSearchResult searchResult;
 
@@ -56,15 +57,18 @@ public class ObjectSearchQuery implements ISearchQuery {
 		final Map<String, Object> parameterMap = this.searchRequest.getParameters();
 		// add hidden parameters to search query
 		if (this.searchRequest.isAndSearchActive()) {
-			parameterMap.put(QueryParameterName.AND_FILTER.toString(), "X");
+			parameterMap.put(QueryParameterName.AND_FILTER.toString(), TRUE);
 		}
 		// set the search type manually, as it will not be included in the pattern
 		parameterMap.put(QueryParameterName.OBJECT_TYPE.toString(), this.searchRequest.getSearchType().getId());
+		if (this.searchRequest.isReadPackageHierarchy()) {
+			parameterMap.put(QueryParameterName.WITH_PACKAGE_HIERARCHY.toString(), TRUE);
+		}
 		if (this.searchRequest.shouldReadApiState()) {
-			parameterMap.put(QueryParameterName.WITH_API_STATE.toString(), "X"); //$NON-NLS-1$
+			parameterMap.put(QueryParameterName.WITH_API_STATE.toString(), TRUE);
 		}
 		if (this.searchRequest.shouldReadAllEntries()) {
-			parameterMap.put(QueryParameterName.GET_ALL_RESULTS.toString(), "X"); //$NON-NLS-1$
+			parameterMap.put(QueryParameterName.GET_ALL_RESULTS.toString(), TRUE);
 			parameterMap.remove(QueryParameterName.MAX_ROWS.toString());
 		} else {
 			parameterMap.put(QueryParameterName.MAX_ROWS.toString(), this.searchRequest.getMaxResults());

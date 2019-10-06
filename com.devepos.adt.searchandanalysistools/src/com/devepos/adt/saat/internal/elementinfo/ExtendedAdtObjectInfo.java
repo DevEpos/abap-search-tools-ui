@@ -6,7 +6,17 @@ import com.devepos.adt.saat.search.model.IExtendedAdtObjectInfo;
 public class ExtendedAdtObjectInfo implements IExtendedAdtObjectInfo {
 
 	private boolean isReleased;
+	private String owner;
 	private IDataSourceType sourceType;
+
+	/**
+	 * Sets the owner of this ADT object
+	 *
+	 * @param owner the owner
+	 */
+	public void setOwner(final String owner) {
+		this.owner = owner;
+	}
 
 	/**
 	 * Sets the API State of the ADT Object
@@ -21,9 +31,9 @@ public class ExtendedAdtObjectInfo implements IExtendedAdtObjectInfo {
 		if (apiState == null) {
 			return;
 		}
-		if (apiState == API_STATE_DEPRECATED) {
+		if (API_STATE_DEPRECATED.equals(apiState)) {
 			this.isReleased = false;
-		} else if (apiState == API_STATE_RELEASED) {
+		} else if (API_STATE_RELEASED.equals(apiState)) {
 			this.isReleased = true;
 		}
 	}
@@ -43,5 +53,10 @@ public class ExtendedAdtObjectInfo implements IExtendedAdtObjectInfo {
 	@Override
 	public IDataSourceType getSourceType() {
 		return this.sourceType;
+	}
+
+	@Override
+	public String getOwner() {
+		return this.owner;
 	}
 }

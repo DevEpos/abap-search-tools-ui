@@ -44,7 +44,8 @@ import com.sap.adt.tools.core.ui.dialogs.AbapProjectSelectionDialog;
 import com.sap.adt.util.ui.SWTUtil;
 
 public class ObjectSearchPage extends DialogPage implements ISearchPage {
-	public static final String LAST_PROJECT_PREF = "com.devepos.adt.saat.objectsearch.lastSelectedProject";
+	public static final String LAST_PROJECT_PREF = "com.devepos.adt.saat.objectsearch.lastSelectedProject"; //$NON-NLS-1$
+
 	private static final int MULTIPLIER = 50;
 	private static final int MAX_SCALE = 20;
 	private static final int MIN_SCALE = 1;
@@ -80,6 +81,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 		this.searchRequest = new ObjectSearchRequest();
 		this.searchRequest.setProjectProvider(this.projectProvider);
 		this.searchRequest.setReadApiState(true);
+		this.searchRequest.setReadPackageHierarchy(true);
 	}
 
 	@Override
@@ -217,7 +219,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 	private void createObjectNameInput(final Composite parent) {
 		final Label searchInputLabel = new Label(parent, SWT.NONE);
 		GridDataFactory.fillDefaults().applyTo(searchInputLabel);
-		searchInputLabel.setText("Object &Name:");
+		searchInputLabel.setText(Messages.ObjectSearch_ObjectNameInput_xfld);
 
 		this.searchInput = new Text(parent, SWT.BORDER);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).span(2, 1).grab(true, false).applyTo(this.searchInput);
@@ -231,7 +233,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 	private void createParametersInput(final Composite parent) {
 		final Label parametersLabel = new Label(parent, SWT.NONE);
 		GridDataFactory.fillDefaults().applyTo(parametersLabel);
-		parametersLabel.setText("Search &Filters:");
+		parametersLabel.setText(Messages.ObjectSearch_SearchFiltersInput_xfld);
 
 		this.parametersInput = new Text(parent, SWT.BORDER);
 		TextControlUtil.addWordSupport(this.parametersInput);
@@ -257,7 +259,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 					parameterPattern);
 				validateAndSetStatus(new Status(IStatus.OK, SearchAndAnalysisPlugin.PLUGIN_ID, STATUS_PARAMETERS, null, null));
 			} catch (final CoreException e) {
-				this.searchRequest.setParameters(null, "");
+				this.searchRequest.setParameters(null, ""); //$NON-NLS-1$
 				validateAndSetStatus(
 					new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, STATUS_PARAMETERS, e.getMessage(), e));
 			}
@@ -280,7 +282,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 
 	private void createMaxResultsScale(final Composite parent) {
 		final Label maxResultsLabel = new Label(parent, SWT.NONE);
-		maxResultsLabel.setText("&Maximum number of results:");
+		maxResultsLabel.setText(Messages.ObjectSearch_MaxNumberOfResultsScale_xfld);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).applyTo(maxResultsLabel);
 
 		this.maxResultsScale = new Scale(parent, SWT.HORIZONTAL);
@@ -323,7 +325,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 		SWTUtil.addTextEditMenu(this.projectField);
 
 		final Button projectBrowseButton = new Button(parent, SWT.PUSH);
-		projectBrowseButton.setText("&Browse...");
+		projectBrowseButton.setText(Messages.ObjectSearch_ProjectBrowseButton_xbut);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).applyTo(projectBrowseButton);
 		SWTUtil.setButtonWidthHint(projectBrowseButton);
 		projectBrowseButton.addSelectionListener(new SelectionAdapter() {
@@ -351,7 +353,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 	 * the given name can be found the project of the provider will be set to null
 	 */
 	private void setProject(final String projectName) {
-		if (projectName == null || "".equals(projectName)) {
+		if (projectName == null || "".equals(projectName)) { //$NON-NLS-1$
 			this.projectProvider.setProject(null);
 		} else {
 			// check if there is an ABAP project which matches the entered name
@@ -374,19 +376,16 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 
 	private void setInitialProject() {
 		String projectName = null;
-		final boolean useLastProject = this.prefStore.getBoolean(IPreferences.REMEMBER_LAST_PROJECT_IN_OBJ_EXPLORER);
-		if (useLastProject) {
+
+		final IProject currentAbapProject = AdtUtil.getCurrentAbapProject();
+		if (currentAbapProject != null) {
+			projectName = currentAbapProject.getName();
+		}
+		if (projectName == null || projectName.isEmpty()) {
 			projectName = this.prefStore.getString(LAST_PROJECT_PREF);
 		}
 
-		if (projectName == null || projectName.isEmpty()) {
-			final IProject currentAbapProject = AdtUtil.getCurrentAbapProject();
-			if (currentAbapProject != null) {
-				projectName = currentAbapProject.getName();
-			}
-		}
-
-		this.projectField.setText(projectName == null ? "" : projectName);
+		this.projectField.setText(projectName == null ? "" : projectName); //$NON-NLS-1$
 		if (projectName == null || projectName.isEmpty()) {
 			this.prefStore.setToDefault(LAST_PROJECT_PREF);
 		}
@@ -414,8 +413,8 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 				return new Status(IStatus.OK, SearchAndAnalysisPlugin.PLUGIN_ID, STATUS_PROJECT, null, null);
 			} else {
 				// project does not exist
-				return new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, STATUS_PROJECT, "Project does not exist",
-					null);
+				return new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, STATUS_PROJECT,
+					Messages.ObjectSearch_ProjectDoesNotExistError_xmsg, null);
 			}
 		}
 		// no project name entered
@@ -455,7 +454,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 			}
 			if (status.getSeverity() == IStatus.OK) {
 				this.searchStatusImageLabel.setImage(null);
-				this.searchStatusTextLabel.setText("");
+				this.searchStatusTextLabel.setText(""); //$NON-NLS-1$
 			} else {
 				this.searchStatusImageLabel.setImage(StatusUtil.getImageForStatus(status.getSeverity()));
 				this.searchStatusTextLabel.setText(status.getMessage());
@@ -503,12 +502,12 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 
 	private void updateMaxResults() {
 		if (this.allResults) {
-			this.maxResultsLabel.setText("All Results");
+			this.maxResultsLabel.setText(Messages.ObjectSearch_AllResultsOptions_xmsg);
 			this.searchRequest.setReadAllEntries(true);
 		} else {
 			this.searchRequest.setReadAllEntries(false);
 			this.searchRequest.setMaxResults(this.maxResults);
-			this.maxResultsLabel.setText(NLS.bind("{0} Results", this.maxResults));
+			this.maxResultsLabel.setText(NLS.bind(Messages.ObjectSearch_FoundResultsLabel_xmsg, this.maxResults));
 		}
 	}
 

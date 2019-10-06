@@ -200,6 +200,37 @@ class ElementInfoRetrievalService implements IElementInfoRetrievalService {
 		return elementInfo;
 	}
 
+	@Override
+	public IAdtObjectReferenceElementInfo retrieveBasicElementInformation(final String destinationId, final String uri) {
+		if (destinationId == null || uri == null) {
+			return null;
+		}
+		final IAbapProjectProvider projectProvider = AbapProjectProviderAccessor.getProviderForDestination(destinationId);
+		if (projectProvider == null || !projectProvider.ensureLoggedOn()) {
+			return null;
+		}
+		final IContentHandler<IAdtObjectReferenceElementInfo> adtObjectHandler = new BasicElementInfoContentHandler(
+			destinationId);
+		final ElementInfoUriDiscovery uriDiscovery = new ElementInfoUriDiscovery(projectProvider.getDestinationId());
+
+		final Map<String, Object> paramsMap = new HashMap<>();
+		paramsMap.put("basicInfoOnly", "X");
+		final URI resourceUri = uriDiscovery.createElementInfoResourceUri(uri, paramsMap);
+
+		final ISystemSession session = projectProvider.createStatelessSession();
+		final IRestResource restResource = AdtRestResourceFactory.createRestResourceFactory()
+			.createRestResource(resourceUri, session);
+		restResource.addContentHandler(adtObjectHandler);
+
+		IAdtObjectReferenceElementInfo elementInfo = null;
+		try {
+			elementInfo = restResource.get(null, AdtUtil.getHeaders(), IAdtObjectReferenceElementInfo.class);
+		} catch (final ResourceException exc) {
+			exc.printStackTrace();
+		}
+		return elementInfo;
+	}
+
 	/*
 	 * Create list of element information from table column information
 	 */

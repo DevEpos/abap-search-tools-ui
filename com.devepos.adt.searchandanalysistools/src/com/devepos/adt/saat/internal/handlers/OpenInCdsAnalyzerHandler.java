@@ -19,6 +19,7 @@ import com.devepos.adt.saat.internal.util.AbapProjectProviderAccessor;
 import com.devepos.adt.saat.internal.util.AbapProjectProxy;
 import com.devepos.adt.saat.internal.util.AdtUtil;
 import com.devepos.adt.saat.internal.util.IAdtObject;
+import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 import com.sap.adt.tools.core.project.IAbapProject;
 
 /**
@@ -56,11 +57,14 @@ public abstract class OpenInCdsAnalyzerHandler extends AbstractHandler {
 			final IAbapProject abapProject = selectedObject.getProject().getAdapter(IAbapProject.class);
 			// register the abapProject
 			AbapProjectProviderAccessor.registerProjectProvider(new AbapProjectProxy(selectedObject.getProject()));
-			// set the selected CDS view in the Analysis View
-			cdsAnalyzerView.analyzeAdtObject(this.mode, selectedObject.getName(), selectedObject.getObjectType(),
-				abapProject.getDestinationId());
+			final IAdtObjectReference objectRef = selectedObject.getReference();
+			if (objectRef != null && objectRef.getUri() != null) {
+				// set the selected object in the Analysis View
+				cdsAnalyzerView.analyzeAdtObject(this.mode, objectRef.getUri(), abapProject.getDestinationId());
+			}
 		}
 		return null;
+
 	}
 
 	protected boolean isFeatureAvailable(final IProject project) {

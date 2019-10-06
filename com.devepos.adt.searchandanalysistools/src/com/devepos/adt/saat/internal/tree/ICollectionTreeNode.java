@@ -31,6 +31,13 @@ public interface ICollectionTreeNode extends ITreeNode {
 	void setChildren(List<ITreeNode> children);
 
 	/**
+	 * Adds the given node as a child node
+	 * 
+	 * @param child the child node to be added
+	 */
+	void addChild(ITreeNode child);
+
+	/**
 	 * Returns the number of <code>nodes</code> in this collection in a readable
 	 * format
 	 *

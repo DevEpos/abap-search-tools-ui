@@ -283,4 +283,8 @@ public interface IImages {
 	 * Image Id for "Export"
 	 */
 	String EXPORT = "IMG_EXPORT";
+	/**
+	 * Image id for "Package"
+	 */
+	String PACKAGE = PACKAGE_PARAM;
 }

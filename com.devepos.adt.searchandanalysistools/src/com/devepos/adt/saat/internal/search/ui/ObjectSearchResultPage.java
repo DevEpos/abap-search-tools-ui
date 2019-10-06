@@ -3,10 +3,12 @@ package com.devepos.adt.saat.internal.search.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.JFacePreferences;
 import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider;
 import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider.IStyledLabelProvider;
@@ -26,6 +28,7 @@ import org.eclipse.search.ui.ISearchResultPage;
 import org.eclipse.search.ui.ISearchResultViewPart;
 import org.eclipse.search.ui.NewSearchUI;
 import org.eclipse.search.ui.SearchResultEvent;
+import org.eclipse.search2.internal.ui.basic.views.ExpandAllAction;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
@@ -51,6 +54,7 @@ import com.devepos.adt.saat.internal.tree.IStyledTreeNode;
 import com.devepos.adt.saat.internal.tree.ITreeNode;
 import com.devepos.adt.saat.internal.tree.LazyLoadingTreeContentProvider;
 import com.devepos.adt.saat.internal.tree.LazyLoadingTreeContentProvider.LoadingElement;
+import com.devepos.adt.saat.internal.tree.PackageNode;
 import com.devepos.adt.saat.internal.ui.CollapseAllTreeNodesAction;
 import com.devepos.adt.saat.internal.ui.CollapseTreeNodesAction;
 import com.devepos.adt.saat.internal.ui.CopyToClipboardAction;
@@ -65,7 +69,7 @@ import com.devepos.adt.saat.search.model.IExtendedAdtObjectInfo;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 
 public class ObjectSearchResultPage extends Page implements ISearchResultPage, ISearchResultListener {
-
+	public static final String GROUPED_BY_PACKAGE_PREF = "com.devepos.adt.saat.objectsearch.groupByPackage"; //$NON-NLS-1$
 	private String id;
 	private Object state;
 	private ObjectSearchResult result;
@@ -74,12 +78,19 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 	private Composite mainComposite;
 	private ObjectSearchQuery searchQuery;
 	private CollapseAllTreeNodesAction collapseAllNodesAction;
+	private ExpandAllAction expandAllAction;
 	private CollapseTreeNodesAction collapseNodesAction;
+	private ExpandSelectedPackageNodesAction expandPackageNodesAction;
 	private IAbapProjectProvider projectProvider;
 	private CopyToClipboardAction copyToClipBoardAction;
 	private boolean isDbBrowserIntegrationAvailable;
+	private GroupByPackageAction groupByPackageAction;
+	private final IPreferenceStore prefStore;
+	private OpenObjectSearchPreferences openPreferencesAction;
 
 	public ObjectSearchResultPage() {
+		this.prefStore = SearchAndAnalysisPlugin.getDefault().getPreferenceStore();
+		this.prefStore.setDefault(GROUPED_BY_PACKAGE_PREF, false);
 	}
 
 	/**
@@ -104,8 +115,12 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 		MenuItemFactory.addCommandItem(tbm, IContextMenuConstants.GROUP_NEW, ICommandConstants.OBJECT_SEARCH_OPEN_IN_DIALOG,
 			IImages.SEARCH, Messages.ObjectSearchResultPage_OpenInSearchDialog_xtol, false, null);
 		tbm.appendToGroup(IContextMenuConstants.GROUP_EDIT, this.collapseAllNodesAction);
+		tbm.appendToGroup(IContextMenuConstants.GROUP_EDIT, this.expandAllAction);
+		tbm.appendToGroup(IContextMenuConstants.GROUP_VIEWER_SETUP, this.groupByPackageAction);
 		actionBars.setGlobalActionHandler(ActionFactory.COPY.getId(), this.copyToClipBoardAction);
 		actionBars.updateActionBars();
+
+		actionBars.getMenuManager().add(this.openPreferencesAction);
 	}
 
 	@Override
@@ -186,7 +201,7 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 		if (this.result != null) {
 			return this.result.getLabel();
 		}
-		return "";
+		return ""; //$NON-NLS-1$
 	}
 
 	@Override
@@ -203,7 +218,7 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 	 * @return the ID of corresponding Search Dialog Page of this result page
 	 */
 	public String getSearchDialogId() {
-		return "com.devepos.adt.saat.ObjectSearchPage";
+		return "com.devepos.adt.saat.ObjectSearchPage"; //$NON-NLS-1$
 	}
 
 	/**
@@ -235,12 +250,20 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 		this.collapseNodesAction = new CollapseTreeNodesAction(this.searchResultTree);
 		this.copyToClipBoardAction = new CopyToClipboardAction();
 		this.copyToClipBoardAction.registerViewer(this.searchResultTree);
+		this.groupByPackageAction = new GroupByPackageAction();
+		this.groupByPackageAction.setChecked(this.prefStore.getBoolean(GROUPED_BY_PACKAGE_PREF));
+		this.expandAllAction = new ExpandAllPackageNodesAction();
+		this.expandAllAction.setViewer(this.searchResultTree);
+		this.expandAllAction.setEnabled(this.groupByPackageAction.isChecked());
+		this.expandPackageNodesAction = new ExpandSelectedPackageNodesAction(this.searchResultTree);
+		this.openPreferencesAction = new OpenObjectSearchPreferences();
 	}
 
 	/*
 	 * Creates the result tree of the object search
 	 */
 	private void createResultTree(final Composite parent) {
+
 		this.searchResultTree = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		this.searchResultTree.setContentProvider(new TreeContentProvider());
 		this.searchResultTree.setLabelProvider(new DelegatingStyledCellLabelProvider(new ViewLabelProvider()));
@@ -290,6 +313,7 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 		final int selectionSize = selection.size();
 		boolean singleDataPreviewObjectSelected = false;
 		boolean singleCdsViewSelected = false;
+		boolean hasCollapsedPackages = false;
 
 		for (final Object selectedObject : selection.toList()) {
 			if (selectedObject instanceof IAdtObjectReferenceNode) {
@@ -309,6 +333,10 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 			if (!selectionHasExpandedNodes && selectedObject instanceof ICollectionTreeNode
 				&& this.searchResultTree.getExpandedState(selectedObject)) {
 				selectionHasExpandedNodes = true;
+			}
+			if (!hasCollapsedPackages && selectedObject instanceof PackageNode
+				&& !this.searchResultTree.getExpandedState(selectedObject)) {
+				hasCollapsedPackages = true;
 			}
 		}
 
@@ -347,9 +375,14 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 
 			}
 		}
-		if (selectionHasExpandedNodes) {
+		if (selectionHasExpandedNodes || hasCollapsedPackages) {
 			menu.add(new Separator(com.devepos.adt.saat.IContextMenuConstants.GROUP_NODE_ACTIONS));
-			menu.add(this.collapseNodesAction); // , collapsableNodes));
+			if (hasCollapsedPackages) {
+				menu.add(this.expandPackageNodesAction);
+			}
+			if (selectionHasExpandedNodes) {
+				menu.add(this.collapseNodesAction);
+			}
 		}
 
 		menu.add(new Separator(IContextMenuConstants.GROUP_EDIT));
@@ -362,15 +395,26 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 				return;
 			}
 			if (this.state != null && this.state instanceof TreePath[]) {
-				this.searchResultTree.setExpandedTreePaths((TreePath[]) this.state);
+				this.searchResultTree.getControl().setRedraw(false);
+				try {
+					this.searchResultTree.setExpandedTreePaths((TreePath[]) this.state);
+				} finally {
+					this.searchResultTree.getControl().setRedraw(true);
+				}
 			}
-			this.searchResultTree.refresh();
 			this.searchResultTree.getControl().setFocus();
-			final ITreeNode[] result = this.result.getResultForTree();
+			final IAdtObjectReferenceNode[] result = this.result.getResultForTree(this.groupByPackageAction.isChecked());
 			if (result != null && result.length > 0) {
 				this.searchResultTree.setSelection(new StructuredSelection(result[0]));
 			}
+			this.searchResultTree.refresh();
 		});
+	}
+
+	private void updateGrouping() {
+		this.searchResultTree.refresh();
+		this.expandAllAction.setEnabled(this.groupByPackageAction.isChecked());
+		this.prefStore.putValue(GROUPED_BY_PACKAGE_PREF, Boolean.toString(this.groupByPackageAction.isChecked()));
 	}
 
 	/**
@@ -453,13 +497,71 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 		}
 	}
 
-	class TreeContentProvider extends LazyLoadingTreeContentProvider {
+	private class TreeContentProvider extends LazyLoadingTreeContentProvider {
 		@Override
 		public Object[] getElements(final Object inputElement) {
 			if (ObjectSearchResultPage.this.result != null) {
-				return ObjectSearchResultPage.this.result.getResultForTree();
+				return ObjectSearchResultPage.this.result
+					.getResultForTree(ObjectSearchResultPage.this.groupByPackageAction.isChecked());
 			}
 			return new Object[0];
+		}
+	}
+
+	private class GroupByPackageAction extends Action {
+		public GroupByPackageAction() {
+			super(Messages.ObjectSearch_GroupByPackageAction_xtol, AS_CHECK_BOX);
+			setImageDescriptor(SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.PACKAGE));
+		}
+
+		@Override
+		public void run() {
+			updateGrouping();
+		}
+	}
+
+	private class ExpandAllPackageNodesAction extends ExpandAllAction {
+		@Override
+		public void run() {
+			final Object[] packages = ObjectSearchResultPage.this.result.getPackages();
+			if (packages != null) {
+				ObjectSearchResultPage.this.searchResultTree.getControl().setRedraw(false);
+				try {
+					ObjectSearchResultPage.this.searchResultTree.setExpandedElements(packages);
+				} finally {
+					ObjectSearchResultPage.this.searchResultTree.getControl().setRedraw(true);
+				}
+			}
+		}
+	}
+
+	private class ExpandSelectedPackageNodesAction extends Action {
+		private final TreeViewer viewer;
+
+		public ExpandSelectedPackageNodesAction(final TreeViewer viewer) {
+			super(Messages.ObjectSearch_ExpandNodeAction_xmsg, SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.EXPAND_ALL));
+			this.viewer = viewer;
+		}
+
+		@Override
+		public void run() {
+			final IStructuredSelection selection = this.viewer.getStructuredSelection();
+			if (selection == null) {
+				return;
+			}
+			this.viewer.getControl().setRedraw(false);
+			try {
+
+				for (final Object selectedObject : selection.toList()) {
+					final PackageNode node = (PackageNode) selectedObject;
+					this.viewer.setExpandedState(node, true);
+					for (final PackageNode subNode : node.getSubPackages()) {
+						this.viewer.setExpandedState(subNode, true);
+					}
+				}
+			} finally {
+				this.viewer.getControl().setRedraw(true);
+			}
 		}
 	}
 

@@ -19,7 +19,6 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 	@Override
 	public void initializeDefaultPreferences() {
 		final IPreferenceStore store = SearchAndAnalysisPlugin.getDefault().getPreferenceStore();
-		store.setDefault(IPreferences.REMEMBER_LAST_PROJECT_IN_OBJ_EXPLORER, true);
 		store.setDefault(IPreferences.CURSOR_AT_END_OF_SEARCH_INPUT, true);
 		store.setDefault(IPreferences.MAX_SEARCH_RESULTS, 50);
 		store.setDefault(IPreferences.SHOW_FULL_ASSOCIATION_NAME, true);

@@ -46,7 +46,6 @@ import org.eclipse.ui.part.PageBookView;
 import org.eclipse.ui.part.PageSwitcher;
 
 import com.devepos.adt.saat.IContextMenuConstants;
-import com.devepos.adt.saat.ObjectType;
 import com.devepos.adt.saat.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.elementinfo.ElementInfoRetrievalServiceFactory;
 import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
@@ -290,26 +289,14 @@ public class CdsAnalysis extends PageBookView {
 	}
 
 	/**
-	 * Sets new CDS view for analysis
-	 *
-	 * @param name          the name of the ADT object which should be analyzed
-	 * @param type
-	 * @param destinationId the id of the destination of the ABAP project
-	 */
-	public void analyzeAdtObject(final String name, final ObjectType type, final String destinationId) {
-		analyzeAdtObject(AnalysisMode.TOP_DOWN, name, type, destinationId);
-	}
-
-	/**
 	 * Sets new ADT object for analysis
 	 *
 	 * @param mode          the mode for the CDS analysis
-	 * @param name          the name of the ADT object that should be analyzed
-	 * @param type          the type of the ADT object which should be analyzed
+	 * @param objectUri     the URI of an ADT object
 	 * @param destinationId the id of the destination of the ABAP project
 	 */
-	public void analyzeAdtObject(final AnalysisMode mode, final String name, final ObjectType type, final String destinationId) {
-		final AnalysisObjectKey newObject = new AnalysisObjectKey(mode, name, destinationId);
+	public void analyzeAdtObject(final AnalysisMode mode, final String objectUri, final String destinationId) {
+		final AnalysisObjectKey newObject = new AnalysisObjectKey(mode, objectUri, destinationId);
 		final CdsAnalysisPage pageForCds = this.cdsViewToPage.get(newObject);
 		if (pageForCds != null) {
 			// get the part
@@ -322,7 +309,7 @@ public class CdsAnalysis extends PageBookView {
 				(ICoreRunnable) monitor -> {
 					// check if search is possible in selected project
 					final IAdtObjectReferenceElementInfo adtObjectRefElemInfo = ElementInfoRetrievalServiceFactory.createService()
-						.retrieveBasicElementInformation(destinationId, name, type);
+						.retrieveBasicElementInformation(destinationId, objectUri);
 					if (adtObjectRefElemInfo != null) {
 						PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
 							final CdsAnalysisPage page = createAnalyzerPage(newObject);
@@ -612,7 +599,8 @@ public class CdsAnalysis extends PageBookView {
 	 */
 	private class RefreshCurrentAnalysisAction extends Action {
 		public RefreshCurrentAnalysisAction() {
-			super(Messages.CdsAnalysis_RefreshAction_xtol, SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.REFRESH));
+			super(Messages.CdsAnalysis_RefreshAction_xtol,
+				SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.REFRESH));
 		}
 
 		@Override
@@ -643,7 +631,8 @@ public class CdsAnalysis extends PageBookView {
 		private Menu menu;
 
 		public AnalysisPageSwitcherAction() {
-			super(Messages.CdsAnalysis_SwitchAnalysisPages_xtol, SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.CDS_ANALYZER));
+			super(Messages.CdsAnalysis_SwitchAnalysisPages_xtol,
+				SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.CDS_ANALYZER));
 			setMenuCreator(this);
 		}
 

@@ -25,6 +25,7 @@ public class ObjectSearchRequest {
 	private Map<String, Object> parameters;
 	private int maxResults;
 	private IAbapProjectProvider projectProvider;
+	private boolean readPackageHierarchy;
 
 	public ObjectSearchRequest() {
 		this.query = null;
@@ -95,6 +96,20 @@ public class ObjectSearchRequest {
 
 	public void setReadAllEntries(final boolean readAllEntries) {
 		this.readAllEntries = readAllEntries;
+	}
+
+	/**
+	 * @return the readPackageHierarchy
+	 */
+	public boolean isReadPackageHierarchy() {
+		return this.readPackageHierarchy;
+	}
+
+	/**
+	 * @param readPackageHierarchy the readPackageHierarchy to set
+	 */
+	public void setReadPackageHierarchy(final boolean readPackageHierarchy) {
+		this.readPackageHierarchy = readPackageHierarchy;
 	}
 
 	public Map<String, Object> getParameters() {

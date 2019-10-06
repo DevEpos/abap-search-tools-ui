@@ -16,12 +16,18 @@ public class CollapseAllTreeNodesAction extends Action {
 	private final TreeViewer viewer;
 
 	public CollapseAllTreeNodesAction(final TreeViewer viewer) {
-		super(Messages.Actions_CollapseAllNodes_xmit, SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.COLLAPSE_ALL));
+		super(Messages.Actions_CollapseAllNodes_xmit,
+			SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.COLLAPSE_ALL));
 		this.viewer = viewer;
 	}
 
 	@Override
 	public void run() {
-		this.viewer.collapseAll();
+		this.viewer.getControl().setRedraw(false);
+		try {
+			this.viewer.collapseAll();
+		} finally {
+			this.viewer.getControl().setRedraw(true);
+		}
 	}
 }

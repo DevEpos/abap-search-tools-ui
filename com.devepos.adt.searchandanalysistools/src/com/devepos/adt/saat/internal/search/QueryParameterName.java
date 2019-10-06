@@ -75,7 +75,12 @@ public enum QueryParameterName {
 	 * If this parameter has the value <code>X</code> all objects that match the
 	 * query will be returned
 	 */
-	GET_ALL_RESULTS("GETALL", "getAllResults");
+	GET_ALL_RESULTS("GETALL", "getAllResults"),
+	/**
+	 * If <code>true</code> this parameter control whether the package hierarchy of
+	 * the found ADT objects will get determined
+	 */
+	WITH_PACKAGE_HIERARCHY("WITHPACKAGEHIERARCHY", "withPackageHierarchy");
 
 	private String stringForm;
 	private String key;

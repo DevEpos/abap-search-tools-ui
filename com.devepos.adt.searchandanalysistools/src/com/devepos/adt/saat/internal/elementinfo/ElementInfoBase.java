@@ -85,6 +85,11 @@ public abstract class ElementInfoBase implements IElementInfo, IAdaptable {
 	}
 
 	@Override
+	public boolean hasAdditionalInfo() {
+		return this.additionalInfo != null;
+	}
+
+	@Override
 	public <T> T getAdapter(final Class<T> adapter) {
 		try {
 			return adapter.cast(this.additionalInfo);

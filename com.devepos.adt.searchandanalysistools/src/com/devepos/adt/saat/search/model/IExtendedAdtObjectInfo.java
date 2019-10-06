@@ -27,4 +27,11 @@ public interface IExtendedAdtObjectInfo {
 	 * @return
 	 */
 	IDataSourceType getSourceType();
+
+	/**
+	 * Returns the name of responsible person of this ADT object
+	 * 
+	 * @return the name of responsible person of this ADT object
+	 */
+	String getOwner();
 }

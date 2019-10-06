@@ -66,6 +66,11 @@ public abstract class TreeNodeBase implements ITreeNode {
 	}
 
 	@Override
+	public void setParent(final ITreeNode parent) {
+		this.parent = parent;
+	}
+
+	@Override
 	public ITreeNode getRoot() {
 		if (this.parent == null) {
 			return this;

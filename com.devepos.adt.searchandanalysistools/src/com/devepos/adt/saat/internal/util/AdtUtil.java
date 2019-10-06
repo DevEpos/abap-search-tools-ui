@@ -117,6 +117,8 @@ public class AdtUtil {
 				return IImages.BUSINESS_OBJECT;
 			case ACCESS_CONTROL:
 				return IImages.ACCESS_CONTROL;
+			case PACKAGE:
+				return IImages.PACKAGE;
 			default:
 				return null;
 			}

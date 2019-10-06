@@ -41,6 +41,16 @@ public interface IElementInfoRetrievalService {
 		ObjectType objectType);
 
 	/**
+	 * Retrieves some basic information about the given object
+	 *
+	 * @param  destinationId the destination id of the ABAP Project
+	 * @param  uri           the URI of an ADT object
+	 * @return               the found element information of the ADT object or
+	 *                       <code>null</code>
+	 */
+	IAdtObjectReferenceElementInfo retrieveBasicElementInformation(final String destinationId, String uri);
+
+	/**
 	 * Retrieves the element information for the given ADT object reference
 	 *
 	 * @param  destinationId   destination Id of an ABAP project
