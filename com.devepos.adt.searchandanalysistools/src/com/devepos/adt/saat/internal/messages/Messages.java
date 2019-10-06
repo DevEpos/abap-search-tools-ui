@@ -57,6 +57,7 @@ public class Messages extends NLS {
 	public static String ObjectSearch_UseAndFilter_xtol;
 	public static String ObjectSearchOpenPreferences_xmit;
 	public static String ObjectSearchResultPage_OpenInSearchDialog_xtol;
+	public static String OpenColorPreferencePageAction_ActionName_xtol;
 	public static String OpenInUtil_AnalysisForOfficeNotActive_xmsg;
 	public static String SearchHistorySelectionDialog_AddFavorite_xbut;
 	public static String SearchHistorySelectionDialog_DeleteHistoryEntry_xbut;
@@ -123,6 +124,7 @@ public class Messages extends NLS {
 	public static String CopyToClipboardAction_ErrorMessageBody_xmsg;
 	public static String CopyToClipboardAction_ErrorMessageTitle_xmsg;
 	public static String DbBrowser_featureIsNotAvailable_xmsg;
+	public static String DbBrowser_xtit;
 	public static String Dialog_InfoTitle_xmsg;
 	public static String ElementInfoProvider_RetrievingElementInfoDescription_xmsg;
 	public static String ElementInformation_AccessControls_xtit;

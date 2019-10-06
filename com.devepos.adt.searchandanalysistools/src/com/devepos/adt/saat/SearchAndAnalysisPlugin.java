@@ -10,12 +10,10 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
-import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.viewers.DecorationOverlayIcon;
 import org.eclipse.jface.viewers.IDecoration;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.RGB;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -46,8 +44,6 @@ public class SearchAndAnalysisPlugin extends AbstractUIPlugin {
 	@Override
 	public void start(final BundleContext context) throws Exception {
 		super.start(context);
-//		JFaceResources.getColorRegistry().put(IColorConstants.CDS_ANALYSIS_ALIAS_NAME, new RGB(127, 0, 116));
-		JFaceResources.getColorRegistry().put(IColorConstants.CDS_ANALYSIS_ALIAS_NAME, new RGB(128, 128, 128));
 		plugin = this;
 
 //		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService().addSelectionListener((part, selection) -> {

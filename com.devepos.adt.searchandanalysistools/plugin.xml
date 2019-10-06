@@ -150,7 +150,7 @@
                commandId="com.devepos.adt.saat.dbbrowser.command.openDbBrowser"
                icon="icons/DBBrowser.png"
                id="com.devepos.adt.saat.menus.openindbbrowser"
-               label="%command.opendbbrowser.label"
+               label="%menuContribution.opendbbrowser.label"
                style="push">
             <visibleWhen
                   checkEnabled="false">
@@ -217,9 +217,6 @@
         </initializer>
      </extension>
      <extension
-           point="org.eclipse.core.expressions.propertyTesters">
-     </extension>
-     <extension
            point="org.eclipse.ui.views">
         <view
               category="com.sap.adt.views"
@@ -260,9 +257,6 @@
         </viewPage>
      </extension>
      <extension
-           point="org.eclipse.core.expressions.definitions">
-     </extension>
-     <extension
            point="org.eclipse.ui.bindings">
         <key
               commandId="com.devepos.adt.saat.objectsearch.command.openInDialog"
@@ -270,5 +264,23 @@
               schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
               sequence="M1+O">
         </key>
+     </extension>
+     <extension
+           point="org.eclipse.ui.themes">
+        <colorDefinition
+              categoryId="com.devepos.adt.saat.cdsAnalysis"
+              id="com.devepos.adt.saat.cdsanalysis.AliasNameForegroundColor"
+              label="%colorDefinition.sqlEntityAliasForegroundColor.label"
+              value="128,128,128">
+        </colorDefinition>
+        <themeElementCategory
+              id="com.devepos.adt.saat"
+              label="%themeElementCategory.label">
+        </themeElementCategory>
+        <themeElementCategory
+              id="com.devepos.adt.saat.cdsAnalysis"
+              label="%themeElementCategory.cdsanalysis.label"
+              parentId="com.devepos.adt.saat">
+        </themeElementCategory>
      </extension>
 </plugin>

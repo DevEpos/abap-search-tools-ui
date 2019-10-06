@@ -7,10 +7,12 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.preference.JFacePreferences;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider;
+import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.TreeViewerColumn;
@@ -36,6 +38,7 @@ import com.devepos.adt.saat.internal.tree.LazyLoadingAdtObjectReferenceNode;
 import com.devepos.adt.saat.internal.tree.LazyLoadingTreeContentProvider;
 import com.devepos.adt.saat.internal.tree.LazyLoadingTreeContentProvider.LoadingElement;
 import com.devepos.adt.saat.internal.ui.MenuItemFactory;
+import com.devepos.adt.saat.internal.ui.OpenColorPreferencePageAction;
 import com.devepos.adt.saat.internal.ui.PreferenceToggleAction;
 import com.devepos.adt.saat.internal.ui.StylerFactory;
 import com.devepos.adt.saat.internal.util.CommandPossibleChecker;
@@ -69,6 +72,8 @@ public class CdsTopDownAnalysisView extends CdsAnalysisPage {
 	private final List<Column> columns;
 	private LazyLoadingAdtObjectReferenceNode cdsNode;
 	private final IPropertyChangeListener propertyChangeListener;
+	private OpenColorPreferencePageAction showColorsAndFontsPrefs;
+	private final IPropertyChangeListener colorPropertyChangeListener;
 
 	public CdsTopDownAnalysisView(final CdsAnalysis parentView) {
 		super(parentView);
@@ -79,6 +84,15 @@ public class CdsTopDownAnalysisView extends CdsAnalysisPage {
 			}
 		};
 		SearchAndAnalysisPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(this.propertyChangeListener);
+		this.colorPropertyChangeListener = event -> {
+			if (IColorConstants.CDS_ANALYSIS_ALIAS_NAME.equals(event.getProperty())) {
+				final StructuredViewer viewer = getViewer();
+				if (viewer != null && !viewer.getControl().isDisposed()) {
+					viewer.refresh();
+				}
+			}
+		};
+		JFaceResources.getColorRegistry().addListener(this.colorPropertyChangeListener);
 	}
 
 	@Override
@@ -95,6 +109,7 @@ public class CdsTopDownAnalysisView extends CdsAnalysisPage {
 	public void dispose() {
 		super.dispose();
 		SearchAndAnalysisPlugin.getDefault().getPreferenceStore().removePropertyChangeListener(this.propertyChangeListener);
+		JFaceResources.getColorRegistry().removeListener(this.colorPropertyChangeListener);
 	}
 
 	@Override
@@ -156,6 +171,7 @@ public class CdsTopDownAnalysisView extends CdsAnalysisPage {
 		super.fillPullDownMenu(menu);
 		menu.appendToGroup(IContextMenuConstants.GROUP_PROPERTIES, this.showDescriptions);
 		menu.appendToGroup(IContextMenuConstants.GROUP_PROPERTIES, this.showAliasNames);
+		menu.appendToGroup(IContextMenuConstants.GROUP_ADDITIONS, this.showColorsAndFontsPrefs);
 	}
 
 	@Override
@@ -165,6 +181,7 @@ public class CdsTopDownAnalysisView extends CdsAnalysisPage {
 			null, SHOW_DESCRIPTIONS_PREF_KEY, true);
 		this.showAliasNames = new PreferenceToggleAction(Messages.CdsTopDownAnalysisView_ShowAliasNamesToggleAction_xmit, null,
 			SHOW_ALIAS_NAMES_PREF_KEY, true);
+		this.showColorsAndFontsPrefs = new OpenColorPreferencePageAction(IColorConstants.CDS_ANALYSIS_ALIAS_NAME);
 	}
 
 	@Override

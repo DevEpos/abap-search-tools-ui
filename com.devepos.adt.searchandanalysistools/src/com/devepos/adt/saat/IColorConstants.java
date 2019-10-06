@@ -6,5 +6,5 @@ public interface IColorConstants {
 	 * Name of the color for the Alias name in the Top-Down analysis in CDS Analysis
 	 * view
 	 */
-	String CDS_ANALYSIS_ALIAS_NAME = COLOR_NAMESPACE + "cdsAnalysis.AliasName"; //$NON-NLS-1$
+	String CDS_ANALYSIS_ALIAS_NAME = COLOR_NAMESPACE + "cdsanalysis.AliasNameForegroundColor"; //$NON-NLS-1$
 }

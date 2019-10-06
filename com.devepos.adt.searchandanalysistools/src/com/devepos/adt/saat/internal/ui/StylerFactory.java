@@ -3,6 +3,8 @@ package com.devepos.adt.saat.internal.ui;
 import org.eclipse.jface.resource.ColorRegistry;
 import org.eclipse.jface.resource.FontDescriptor;
 import org.eclipse.jface.resource.JFaceResources;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.StyledString.Styler;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
@@ -44,7 +46,7 @@ public class StylerFactory {
 		return new CustomStyler(fontStyle, foregroundColorName, backgroundColorName);
 	}
 
-	private static final class CustomStyler extends Styler {
+	private static final class CustomStyler extends Styler implements IPropertyChangeListener {
 		private final int style;
 		private final String foregroundColorName;
 		private final String backgroundColorName;
@@ -66,12 +68,19 @@ public class StylerFactory {
 			textStyle.font = font;
 
 			final ColorRegistry colorRegistry = JFaceResources.getColorRegistry();
+			colorRegistry.addListener(this);
+
 			if (this.foregroundColorName != null) {
 				textStyle.foreground = colorRegistry.get(this.foregroundColorName);
 			}
 			if (this.backgroundColorName != null) {
 				textStyle.background = colorRegistry.get(this.backgroundColorName);
 			}
+		}
+
+		@Override
+		public void propertyChange(final PropertyChangeEvent event) {
+
 		}
 
 	}
