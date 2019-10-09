@@ -5,7 +5,6 @@ import java.util.Map;
 
 import com.devepos.adt.saat.internal.search.SearchType;
 import com.devepos.adt.saat.internal.util.IAbapProjectProvider;
-import com.devepos.adt.saat.search.model.IObjectSearchQuery;
 
 /**
  * Search request for an Object Search. <br>
@@ -37,10 +36,10 @@ public class ObjectSearchRequest {
 
 	@Override
 	public boolean equals(final Object object) {
-		if (!(object instanceof IObjectSearchQuery)) {
+		if (!(object instanceof ObjectSearchRequest)) {
 			return super.equals(object);
 		}
-		final IObjectSearchQuery otherEntry = (IObjectSearchQuery) object;
+		final ObjectSearchRequest otherEntry = (ObjectSearchRequest) object;
 		return this.query.equalsIgnoreCase(otherEntry.getQuery())
 			&& this.destinationId.equalsIgnoreCase(otherEntry.getDestinationId())
 			&& this.andSearchActive == otherEntry.isAndSearchActive();

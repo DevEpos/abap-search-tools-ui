@@ -94,10 +94,10 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 	}
 
 	/**
-	 * @return the {@link ObjectSearchRequest} of this the result page
+	 * @return the {@link ObjectSearchQuery} of this the result page
 	 */
-	public ObjectSearchRequest getSearchRequest() {
-		return this.searchQuery != null ? this.searchQuery.getSearchRequest() : null;
+	public ObjectSearchQuery getSearchQuery() {
+		return this.searchQuery != null ? this.searchQuery : null;
 	}
 
 	@Override
@@ -539,7 +539,8 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 		private final TreeViewer viewer;
 
 		public ExpandSelectedPackageNodesAction(final TreeViewer viewer) {
-			super(Messages.ObjectSearch_ExpandNodeAction_xmsg, SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.EXPAND_ALL));
+			super(Messages.ObjectSearch_ExpandNodeAction_xmsg,
+				SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.EXPAND_ALL));
 			this.viewer = viewer;
 		}
 

@@ -71,7 +71,8 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 	private ObjectSearchUriDiscovery uriDiscovery;
 	private Scale maxResultsScale;
 
-	private final ObjectSearchRequest searchRequest;
+	private ObjectSearchRequest searchRequest;
+	private ObjectSearchQuery previousQuery;
 	private Button andOptionCheck;
 
 	public ObjectSearchPage() {
@@ -121,7 +122,12 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 		}
 		// save current project in preferences
 		this.prefStore.putValue(LAST_PROJECT_PREF, this.projectProvider.getProjectName());
-		final ObjectSearchQuery query = new ObjectSearchQuery(this.searchRequest);
+		ObjectSearchQuery query = null;
+		if (this.previousQuery != null) {
+			query = this.previousQuery;
+		} else {
+			query = new ObjectSearchQuery(this.searchRequest);
+		}
 
 		NewSearchUI.runQueryInBackground(query);
 
@@ -133,7 +139,8 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 	 *
 	 * @param request the Object Search Request to be used
 	 */
-	public void setInputFromSearchRequest(final ObjectSearchRequest request) {
+	public void setInputFromSearchQuery(final ObjectSearchQuery query) {
+		final ObjectSearchRequest request = query.getSearchRequest();
 		final boolean doSetCursorToEnd = this.prefStore.getBoolean(IPreferences.CURSOR_AT_END_OF_SEARCH_INPUT);
 		final IAbapProjectProvider projectProvider = request.getProjectProvider();
 		final String searchTerm = request.getSearchTerm();
@@ -142,7 +149,8 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 			this.projectField.setText(projectProvider.getProjectName());
 		}
 		this.searchTypeViewer.setSelection(new StructuredSelection(request.getSearchType()));
-		this.parametersInput.setText(request.getParametersString());
+		final String parametersString = request.getParametersString();
+		this.parametersInput.setText(parametersString);
 		this.maxResultsScale.setSelection(request.getMaxResults() / MULTIPLIER);
 		this.maxResults = request.getMaxResults();
 		this.andOptionCheck.setSelection(request.isAndSearchActive());
@@ -150,8 +158,17 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 
 		if (doSetCursorToEnd) {
 			this.searchInput.setSelection(searchTerm.length());
+			this.parametersInput.setSelection(parametersString.length());
 		} else {
 			this.searchInput.selectAll();
+			this.parametersInput.selectAll();
+		}
+
+		// use previous query if overwrite preference is true
+		if (this.prefStore.getBoolean(IPreferences.OVERWRITE_OPENED_SEARCH_QUERY)) {
+			this.searchRequest = request;
+			this.previousQuery = query;
+			this.previousQuery.setSearchRequest(request);
 		}
 	}
 

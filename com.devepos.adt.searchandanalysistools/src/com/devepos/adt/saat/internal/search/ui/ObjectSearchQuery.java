@@ -32,7 +32,7 @@ import com.sap.adt.communication.session.ISystemSession;
  */
 public class ObjectSearchQuery implements ISearchQuery {
 	private static final String TRUE = "X"; //$NON-NLS-1$
-	private final ObjectSearchRequest searchRequest;
+	private ObjectSearchRequest searchRequest;
 	private final ObjectSearchResult searchResult;
 
 	/**
@@ -44,6 +44,15 @@ public class ObjectSearchQuery implements ISearchQuery {
 	public ObjectSearchQuery(final ObjectSearchRequest searchRequest) {
 		this.searchRequest = searchRequest;
 		this.searchResult = new ObjectSearchResult(this);
+	}
+
+	/**
+	 * Sets the search request for this query
+	 * 
+	 * @param searchRequest the new search request
+	 */
+	public void setSearchRequest(final ObjectSearchRequest searchRequest) {
+		this.searchRequest = searchRequest;
 	}
 
 	@Override

@@ -32,7 +32,7 @@ public class OpenInSearchDialogHandler extends AbstractHandler implements IHandl
 			dialog.open();
 			if (dialog.getSelectedPage() instanceof ObjectSearchPage) {
 				final ObjectSearchPage searchDialog = (ObjectSearchPage) dialog.getSelectedPage();
-				searchDialog.setInputFromSearchRequest(objectSearchResultPage.getSearchRequest());
+				searchDialog.setInputFromSearchQuery(objectSearchResultPage.getSearchQuery());
 			}
 			dialog.setBlockOnOpen(true);
 		}
