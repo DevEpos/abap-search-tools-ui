@@ -85,7 +85,7 @@ public class ObjectSearchRequest {
 		this.destinationId = destinationId;
 	}
 
-	public void setAndSearchActice(final boolean andSearchActive) {
+	public void setAndSearchActive(final boolean andSearchActive) {
 		this.andSearchActive = andSearchActive;
 	}
 

@@ -204,6 +204,7 @@ public class Messages extends NLS {
 	public static String SearchPatternAnalyzer_DescriptionFromParameter_xmsg;
 	public static String SearchPatternAnalyzer_DescriptionAssociationParameter_xmsg;
 	public static String SearchPatternAnalyzer_DescriptionCdsExtendedByParameter_xmsg;
+	public static String SearchPatternAnalyzer_DescriptionParamParameter_xmsg;
 	public static String SearchPatternAnalyzer_DescriptionParamsParameter_xmsg;
 	public static String SearchPatternAnalyzer_DescriptionMaxRowsParameter_xmsg;
 	public static String SearchPatternAnalyzer_NoValuePartPossibleIfKeyIsNegated_xmsg;

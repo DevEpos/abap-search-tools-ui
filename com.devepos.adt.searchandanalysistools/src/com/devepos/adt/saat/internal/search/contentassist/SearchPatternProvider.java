@@ -14,9 +14,7 @@ import com.devepos.adt.saat.internal.preferences.IPreferences;
 import com.devepos.adt.saat.internal.search.AnnotationSearchParameter;
 import com.devepos.adt.saat.internal.search.AssociationSearchParameter;
 import com.devepos.adt.saat.internal.search.CdsExtendedBySearchParameter;
-import com.devepos.adt.saat.internal.search.DescriptionSearchParameter;
 import com.devepos.adt.saat.internal.search.FieldSearchParameter;
-import com.devepos.adt.saat.internal.search.HasParameterSearchParameter;
 import com.devepos.adt.saat.internal.search.ISearchParameter;
 import com.devepos.adt.saat.internal.search.ISearchParameterHandler;
 import com.devepos.adt.saat.internal.search.NamedItemType;
@@ -24,6 +22,7 @@ import com.devepos.adt.saat.internal.search.ObjectSearchUriDiscovery;
 import com.devepos.adt.saat.internal.search.PackageSearchParameter;
 import com.devepos.adt.saat.internal.search.QueryParameterName;
 import com.devepos.adt.saat.internal.search.ReleaseStateSearchParameter;
+import com.devepos.adt.saat.internal.search.SearchParameterFactory;
 import com.devepos.adt.saat.internal.search.SearchType;
 import com.devepos.adt.saat.internal.search.SelectFromSearchParameter;
 import com.devepos.adt.saat.internal.search.TypeSearchParameter;
@@ -95,7 +94,7 @@ public class SearchPatternProvider implements ISearchParameterHandler {
 			parameters = new ArrayList<>();
 			parameters.add(new UserSearchParameter(this.projectProvider));
 			parameters.add(new PackageSearchParameter(this.projectProvider));
-			parameters.add(new DescriptionSearchParameter());
+			parameters.add(SearchParameterFactory.createDescriptionParameter());
 			if (this.searchType == SearchType.CDS_VIEW) {
 				parameters.add(new ReleaseStateSearchParameter(this.projectProvider));
 				parameters.add(new SelectFromSearchParameter(this.projectProvider));
@@ -103,12 +102,12 @@ public class SearchPatternProvider implements ISearchParameterHandler {
 				parameters.add(new FieldSearchParameter(this.projectProvider, NamedItemType.CDS_FIELD));
 				parameters.add(new CdsExtendedBySearchParameter(this.projectProvider));
 				parameters.add(new AnnotationSearchParameter(this.projectProvider));
-				parameters.add(new HasParameterSearchParameter());
+				parameters.add(SearchParameterFactory.createCdsParamParameter());
+				parameters.add(SearchParameterFactory.createHasParameterParameter());
 				parameters.add(new TypeSearchParameter(this.projectProvider));
-			} else {
+			} else if (this.searchType == SearchType.DB_TABLE_VIEW) {
 				parameters.add(new FieldSearchParameter(this.projectProvider, NamedItemType.TABLE_FIELD));
 			}
-//			parameters.add(new MaxRowsSearchParameter());
 			this.parameterMap.put(this.searchType, parameters);
 		}
 

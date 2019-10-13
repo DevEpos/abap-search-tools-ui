@@ -55,6 +55,11 @@ public enum QueryParameterName {
 	 */
 	HAS_PARAMS("PARAMS", "hasParams"),
 	/**
+	 * Identifies the PARAM parameter which can be used to find CDS Views with a
+	 * given parameter
+	 */
+	CDS_PARAMETER("PARAM", "param"),
+	/**
 	 * Hidden parameter to toggle the logical AND for combination of filter options
 	 */
 	AND_FILTER("ANDOPTION", "useAndForFilters"),

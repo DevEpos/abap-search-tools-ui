@@ -71,7 +71,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 	private ObjectSearchUriDiscovery uriDiscovery;
 	private Scale maxResultsScale;
 
-	private ObjectSearchRequest searchRequest;
+	private final ObjectSearchRequest searchRequest;
 	private ObjectSearchQuery previousQuery;
 	private Button andOptionCheck;
 
@@ -125,6 +125,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 		ObjectSearchQuery query = null;
 		if (this.previousQuery != null) {
 			query = this.previousQuery;
+			query.setSearchRequest(this.searchRequest);
 		} else {
 			query = new ObjectSearchQuery(this.searchRequest);
 		}
@@ -166,9 +167,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 
 		// use previous query if overwrite preference is true
 		if (this.prefStore.getBoolean(IPreferences.OVERWRITE_OPENED_SEARCH_QUERY)) {
-			this.searchRequest = request;
 			this.previousQuery = query;
-			this.previousQuery.setSearchRequest(request);
 		}
 	}
 
@@ -241,8 +240,8 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 		this.searchInput = new Text(parent, SWT.BORDER);
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).span(2, 1).grab(true, false).applyTo(this.searchInput);
 		SWTUtil.addTextEditMenu(this.searchInput);
-		this.searchInput.addModifyListener((event) -> {
-			this.searchRequest.setSearchTerm(this.searchInput.getText());
+		this.searchInput.addModifyListener(e -> {
+			ObjectSearchPage.this.searchRequest.setSearchTerm(ObjectSearchPage.this.searchInput.getText());
 			updateOKStatus();
 		});
 	}
@@ -292,7 +291,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 		this.andOptionCheck.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				ObjectSearchPage.this.searchRequest.setAndSearchActice(ObjectSearchPage.this.andOptionCheck.getSelection());
+				ObjectSearchPage.this.searchRequest.setAndSearchActive(ObjectSearchPage.this.andOptionCheck.getSelection());
 			}
 		});
 	}

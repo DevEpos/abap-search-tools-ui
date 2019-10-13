@@ -1,6 +1,7 @@
 package com.devepos.adt.saat.internal.search;
 
 public enum SearchType {
+//	ABAP_QUICK_SEARCH("All", "AQS"),
 	CDS_VIEW("CDS View", "C"),
 	DB_TABLE_VIEW("Database Table/View", "D");
 
