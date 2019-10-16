@@ -56,8 +56,14 @@
             id="com.devepos.adt.saat.objectsearch.command.openInDialog"
             name="%command.objectsearch.openindialog.name">
       </command>
+      <command
+            categoryId="com.sap.adt.ris.search.ui.commands.category"
+            id="com.devepos.adt.saat.search.command.runWhereUsedForObject"
+            name="%command.search.runWhereUsedQuery.name">
+      </command>
    </extension>
    <extension
+         id="com.devepos.adt.saat.search.command.runWhereUsedForObject"
          point="org.eclipse.ui.handlers">
       <handler
             class="com.devepos.adt.saat.internal.handlers.OpenInDbBrowserHandler"
@@ -125,6 +131,15 @@
                </instanceof>
             </with></enabledWhen>
       </handler>
+      <handler
+            class="com.devepos.adt.saat.internal.handlers.RunWhereUsedQueryHandler"
+            commandId="com.devepos.adt.saat.search.command.runWhereUsedForObject">
+         <enabledWhen>
+            <reference
+                  definitionId="com.sap.adt.tools.core.ui.toolsActive">
+            </reference>
+         </enabledWhen>
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -139,8 +154,17 @@
             <visibleWhen
                   checkEnabled="false">
                <reference
-                     definitionId="com.sap.adt.project.ui.adtActive">
+                     definitionId="com.sap.adt.tools.core.ui.toolsActive">
                </reference>
+            </visibleWhen>
+         </command>
+         <command
+               commandId="com.devepos.adt.saat.search.command.runWhereUsedForObject"
+               icon="icons/RunWhereUsed.png"
+               label="%command.search.runWhereUsedQuery.name"
+               style="push">
+            <visibleWhen
+                  checkEnabled="true">
             </visibleWhen>
          </command>
       </menuContribution>

@@ -188,6 +188,7 @@ public class Messages extends NLS {
 	public static String NewSearchFavoriteDialog_SearchQuery_xlfd;
 	public static String NewSearchFavoriteDialog_SearchType_xfld;
 	public static String NewSearchFavoriteDialog_Title_xtit;
+	public static String RunWhereUsedQueryHandler_openObjectDialog_xtit;
 	public static String SearchPatternAnalyzer_ErrorInvalidSearchParameter_xmsg;
 	public static String SearchPatternAnalyzer_ErrorIncompleteSearchParameter_xmsg;
 	public static String SearchPatternAnalyzer_ErrorParamAllowsOnlySingleValues_xmsg;
