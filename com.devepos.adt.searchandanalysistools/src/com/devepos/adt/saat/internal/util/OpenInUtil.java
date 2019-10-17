@@ -60,7 +60,7 @@ public class OpenInUtil {
 	 */
 	public static void openCDSInQueryMonitor(final IProject project, final String cdsViewName) {
 		final WorkbenchPart sapGuipart = (WorkbenchPart) AdtSapGuiEditorUtilityFactory.createSapGuiEditorUtility()
-			.openEditorAndStartTransaction(project, "ZDBBR_ADT_QRYMONOPEN", true, //$NON-NLS-1$
+			.openEditorAndStartTransaction(project, "ZSAT_ADT_QRYMONOPEN", true, //$NON-NLS-1$
 				Stream.of(new String[][] { { "ENTITY_ID", cdsViewName.toUpperCase() } }) //$NON-NLS-1$
 					.collect(Collectors.toMap(data -> data[0], data -> data[1])));
 		AdtUtil.overrideSapGuiPartTitle(sapGuipart, project, cdsViewName, String.format("%s (Query Monitor)", cdsViewName), //$NON-NLS-1$
@@ -81,8 +81,8 @@ public class OpenInUtil {
 				projectProvider.getDestinationId());
 			final URI launcherResourceURI = aoxUriDiscovery.createAnalysisForOfficeLauncherURI(cdsViewName.toUpperCase());
 			if (launcherResourceURI == null) {
-				throw new CoreException(
-					new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, Messages.OpenInUtil_AnalysisForOfficeNotActive_xmsg));
+				throw new CoreException(new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID,
+					Messages.OpenInUtil_AnalysisForOfficeNotActive_xmsg));
 			}
 			final IRestResource launcherResource = AdtRestResourceFactory.createRestResourceFactory()
 				.createRestResource(launcherResourceURI, projectProvider.createStatelessSession());
