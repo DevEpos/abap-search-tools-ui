@@ -68,57 +68,26 @@
       <handler
             class="com.devepos.adt.saat.internal.handlers.OpenInDbBrowserHandler"
             commandId="com.devepos.adt.saat.dbbrowser.command.openInDbBrowser">
-         <enabledWhen>
-            <reference
-                  definitionId="com.sap.adt.project.ui.adtActive">
-            </reference>
-         </enabledWhen>
       </handler>
       <handler
             class="com.devepos.adt.saat.internal.handlers.OpenDbBrowserHandler"
             commandId="com.devepos.adt.saat.dbbrowser.command.openDbBrowser">
-         <activeWhen>
-            <reference
-                  definitionId="com.sap.adt.project.ui.adtActive">
-            </reference>
-         </activeWhen>
       </handler>
       <handler
             class="com.devepos.adt.saat.internal.handlers.PerformCdsTopDownAnalysisHandler"
             commandId="com.devepos.adt.saat.cdsanalysis.command.performCdsTopDown">
-         <enabledWhen>
-            <reference
-                  definitionId="com.sap.adt.project.ui.adtActive">
-            </reference>
-         
-         </enabledWhen>
       </handler>
       <handler
             class="com.devepos.adt.saat.internal.handlers.PerformCdsUsedEntitiesAnalysisHandler"
             commandId="com.devepos.adt.saat.cdsanalysis.command.performCdsUsedEntities">
-         <enabledWhen>
-            <reference
-                  definitionId="com.sap.adt.project.ui.adtActive">
-            </reference>
-         </enabledWhen>
       </handler>
       <handler
             class="com.devepos.adt.saat.internal.handlers.PerformWhereUsedInCdsAnalysisHandler"
             commandId="com.devepos.adt.saat.cdsanalysis.command.performWhereUsedInCds">
-         <enabledWhen>
-            <reference
-                  definitionId="com.sap.adt.project.ui.adtActive">
-            </reference>
-         </enabledWhen>
       </handler>
       <handler
             class="com.devepos.adt.saat.internal.handlers.PerformFieldAnalysisHandler"
             commandId="com.devepos.adt.saat.cdsanalysis.command.performFieldAnalysis">
-         <enabledWhen>
-            <reference
-                  definitionId="com.sap.adt.project.ui.adtActive">
-            </reference>
-         </enabledWhen>
       </handler>
       <handler
             class="com.devepos.adt.saat.internal.handlers.OpenInSearchDialogHandler"
@@ -134,11 +103,6 @@
       <handler
             class="com.devepos.adt.saat.internal.handlers.RunWhereUsedQueryHandler"
             commandId="com.devepos.adt.saat.search.command.runWhereUsedForObject">
-         <enabledWhen>
-            <reference
-                  definitionId="com.sap.adt.tools.core.ui.toolsActive">
-            </reference>
-         </enabledWhen>
       </handler>
    </extension>
    <extension

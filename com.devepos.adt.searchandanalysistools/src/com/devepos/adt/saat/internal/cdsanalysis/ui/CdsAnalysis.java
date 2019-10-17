@@ -31,7 +31,6 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
-import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchCommandConstants;
 import org.eclipse.ui.IWorkbenchPart;
@@ -86,8 +85,6 @@ public class CdsAnalysis extends PageBookView {
 	private Label description;
 	private RefreshCurrentAnalysisAction refreshAnalysisAction;
 	private AnalysisPageSwitcherAction analysisPageSwitcher;
-	private NavigatePageAction goToPreviousPageAction;
-	private NavigatePageAction goToNextPageAction;
 
 	public CdsAnalysis() {
 		super();
@@ -222,8 +219,6 @@ public class CdsAnalysis extends PageBookView {
 				partActivated(partToActivate);
 				updateLabel();
 			}
-		} else {
-			updateNavigationActions();
 		}
 
 	}
@@ -241,7 +236,6 @@ public class CdsAnalysis extends PageBookView {
 		this.cdsViewToPage.clear();
 		updateLabel();
 		updateViewActions();
-		updateNavigationActions();
 	}
 
 	/**
@@ -372,8 +366,6 @@ public class CdsAnalysis extends PageBookView {
 		super.initPage(page);
 		final IActionBars actionBars = page.getSite().getActionBars();
 		actionBars.setGlobalActionHandler(ActionFactory.REFRESH.getId(), this.refreshAnalysisAction);
-		actionBars.setGlobalActionHandler(ActionFactory.FORWARD_HISTORY.getId(), this.goToNextPageAction);
-		actionBars.setGlobalActionHandler(ActionFactory.BACKWARD_HISTORY.getId(), this.goToPreviousPageAction);
 		updateViewActions();
 		actionBars.updateActionBars();
 
@@ -382,74 +374,11 @@ public class CdsAnalysis extends PageBookView {
 	@Override
 	public void partActivated(final IWorkbenchPart part) {
 		super.partActivated(part);
-		updateNavigationActions();
 	}
 
 	private void updateViewActions() {
 		this.analysisPageSwitcher.setEnabled(this.cdsViewToPage.keySet().size() > 1);
 		this.refreshAnalysisAction.setEnabled(!this.cdsViewToPage.isEmpty());
-	}
-
-	private void updateNavigationActions() {
-		boolean backEnabled = false;
-		boolean forwardEnabled = false;
-		final CdsAnalysisPage activePage = getActivePage();
-		if (activePage != null) {
-			final Collection<CdsAnalysisPage> pages = this.cdsViewToPage.values();
-			final int size = pages.size();
-			int activePageIndex = 0;
-			int i = 0;
-
-			for (final CdsAnalysisPage page : pages) {
-				if (page == activePage) {
-					activePageIndex = i;
-					break;
-				}
-				i++;
-			}
-
-			if (size > 1) {
-				if (activePageIndex > 0) {
-					backEnabled = true;
-				}
-				if (activePageIndex + 1 < size) {
-					forwardEnabled = true;
-				}
-			}
-		}
-		this.goToNextPageAction.setEnabled(forwardEnabled);
-		this.goToPreviousPageAction.setEnabled(backEnabled);
-	}
-
-	private void navigateTo(final boolean nextPage) {
-		final CdsAnalysisPage activePage = getActivePage();
-		if (activePage != null) {
-			final Collection<CdsAnalysisPage> pages = this.cdsViewToPage.values();
-			CdsAnalysisPage newPage = null;
-			CdsAnalysisPage previousPage = null;
-
-			for (final CdsAnalysisPage page : pages) {
-				if (page == activePage) {
-					if (!nextPage && previousPage != null) {
-						newPage = previousPage;
-						break;
-					}
-				} else if (previousPage == activePage && nextPage) {
-					newPage = page;
-					break;
-				}
-				previousPage = page;
-			}
-			if (newPage != null) {
-				// activate part of the new page
-				final DummyPart newPart = this.pagesToParts.get(newPage);
-				if (newPart != null) {
-					partActivated(newPart);
-					updateLabel();
-					updateViewActions();
-				}
-			}
-		}
 	}
 
 	/*
@@ -460,8 +389,6 @@ public class CdsAnalysis extends PageBookView {
 		final IToolBarManager tbm = actionBars.getToolBarManager();
 		createToolBarGroups(tbm);
 		tbm.appendToGroup(IContextMenuConstants.GROUP_SEARCH, this.refreshAnalysisAction);
-		tbm.appendToGroup(IContextMenuConstants.GROUP_GOTO, this.goToPreviousPageAction);
-		tbm.appendToGroup(IContextMenuConstants.GROUP_GOTO, this.goToNextPageAction);
 		tbm.appendToGroup(IContextMenuConstants.GROUP_GOTO, this.analysisPageSwitcher);
 	}
 
@@ -473,13 +400,6 @@ public class CdsAnalysis extends PageBookView {
 
 		this.analysisPageSwitcher = new AnalysisPageSwitcherAction();
 		this.refreshAnalysisAction.setEnabled(false);
-
-		this.goToNextPageAction = new NavigatePageAction(true);
-		this.goToNextPageAction.setEnabled(false);
-		this.goToNextPageAction.setActionDefinitionId(IWorkbenchCommandConstants.NAVIGATE_FORWARD_HISTORY);
-		this.goToPreviousPageAction = new NavigatePageAction(false);
-		this.goToPreviousPageAction.setEnabled(false);
-		this.goToPreviousPageAction.setActionDefinitionId(IWorkbenchCommandConstants.NAVIGATE_BACKWARD_HISTORY);
 	}
 
 	private void initializePageSwitcher() {
@@ -610,29 +530,12 @@ public class CdsAnalysis extends PageBookView {
 
 	}
 
-	private class NavigatePageAction extends Action {
-		private final boolean next;
-
-		public NavigatePageAction(final boolean next) {
-			super(next ? Messages.CdsAnalysis_GoToNextPage_xtol : Messages.CdsAnalysis_GoToPreviousPage_xtol);
-			this.next = next;
-			final String imageId = next ? ISharedImages.IMG_TOOL_FORWARD : ISharedImages.IMG_TOOL_BACK;
-			setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(imageId));
-		}
-
-		@Override
-		public void run() {
-			navigateTo(this.next);
-		}
-
-	}
-
 	private class AnalysisPageSwitcherAction extends Action implements IMenuCreator {
 		private Menu menu;
 
 		public AnalysisPageSwitcherAction() {
 			super(Messages.CdsAnalysis_SwitchAnalysisPages_xtol,
-				SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.CDS_ANALYZER));
+				SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.HISTORY_LIST));
 			setMenuCreator(this);
 		}
 
@@ -720,7 +623,6 @@ public class CdsAnalysis extends PageBookView {
 						closePage(pageToClose, false);
 					}
 				}
-				updateNavigationActions();
 			}
 		}
 

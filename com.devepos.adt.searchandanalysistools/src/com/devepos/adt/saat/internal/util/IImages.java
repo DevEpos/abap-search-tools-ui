@@ -35,6 +35,10 @@ public interface IImages {
 	 */
 	String CLASS = "IMG_CLASS";
 	/**
+	 * Icon for a list of history entries
+	 */
+	String HISTORY_LIST = "IMG_HISTORY_LIST";
+	/**
 	 * Identifies the image for the Search history
 	 */
 	String SEARCH_HISTORY = "IMG_SEARCH_HISTORY";

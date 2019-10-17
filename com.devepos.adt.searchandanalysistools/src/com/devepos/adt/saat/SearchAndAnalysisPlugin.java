@@ -214,6 +214,7 @@ public class SearchAndAnalysisPlugin extends AbstractUIPlugin {
 		registerImage(imageRegistry, IImages.TABLE_DEFINITION, "icons/Table.png");
 		registerImage(imageRegistry, IImages.VIEW_DEFINITION, "icons/ViewDefinition.png");
 		registerImage(imageRegistry, IImages.SEARCH_HISTORY, "icons/full/elcl16/search_history.png", "org.eclipse.search");
+		registerImage(imageRegistry, IImages.HISTORY_LIST, "icons/HistoryList.png");
 		registerImage(imageRegistry, IImages.USER, "icons/UserEdit.png");
 		registerImage(imageRegistry, IImages.WAITING, "icons/WaitingIndicator.png");
 		registerImage(imageRegistry, IImages.PROPERTIES, "icons/Properties.png");
