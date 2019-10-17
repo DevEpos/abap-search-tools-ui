@@ -6,6 +6,7 @@ import java.util.List;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.preference.BooleanFieldEditor;
+import org.eclipse.jface.preference.ComboFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.IntegerFieldEditor;
@@ -22,6 +23,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 import com.devepos.adt.saat.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.messages.Messages;
+import com.devepos.adt.saat.internal.search.SearchType;
 
 /**
  * Preference page for DB Browser Tools
@@ -79,10 +81,15 @@ public class MainPreferencePage extends PreferencePage implements IWorkbenchPref
 			Messages.MainPreferencePage_MaxResultsSetting_xfld, searchGroup, 4);
 		this.fields.add(maxSearchResultsEditor);
 
+		// create combo editor for default search type
+		final FieldEditor defaultSearchTypeEditor = new ComboFieldEditor(IPreferences.DEFAULT_SEARCH_TYPE,
+			Messages.MainPreferencePage_DefaultSearchTypeSetting_xfld, SearchType.toNamesAndKeys(), searchGroup);
+		this.fields.add(defaultSearchTypeEditor);
+
 		addBooleanEditor(IPreferences.CURSOR_AT_END_OF_SEARCH_INPUT, Messages.MainPreferencePage_CursorAtEndSetting_xfld,
 			searchGroup);
-		addBooleanEditor(IPreferences.OVERWRITE_OPENED_SEARCH_QUERY,
-			Messages.MainPreferencePage_OverwriteSearchQuerySetting_xfld, searchGroup);
+		addBooleanEditor(IPreferences.OVERWRITE_OPENED_SEARCH_QUERY, Messages.MainPreferencePage_OverwriteSearchQuerySetting_xfld,
+			searchGroup);
 
 		/*
 		 * Layout of group needs to be set at last as the field editors will change it

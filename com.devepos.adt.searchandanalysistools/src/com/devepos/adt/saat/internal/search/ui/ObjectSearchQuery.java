@@ -48,7 +48,7 @@ public class ObjectSearchQuery implements ISearchQuery {
 
 	/**
 	 * Sets the search request for this query
-	 * 
+	 *
 	 * @param searchRequest the new search request
 	 */
 	public void setSearchRequest(final ObjectSearchRequest searchRequest) {
@@ -68,8 +68,6 @@ public class ObjectSearchQuery implements ISearchQuery {
 		if (this.searchRequest.isAndSearchActive()) {
 			parameterMap.put(QueryParameterName.AND_FILTER.toString(), TRUE);
 		}
-		// set the search type manually, as it will not be included in the pattern
-		parameterMap.put(QueryParameterName.OBJECT_TYPE.toString(), this.searchRequest.getSearchType().getId());
 		if (this.searchRequest.isReadPackageHierarchy()) {
 			parameterMap.put(QueryParameterName.WITH_PACKAGE_HIERARCHY.toString(), TRUE);
 		}
@@ -83,7 +81,8 @@ public class ObjectSearchQuery implements ISearchQuery {
 			parameterMap.put(QueryParameterName.MAX_ROWS.toString(), this.searchRequest.getMaxResults());
 		}
 		final String searchTerm = this.searchRequest.getSearchTerm();
-		final URI objectSearchUri = uriDiscovery.createResourceUriFromTemplate(parameterMap, searchTerm);
+		parameterMap.put(QueryParameterName.OBJECT_NAME.toString(), searchTerm != null ? searchTerm : "");
+		final URI objectSearchUri = uriDiscovery.createResourceUriFromTemplate(this.searchRequest.getSearchType(), parameterMap);
 		if (objectSearchUri == null) {
 			return new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID,
 				NLS.bind(Messages.ObjectSearch_SearchNotSupportedInProject_xmsg, projectProvider.getProjectName()));

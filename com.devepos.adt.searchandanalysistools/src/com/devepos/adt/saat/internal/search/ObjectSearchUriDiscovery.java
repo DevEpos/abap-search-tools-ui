@@ -19,7 +19,6 @@ import com.sap.adt.compatibility.uritemplate.IAdtUriTemplate;
 public class ObjectSearchUriDiscovery extends UriDiscoveryBase {
 	private static final String DISCOVERY_SCHEME = "http://www.devepos.com/adt/saat/objectsearch";
 	private static final String DISCOVERY_RELATION_SEARCH = "http://www.devepos.com/adt/relations/saat/objectsearch";
-	private static final String FALLBACK_QUERY_PARAMETER = "{?objectType,query,maxResults}";
 	private static final String DISCOVERY_TERM_OBJECT_SEARCH = "search";
 	private static final String DISCOVERY_TERM_ANNOTATION_VALUE_HELP = "annotation";
 	private static final String DISCOVERY_TERM_ANNOTATION_VALUE_VALUE_HELP = "annotationvalue";
@@ -30,7 +29,6 @@ public class ObjectSearchUriDiscovery extends UriDiscoveryBase {
 	private static final String DISCOVERY_TERM_RELEASE_STATE_VH = "releasestate";
 	private static final String DISCOVERY_TERM_CDS_EXTENSION_VH = "cdsextension";
 	private static final String NAMED_ITEM_TEMPLATE = "{?maxItemCount,name,description,data}";
-	private IAdtUriTemplate fallbackTemplate;
 
 	/**
 	 * Creates new URI discovery for the Object Search services
@@ -39,13 +37,6 @@ public class ObjectSearchUriDiscovery extends UriDiscoveryBase {
 	 */
 	public ObjectSearchUriDiscovery(final String destination) {
 		super(destination, DISCOVERY_SCHEME);
-		final URI objectSearchUri = getObjectSearchUri();
-		if (objectSearchUri != null) {
-			final String template = objectSearchUri.toString() + FALLBACK_QUERY_PARAMETER;
-			this.fallbackTemplate = AdtUriTemplateFactory.createUriTemplate(template);
-		} else {
-			this.fallbackTemplate = null;
-		}
 	}
 
 	/**
@@ -53,8 +44,8 @@ public class ObjectSearchUriDiscovery extends UriDiscoveryBase {
 	 *
 	 * @return
 	 */
-	public List<QueryParameterName> getSupportedSearchParameters() {
-		final IAdtUriTemplate searchUriTemplate = getObjectSearchTemplate();
+	public List<QueryParameterName> getSupportedSearchParameters(final SearchType searchType) {
+		final IAdtUriTemplate searchUriTemplate = getObjectSearchTemplate(searchType);
 		if (searchUriTemplate == null) {
 			return new ArrayList<>();
 		}
@@ -71,8 +62,8 @@ public class ObjectSearchUriDiscovery extends UriDiscoveryBase {
 	 * @param  query
 	 * @return            REST resource URI
 	 */
-	public URI createResourceUriFromTemplate(final Map<String, Object> parameterMap, final String query) {
-		final IAdtUriTemplate template = getObjectSearchTemplate();
+	public URI createResourceUriFromTemplate(final SearchType searchType, final Map<String, Object> parameterMap) {
+		final IAdtUriTemplate template = getObjectSearchTemplate(searchType);
 		URI uri = null;
 		if (template != null) {
 			for (final String paramKey : parameterMap.keySet()) {
@@ -82,9 +73,6 @@ public class ObjectSearchUriDiscovery extends UriDiscoveryBase {
 						template.set(paramKey, paramValue);
 					}
 				}
-			}
-			if (template.containsVariable(QueryParameterName.QUERY.toString()) && query != null && !query.isEmpty()) {
-				template.set(QueryParameterName.QUERY.toString(), query);
 			}
 			uri = URI.create(template.expand());
 		}
@@ -213,9 +201,8 @@ public class ObjectSearchUriDiscovery extends UriDiscoveryBase {
 	 *
 	 * @return
 	 */
-	public IAdtUriTemplate getObjectSearchTemplate() {
-		final IAdtUriTemplate template = getTemplate(DISCOVERY_TERM_OBJECT_SEARCH, DISCOVERY_RELATION_SEARCH);
-		return template != null ? template : this.fallbackTemplate;
+	public IAdtUriTemplate getObjectSearchTemplate(final SearchType searchType) {
+		return getTemplate(DISCOVERY_TERM_OBJECT_SEARCH, DISCOVERY_RELATION_SEARCH + "/" + searchType.getUriTerm());
 	}
 
 	/**

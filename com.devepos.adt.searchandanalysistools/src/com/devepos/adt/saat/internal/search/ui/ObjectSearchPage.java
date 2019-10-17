@@ -51,6 +51,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 	private static final int MIN_SCALE = 1;
 	private static final int STATUS_PROJECT = 100;
 	private static final int STATUS_PARAMETERS = 200;
+	private static final int STATUS_SEARCH_TYPE = 300;
 	private ComboViewer searchTypeViewer;
 	private Text searchInput;
 	private Text parametersInput;
@@ -189,6 +190,15 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 	private void setInitialData() {
 		// set the project
 		setInitialProject();
+
+		// set initial search type
+		final String defaultSearchTypeId = this.prefStore.getString(IPreferences.DEFAULT_SEARCH_TYPE);
+
+		try {
+			final SearchType defaultSearchType = SearchType.valueOf(defaultSearchTypeId);
+			this.searchTypeViewer.setSelection(new StructuredSelection(defaultSearchType));
+		} catch (final IllegalArgumentException e) {
+		}
 		// set initial max result values
 		final int maxResultPref = this.prefStore.getInt(IPreferences.MAX_SEARCH_RESULTS);
 		if (maxResultPref > 0) {
@@ -226,10 +236,28 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 		this.searchTypeViewer.setSelection(new StructuredSelection(SearchType.CDS_VIEW));
 		this.searchTypeViewer.addSelectionChangedListener(event -> {
 			final SearchType selectedSearchType = (SearchType) event.getStructuredSelection().getFirstElement();
+			// check if the selected search type is available in the selected project
 			this.searchPatternProvider.setSearchType(selectedSearchType);
 			this.searchRequest.setSearchType(selectedSearchType);
-			validateParameterPattern();
+			final IStatus searchTypeStatus = validateSearchType(selectedSearchType);
+			validateAndSetStatus(searchTypeStatus);
+			if (searchTypeStatus.isOK()) {
+				validateParameterPattern();
+			}
+			updateOKStatus();
 		});
+	}
+
+	private IStatus validateSearchType(final SearchType selectedSearchType) {
+		if (this.uriDiscovery != null && this.projectProvider != null && this.projectProvider.hasProject()) {
+			if (this.uriDiscovery.getObjectSearchTemplate(selectedSearchType) == null) {
+				return new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, STATUS_SEARCH_TYPE,
+					NLS.bind(Messages.ObjectSearch_SearchTypeNotSupported_xmsg, selectedSearchType,
+						this.projectProvider.getProjectName()),
+					null);
+			}
+		}
+		return new Status(IStatus.OK, SearchAndAnalysisPlugin.PLUGIN_ID, STATUS_SEARCH_TYPE, null, null);
 	}
 
 	private void createObjectNameInput(final Composite parent) {
@@ -359,6 +387,9 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 			setProject(projectName);
 			final IStatus projectStatus = validateProject(projectName);
 			validateAndSetStatus(projectStatus);
+			if (projectStatus != null && projectStatus.isOK()) {
+				validateAndSetStatus(validateSearchType(this.searchRequest.getSearchType()));
+			}
 			updateOKStatus();
 		});
 
@@ -510,7 +541,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 		if (status.getCode() == this.currentStatus.getCode()) {
 			return status;
 		}
-		if (status.getSeverity() > this.currentStatus.getSeverity()) {
+		if (status.getSeverity() >= this.currentStatus.getSeverity()) {
 			return status;
 		}
 		return this.currentStatus;

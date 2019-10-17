@@ -7,13 +7,9 @@ package com.devepos.adt.saat.internal.search;
  */
 public enum QueryParameterName {
 	/**
-	 * Identifies the object to be searched for
+	 * The name for an object to be searched. Can include patterns
 	 */
-	QUERY("QUERY", "query"),
-	/**
-	 * Identifies the OBJECT_TYPE parameter e.g. <em>C</em> for <em>CDS View</em>
-	 */
-	OBJECT_TYPE("", "objectType"),
+	OBJECT_NAME("", "objectName"),
 	/**
 	 * Identifies the OWNER parameter
 	 */

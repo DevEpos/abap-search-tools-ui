@@ -116,7 +116,7 @@ public class SearchPatternProvider implements ISearchParameterHandler {
 			return new ArrayList<>();
 		}
 		final List<QueryParameterName> supportedParameters = new ObjectSearchUriDiscovery(this.projectProvider.getDestinationId())
-			.getSupportedSearchParameters();
+			.getSupportedSearchParameters(this.searchType);
 
 		return parameters.stream()
 			.filter(param -> supportedParameters.contains(param.getParameterName()))

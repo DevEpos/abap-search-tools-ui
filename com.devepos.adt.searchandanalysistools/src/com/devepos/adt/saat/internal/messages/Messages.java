@@ -48,6 +48,7 @@ public class Messages extends NLS {
 	public static String ObjectSearch_SearchJobName_xmsg;
 	public static String ObjectSearch_SearchNotSupportedInProject_xmsg;
 	public static String ObjectSearch_SearchTypeInput_xfld;
+	public static String ObjectSearch_SearchTypeNotSupported_xmsg;
 	public static String ObjectSearch_ProjectInput_xfld;
 	public static String ObjectSearch_RefreshSearch_xtol;
 	public static String ObjectSearch_Results_xfld;
@@ -169,6 +170,7 @@ public class Messages extends NLS {
 	public static String ImportFavoritesAction_NoFavoritesImported_xmsg;
 	public static String MainPreferencePage_CdsViewSettings_xgrp;
 	public static String MainPreferencePage_CursorAtEndSetting_xfld;
+	public static String MainPreferencePage_DefaultSearchTypeSetting_xfld;
 	public static String MainPreferencePage_DisplayAssociationName_xckl;
 	public static String MainPreferencePage_GeneralSettings_xgrp;
 	public static String MainPreferencePage_MaxResultsSetting_xfld;
