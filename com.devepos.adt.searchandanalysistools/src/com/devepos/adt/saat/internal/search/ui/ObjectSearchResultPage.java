@@ -68,6 +68,11 @@ import com.devepos.adt.saat.internal.util.IImages;
 import com.devepos.adt.saat.search.model.IExtendedAdtObjectInfo;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 
+/**
+ * The result page for an executed Object Search
+ * 
+ * @author stockbal
+ */
 public class ObjectSearchResultPage extends Page implements ISearchResultPage, ISearchResultListener {
 	public static final String GROUPED_BY_PACKAGE_PREF = "com.devepos.adt.saat.objectsearch.groupByPackage"; //$NON-NLS-1$
 	private String id;

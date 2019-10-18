@@ -115,7 +115,7 @@ public class ObjectSearchQuery implements ISearchQuery {
 
 	@Override
 	public String getLabel() {
-		return this.searchRequest != null ? this.searchRequest.toString() : "";
+		return this.searchRequest != null ? Messages.ObjectSearch_SearchQueryLabel_xmsg : "";
 	}
 
 	@Override

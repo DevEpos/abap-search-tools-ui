@@ -198,6 +198,7 @@ public class ObjectSearchResult implements ISearchResult {
 				}
 				node = new PackageNode(adtObjRefInfo.getName(), adtObjRefInfo.getDescription(),
 					adtObjRefInfo.getAdtObjectReference());
+				node.setAdditionalInfo(adtObjRefInfo.getAdditionalInfo());
 				packageNodes.add(node);
 			}
 
@@ -245,7 +246,7 @@ public class ObjectSearchResult implements ISearchResult {
 		final Map<String, IAdtObjectReferenceNode> tmpPackageMap, final List<IAdtObjectReferenceNode> tmpPackageNodes) {
 
 		final IExtendedAdtObjectInfo extendedInfo = node.getAdapter(IExtendedAdtObjectInfo.class);
-		final String owner = extendedInfo.getOwner();
+		final String owner = extendedInfo != null ? extendedInfo.getOwner() : "";
 
 		final String personalizedTmpPackageName = TEMP_PACKAGE_NAME + " - " + owner; //$NON-NLS-1$
 

@@ -43,6 +43,11 @@ import com.sap.adt.tools.core.ui.AbapProjectProposalProvider;
 import com.sap.adt.tools.core.ui.dialogs.AbapProjectSelectionDialog;
 import com.sap.adt.util.ui.SWTUtil;
 
+/**
+ * Describes the Page in the Search Dialog for the extended ABAP Object Search
+ * 
+ * @author stockbal
+ */
 public class ObjectSearchPage extends DialogPage implements ISearchPage {
 	public static final String LAST_PROJECT_PREF = "com.devepos.adt.saat.objectsearch.lastSelectedProject"; //$NON-NLS-1$
 
