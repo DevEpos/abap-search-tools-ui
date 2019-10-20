@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/com.devepos.adt.searchandanalysistools.model/src"
+    modelPluginID="com.devepos.adt.searchandanalysistools.model" modelName="Search-favorites"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="8.0" copyrightFields="false" interfaceNamePattern="I{0}" operationReflection="true"
+    importOrganizing="true">
+  <foreignModel>search-favorites.ecore</foreignModel>
+  <genPackages prefix="ObjectSearchFavorites" basePackage="com.devepos.adt.saat.model"
+      resource="XML" disposableProviderFactory="true" ecorePackage="search-favorites.ecore#/">
+    <genClasses ecoreClass="search-favorites.ecore#//ObjectSearchFavorites">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference search-favorites.ecore#//ObjectSearchFavorites/objectSearchFavorites"/>
+    </genClasses>
+    <genClasses ecoreClass="search-favorites.ecore#//ObjectSearchFavorite">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute search-favorites.ecore#//ObjectSearchFavorite/objectName"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute search-favorites.ecore#//ObjectSearchFavorite/searchFilter"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute search-favorites.ecore#//ObjectSearchFavorite/description"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute search-favorites.ecore#//ObjectSearchFavorite/destinationId"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute search-favorites.ecore#//ObjectSearchFavorite/andSearchActive"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute search-favorites.ecore#//ObjectSearchFavorite/searchType"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute search-favorites.ecore#//ObjectSearchFavorite/projectIndependent"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute search-favorites.ecore#//ObjectSearchFavorite/maxResults"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute search-favorites.ecore#//ObjectSearchFavorite/allResults"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
