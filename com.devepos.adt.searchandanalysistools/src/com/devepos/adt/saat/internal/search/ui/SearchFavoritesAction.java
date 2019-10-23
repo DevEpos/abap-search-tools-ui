@@ -6,21 +6,25 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuCreator;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.window.Window;
+import org.eclipse.search.ui.ISearchResultPage;
+import org.eclipse.search2.internal.ui.SearchView;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionDialog;
 
-import com.devepos.adt.saat.IModificationListener;
 import com.devepos.adt.saat.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.messages.Messages;
+import com.devepos.adt.saat.internal.search.ObjectSearchEngine;
+import com.devepos.adt.saat.internal.search.SearchType;
 import com.devepos.adt.saat.internal.search.favorites.ExportFavoritesAction;
 import com.devepos.adt.saat.internal.search.favorites.ImportFavoritesAction;
 import com.devepos.adt.saat.internal.search.favorites.ManageSearchFavoritesDialog;
-import com.devepos.adt.saat.internal.util.IAbapProjectProvider;
+import com.devepos.adt.saat.internal.search.favorites.NewSearchFavoriteDialog;
 import com.devepos.adt.saat.internal.util.IImages;
-import com.devepos.adt.saat.search.favorites.IObjectSearchFavorite;
+import com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavorite;
 import com.devepos.adt.saat.search.favorites.IObjectSearchFavorites;
 
 /**
@@ -28,15 +32,13 @@ import com.devepos.adt.saat.search.favorites.IObjectSearchFavorites;
  *
  * @author stockbal
  */
-public class SearchFavoritesAction extends Action implements IMenuCreator, IModificationListener {
+public class SearchFavoritesAction extends Action implements IMenuCreator {
 	private Menu menu;
-	private final IAbapProjectProvider projectProvider;
 	private final IObjectSearchFavorites favoriteManager;
 
-	public SearchFavoritesAction(final IAbapProjectProvider projectProvider) {
+	public SearchFavoritesAction() {
 		super(Messages.ObjectSearch_SearchFavoritesAction_xtol,
 			SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.FAVORITES));
-		this.projectProvider = projectProvider;
 		setMenuCreator(this);
 		this.favoriteManager = SearchAndAnalysisPlugin.getDefault().getFavoriteManager();
 	}
@@ -46,7 +48,6 @@ public class SearchFavoritesAction extends Action implements IMenuCreator, IModi
 		if (this.menu != null) {
 			this.menu.dispose();
 		}
-		this.favoriteManager.removeModificationListener(this);
 	}
 
 	@Override
@@ -64,7 +65,7 @@ public class SearchFavoritesAction extends Action implements IMenuCreator, IModi
 		};
 		organizeFavoritesAction.setEnabled(this.favoriteManager.hasEntries());
 
-		final IAction createFavoriteAction = new Action(Messages.ObjectSearch_CreateFavoriteFromLastSearch_xmit) {
+		final IAction createFavoriteAction = new Action(Messages.ObjectSearch_CreateFavoriteFromCurrentQuery_xmit) {
 			@Override
 			public void run() {
 				createNewFavorite();
@@ -85,14 +86,11 @@ public class SearchFavoritesAction extends Action implements IMenuCreator, IModi
 						runSearch(favorite);
 					}
 				};
-				switch (favorite.getSearchType()) {
-				case CDS_VIEW:
+				if (SearchType.CDS_VIEW.name().equals(favorite.getSearchType())) {
 					favoriteAction.setImageDescriptor(SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.CDS_VIEW));
-					break;
-				case DB_TABLE_VIEW:
+				} else if (SearchType.DB_TABLE_VIEW.name().equals(favorite.getSearchType())) {
 					favoriteAction
 						.setImageDescriptor(SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.TABLE_DEFINITION));
-					break;
 				}
 				addActionToMenu(this.menu, favoriteAction);
 			}
@@ -117,19 +115,11 @@ public class SearchFavoritesAction extends Action implements IMenuCreator, IModi
 	 * Executes a new object search for the given favorite
 	 */
 	private void runSearch(final IObjectSearchFavorite favorite) {
-//		String destinationId = null;
-//		if (favorite.isProjectIndependent()) {
-//			destinationId = this.projectProvider.getDestinationId();
-//		} else {
-//			destinationId = favorite.getDestinationId();
-//		}
-//		final IObjectSearchQuery searchQuery = new ObjectSearchQuery(favorite.getQuery(), favorite.getSearchType(),
-//			destinationId);
-//		searchQuery.setAndSearchActice(favorite.isAndSearchActive());
-//		searchQuery.setReadApiState(true);
-//		searchQuery.setCreateHistory(true);
-//		searchQuery.setUpdateView(true);
-//		SearchEngine.runObjectSearch(searchQuery);
+		if (favorite.isProjectIndependent()) {
+			ObjectSearchEngine.openFavoriteInSearchDialog(favorite);
+		} else {
+			ObjectSearchEngine.runSearchFromFavorite(favorite);
+		}
 	}
 
 	@Override
@@ -142,30 +132,14 @@ public class SearchFavoritesAction extends Action implements IMenuCreator, IModi
 		openOrganizeFavoritesDialog();
 	}
 
-	@Override
-	public void modified(final ModificationKind kind) {
-		switch (kind) {
-		case ADDED:
-			setEnabled(true);
-			break;
-		case CLEARED:
-			setEnabled(false);
-		default:
-			break;
-		}
-	}
-
 	/*
 	 * Opens a dialog to organize all the favorites
 	 */
 	private void openOrganizeFavoritesDialog() {
-		if (!this.favoriteManager.hasEntries()) {
-			return;
-		}
-		final SelectionDialog historyDialog = new ManageSearchFavoritesDialog(
+		final SelectionDialog favoritesDialog = new ManageSearchFavoritesDialog(
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell());
-		if (historyDialog.open() == Window.OK) {
-			final Object[] chosenEntries = historyDialog.getResult();
+		if (favoritesDialog.open() == Window.OK) {
+			final Object[] chosenEntries = favoritesDialog.getResult();
 			if (chosenEntries != null && chosenEntries.length == 1) {
 				runSearch((IObjectSearchFavorite) chosenEntries[0]);
 			}
@@ -173,11 +147,20 @@ public class SearchFavoritesAction extends Action implements IMenuCreator, IModi
 	}
 
 	/*
-	 * Creates new favorite from the current history entry
+	 * Creates new favorite from the last executed object search query
 	 */
 	private void createNewFavorite() {
-//		new NewSearchFavoriteDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-//			SearchAndAnalysisPlugin.getDefault().getHistory().getActiveEntry().getQuery()).open();
+		final IWorkbenchPart activePart = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActivePart();
+		if (!(activePart instanceof SearchView)) {
+			return;
+		}
+		final SearchView currentSearchView = (SearchView) activePart;
+		final ISearchResultPage resultPage = currentSearchView.getActivePage();
+		if (resultPage == null || !(resultPage instanceof ObjectSearchResultPage)) {
+			return;
+		}
+		new NewSearchFavoriteDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+			((ObjectSearchResultPage) resultPage).getSearchQuery().getSearchRequest()).open();
 	}
 
 	/*

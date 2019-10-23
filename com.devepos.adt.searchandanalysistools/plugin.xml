@@ -61,6 +61,16 @@
             id="com.devepos.adt.saat.search.command.runWhereUsedForObject"
             name="%command.search.runWhereUsedQuery.name">
       </command>
+      <command
+            categoryId="com.devepos.adt.saat.objectsearch.commands.category"
+            id="com.devepos.adt.saat.objectsearch.command.openSearchDialog"
+            name="%command.objectsearch.opendialog.name">
+      </command>
+      <command
+            categoryId="com.devepos.adt.saat.objectsearch.commands.category"
+            id="com.devepos.adt.saat.objectsearch.command.manageFavorites"
+            name="%command.objectsearch.showFavorites.name">
+      </command>
    </extension>
    <extension
          id="com.devepos.adt.saat.search.command.runWhereUsedForObject"
@@ -103,6 +113,14 @@
       <handler
             class="com.devepos.adt.saat.internal.handlers.RunWhereUsedQueryHandler"
             commandId="com.devepos.adt.saat.search.command.runWhereUsedForObject">
+      </handler>
+      <handler
+            class="com.devepos.adt.saat.internal.handlers.OpenObjectSearchDialogHandler"
+            commandId="com.devepos.adt.saat.objectsearch.command.openSearchDialog">
+      </handler>
+      <handler
+            class="com.devepos.adt.saat.internal.handlers.OpenObjectSearchFavoritesHandler"
+            commandId="com.devepos.adt.saat.objectsearch.command.manageFavorites">
       </handler>
    </extension>
    <extension
@@ -156,7 +174,7 @@
             allPopups="false"
             locationURI="popup:#EditorContext?after=group.open">
          <dynamic
-               class="com.devepos.adt.saat.internal.ui.DynamicOpenInMenu"
+               class="com.devepos.adt.saat.internal.menu.DynamicOpenInMenu"
                id="com.devepos.adt.saat.editor.openInDynamicMenu">
             <visibleWhen
                   checkEnabled="false">
@@ -173,7 +191,7 @@
             allPopups="false"
             locationURI="popup:org.eclipse.ui.navigator.ProjectExplorer#PopupMenu?endof=group.open">
          <dynamic
-               class="com.devepos.adt.saat.internal.ui.DynamicOpenInMenu"
+               class="com.devepos.adt.saat.internal.menu.DynamicOpenInMenu"
                id="com.devepos.adt.saat.projectExplorer.openInDynamicMenu">
             <visibleWhen
                   checkEnabled="false">
@@ -187,6 +205,46 @@
                   </iterate>
                </with>
             </visibleWhen>
+         </dynamic>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
+         <toolbar
+               id="com.devepos.adt.saat.search"
+               label="ABAP Search and Analysis">
+            <command
+                  commandId="com.devepos.adt.saat.objectsearch.command.openSearchDialog"
+                  icon="icons/ABAPSearch.png"
+                  label="%command.objectsearch.opendialog.name"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="false">
+                  <reference
+                        definitionId="com.sap.adt.tools.core.ui.toolsActive">
+                  </reference>
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="com.devepos.adt.saat.objectsearch.command.manageFavorites"
+                  icon="icons/ABAPSearchFavorites.png"
+                  label="%command.objectsearch.showFavorites.name"
+                  style="pulldown">
+               <visibleWhen
+                     checkEnabled="false">
+                  <reference
+                        definitionId="com.sap.adt.tools.core.ui.toolsActive">
+                  </reference>
+               </visibleWhen>
+            </command>
+         </toolbar>
+      </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:com.devepos.adt.saat.objectsearch.command.manageFavorites">
+         <dynamic
+               class="com.devepos.adt.saat.internal.menu.ManageSearchFavoritesMenu"
+               id="com.devepos.adt.saat.objectsearch.dynamicFavoriteMenu">
          </dynamic>
       </menuContribution>
    </extension>
@@ -271,4 +329,6 @@
               parentId="com.devepos.adt.saat">
         </themeElementCategory>
      </extension>
+
+
 </plugin>

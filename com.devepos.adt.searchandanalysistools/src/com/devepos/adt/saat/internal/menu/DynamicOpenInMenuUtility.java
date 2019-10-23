@@ -1,4 +1,4 @@
-package com.devepos.adt.saat.internal.ui;
+package com.devepos.adt.saat.internal.menu;
 
 import java.util.List;
 
@@ -39,7 +39,13 @@ import com.devepos.adt.saat.internal.util.ObjectContainer;
  */
 public class DynamicOpenInMenuUtility {
 
-	public static IMenuManager buildShowInVirtualTreeSubMenu(final List<IAdtObject> adtObjects) {
+	/**
+	 * Creates analysis tools menu for the list of ADT Objects
+	 *
+	 * @param  adtObjects a list of ADT objects
+	 * @return            the created menu or <code>null</code>
+	 */
+	public static IMenuManager buildAnalysisToolsSubMenu(final List<IAdtObject> adtObjects) {
 		if (adtObjects == null || adtObjects.isEmpty()) {
 			return null;
 		}

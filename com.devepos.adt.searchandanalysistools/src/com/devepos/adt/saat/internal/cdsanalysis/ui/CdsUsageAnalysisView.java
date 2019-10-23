@@ -32,12 +32,12 @@ import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
 import com.devepos.adt.saat.internal.elementinfo.IElementInfo;
 import com.devepos.adt.saat.internal.elementinfo.IElementInfoCollection;
 import com.devepos.adt.saat.internal.elementinfo.IElementInfoProvider;
+import com.devepos.adt.saat.internal.menu.MenuItemFactory;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.tree.ILazyLoadingNode;
 import com.devepos.adt.saat.internal.tree.ITreeNode;
 import com.devepos.adt.saat.internal.tree.LazyLoadingAdtObjectReferenceNode;
 import com.devepos.adt.saat.internal.tree.LazyLoadingTreeContentProvider;
-import com.devepos.adt.saat.internal.ui.MenuItemFactory;
 import com.devepos.adt.saat.internal.util.CommandPossibleChecker;
 import com.devepos.adt.saat.internal.util.IImages;
 

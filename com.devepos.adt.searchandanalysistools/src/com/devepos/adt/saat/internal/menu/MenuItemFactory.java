@@ -1,4 +1,4 @@
-package com.devepos.adt.saat.internal.ui;
+package com.devepos.adt.saat.internal.menu;
 
 import java.util.Map;
 import java.util.stream.Collectors;

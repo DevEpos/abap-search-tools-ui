@@ -46,6 +46,7 @@ import com.devepos.adt.saat.ICommandConstants;
 import com.devepos.adt.saat.ObjectType;
 import com.devepos.adt.saat.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.cdsanalysis.CdsAnalysisUriDiscovery;
+import com.devepos.adt.saat.internal.menu.MenuItemFactory;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.tree.ActionTreeNode;
 import com.devepos.adt.saat.internal.tree.IAdtObjectReferenceNode;
@@ -58,7 +59,6 @@ import com.devepos.adt.saat.internal.tree.PackageNode;
 import com.devepos.adt.saat.internal.ui.CollapseAllTreeNodesAction;
 import com.devepos.adt.saat.internal.ui.CollapseTreeNodesAction;
 import com.devepos.adt.saat.internal.ui.CopyToClipboardAction;
-import com.devepos.adt.saat.internal.ui.MenuItemFactory;
 import com.devepos.adt.saat.internal.ui.OpenAdtDataPreviewAction;
 import com.devepos.adt.saat.internal.ui.OpenAdtObjectAction;
 import com.devepos.adt.saat.internal.ui.StylerFactory;
@@ -70,11 +70,12 @@ import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 
 /**
  * The result page for an executed Object Search
- * 
+ *
  * @author stockbal
  */
 public class ObjectSearchResultPage extends Page implements ISearchResultPage, ISearchResultListener {
 	public static final String GROUPED_BY_PACKAGE_PREF = "com.devepos.adt.saat.objectsearch.groupByPackage"; //$NON-NLS-1$
+	public static final String DIALOG_ID = "com.devepos.adt.saat.ObjectSearchPage"; //$NON-NLS-1$ ;
 	private String id;
 	private Object state;
 	private ObjectSearchResult result;
@@ -82,16 +83,19 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 	private TreeViewer searchResultTree;
 	private Composite mainComposite;
 	private ObjectSearchQuery searchQuery;
+
 	private CollapseAllTreeNodesAction collapseAllNodesAction;
 	private ExpandAllAction expandAllAction;
 	private CollapseTreeNodesAction collapseNodesAction;
 	private ExpandSelectedPackageNodesAction expandPackageNodesAction;
-	private IAbapProjectProvider projectProvider;
 	private CopyToClipboardAction copyToClipBoardAction;
-	private boolean isDbBrowserIntegrationAvailable;
-	private GroupByPackageAction groupByPackageAction;
-	private final IPreferenceStore prefStore;
 	private OpenObjectSearchPreferences openPreferencesAction;
+	private GroupByPackageAction groupByPackageAction;
+	private SearchFavoritesAction favoritesAction;
+
+	private IAbapProjectProvider projectProvider;
+	private boolean isDbBrowserIntegrationAvailable;
+	private final IPreferenceStore prefStore;
 
 	public ObjectSearchResultPage() {
 		this.prefStore = SearchAndAnalysisPlugin.getDefault().getPreferenceStore();
@@ -119,6 +123,7 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 		final IToolBarManager tbm = actionBars.getToolBarManager();
 		MenuItemFactory.addCommandItem(tbm, IContextMenuConstants.GROUP_NEW, ICommandConstants.OBJECT_SEARCH_OPEN_IN_DIALOG,
 			IImages.SEARCH, Messages.ObjectSearchResultPage_OpenInSearchDialog_xtol, false, null);
+		tbm.appendToGroup(IContextMenuConstants.GROUP_NEW, this.favoritesAction);
 		tbm.appendToGroup(IContextMenuConstants.GROUP_EDIT, this.collapseAllNodesAction);
 		tbm.appendToGroup(IContextMenuConstants.GROUP_EDIT, this.expandAllAction);
 		tbm.appendToGroup(IContextMenuConstants.GROUP_VIEWER_SETUP, this.groupByPackageAction);
@@ -223,7 +228,7 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 	 * @return the ID of corresponding Search Dialog Page of this result page
 	 */
 	public String getSearchDialogId() {
-		return "com.devepos.adt.saat.ObjectSearchPage"; //$NON-NLS-1$
+		return DIALOG_ID;
 	}
 
 	/**
@@ -251,6 +256,7 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 	}
 
 	private void initializeActions() {
+		this.favoritesAction = new SearchFavoritesAction();
 		this.collapseAllNodesAction = new CollapseAllTreeNodesAction(this.searchResultTree);
 		this.collapseNodesAction = new CollapseTreeNodesAction(this.searchResultTree);
 		this.copyToClipBoardAction = new CopyToClipboardAction();
@@ -305,6 +311,7 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 		final Control viewerControl = this.searchResultTree.getControl();
 		final Menu menu = menuMgr.createContextMenu(viewerControl);
 		viewerControl.setMenu(menu);
+		getSite().registerContextMenu(this.searchViewPart.getViewSite().getId(), menuMgr, this.searchResultTree);
 	}
 
 	private void fillContextMenu(final IMenuManager menu) {

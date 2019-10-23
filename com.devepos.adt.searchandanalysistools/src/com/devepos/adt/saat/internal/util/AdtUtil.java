@@ -156,7 +156,8 @@ public class AdtUtil {
 	 */
 	public static List<IAdtObject> getAdtObjectsFromSelection(final boolean supportsDataPreview) {
 		List<IAdtObject> adtObjects = null;
-		final ISelection selection = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService().getSelection();
+		final ISelection selection = SelectionUtil.getSelection();
+
 		if (selection != null) {
 			if (selection instanceof ITreeSelection) {
 				adtObjects = getObjectFromTreeSelection((ITreeSelection) selection);

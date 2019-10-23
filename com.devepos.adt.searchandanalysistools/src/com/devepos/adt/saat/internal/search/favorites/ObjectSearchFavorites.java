@@ -5,10 +5,10 @@ import java.util.List;
 
 import com.devepos.adt.saat.IModificationListener;
 import com.devepos.adt.saat.IModificationListener.ModificationKind;
-import com.devepos.adt.saat.internal.search.SearchType;
-import com.devepos.adt.saat.search.favorites.IObjectSearchFavorite;
+import com.devepos.adt.saat.internal.search.ui.ObjectSearchRequest;
+import com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavorite;
+import com.devepos.adt.saat.model.objectsearchfavorites.impl.ObjectSearchFavoritesFactoryImpl;
 import com.devepos.adt.saat.search.favorites.IObjectSearchFavorites;
-import com.devepos.adt.saat.search.model.IObjectSearchQuery;
 
 /**
  * Implementation of the {@link IObjectSearchFavorites} of the object search
@@ -25,9 +25,13 @@ public class ObjectSearchFavorites implements IObjectSearchFavorites {
 	}
 
 	@Override
-	public void addFavorite(final IObjectSearchQuery query, final String description, final boolean isProjectIndependent) {
-		addFavorite(new ObjectSearchFavorite(query.getQuery(), description, query.getSearchType(), query.getDestinationId(),
-			query.isAndSearchActive()));
+	public void addFavorite(final ObjectSearchRequest searchRequest) {
+		final IObjectSearchFavorite newFavorite = ObjectSearchFavoritesFactoryImpl.init().createObjectSearchFavorite();
+		newFavorite.setObjectName(searchRequest.getSearchTerm());
+		newFavorite.setSearchFilter(searchRequest.getParametersString());
+		newFavorite.setMaxResults(searchRequest.getMaxResults());
+		newFavorite.setDestinationId(searchRequest.getDestinationId());
+		addFavorite(newFavorite);
 	}
 
 	@Override
@@ -51,7 +55,7 @@ public class ObjectSearchFavorites implements IObjectSearchFavorites {
 	}
 
 	@Override
-	public boolean contains(final String destinationId, final SearchType searchType, final String description) {
+	public boolean contains(final String destinationId, final String searchType, final String description) {
 		return this.entries.stream()
 			.anyMatch(f -> description.equals(f.getDescription())
 				&& (f.getDestinationId() == null && destinationId == null || destinationId.equals(f.getDestinationId()))
@@ -59,7 +63,6 @@ public class ObjectSearchFavorites implements IObjectSearchFavorites {
 	}
 
 	@Override
-//	@JsonDeserialize(contentAs = ObjectSearchFavorite.class)
 	public void setFavorites(final List<IObjectSearchFavorite> favorites) {
 		this.entries = favorites;
 	}

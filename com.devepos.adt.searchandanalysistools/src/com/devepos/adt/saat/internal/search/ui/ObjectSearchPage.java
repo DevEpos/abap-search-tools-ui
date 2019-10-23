@@ -45,15 +45,19 @@ import com.sap.adt.util.ui.SWTUtil;
 
 /**
  * Describes the Page in the Search Dialog for the extended ABAP Object Search
- * 
+ *
  * @author stockbal
  */
 public class ObjectSearchPage extends DialogPage implements ISearchPage {
 	public static final String LAST_PROJECT_PREF = "com.devepos.adt.saat.objectsearch.lastSelectedProject"; //$NON-NLS-1$
 
 	private static final int MULTIPLIER = 50;
-	private static final int MAX_SCALE = 20;
+	private static final int BIG_MULTIPLIER = 500;
+	private static final int SMALL_SCALE_LIMIT = 20;
+	private static final int MAX_SCALE = 25;
 	private static final int MIN_SCALE = 1;
+	private static final int SMALL_SCALE_UPPER_BOUND = MULTIPLIER * SMALL_SCALE_LIMIT;
+	private static final int MAX_RESULTS_UPPER_BOUND = SMALL_SCALE_UPPER_BOUND + (MAX_SCALE - SMALL_SCALE_LIMIT) * BIG_MULTIPLIER;
 	private static final int STATUS_PROJECT = 100;
 	private static final int STATUS_PARAMETERS = 200;
 	private static final int STATUS_SEARCH_TYPE = 300;
@@ -70,7 +74,6 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 	private Label searchStatusImageLabel;
 	private Label searchStatusTextLabel;
 	private Label maxResultsLabel;
-	private boolean allResults;
 	private int maxResults;
 	private Text projectField;
 	private IStatus currentStatus;
@@ -158,8 +161,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 		this.searchTypeViewer.setSelection(new StructuredSelection(request.getSearchType()));
 		final String parametersString = request.getParametersString();
 		this.parametersInput.setText(parametersString);
-		this.maxResultsScale.setSelection(request.getMaxResults() / MULTIPLIER);
-		this.maxResults = request.getMaxResults();
+		updateMaxResultsScaleFromNumber(request.getMaxResults());
 		this.andOptionCheck.setSelection(request.isAndSearchActive());
 		updateMaxResults();
 
@@ -205,18 +207,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 		} catch (final IllegalArgumentException e) {
 		}
 		// set initial max result values
-		final int maxResultPref = this.prefStore.getInt(IPreferences.MAX_SEARCH_RESULTS);
-		if (maxResultPref > 0) {
-			int maxResultScalePref = maxResultPref / MULTIPLIER;
-			if (maxResultScalePref > MAX_SCALE) {
-				maxResultScalePref = MAX_SCALE;
-			}
-			this.maxResultsScale.setSelection(maxResultScalePref);
-			this.maxResults = maxResultPref;
-		} else {
-			this.maxResultsScale.setSelection(1);
-			this.maxResults = 1 * MULTIPLIER;
-		}
+		updateMaxResultsScaleFromNumber(this.prefStore.getInt(IPreferences.MAX_SEARCH_RESULTS));
 		updateMaxResults();
 	}
 
@@ -341,8 +332,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 		this.maxResultsScale.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(final SelectionEvent e) {
-				ObjectSearchPage.this.maxResults = ObjectSearchPage.this.maxResultsScale.getSelection() * MULTIPLIER;
-				ObjectSearchPage.this.allResults = ObjectSearchPage.this.maxResultsScale.getSelection() == MAX_SCALE;
+				calculateMaxResultsByScale(ObjectSearchPage.this.maxResultsScale.getSelection());
 				updateMaxResults();
 			}
 		});
@@ -553,13 +543,39 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 	}
 
 	private void updateMaxResults() {
-		if (this.allResults) {
-			this.maxResultsLabel.setText(Messages.ObjectSearch_AllResultsOptions_xmsg);
-			this.searchRequest.setReadAllEntries(true);
+		this.searchRequest.setReadAllEntries(false);
+		this.searchRequest.setMaxResults(this.maxResults);
+		this.maxResultsLabel.setText(NLS.bind(Messages.ObjectSearch_FoundResultsLabel_xmsg, this.maxResults));
+	}
+
+	private void updateMaxResultsScaleFromNumber(final int maxResults) {
+		if (maxResults > 0) {
+			if (maxResults >= MAX_RESULTS_UPPER_BOUND) {
+				this.maxResults = MAX_RESULTS_UPPER_BOUND;
+				this.maxResultsScale.setSelection(MAX_SCALE);
+			} else if (maxResults >= SMALL_SCALE_UPPER_BOUND && maxResults < MAX_RESULTS_UPPER_BOUND) {
+				this.maxResultsScale.setSelection(SMALL_SCALE_LIMIT + (maxResults - SMALL_SCALE_UPPER_BOUND) / BIG_MULTIPLIER);
+				this.maxResults = maxResults;
+			} else {
+				int maxResultScalePref = maxResults / MULTIPLIER;
+				if (maxResultScalePref > MAX_SCALE) {
+					maxResultScalePref = MAX_SCALE;
+				}
+				this.maxResultsScale.setSelection(maxResultScalePref);
+				this.maxResults = maxResults;
+			}
 		} else {
-			this.searchRequest.setReadAllEntries(false);
-			this.searchRequest.setMaxResults(this.maxResults);
-			this.maxResultsLabel.setText(NLS.bind(Messages.ObjectSearch_FoundResultsLabel_xmsg, this.maxResults));
+			this.maxResultsScale.setSelection(1);
+			this.maxResults = 1 * MULTIPLIER;
+		}
+	}
+
+	private void calculateMaxResultsByScale(final int selectedScale) {
+		if (selectedScale >= SMALL_SCALE_LIMIT) {
+			this.maxResults = SMALL_SCALE_UPPER_BOUND;
+			this.maxResults += (selectedScale - SMALL_SCALE_LIMIT) * BIG_MULTIPLIER;
+		} else {
+			this.maxResults = selectedScale * MULTIPLIER;
 		}
 	}
 

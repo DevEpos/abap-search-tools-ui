@@ -1,4 +1,4 @@
-package com.devepos.adt.saat.internal.ui;
+package com.devepos.adt.saat.internal.menu;
 
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;
@@ -11,7 +11,7 @@ public class DynamicOpenInMenu extends CompoundContributionItem {
 	private IMenuManager dynamicOpenInMenu;
 
 	public DynamicOpenInMenu() {
-		this.dynamicOpenInMenu = DynamicOpenInMenuUtility.buildShowInVirtualTreeSubMenu(AdtUtil.getAdtObjectsFromSelection(true));
+		this.dynamicOpenInMenu = DynamicOpenInMenuUtility.buildAnalysisToolsSubMenu(AdtUtil.getAdtObjectsFromSelection(true));
 	}
 
 	public DynamicOpenInMenu(final String id) {

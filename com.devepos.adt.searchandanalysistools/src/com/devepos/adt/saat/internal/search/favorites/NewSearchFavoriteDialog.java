@@ -21,8 +21,10 @@ import org.eclipse.swt.widgets.Text;
 
 import com.devepos.adt.saat.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.messages.Messages;
+import com.devepos.adt.saat.internal.search.ui.ObjectSearchRequest;
+import com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavorite;
+import com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavoritesFactory;
 import com.devepos.adt.saat.search.favorites.IObjectSearchFavorites;
-import com.devepos.adt.saat.search.model.IObjectSearchQuery;
 
 /**
  * Dialog for creating an executed search as a favorite
@@ -36,16 +38,16 @@ public class NewSearchFavoriteDialog extends StatusDialog {
 	private Button createButton;
 	private String favoriteDescription;
 	private boolean isProjectIndependent;
-	private final IObjectSearchQuery query;
+	private final ObjectSearchRequest searchRequest;
 	private final IObjectSearchFavorites favoriteManager;
 
 	private Button isAndSearchActiveCheckBox;
 
-	public NewSearchFavoriteDialog(final Shell parent, final IObjectSearchQuery query) {
+	public NewSearchFavoriteDialog(final Shell parent, final ObjectSearchRequest searchRequest) {
 		super(parent);
 		setTitle(Messages.NewSearchFavoriteDialog_Title_xtit);
 		setHelpAvailable(false);
-		this.query = query;
+		this.searchRequest = searchRequest;
 		this.favoriteManager = SearchAndAnalysisPlugin.getDefault().getFavoriteManager();
 		validateDialogState();
 	}
@@ -87,14 +89,16 @@ public class NewSearchFavoriteDialog extends StatusDialog {
 		group.setText(Messages.NewSearchFavoriteDialog_SearchParameters_xgrp);
 		GridLayoutFactory.swtDefaults().numColumns(2).applyTo(group);
 
-		createReadOnlyTextWithLabel(Messages.NewSearchFavoriteDialog_Project_xfld, this.query.getDestinationId(), group);
-		createReadOnlyTextWithLabel(Messages.NewSearchFavoriteDialog_SearchType_xfld, this.query.getSearchType().toString(),
+		createReadOnlyTextWithLabel(Messages.NewSearchFavoriteDialog_Project_xfld, this.searchRequest.getDestinationId(), group);
+		createReadOnlyTextWithLabel(Messages.NewSearchFavoriteDialog_SearchType_xfld,
+			this.searchRequest.getSearchType().toString(), group);
+		createReadOnlyTextWithLabel(Messages.NewSearchFavoriteDialog_ObjectName_xlfd, this.searchRequest.getSearchTerm(), group);
+		createReadOnlyTextWithLabel(Messages.NewSearchFavoriteDialog_SearchFilter_xlfd, this.searchRequest.getParametersString(),
 			group);
-		createReadOnlyTextWithLabel(Messages.NewSearchFavoriteDialog_SearchQuery_xlfd, this.query.getQuery(), group);
 
 		this.isAndSearchActiveCheckBox = new Button(group, SWT.CHECK);
 		this.isAndSearchActiveCheckBox.setText(Messages.ObjectSearch_UseAndFilter_xtol);
-		this.isAndSearchActiveCheckBox.setSelection(this.query.isAndSearchActive());
+		this.isAndSearchActiveCheckBox.setSelection(this.searchRequest.isAndSearchActive());
 		GridDataFactory.fillDefaults().span(2, 1).applyTo(this.isAndSearchActiveCheckBox);
 	}
 
@@ -179,8 +183,8 @@ public class NewSearchFavoriteDialog extends StatusDialog {
 				Messages.NewSearchFavoriteDialog_NoDescriptionError_xmsg, null);
 		} else {
 			// check if there already is a favorite with this description
-			if (this.favoriteManager.contains(this.isProjectIndependent ? null : this.query.getDestinationId(),
-				this.query.getSearchType(), this.favoriteDescription)) {
+			if (this.favoriteManager.contains(this.isProjectIndependent ? null : this.searchRequest.getDestinationId(),
+				this.searchRequest.getSearchType().name(), this.favoriteDescription)) {
 				status = new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, IStatus.ERROR,
 					NLS.bind(Messages.NewSearchFavoriteDialog_DuplicateFavoriteError_xmsg, this.favoriteDescription), null);
 			}
@@ -194,9 +198,18 @@ public class NewSearchFavoriteDialog extends StatusDialog {
 
 	@Override
 	protected void okPressed() {
-		this.favoriteManager
-			.addFavorite(new ObjectSearchFavorite(this.query.getQuery(), this.favoriteDescription, this.query.getSearchType(),
-				this.isProjectIndependent ? null : this.query.getDestinationId(), this.isAndSearchActiveCheckBox.getSelection()));
+		final IObjectSearchFavorite newFavorite = IObjectSearchFavoritesFactory.eINSTANCE.createObjectSearchFavorite();
+		newFavorite.setDescription(this.favoriteDescription);
+		newFavorite.setProjectIndependent(this.isProjectIndependent);
+		if (!this.isProjectIndependent) {
+			newFavorite.setDestinationId(this.searchRequest.getDestinationId());
+		}
+		newFavorite.setAndSearchActive(this.isAndSearchActiveCheckBox.getSelection());
+		newFavorite.setSearchFilter(this.searchRequest.getParametersString());
+		newFavorite.setObjectName(this.searchRequest.getSearchTerm());
+		newFavorite.setSearchType(this.searchRequest.getSearchType().name());
+		newFavorite.setMaxResults(this.searchRequest.getMaxResults());
+		this.favoriteManager.addFavorite(newFavorite);
 		ObjectSearchFavoriteStorage.serialize();
 		super.okPressed();
 	}

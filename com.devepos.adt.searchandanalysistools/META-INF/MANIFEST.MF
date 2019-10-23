@@ -1,16 +1,19 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: ABAP Search and Analysis Tools
+Bundle-Name: %pluginName
 Bundle-SymbolicName: com.devepos.adt.searchandanalysistools;singleton:=true
 Bundle-Version: 1.0.0.qualifier
+Bundle-ClassPath: .
 Bundle-Activator: com.devepos.adt.saat.SearchAndAnalysisPlugin
-Bundle-Vendor: DEVEPOS
+Bundle-Vendor: %providerName
+Bundle-Localization: OSGI-INF/l10n/bundle
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.expressions,
  org.eclipse.core.resources,
  org.eclipse.core.runtime,
  org.eclipse.emf.common,
- org.eclipse.emf.ecore,
+ org.eclipse.emf.ecore;visibility:=reexport,
+ org.eclipse.emf.ecore.xmi;visibility:=reexport,
  org.eclipse.jface,
  org.eclipse.ui.ide,
  org.eclipse.ui.workbench,
@@ -18,6 +21,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.search,
  org.eclipse.text,
  org.junit,
+ com.devepos.adt.searchandanalysistools.model,
  com.sap.adt.tools.abapsource,
  com.sap.adt.cds.ddl.ui,
  com.sap.cds.ddl,

@@ -58,7 +58,8 @@ public class ObjectSearchRequest {
 	}
 
 	public String getDestinationId() {
-		return this.projectProvider != null ? this.projectProvider.getDestinationId() : "";
+		return this.projectProvider != null ? this.projectProvider.getDestinationId()
+			: this.destinationId != null ? this.destinationId : "";
 	}
 
 	public boolean isAndSearchActive() {

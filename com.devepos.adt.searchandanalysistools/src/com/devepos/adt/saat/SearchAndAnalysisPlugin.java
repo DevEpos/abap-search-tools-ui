@@ -66,7 +66,7 @@ public class SearchAndAnalysisPlugin extends AbstractUIPlugin {
 		if (this.searchFavorites == null) {
 			this.searchFavorites = new ObjectSearchFavorites();
 			// deserialize existing search favorites
-			ObjectSearchFavoriteStorage.deserialize();
+			ObjectSearchFavoriteStorage.deserialize(this.searchFavorites);
 		}
 		return this.searchFavorites;
 	}

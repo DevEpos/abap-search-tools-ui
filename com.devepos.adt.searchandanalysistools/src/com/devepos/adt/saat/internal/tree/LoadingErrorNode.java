@@ -24,7 +24,6 @@ public class LoadingErrorNode extends TreeNodeBase {
 
 	@Override
 	public String getImageId() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

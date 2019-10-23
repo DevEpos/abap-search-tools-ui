@@ -3,8 +3,8 @@ package com.devepos.adt.saat.search.favorites;
 import java.util.List;
 
 import com.devepos.adt.saat.IModificationProvider;
-import com.devepos.adt.saat.internal.search.SearchType;
-import com.devepos.adt.saat.search.model.IObjectSearchQuery;
+import com.devepos.adt.saat.internal.search.ui.ObjectSearchRequest;
+import com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavorite;
 
 /**
  * Manages the favorites of the object search
@@ -23,13 +23,10 @@ public interface IObjectSearchFavorites extends IModificationProvider {
 	/**
 	 * Adds a new favorite entry for the given parameters
 	 *
-	 * @param query                the executed {@link IObjectSearchQuery}
-	 * @param description          the description for the favorite
-	 * @param isProjectIndependent <code>true</code> if the favorite entry should be
-	 *                             project independent
-	 * @see                        IObjectSearchQuery
+	 * @param searchRequest the search request
+	 * @see                 ObjectSearchRequest
 	 */
-	void addFavorite(IObjectSearchQuery query, String description, boolean isProjectIndependent);
+	void addFavorite(ObjectSearchRequest searchRequest);
 
 	/**
 	 * Removes the given history entry from the history
@@ -69,5 +66,5 @@ public interface IObjectSearchFavorites extends IModificationProvider {
 	 * @return               <code>true</code> if there is favorite with the given
 	 *                       description
 	 */
-	boolean contains(String destinationId, SearchType searchType, String description);
+	boolean contains(String destinationId, String searchType, String description);
 }

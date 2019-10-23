@@ -11,7 +11,6 @@ import com.sap.adt.tools.core.ui.AdtObjectExecutionUtilFactory;
  *
  * @author stockbal
  */
-@SuppressWarnings("restriction")
 public class AdtObjectExecutor {
 
 	/**

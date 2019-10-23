@@ -17,6 +17,7 @@ import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.search.ObjectSearchContentHandler;
 import com.devepos.adt.saat.internal.search.ObjectSearchUriDiscovery;
 import com.devepos.adt.saat.internal.search.QueryParameterName;
+import com.devepos.adt.saat.internal.util.AbapProjectProviderAccessor;
 import com.devepos.adt.saat.internal.util.AdtUtil;
 import com.devepos.adt.saat.internal.util.IAbapProjectProvider;
 import com.sap.adt.communication.resources.AdtRestResourceFactory;
@@ -60,8 +61,21 @@ public class ObjectSearchQuery implements ISearchQuery {
 		this.searchResult.cleanup();
 
 		// perform object search
-		final IAbapProjectProvider projectProvider = this.searchRequest.getProjectProvider();
-		final ObjectSearchUriDiscovery uriDiscovery = new ObjectSearchUriDiscovery(projectProvider.getDestinationId());
+		final String destinationId = this.searchRequest.getDestinationId();
+		IAbapProjectProvider projectProvider = this.searchRequest.getProjectProvider();
+		if (projectProvider == null) {
+			projectProvider = AbapProjectProviderAccessor.getProviderForDestination(destinationId);
+			this.searchRequest.setProjectProvider(projectProvider);
+		}
+		if (projectProvider == null) {
+			return new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID,
+				NLS.bind("Destination Id ''{0}'' is not valid", destinationId));
+		}
+		if (!projectProvider.ensureLoggedOn()) {
+			return new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID,
+				NLS.bind(Messages.ObjectSearch_ProjectLogonFailed_xmsg, projectProvider.getProjectName()));
+		}
+		final ObjectSearchUriDiscovery uriDiscovery = new ObjectSearchUriDiscovery(destinationId);
 
 		final Map<String, Object> parameterMap = this.searchRequest.getParameters();
 		// add hidden parameters to search query

@@ -9,7 +9,6 @@ import org.eclipse.search.ui.ISearchResultPage;
 import org.eclipse.search2.internal.ui.SearchView;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.devepos.adt.saat.internal.search.ui.ObjectSearchPage;
@@ -26,7 +25,7 @@ public class OpenInSearchDialogHandler extends AbstractHandler implements IHandl
 		final ISearchResultPage resultPage = activeSearchView.getActivePage();
 		if (resultPage != null && resultPage instanceof ObjectSearchResultPage) {
 			final ObjectSearchResultPage objectSearchResultPage = (ObjectSearchResultPage) resultPage;
-			final IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+			final IWorkbenchWindow window = HandlerUtil.getActiveWorkbenchWindow(event);
 			final SearchDialog dialog = new SearchDialog(window, objectSearchResultPage.getSearchDialogId());
 			dialog.setBlockOnOpen(false);
 			dialog.open();

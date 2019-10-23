@@ -19,7 +19,7 @@ public class Messages extends NLS {
 	public static String Actions_CollapseAllNodes_xmit;
 	public static String Actions_CollapseNode_xtol;
 	public static String ObjectSearch_ContentAssistDecorator_xtol;
-	public static String ObjectSearch_CreateFavoriteFromLastSearch_xmit;
+	public static String ObjectSearch_CreateFavoriteFromCurrentQuery_xmit;
 	public static String ObjectSearch_ExpandNodeAction_xmsg;
 	public static String ObjectSearch_FoundResultsLabel_xmsg;
 	public static String ObjectSearch_GeneralError_xmsg;
@@ -188,7 +188,8 @@ public class Messages extends NLS {
 	public static String NewSearchFavoriteDialog_Project_xfld;
 	public static String NewSearchFavoriteDialog_ProjectIndependentSetting_xckl;
 	public static String NewSearchFavoriteDialog_SearchParameters_xgrp;
-	public static String NewSearchFavoriteDialog_SearchQuery_xlfd;
+	public static String NewSearchFavoriteDialog_ObjectName_xlfd;
+	public static String NewSearchFavoriteDialog_SearchFilter_xlfd;
 	public static String NewSearchFavoriteDialog_SearchType_xfld;
 	public static String NewSearchFavoriteDialog_Title_xtit;
 	public static String RunWhereUsedQueryHandler_openObjectDialog_xtit;

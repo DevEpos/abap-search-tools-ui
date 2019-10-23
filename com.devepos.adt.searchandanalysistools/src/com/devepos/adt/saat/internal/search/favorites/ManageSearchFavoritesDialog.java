@@ -38,8 +38,9 @@ import org.eclipse.ui.dialogs.SelectionDialog;
 
 import com.devepos.adt.saat.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.messages.Messages;
+import com.devepos.adt.saat.internal.search.SearchType;
 import com.devepos.adt.saat.internal.util.IImages;
-import com.devepos.adt.saat.search.favorites.IObjectSearchFavorite;
+import com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavorite;
 
 /**
  * This dialog is for managing object search favorites
@@ -65,7 +66,9 @@ public class ManageSearchFavoritesDialog extends SelectionDialog {
 		setTitle(Messages.ManageSearchFavoritesDialog_Title_xtit);
 		setMessage(Messages.SearchHistorySelectionDialog_InfoMessage_xmsg);
 		this.input = new ArrayList<>(SearchAndAnalysisPlugin.getDefault().getFavoriteManager().getFavorites());
-		setInitialSelections(this.input.get(0));
+		if (this.input != null && !this.input.isEmpty()) {
+			setInitialSelections(this.input.get(0));
+		}
 		this.removedEntries = new ArrayList<>();
 		setHelpAvailable(false);
 	}
@@ -129,7 +132,7 @@ public class ManageSearchFavoritesDialog extends SelectionDialog {
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseDoubleClick(final MouseEvent e) {
-				okPressed();
+				buttonPressed(IDialogConstants.OPEN_ID);
 			}
 		});
 		GridDataFactory.fillDefaults()
@@ -241,16 +244,22 @@ public class ManageSearchFavoritesDialog extends SelectionDialog {
 	 */
 	@Override
 	protected void okPressed() {
+		boolean orderChanged = false;
 		// remove history entries
 		for (final IObjectSearchFavorite favoriteEntry : this.removedEntries) {
 			SearchAndAnalysisPlugin.getDefault().getFavoriteManager().removeFavorite(favoriteEntry);
 		}
 		if (!this.input.isEmpty()) {
 			if (this.orderChanged) {
-				final List<IObjectSearchFavorite> favorites = SearchAndAnalysisPlugin.getDefault().getFavoriteManager().getFavorites();
+				final List<IObjectSearchFavorite> favorites = SearchAndAnalysisPlugin.getDefault()
+					.getFavoriteManager()
+					.getFavorites();
 				favorites.clear();
 				favorites.addAll(this.input);
+				orderChanged = true;
 			}
+		}
+		if (orderChanged || this.removedEntries != null && !this.removedEntries.isEmpty()) {
 			ObjectSearchFavoriteStorage.serialize();
 		}
 		super.okPressed();
@@ -296,12 +305,11 @@ public class ManageSearchFavoritesDialog extends SelectionDialog {
 		public Image getImage(final Object element) {
 			final IObjectSearchFavorite favorite = (IObjectSearchFavorite) element;
 
-			switch (favorite.getSearchType()) {
-			case CDS_VIEW:
+			if (SearchType.CDS_VIEW.name().equals(favorite.getSearchType())) {
 				return SearchAndAnalysisPlugin.getDefault().getImage(IImages.CDS_VIEW);
-			case DB_TABLE_VIEW:
+			} else if (SearchType.DB_TABLE_VIEW.name().equals(favorite.getSearchType())) {
 				return SearchAndAnalysisPlugin.getDefault().getImage(IImages.TABLE_DEFINITION);
-			default:
+			} else {
 				return null;
 			}
 		}

@@ -1,7 +1,5 @@
 package com.devepos.adt.saat.internal.search.favorites;
 
-import java.io.File;
-
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.FileDialog;
@@ -20,21 +18,22 @@ import com.devepos.adt.saat.search.favorites.IObjectSearchFavorites;
  */
 public class ExportFavoritesAction extends Action {
 	public ExportFavoritesAction() {
-		super(Messages.ExportFavoritesAction_ActionTitle_xmit, SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.EXPORT));
+		super(Messages.ExportFavoritesAction_ActionTitle_xmit,
+			SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.EXPORT));
 	}
 
 	@Override
 	public void run() {
 		final Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
 		final FileDialog dialog = new FileDialog(shell, SWT.SAVE);
-		dialog.setFilterNames(new String[] { "JSON (*.json)", Messages.ImportFavoritesAction_AllFilesFileType_xmit }); //$NON-NLS-1$
-		dialog.setFilterExtensions(new String[] { "*.json", "*.*" }); //$NON-NLS-1$ //$NON-NLS-2$
-		dialog.setFileName("search-favorites.json"); //$NON-NLS-1$
+		dialog.setFilterNames(new String[] { "XML (*.xml)", Messages.ImportFavoritesAction_AllFilesFileType_xmit }); //$NON-NLS-1$
+		dialog.setFilterExtensions(new String[] { "*.xml", "*.*" }); //$NON-NLS-1$ //$NON-NLS-2$
+		dialog.setFileName("favorites.xml"); //$NON-NLS-1$
 
 		final String exportFileName = dialog.open();
 		if (!exportFileName.equals("")) { //$NON-NLS-1$
 			final IObjectSearchFavorites favorites = SearchAndAnalysisPlugin.getDefault().getFavoriteManager();
-			ObjectSearchFavoriteStorage.serialize(favorites, new File(exportFileName));
+			ObjectSearchFavoriteStorage.serialize(favorites, exportFileName);
 		}
 	}
 }
