@@ -6,7 +6,10 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.search.internal.ui.SearchPlugin;
 import org.eclipse.search.ui.NewSearchUI;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 
 import com.devepos.adt.saat.internal.messages.Messages;
@@ -46,6 +49,16 @@ public class RunWhereUsedQueryHandler extends AbstractHandler {
 			project, URI.create(selectedAdtObjRef.getUri()));
 		final AdtRisUsageReferencesSearchQuery searchQuery = new AdtRisUsageReferencesSearchQuery(usageSearchParameters);
 		NewSearchUI.runQueryInBackground(searchQuery);
+
+		/*
+		 * If there is no active page in the workbench window the search view will not
+		 * be brought to the front so it has to be done manually
+		 */
+		final IWorkbenchPage activeSearchPage = SearchPlugin.getActivePage();
+		final IWorkbenchPart activeSearchView = activeSearchPage.getActivePart();
+		if (activeSearchPage != null && activeSearchView != null && activeSearchPage.isPartVisible(activeSearchView)) {
+			activeSearchPage.bringToTop(activeSearchView);
+		}
 		return null;
 	}
 

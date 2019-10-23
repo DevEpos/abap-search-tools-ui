@@ -21,6 +21,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.search.internal.ui.SearchPlugin;
 import org.eclipse.search.ui.IContextMenuConstants;
 import org.eclipse.search.ui.ISearchResult;
 import org.eclipse.search.ui.ISearchResultListener;
@@ -39,6 +40,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IMemento;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.Page;
 
@@ -216,7 +218,18 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 
 	@Override
 	public void searchResultChanged(final SearchResultEvent e) {
+		if (e instanceof ObjectSearchResultEvent && ((ObjectSearchResultEvent) e).isCleanup()) {
+			return;
+		}
 		Display.getDefault().asyncExec(() -> {
+			/*
+			 * If there is no active page in the workbench window the search view will not
+			 * be brought to the front so it has to be done manually
+			 */
+			final IWorkbenchPage activeSearchPage = SearchPlugin.getActivePage();
+			if (activeSearchPage != null && this.searchViewPart != null && activeSearchPage.isPartVisible(this.searchViewPart)) {
+				activeSearchPage.bringToTop(this.searchViewPart);
+			}
 			this.searchViewPart.updateLabel();
 			this.searchResultTree.setInput(e.getSearchResult());
 			updateUiState();
