@@ -263,7 +263,7 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 
 	private void checkDbBrowserIntegration() {
 		this.isDbBrowserIntegrationAvailable = false;
-		if (this.projectProvider != null) {
+		if (this.projectProvider != null && this.projectProvider.ensureLoggedOn()) {
 			this.isDbBrowserIntegrationAvailable = AdtUtil.isSapGuiDbBrowserAvailable(this.projectProvider.getProject());
 		}
 	}
