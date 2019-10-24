@@ -244,6 +244,7 @@ public class SearchAndAnalysisPlugin extends AbstractUIPlugin {
 		registerImage(imageRegistry, IImages.TOP_DOWN, "icons/TopDown.png");
 		registerImage(imageRegistry, IImages.FIELD_ANALYSIS, "icons/CdsFieldAnalysis.png");
 		registerImage(imageRegistry, IImages.WHERE_USED_IN, "icons/WhereUsedInCds.png");
+		registerImage(imageRegistry, IImages.WHERE_USED_LIST, "icons/etool/where_used.png", "com.sap.adt.ris.whereused.ui");
 		registerImage(imageRegistry, IImages.USAGE_ANALYZER, "icons/CdsUsageAnalyzer.png");
 		registerImage(imageRegistry, IImages.UNION, "icons/Union.png");
 		registerImage(imageRegistry, IImages.JOIN_RESULT_SOURCE, "icons/JoinedDataSource.png");

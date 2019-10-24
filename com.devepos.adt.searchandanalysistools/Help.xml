@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<contexts>
+   <context id="main" title="Help for ABAP Search and Analysis Tools">
+      <topic href="html/objectSearch.html" label="Object Search"/>
+   </context>
+</contexts>

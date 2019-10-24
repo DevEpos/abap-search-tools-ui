@@ -6,6 +6,8 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.DialogPage;
+import org.eclipse.jface.fieldassist.ControlDecoration;
+import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -20,6 +22,7 @@ import org.eclipse.search.ui.NewSearchUI;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
@@ -27,6 +30,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PlatformUI;
 
 import com.devepos.adt.saat.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.messages.Messages;
@@ -101,6 +105,8 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 		GridLayoutFactory.swtDefaults().numColumns(3).spacing(10, 5).equalWidth(false).applyTo(this.mainComposite);
 		setControl(this.mainComposite);
 
+		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, SearchAndAnalysisPlugin.PLUGIN_ID + ".main"); //$NON-NLS-1$
+
 		createSearchTypeInput(this.mainComposite);
 		createObjectNameInput(this.mainComposite);
 		createParametersInput(this.mainComposite);
@@ -163,6 +169,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 		this.parametersInput.setText(parametersString);
 		updateMaxResultsScaleFromNumber(request.getMaxResults());
 		this.andOptionCheck.setSelection(request.isAndSearchActive());
+		this.searchRequest.setAndSearchActive(request.isAndSearchActive());
 		updateMaxResults();
 
 		if (doSetCursorToEnd) {
@@ -268,6 +275,26 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 			ObjectSearchPage.this.searchRequest.setSearchTerm(ObjectSearchPage.this.searchInput.getText());
 			updateOKStatus();
 		});
+
+		final ControlDecoration decorator = new ControlDecoration(this.searchInput, 16512);
+		final Image decoratorImage = FieldDecorationRegistry.getDefault().getFieldDecoration("DEC_INFORMATION").getImage();
+		decorator.setMarginWidth(2);
+		decorator.setImage(decoratorImage);
+		final StringBuilder decoratorText = new StringBuilder();
+		final String newLine = System.lineSeparator();
+
+		decoratorText.append(Messages.ObjectSearch_InfoSearchString_xmsg);
+		decoratorText.append(newLine);
+		decoratorText.append(newLine);
+		decoratorText.append(NLS.bind(Messages.ObjectSearch_InfoSearchString_Asterisk_xmsg, "*")); //$NON-NLS-1$
+		decoratorText.append(newLine);
+		decoratorText.append(NLS.bind(Messages.ObjectSearch_InfoSearchString_Question_xmsg, "?")); //$NON-NLS-1$
+		decoratorText.append(newLine);
+		decoratorText.append(NLS.bind(Messages.ObjectSearch_InfoSearchString_Negation_xmsg, "!")); //$NON-NLS-1$
+		decoratorText.append(newLine);
+		decoratorText.append(newLine);
+		decoratorText.append(Messages.ObjectSearch_InfoSearchString_Notes_xmsg);
+		decorator.setDescriptionText(decoratorText.toString());
 	}
 
 	private void createParametersInput(final Composite parent) {

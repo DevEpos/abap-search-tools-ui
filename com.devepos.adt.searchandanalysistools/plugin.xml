@@ -329,6 +329,12 @@
               parentId="com.devepos.adt.saat">
         </themeElementCategory>
      </extension>
-
+     <extension
+           point="org.eclipse.help.contexts">
+        <contexts
+              file="Help.xml"
+              plugin="com.devepos.adt.searchandanalysistools">
+        </contexts>
+     </extension>
 
 </plugin>
