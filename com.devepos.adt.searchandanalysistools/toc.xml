@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<toc label="Table of Contents">
+   <topic href="html/overview.html" label="ABAP Search and Analysis Tools">
+      <topic href="html/object_search.html" label="ABAP Object Search +">
+      </topic>
+      <topic href="html/cds_analyzer.html" label="CDS Analyzer">
+      </topic>
+   </topic>
+</toc>
