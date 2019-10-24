@@ -2,7 +2,7 @@ package com.devepos.adt.saat.internal.elementinfo;
 
 import java.nio.charset.Charset;
 
-import com.devepos.adt.saat.internal.util.AdtObjectReferenceFactory;
+import com.devepos.adt.saat.internal.util.AdtObjectReferenceModelFactory;
 import com.devepos.adt.saat.internal.util.AdtStaxContentHandlerUtility;
 import com.devepos.adt.saat.internal.util.IXmlElement;
 import com.devepos.adt.saat.internal.util.IXmlTags;
@@ -53,7 +53,7 @@ public abstract class AdtObjectElementInfoContentHandlerBase implements IContent
 		this.elementInfo = new AdtObjectReferenceElementInfo(name, rawName, description);
 
 		if (name != null && !name.isEmpty() && uri != null && !uri.isEmpty() && type != null && !type.isEmpty()) {
-			final IAdtObjectReference adtObjectRef = AdtObjectReferenceFactory.createReference(this.destinationId, name, type,
+			final IAdtObjectReference adtObjectRef = AdtObjectReferenceModelFactory.createReference(this.destinationId, name, type,
 				uri);
 			adtObjectRef.setPackageName(packageName);
 			this.elementInfo.setAdtObjectReference(adtObjectRef);

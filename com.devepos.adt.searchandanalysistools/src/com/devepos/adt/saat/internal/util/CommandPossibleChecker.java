@@ -84,7 +84,7 @@ public class CommandPossibleChecker {
 		case ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS:
 			return hasSingleSelection(true);
 		case ICommandConstants.FIELD_ANALYSIS:
-			return hasSingleSelection();
+			return hasSingleSelection(true);
 		case ICommandConstants.OPEN_IN_DB_BROWSER:
 			return hasSelection(true) && AdtUtil.isSapGuiDbBrowserAvailable(this.selectedAdtObjects);
 		}

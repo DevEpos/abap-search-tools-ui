@@ -7,7 +7,7 @@ import com.devepos.adt.saat.internal.analytics.OpenWithQueryMonitorExecutable;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.search.AdtObjectReferenceDeserializer;
 import com.devepos.adt.saat.internal.search.ObjectSearchElementInfoProvider;
-import com.devepos.adt.saat.internal.util.AdtObjectReferenceFactory;
+import com.devepos.adt.saat.internal.util.AdtObjectReferenceModelFactory;
 import com.devepos.adt.saat.internal.util.IImages;
 import com.devepos.adt.saat.internal.util.IXmlElement;
 import com.devepos.adt.saat.internal.util.IXmlTags;
@@ -182,7 +182,7 @@ public class CdsViewElementInfoContentHandler extends AdtObjectElementInfoConten
 				adtObjRefElInfo = new AdtObjectReferenceElementInfo(name, rawName, description);
 			}
 			addExtendedInfo(adtObjectInfo, adtObjRefElInfo);
-			final IAdtObjectReference adtObjectRef = AdtObjectReferenceFactory.createReference(this.destinationId, name, adtType,
+			final IAdtObjectReference adtObjectRef = AdtObjectReferenceModelFactory.createReference(this.destinationId, name, adtType,
 				uri);
 			adtObjectRef.setPackageName(packageName);
 			adtObjRefElInfo.setAdtObjectReference(adtObjectRef);

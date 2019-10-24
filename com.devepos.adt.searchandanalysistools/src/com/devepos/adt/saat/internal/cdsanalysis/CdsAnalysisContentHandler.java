@@ -12,7 +12,7 @@ import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
 import com.devepos.adt.saat.internal.elementinfo.IElementInfo;
 import com.devepos.adt.saat.internal.elementinfo.IElementInfoCollection;
 import com.devepos.adt.saat.internal.messages.Messages;
-import com.devepos.adt.saat.internal.util.AdtObjectReferenceFactory;
+import com.devepos.adt.saat.internal.util.AdtObjectReferenceModelFactory;
 import com.devepos.adt.saat.internal.util.IImages;
 import com.devepos.adt.saat.internal.util.IXmlElement;
 import com.devepos.adt.saat.internal.util.IXmlTags;
@@ -56,7 +56,7 @@ public class CdsAnalysisContentHandler extends AdtObjectElementInfoContentHandle
 
 		if (uri != null && !uri.isEmpty() && type != null && !type.isEmpty()) {
 			final IAdtObjectReferenceElementInfo adtObjRefInfo = new AdtObjectReferenceElementInfo(name, rawName, description);
-			final IAdtObjectReference adtObjectRef = AdtObjectReferenceFactory.createReference(this.destinationId, name, type,
+			final IAdtObjectReference adtObjectRef = AdtObjectReferenceModelFactory.createReference(this.destinationId, name, type,
 				uri);
 			adtObjectRef.setPackageName(packageName);
 			adtObjRefInfo.setAdtObjectReference(adtObjectRef);

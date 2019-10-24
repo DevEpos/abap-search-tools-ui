@@ -57,8 +57,14 @@ public class Messages extends NLS {
 	public static String ObjectSearch_SearchResultLabel_xmsg;
 	public static String ObjectSearch_SearchQueryLabel_xmsg;
 	public static String ObjectSearch_UseAndFilter_xtol;
+	public static String ObjectSearch_WhereUsedListAction_xmit;
 	public static String ObjectSearchOpenPreferences_xmit;
 	public static String ObjectSearchResultPage_OpenInSearchDialog_xtol;
+	public static String ObjectSearch_InfoSearchString_xmsg;
+	public static String ObjectSearch_InfoSearchString_Asterisk_xmsg;
+	public static String ObjectSearch_InfoSearchString_Question_xmsg;
+	public static String ObjectSearch_InfoSearchString_Negation_xmsg;
+	public static String ObjectSearch_InfoSearchString_Notes_xmsg;
 	public static String OpenColorPreferencePageAction_ActionName_xtol;
 	public static String OpenInUtil_AnalysisForOfficeNotActive_xmsg;
 	public static String SearchHistorySelectionDialog_AddFavorite_xbut;

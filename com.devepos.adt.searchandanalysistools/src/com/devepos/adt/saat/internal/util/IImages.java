@@ -244,6 +244,10 @@ public interface IImages {
 	 */
 	String WHERE_USED_IN = "IMG_WHERE_USED_IN";
 	/**
+	 * Image for Where-Used-List feature (ADT)
+	 */
+	String WHERE_USED_LIST = "IMG_WHERE_USED_LIST";
+	/**
 	 * Image for Top-Down analysis
 	 */
 	String TOP_DOWN = "IMG_TOP_DOWN";

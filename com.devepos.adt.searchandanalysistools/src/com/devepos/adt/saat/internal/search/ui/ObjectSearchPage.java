@@ -30,9 +30,10 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.PlatformUI;
 
 import com.devepos.adt.saat.SearchAndAnalysisPlugin;
+import com.devepos.adt.saat.internal.help.HelpContexts;
+import com.devepos.adt.saat.internal.help.HelpUtil;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.preferences.IPreferences;
 import com.devepos.adt.saat.internal.search.ObjectSearchUriDiscovery;
@@ -58,7 +59,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 	private static final int MULTIPLIER = 50;
 	private static final int BIG_MULTIPLIER = 500;
 	private static final int SMALL_SCALE_LIMIT = 20;
-	private static final int MAX_SCALE = 25;
+	private static final int MAX_SCALE = 22;
 	private static final int MIN_SCALE = 1;
 	private static final int SMALL_SCALE_UPPER_BOUND = MULTIPLIER * SMALL_SCALE_LIMIT;
 	private static final int MAX_RESULTS_UPPER_BOUND = SMALL_SCALE_UPPER_BOUND + (MAX_SCALE - SMALL_SCALE_LIMIT) * BIG_MULTIPLIER;
@@ -105,7 +106,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 		GridLayoutFactory.swtDefaults().numColumns(3).spacing(10, 5).equalWidth(false).applyTo(this.mainComposite);
 		setControl(this.mainComposite);
 
-		PlatformUI.getWorkbench().getHelpSystem().setHelp(parent, SearchAndAnalysisPlugin.PLUGIN_ID + ".main"); //$NON-NLS-1$
+		HelpUtil.setHelp(this.mainComposite, HelpContexts.OBJECT_SEARCH);
 
 		createSearchTypeInput(this.mainComposite);
 		createObjectNameInput(this.mainComposite);

@@ -3,7 +3,7 @@ package com.devepos.adt.saat.internal.search;
 import javax.management.modelmbean.XMLParseException;
 import javax.xml.stream.XMLStreamReader;
 
-import com.devepos.adt.saat.internal.util.AdtObjectReferenceFactory;
+import com.devepos.adt.saat.internal.util.AdtObjectReferenceModelFactory;
 import com.devepos.adt.saat.internal.util.IXmlElement;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 
@@ -19,7 +19,7 @@ public class AdtObjectReferenceDeserializer {
 	 */
 	public static IAdtObjectReference deserializeFromStream(final XMLStreamReader xsr, final boolean checkForMandatoryAttributes)
 		throws XMLParseException {
-		final IAdtObjectReference objectReference = AdtObjectReferenceFactory.createReference();
+		final IAdtObjectReference objectReference = AdtObjectReferenceModelFactory.createReference();
 
 		final String nameSpace = NS_URI_ADT_CORE;
 		final String refStr = xsr.getAttributeValue(nameSpace, "uri");
@@ -55,7 +55,7 @@ public class AdtObjectReferenceDeserializer {
 			return null;
 		}
 //		Assert.isNotNull(element);
-		final IAdtObjectReference objectReference = AdtObjectReferenceFactory.createReference();
+		final IAdtObjectReference objectReference = AdtObjectReferenceModelFactory.createReference();
 
 		objectReference.setUri(element.getAttributeValue("uri"));
 		objectReference.setName(element.getAttributeValue("name"));

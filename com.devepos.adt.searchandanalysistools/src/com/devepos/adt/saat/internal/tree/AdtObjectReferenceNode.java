@@ -7,6 +7,8 @@ import java.util.List;
 import com.devepos.adt.saat.IDestinationProvider;
 import com.devepos.adt.saat.ObjectType;
 import com.devepos.adt.saat.internal.util.AdtUtil;
+import com.devepos.adt.saat.internal.util.AdtWhereUsedAdapterFactory;
+import com.sap.adt.project.IProjectProvider;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 
 /**
@@ -75,13 +77,23 @@ public class AdtObjectReferenceNode extends TreeNodeBase implements IAdtObjectRe
 		if (adapted != null) {
 			return adapted;
 		}
-		if (adapter == IDestinationProvider.class) {
-			if (this.objectReference != null) {
-				try {
-					return adapter.cast(this.objectReference);
-				} catch (final ClassCastException exc) {
-
-				}
+		if (this.objectReference == null) {
+			return null;
+		}
+		if (adapter == IProjectProvider.class) {
+			try {
+				return adapter.cast(AdtWhereUsedAdapterFactory.adaptToProjectProvider(this.objectReference));
+			} catch (final ClassCastException exc) {
+			}
+		} else if (adapter == com.sap.adt.tools.core.IAdtObjectReference.class) {
+			try {
+				return adapter.cast(AdtWhereUsedAdapterFactory.adaptToNonEmfAdtObjectRef(this.objectReference));
+			} catch (final ClassCastException exc) {
+			}
+		} else if (adapter == IDestinationProvider.class) {
+			try {
+				return adapter.cast(this.objectReference);
+			} catch (final ClassCastException exc) {
 			}
 		}
 		return null;

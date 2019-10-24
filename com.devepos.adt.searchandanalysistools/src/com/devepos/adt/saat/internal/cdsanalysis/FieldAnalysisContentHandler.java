@@ -12,7 +12,7 @@ import com.devepos.adt.saat.internal.elementinfo.IElementInfo;
 import com.devepos.adt.saat.internal.elementinfo.IElementInfoCollection;
 import com.devepos.adt.saat.internal.elementinfo.SimpleElementInfo;
 import com.devepos.adt.saat.internal.messages.Messages;
-import com.devepos.adt.saat.internal.util.AdtObjectReferenceFactory;
+import com.devepos.adt.saat.internal.util.AdtObjectReferenceModelFactory;
 import com.devepos.adt.saat.internal.util.AdtStaxContentHandlerUtility;
 import com.devepos.adt.saat.internal.util.IImages;
 import com.devepos.adt.saat.internal.util.IXmlElement;
@@ -127,7 +127,7 @@ public class FieldAnalysisContentHandler extends AdtObjectElementInfoContentHand
 	private IAdtObjectReferenceElementInfo createAdtObjectRefInfo(final String name, final String displayName, final String type,
 		final String uri, final String fieldName, final boolean lazyLoadingSupport, final Map<String, String> properties) {
 		final IAdtObjectReferenceElementInfo adtObjInfo = new AdtObjectReferenceElementInfo(name, displayName, null);
-		adtObjInfo.setAdtObjectReference(AdtObjectReferenceFactory.createReference(this.destinationId, name, type, uri));
+		adtObjInfo.setAdtObjectReference(AdtObjectReferenceModelFactory.createReference(this.destinationId, name, type, uri));
 		adtObjInfo.setLazyLoadingSupport(lazyLoadingSupport);
 		adtObjInfo.getProperties().putAll(properties);
 

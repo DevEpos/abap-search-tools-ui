@@ -140,15 +140,6 @@
                </reference>
             </visibleWhen>
          </command>
-         <command
-               commandId="com.devepos.adt.saat.search.command.runWhereUsedForObject"
-               icon="icons/RunWhereUsed.png"
-               label="%command.search.runWhereUsedQuery.name"
-               style="push">
-            <visibleWhen
-                  checkEnabled="true">
-            </visibleWhen>
-         </command>
       </menuContribution>
       <menuContribution
             locationURI="popup:org.eclipse.ui.navigator.ProjectExplorer#PopupMenu?after=com.sap.adt.datapreview.ui.opendatapreview.fromproject">
@@ -213,6 +204,15 @@
          <toolbar
                id="com.devepos.adt.saat.search"
                label="ABAP Search and Analysis">
+            <command
+                  commandId="com.devepos.adt.saat.search.command.runWhereUsedForObject"
+                  icon="icons/RunWhereUsed.png"
+                  label="%command.search.runWhereUsedQuery.name"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="true">
+               </visibleWhen>
+            </command>
             <command
                   commandId="com.devepos.adt.saat.objectsearch.command.openSearchDialog"
                   icon="icons/ABAPSearch.png"
@@ -290,6 +290,7 @@
               icon="icons/ABAPSearch.png"
               id="com.devepos.adt.saat.ObjectSearchPage"
               label="%searchpage.objectsearch.name"
+              searchViewHelpContextId="com.devepos.searchandanalysistools.object_search"
               tabPosition="1">
         </page>
      </extension>
@@ -297,6 +298,7 @@
            point="org.eclipse.search.searchResultViewPages">
         <viewPage
               class="com.devepos.adt.saat.internal.search.ui.ObjectSearchResultPage"
+              helpContextId="com.devepos.adt.searchandanalysistools.object_search"
               icon="icons/ABAPSearch.png"
               id="com.devepos.adt.saat.internal.search.ui.ObjectSearchResultPage"
               searchResultClass="com.devepos.adt.saat.internal.search.ui.ObjectSearchResult">
@@ -329,12 +331,21 @@
               parentId="com.devepos.adt.saat">
         </themeElementCategory>
      </extension>
+	    <extension
+         point="org.eclipse.help.toc">
+      <toc
+            file="toc.xml">
+      </toc>
+      <toc
+            file="primaryToc.xml"
+            primary="true">
+      </toc>
+   </extension>
      <extension
            point="org.eclipse.help.contexts">
         <contexts
-              file="Help.xml"
+              file="contexts.xml"
               plugin="com.devepos.adt.searchandanalysistools">
         </contexts>
      </extension>
-
 </plugin>

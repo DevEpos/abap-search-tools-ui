@@ -19,11 +19,11 @@ import com.sap.adt.tools.core.model.adtcore.IAdtExtension;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 
 /**
- * Simple implementation of {@link IAdtObjectReference}
+ * Factory for creating instances of {@link IAdtObjectReference}
  *
  * @author stockbal
  */
-public class AdtObjectReferenceFactory {
+public class AdtObjectReferenceModelFactory {
 
 	/**
 	 * Creates new {@link IAdtObjectReference}

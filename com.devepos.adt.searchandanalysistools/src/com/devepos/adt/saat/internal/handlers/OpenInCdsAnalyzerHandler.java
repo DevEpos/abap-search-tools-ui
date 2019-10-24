@@ -37,7 +37,7 @@ public abstract class OpenInCdsAnalyzerHandler extends AbstractHandler {
 	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
 		final List<IAdtObject> selectedObjects = AdtUtil.getAdtObjectsFromSelection(true);
-		if (selectedObjects == null || selectedObjects.size() > 1) {
+		if (selectedObjects == null || selectedObjects.isEmpty() || selectedObjects.size() > 1) {
 			return null;
 		}
 		final IAdtObject selectedObject = selectedObjects.get(0);

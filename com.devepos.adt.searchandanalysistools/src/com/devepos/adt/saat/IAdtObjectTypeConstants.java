@@ -6,7 +6,7 @@ package com.devepos.adt.saat;
  * @author stockbal
  */
 public interface IAdtObjectTypeConstants {
-	String CDS_VIEW_TYPE = "STOB";
+	String CDS_VIEW_DEFINITION_TYPE = "STOB/DO";
 	String CDS_VIEW_FIELD_TYPE = "STOB/DOF";
 
 	String DDLS_DEFINITION_TYPE = "DDLS/DF";

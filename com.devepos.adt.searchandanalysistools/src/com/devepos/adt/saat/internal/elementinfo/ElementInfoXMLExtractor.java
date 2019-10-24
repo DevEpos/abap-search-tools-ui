@@ -1,7 +1,7 @@
 package com.devepos.adt.saat.internal.elementinfo;
 
 import com.devepos.adt.saat.internal.messages.Messages;
-import com.devepos.adt.saat.internal.util.AdtObjectReferenceFactory;
+import com.devepos.adt.saat.internal.util.AdtObjectReferenceModelFactory;
 import com.devepos.adt.saat.internal.util.IImages;
 import com.devepos.adt.saat.internal.util.IXmlElement;
 import com.devepos.adt.saat.internal.util.IXmlTags;
@@ -70,7 +70,7 @@ public class ElementInfoXMLExtractor {
 		final String adtType = adtObjectInfoEl.getAttributeValue(IXmlTags.AT_ADT_TYPE);
 		final String packageName = adtObjectInfoEl.getAttributeValue(IXmlTags.AT_PACKAGE_NAME);
 
-		final IAdtObjectReference objectReference = AdtObjectReferenceFactory.createReference(destinationId, name, adtType, uri);
+		final IAdtObjectReference objectReference = AdtObjectReferenceModelFactory.createReference(destinationId, name, adtType, uri);
 		objectReference.setPackageName(packageName);
 
 		adtObjRefElInfo = new AdtObjectReferenceElementInfo(name, rawName, description);

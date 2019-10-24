@@ -31,6 +31,7 @@ import org.eclipse.search.ui.NewSearchUI;
 import org.eclipse.search.ui.SearchResultEvent;
 import org.eclipse.search2.internal.ui.basic.views.ExpandAllAction;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -76,6 +77,7 @@ import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
  * @author stockbal
  */
 public class ObjectSearchResultPage extends Page implements ISearchResultPage, ISearchResultListener {
+	private static final String GROUP_WHERE_USED = "group.whereUsed"; //$NON-NLS-1$
 	public static final String GROUPED_BY_PACKAGE_PREF = "com.devepos.adt.saat.objectsearch.groupByPackage"; //$NON-NLS-1$
 	public static final String DIALOG_ID = "com.devepos.adt.saat.ObjectSearchPage"; //$NON-NLS-1$ ;
 	private String id;
@@ -377,6 +379,12 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 			}
 		}
 
+		if (!adtObjRefs.isEmpty()) {
+			menu.add(new Separator(GROUP_WHERE_USED));
+			MenuItemFactory.addCommandItem(menu, GROUP_WHERE_USED, "com.sap.adt.ris.whereused.ui.callWhereUsed", //$NON-NLS-1$
+				IImages.WHERE_USED_LIST, Messages.ObjectSearch_WhereUsedListAction_xmit, null);
+		}
+
 		if (singleDataPreviewObjectSelected) {
 			// check if action is supported in the current project
 			if (new CdsAnalysisUriDiscovery(this.projectProvider.getDestinationId()).getCdsAnalysisUri() != null) {
@@ -437,9 +445,28 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 	}
 
 	private void updateGrouping() {
-		this.searchResultTree.refresh();
+		BusyIndicator.showWhile(getSite().getShell().getDisplay(), () -> {
+			this.searchResultTree.refresh();
+		});
 		this.expandAllAction.setEnabled(this.groupByPackageAction.isChecked());
 		this.prefStore.putValue(GROUPED_BY_PACKAGE_PREF, Boolean.toString(this.groupByPackageAction.isChecked()));
+	}
+
+	/*
+	 * Expands all package nodes
+	 */
+	private void expandAllPackages() {
+		final Object[] packages = this.result.getPackages();
+		if (packages != null) {
+			BusyIndicator.showWhile(getSite().getShell().getDisplay(), () -> {
+				try {
+					this.searchResultTree.getControl().setRedraw(false);
+					this.searchResultTree.setExpandedElements(packages);
+				} finally {
+					this.searchResultTree.getControl().setRedraw(true);
+				}
+			});
+		}
 	}
 
 	/**
@@ -548,15 +575,7 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 	private class ExpandAllPackageNodesAction extends ExpandAllAction {
 		@Override
 		public void run() {
-			final Object[] packages = ObjectSearchResultPage.this.result.getPackages();
-			if (packages != null) {
-				ObjectSearchResultPage.this.searchResultTree.getControl().setRedraw(false);
-				try {
-					ObjectSearchResultPage.this.searchResultTree.setExpandedElements(packages);
-				} finally {
-					ObjectSearchResultPage.this.searchResultTree.getControl().setRedraw(true);
-				}
-			}
+			expandAllPackages();
 		}
 	}
 
@@ -575,19 +594,20 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 			if (selection == null) {
 				return;
 			}
-			this.viewer.getControl().setRedraw(false);
-			try {
-
-				for (final Object selectedObject : selection.toList()) {
-					final PackageNode node = (PackageNode) selectedObject;
-					this.viewer.setExpandedState(node, true);
-					for (final PackageNode subNode : node.getSubPackages()) {
-						this.viewer.setExpandedState(subNode, true);
+			BusyIndicator.showWhile(getSite().getShell().getDisplay(), () -> {
+				this.viewer.getControl().setRedraw(false);
+				try {
+					for (final Object selectedObject : selection.toList()) {
+						final PackageNode node = (PackageNode) selectedObject;
+						this.viewer.setExpandedState(node, true);
+						for (final PackageNode subNode : node.getSubPackages()) {
+							this.viewer.setExpandedState(subNode, true);
+						}
 					}
+				} finally {
+					this.viewer.getControl().setRedraw(true);
 				}
-			} finally {
-				this.viewer.getControl().setRedraw(true);
-			}
+			});
 		}
 	}
 
