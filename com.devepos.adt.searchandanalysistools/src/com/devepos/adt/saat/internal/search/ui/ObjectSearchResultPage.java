@@ -14,6 +14,7 @@ import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider;
 import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider.IStyledLabelProvider;
 import org.eclipse.jface.viewers.IDecoration;
 import org.eclipse.jface.viewers.ILabelProvider;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeSelection;
 import org.eclipse.jface.viewers.LabelProvider;
@@ -81,7 +82,7 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 	public static final String GROUPED_BY_PACKAGE_PREF = "com.devepos.adt.saat.objectsearch.groupByPackage"; //$NON-NLS-1$
 	public static final String DIALOG_ID = "com.devepos.adt.saat.ObjectSearchPage"; //$NON-NLS-1$ ;
 	private String id;
-	private Object state;
+	private UIState state;
 	private ObjectSearchResult result;
 	private ISearchResultViewPart searchViewPart;
 	private TreeViewer searchResultTree;
@@ -157,7 +158,10 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 	@Override
 	public Object getUIState() {
 		if (this.searchResultTree != null && !this.searchResultTree.getControl().isDisposed()) {
-			return this.searchResultTree.getExpandedTreePaths();
+			final UIState uiState = new UIState();
+			uiState.setExpandedPaths(this.searchResultTree.getExpandedTreePaths());
+			uiState.setSelection(this.searchResultTree.getSelection());
+			return uiState;
 		}
 		return null;
 	}
@@ -173,7 +177,7 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 		if (this.result != null) {
 			this.result.addListener(this);
 			this.searchResultTree.setInput(this.result);
-			this.state = uiState;
+			this.state = uiState instanceof UIState ? (UIState) uiState : null;
 			this.searchQuery = (ObjectSearchQuery) this.result.getQuery();
 			this.projectProvider = this.searchQuery.getProjectProvider();
 			checkDbBrowserIntegration();
@@ -223,6 +227,7 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 		if (e instanceof ObjectSearchResultEvent && ((ObjectSearchResultEvent) e).isCleanup()) {
 			return;
 		}
+		this.state = null;
 		Display.getDefault().asyncExec(() -> {
 			/*
 			 * If there is no active page in the workbench window the search view will not
@@ -234,6 +239,9 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 			}
 			this.searchViewPart.updateLabel();
 			this.searchResultTree.setInput(e.getSearchResult());
+			if (this.groupByPackageAction.isChecked()) {
+				expandAllPackages();
+			}
 			updateUiState();
 		});
 
@@ -427,10 +435,10 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 			if (this.searchResultTree == null || this.searchResultTree.getControl().isDisposed()) {
 				return;
 			}
-			if (this.state != null && this.state instanceof TreePath[]) {
+			if (this.state != null) {
 				this.searchResultTree.getControl().setRedraw(false);
 				try {
-					this.searchResultTree.setExpandedTreePaths((TreePath[]) this.state);
+					this.searchResultTree.setExpandedTreePaths(this.state.getExpandedPaths());
 				} finally {
 					this.searchResultTree.getControl().setRedraw(true);
 				}
@@ -438,7 +446,11 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 			this.searchResultTree.getControl().setFocus();
 			final IAdtObjectReferenceNode[] result = this.result.getResultForTree(this.groupByPackageAction.isChecked());
 			if (result != null && result.length > 0) {
-				this.searchResultTree.setSelection(new StructuredSelection(result[0]));
+				if (this.state != null && this.state.hasSelection()) {
+					this.searchResultTree.setSelection(this.state.getSelection());
+				} else {
+					this.searchResultTree.setSelection(new StructuredSelection(result[0]));
+				}
 			}
 			this.searchResultTree.refresh();
 		});
@@ -609,6 +621,51 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 				}
 			});
 		}
+	}
+
+	/*
+	 * Represents the current state of the object
+	 */
+	private class UIState {
+		private ISelection selection;
+
+		/**
+		 * @return the stored selection
+		 */
+		public ISelection getSelection() {
+			return this.selection;
+		}
+
+		/**
+		 * @return <code>true</code> if the stored state has a selection
+		 */
+		public boolean hasSelection() {
+			return this.selection != null && !this.selection.isEmpty();
+		}
+
+		/**
+		 * @param selection the selectedObject to set
+		 */
+		public void setSelection(final ISelection selection) {
+			this.selection = selection;
+		}
+
+		private TreePath[] expandedPaths;
+
+		/**
+		 * @return the expandedPaths
+		 */
+		public TreePath[] getExpandedPaths() {
+			return this.expandedPaths;
+		}
+
+		/**
+		 * @param expandedPaths the expandedPaths to set
+		 */
+		public void setExpandedPaths(final TreePath[] expandedPaths) {
+			this.expandedPaths = expandedPaths;
+		}
+
 	}
 
 }
