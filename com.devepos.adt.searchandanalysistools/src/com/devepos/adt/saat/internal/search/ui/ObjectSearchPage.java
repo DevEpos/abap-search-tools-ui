@@ -291,6 +291,8 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 		decoratorText.append(newLine);
 		decoratorText.append(NLS.bind(Messages.ObjectSearch_InfoSearchString_Question_xmsg, "?")); //$NON-NLS-1$
 		decoratorText.append(newLine);
+		decoratorText.append(NLS.bind(Messages.ObjectSearch_InfoSearchString_LessThan_xmsg, "<")); //$NON-NLS-1$
+		decoratorText.append(newLine);
 		decoratorText.append(NLS.bind(Messages.ObjectSearch_InfoSearchString_Negation_xmsg, "!")); //$NON-NLS-1$
 		decoratorText.append(newLine);
 		decoratorText.append(newLine);

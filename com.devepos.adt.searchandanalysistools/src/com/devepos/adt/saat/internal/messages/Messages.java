@@ -62,6 +62,7 @@ public class Messages extends NLS {
 	public static String ObjectSearchResultPage_OpenInSearchDialog_xtol;
 	public static String ObjectSearch_InfoSearchString_xmsg;
 	public static String ObjectSearch_InfoSearchString_Asterisk_xmsg;
+	public static String ObjectSearch_InfoSearchString_LessThan_xmsg;
 	public static String ObjectSearch_InfoSearchString_Question_xmsg;
 	public static String ObjectSearch_InfoSearchString_Negation_xmsg;
 	public static String ObjectSearch_InfoSearchString_Notes_xmsg;
@@ -84,6 +85,7 @@ public class Messages extends NLS {
 	public static String CdsAnalysis_WhereUsedProviderDescription_xmsg;
 	public static String CdsTopDownAnalysisView_AliasTooltipPart_xtol;
 	public static String CdsTopDownAnalysisView_DescriptionTooltipPart_xtol;
+	public static String CdsTopDownAnalysisView_LoadAssociationsToggleAction_xmit;
 	public static String CdsTopDownAnalysisView_NameTooltipPart_xtol;
 	public static String CdsTopDownAnalysisView_ObjectTypeColumn_xmit;
 	public static String CdsTopDownAnalysisView_ShowAliasNamesToggleAction_xmit;
@@ -106,6 +108,7 @@ public class Messages extends NLS {
 	public static String CdsAnalysis_ManageCdsAnalysisPagesTableHeader_xfld;
 	public static String CdsAnalysis_ManageCdsAnalysisPagesTitle_xmsg;
 	public static String CdsAnalysis_NodeNameResult;
+	public static String CdsAnalysis_NodeNameAssociations;
 	public static String CdsAnalysis_NodeNameSelect;
 	public static String CdsAnalysis_NodeNameUnionSelect;
 	public static String CdsAnalysis_NodeNameUnionSelectAll;
@@ -113,6 +116,7 @@ public class Messages extends NLS {
 	public static String CdsAnalysis_RefreshAction_xtol;
 	public static String CdsAnalysis_SqlRelationCrossJoin;
 	public static String CdsAnalysis_SqlRelationFrom;
+	public static String CdsAnalysis_SqlRelationAssociation;
 	public static String CdsAnalysis_SqlRelationFullOuterJoin;
 	public static String CdsAnalysis_SqlRelationInnerJoin;
 	public static String CdsAnalysis_SqlRelationLeftOuterJoin;
@@ -120,6 +124,7 @@ public class Messages extends NLS {
 	public static String CdsAnalysis_SwitchAnalysisPages_xtol;
 	public static String CdsFieldTopDownElementInfoProvider_ProviderDescription_xmsg;
 	public static String WhereUsedInCdsAnalysisView_MultipleReferencesLabelSuffix_xfld;
+	public static String WhereUsedInCdsAnalysisView_OnlyUsagesInReleasedEntities_xmit;
 	public static String WhereUsedInCdsAnalysisView_ShowUsesInAssociationsAction_xmit;
 	public static String WhereUsedInCdsAnalysisView_ShowUsesInSelectPartAction_xmit;
 	public static String WhereUsedInCdsAnalysisView_SingleReferenceLabelSuffix_xfld;

@@ -18,12 +18,12 @@ public class HelpUtil {
 	 * @param control   a control
 	 * @param contextId unique id of a help context
 	 */
-	public static void setHelp(final Control control, final HelpContexts contextId) {
+	public static void setHelp(final Control control, final HelpContexts context) {
 		if (control == null || control.isDisposed()) {
 			return;
 		}
 		PlatformUI.getWorkbench()
 			.getHelpSystem()
-			.setHelp(control, SearchAndAnalysisPlugin.PLUGIN_ID + "." + HelpContexts.OBJECT_SEARCH.getHelpContextId());
+			.setHelp(control, SearchAndAnalysisPlugin.PLUGIN_ID + "." + context.getHelpContextId());
 	}
 }

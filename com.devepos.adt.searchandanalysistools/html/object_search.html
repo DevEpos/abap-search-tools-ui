@@ -7,6 +7,16 @@
 </head>
 <body>
 	<h2>ABAP Object Search +</h2>
+	<p>The <i>ABAP Object Search +</i> is similar to the <i>ABAP Quick search</i> (i.e. <code>STRG</code>+<code>SHIFT</code>+<code>A</code>). 
+	It is integrated in the eclipse <i>Search</i> dialog, which can be called via <code>STRG</code>+ <code>H</code> or the eclipse menu 
+	<i>Search ➠ Search...</i><p>
+	<p>
+		It currently offers the following search types
+	<ul>
+		<li>CDS View</li>
+		<li>Database Table/View</li>
+	</ul> 
+	</p>
 	<h3>The User Interface</h3>
 	<figure id="figure1">
 		<img src="../images/SearchView-Overview.png">
@@ -51,7 +61,8 @@
 	<h4>Use Option exclusion to find objects that don't comply with certain criteria</h4>
 	<p>
 		If you want to exclude entities which possess a certain option value from the result view you do
-		this either with a leading <code><strong>!</strong></code> or <code><strong>&lt;&gt;</strong></code> . So let's say you want objects whose description contains <code>Mat</code> but don't want to see
+		this either with a leading <code><strong>!</strong></code> or <code><strong>&lt;&gt;</strong></code>
+		. So let's say you want objects whose description contains <code>Mat</code> but don't want to see
 		those which contain <code>cond</code> you do this with the following query: <code> <strong>desc</strong>:*Mat*,!*cond*
 		</code>
 	</p>
@@ -59,6 +70,7 @@
 	<ul>
 		<li>owner</li>
 		<li>package</li>
+		<li>param</li>
 		<li>desc</li>
 		<li>api</li>
 		<li>from</li>
@@ -95,15 +107,15 @@
 	<p>
 		But sometimes you may want to find only the objects that have all the specified fields. In this
 		case you have to activate the setting <em>Use "AND" instead of "OR" during search</em>. You can do
-		this by setting the checkbox in the search dialog (see <a
-			href="#figure1">Figure 1</a>)
+		this by setting the checkbox in the search dialog (see <a href="#figure1">Figure 1</a>)
 	</p>
 	<p>Regardless of it's activation state this setting will only be used for search filters where
 		it makes sense, i.e. where multiple values are at all possible.</p>
 
 	<h3>The Search result View</h3>
 	<h4>Working with the Search Results</h4>
-	<p>Once a search returns some results they are displayed in the Search View below the search. For each found object there are several options available</p>
+	<p>Once a search returns some results they are displayed in the Search View.
+		For each found object there are several options available</p>
 	<ul>
 		<li>Opening the object in the corresponding eclipse editor (if one is registered for the
 			type) by double clicking on it</li>
@@ -122,7 +134,10 @@
 	<ul>
 		<li>Open the selected objects in the <em>Data Preview</em> of ADT
 		</li>
-		<li>Open the selected objects in the SAP GUI Transaction <em>DB Browser</em><br><blockquote><strong>Note</strong>: The DB Browser feature needs to be installed for this to work</blockquote></li>
+		<li>Open the selected objects in the SAP GUI Transaction <em>DB Browser</em><br>
+			<blockquote>
+				<strong>Note</strong>: The DB Browser feature needs to be installed in the ABAP System for this to work
+			</blockquote></li>
 	</ul>
 	<h4>Sub Nodes of a Result Object</h4>
 	<p>
@@ -145,7 +160,7 @@
 	<h3 id="searchExamples">Search Examples</h3>
 	<h4>CDS View Searches</h4>
 	<ul>
-		<li><code> <strong>from</strong>:mara,marc <strong>maxrows</strong>:500
+		<li><i>Search Filters</i>: <code><strong>from</strong>:mara,marc</code> / <i>Maximum Results</i>: 500
 		</code></li>
 	</ul>
 	<ul>
@@ -154,7 +169,7 @@
 		</ul>
 	</ul>
 	<ul>
-		<li><code> <strong>assoc</strong>:i_prod* <strong>api</strong>:released
+		<li><i>Search Filters</i>: <code><strong>assoc</strong>:i_prod* <strong>api</strong>:released</code>
 		</code></li>
 	</ul>
 	<ul>
@@ -163,7 +178,7 @@
 		</ul>
 	</ul>
 	<ul>
-		<li><code> <strong>params</strong>:true <strong>type</strong>:hierarchy i_*
+		<li><i>Object Name</i>: <code>i_*</code> / <i>Search Filters</i>: <code><strong>params</strong>:true <strong>type</strong>:hierarchy</code>
 		</code></li>
 	</ul>
 	<ul>
@@ -172,7 +187,7 @@
 		</ul>
 	</ul>
 	<ul>
-		<li><code> <strong>desc</strong>:*Mater*
+		<li><i>Search Filters</i>: <code><strong>desc</strong>:*Mater*</code>
 		</code></li>
 	</ul>
 	<ul>
@@ -180,7 +195,7 @@
 		</ul>
 	</ul>
 	<ul>
-		<li><code> <strong>anno</strong>:analytics*query
+		<li><i>Search Filters</i>: <code><strong>anno</strong>:analytics*query</code>
 		</code></li>
 	</ul>
 	<ul>
@@ -188,7 +203,7 @@
 		</ul>
 	</ul>
 	<ul>
-		<li><code> <strong>anno</strong>:vdm.private*=true,*query*=true
+		<li><i>Search Filters</i>: <code><strong>anno</strong>:vdm.private*=true,*query*=true</code>
 		</code></li>
 	</ul>
 	<ul>
@@ -198,7 +213,7 @@
 	</ul>
 	<h4>Database Table/View Searches</h4>
 	<ul>
-		<li><code> <strong>field</strong>:matnr <strong>desc</strong>:*Cond* <strong>package</strong>:test*
+		<li><i>Search Filters</i>: <code><strong>field</strong>:matnr <strong>desc</strong>:*Cond* <strong>package</strong>:test*"</code>
 		</code></li>
 	</ul>
 	<ul>
@@ -207,7 +222,7 @@
 		</ul>
 	</ul>
 	<ul>
-		<li><code> <strong>owner</strong>:sy-uname cs*
+		<li><i>Object Name</i>: <code>cs*</code> / <i>Search Filters</i>: <code><strong>owner</strong>: sy-uname</code>
 		</code></li>
 	</ul>
 	<ul>
