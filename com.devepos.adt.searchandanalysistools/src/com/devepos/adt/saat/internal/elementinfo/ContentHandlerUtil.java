@@ -7,7 +7,7 @@ import com.devepos.adt.saat.internal.util.IXmlElement;
 import com.devepos.adt.saat.internal.util.IXmlTags;
 
 /**
- * Utility for ADT Content Handler's
+ * Utility for ADT Content Handlers
  *
  * @author stockbal
  */

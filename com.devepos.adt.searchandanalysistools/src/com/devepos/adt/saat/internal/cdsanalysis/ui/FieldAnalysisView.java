@@ -23,11 +23,11 @@ import com.devepos.adt.saat.IContextMenuConstants;
 import com.devepos.adt.saat.IDestinationProvider;
 import com.devepos.adt.saat.ObjectType;
 import com.devepos.adt.saat.SearchAndAnalysisPlugin;
-import com.devepos.adt.saat.internal.elementinfo.ElementInfoRetrievalServiceFactory;
+import com.devepos.adt.saat.internal.ddicaccess.DdicRepositoryAccessFactory;
+import com.devepos.adt.saat.internal.ddicaccess.IDdicRepositoryAccess;
 import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
 import com.devepos.adt.saat.internal.elementinfo.IElementInfo;
 import com.devepos.adt.saat.internal.elementinfo.IElementInfoProvider;
-import com.devepos.adt.saat.internal.elementinfo.IElementInfoRetrievalService;
 import com.devepos.adt.saat.internal.menu.MenuItemFactory;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.tree.IAdtObjectReferenceNode;
@@ -158,9 +158,8 @@ public class FieldAnalysisView extends CdsAnalysisPage {
 
 			@Override
 			public List<IElementInfo> getElements() {
-				final IElementInfoRetrievalService elementInfoService = ElementInfoRetrievalServiceFactory.createService();
-				return elementInfoService.getElementColumnInformation(destProvider.getDestinationId(), adtObjectInfo.getName(),
-					ObjectType.getFromAdtType(adtObjectInfo.getAdtObjectReference().getType()));
+				final IDdicRepositoryAccess ddicRepoAccess = DdicRepositoryAccessFactory.createDdicAccess();
+				return ddicRepoAccess.getElementColumnInformation(destProvider.getDestinationId(), adtObjectInfo.getUri());
 			}
 		});
 		treeViewer.setInput(new Object[] { node });

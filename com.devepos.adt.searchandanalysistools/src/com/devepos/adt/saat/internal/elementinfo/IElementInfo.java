@@ -24,6 +24,13 @@ public interface IElementInfo extends IPropertyBag {
 	String getImageId();
 
 	/**
+	 * Sets the image id to be associated with this element
+	 * 
+	 * @param imageId
+	 */
+	void setImageId(String imageId);
+
+	/**
 	 * @return the display name of the element
 	 */
 	String getDisplayName();
@@ -64,7 +71,7 @@ public interface IElementInfo extends IPropertyBag {
 	/**
 	 * Returns <code>true</code> if this element information has an object with
 	 * additional information
-	 * 
+	 *
 	 * @return <code>true</code> if this element information has an object with
 	 *         additional information
 	 */

@@ -1,31 +1,14 @@
 package com.devepos.adt.saat.internal.elementinfo;
 
-import java.util.List;
-
 import com.devepos.adt.saat.ObjectType;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 
+/**
+ * Service for reading element information
+ * 
+ * @author stockbal
+ */
 public interface IElementInfoRetrievalService {
-
-	/**
-	 * Retrieves column information for the given object name
-	 *
-	 * @param  destinationId the destination of the project to be used
-	 * @param  objectName    the name of the object
-	 * @param  type          the type of the object
-	 * @return               the found column information
-	 */
-	List<IElementInfo> getElementColumnInformation(String destinationId, String objectName, ObjectType type);
-
-	/**
-	 * Retrieves an ADT object reference for the given column in the given entity
-	 *
-	 * @param  destinationId the project destination id to be used
-	 * @param  objectName    the name of the object
-	 * @param  column        the name of the column
-	 * @return
-	 */
-	IAdtObjectReference getColumnUri(String destinationId, String objectName, String column);
 
 	/**
 	 * Retrieves some basic information about the given object

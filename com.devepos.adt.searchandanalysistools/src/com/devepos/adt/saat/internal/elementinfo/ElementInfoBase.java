@@ -75,6 +75,11 @@ public abstract class ElementInfoBase implements IElementInfo, IAdaptable {
 	}
 
 	@Override
+	public void setImageId(final String imageId) {
+		this.imageId = imageId;
+	}
+
+	@Override
 	public Object getAdditionalInfo() {
 		return this.additionalInfo;
 	}

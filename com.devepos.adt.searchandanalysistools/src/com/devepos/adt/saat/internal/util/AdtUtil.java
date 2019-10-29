@@ -28,8 +28,8 @@ import com.devepos.adt.saat.ObjectType;
 import com.devepos.adt.saat.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.cdsanalysis.CdsAnalysisUriDiscovery;
 import com.devepos.adt.saat.internal.dbbrowserintegration.DbBrowserIntegrationUriDiscovery;
-import com.devepos.adt.saat.internal.elementinfo.ElementInfoRetrievalServiceFactory;
-import com.devepos.adt.saat.internal.elementinfo.IElementInfoRetrievalService;
+import com.devepos.adt.saat.internal.ddicaccess.DdicRepositoryAccessFactory;
+import com.devepos.adt.saat.internal.ddicaccess.IDdicRepositoryAccess;
 import com.devepos.adt.saat.internal.navtargets.NavigationTargetsUriDiscovery;
 import com.devepos.adt.saat.internal.search.ObjectSearchUriDiscovery;
 import com.sap.adt.communication.message.HeadersFactory;
@@ -383,8 +383,8 @@ public class AdtUtil {
 	 */
 	public static void navigateToEntityColumn(final String entityName, final String fieldName, final String destinationId) {
 		final Job loadFieldUriJob = Job.create(NLS.bind("Load Field URI for ''{0}.{1}''", entityName, fieldName), (monitor) -> {
-			final IElementInfoRetrievalService elementInfoService = ElementInfoRetrievalServiceFactory.createService();
-			final IAdtObjectReference adtObjectRef = elementInfoService.getColumnUri(destinationId, entityName, fieldName);
+			final IDdicRepositoryAccess ddicRepoAccess = DdicRepositoryAccessFactory.createDdicAccess();
+			final IAdtObjectReference adtObjectRef = ddicRepoAccess.getColumnUri(destinationId, entityName, fieldName);
 			if (adtObjectRef != null) {
 				PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
 					AdtUtil.navigateWithObjectReference(adtObjectRef,
