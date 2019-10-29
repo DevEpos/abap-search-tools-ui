@@ -12,6 +12,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.osgi.util.NLS;
 
+import com.devepos.adt.saat.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
 import com.devepos.adt.saat.internal.elementinfo.IElementInfo;
 import com.devepos.adt.saat.internal.elementinfo.IElementInfoProvider;
@@ -104,6 +105,11 @@ public class WhereUsedInCdsElementInfoProvider implements IElementInfoProvider {
 		searchRequest.setProjectProvider(AbapProjectProviderAccessor.getProviderForDestination(this.destinationId));
 		final Map<String, Object> parameters = new HashMap<>();
 		parameters.put(this.searchParameter.toString(), this.adtObjectName);
+		if (SearchAndAnalysisPlugin.getDefault()
+			.getPreferenceStore()
+			.getBoolean(ICdsAnalysisPreferences.WHERE_USED_ONLY_RELEASED_USAGES)) {
+			parameters.put(QueryParameterName.RELEASE_STATE.toString(), "RELEASED");
+		}
 		searchRequest.setParameters(parameters, null);
 		searchRequest.setReadAllEntries(true);
 		searchRequest.setReadApiState(true);

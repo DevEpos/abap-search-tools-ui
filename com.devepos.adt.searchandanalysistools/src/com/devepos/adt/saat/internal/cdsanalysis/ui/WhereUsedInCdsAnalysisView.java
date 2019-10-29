@@ -18,6 +18,7 @@ import com.devepos.adt.saat.ICommandConstants;
 import com.devepos.adt.saat.IContextMenuConstants;
 import com.devepos.adt.saat.IDestinationProvider;
 import com.devepos.adt.saat.SearchAndAnalysisPlugin;
+import com.devepos.adt.saat.internal.cdsanalysis.ICdsAnalysisPreferences;
 import com.devepos.adt.saat.internal.cdsanalysis.WhereUsedInCdsElementInfoProvider;
 import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
 import com.devepos.adt.saat.internal.menu.MenuItemFactory;
@@ -47,6 +48,7 @@ public class WhereUsedInCdsAnalysisView extends CdsAnalysisPage {
 	private final ILazyLoadingListener lazyLoadingListener;
 	private PreferenceToggleAction showFromUses;
 	private PreferenceToggleAction showAssocUses;
+	private PreferenceToggleAction releasedUsagesOnly;
 	private static final String USES_IN_SELECT_PREF_KEY = "com.devepos.adt.saat.whereusedincds.showReferencesInSelectPartOfCds"; //$NON-NLS-1$
 	private static final String USES_IN_ASSOC_PREF_KEY = "com.devepos.adt.saat.whereusedincds.showReferencesInAssocPartOfCds"; //$NON-NLS-1$
 	private final IPropertyChangeListener propertyChangeListener;
@@ -66,10 +68,12 @@ public class WhereUsedInCdsAnalysisView extends CdsAnalysisPage {
 		};
 
 		this.propertyChangeListener = event -> {
-			final boolean showFromUsesChanged = event.getProperty().equals(USES_IN_SELECT_PREF_KEY);
-			final boolean showAssocUsesChanged = event.getProperty().equals(USES_IN_ASSOC_PREF_KEY);
+			final String propertyName = event.getProperty();
+			final boolean showFromUsesChanged = USES_IN_SELECT_PREF_KEY.equals(propertyName);
+			final boolean showAssocUsesChanged = USES_IN_ASSOC_PREF_KEY.equals(propertyName);
+			final boolean releasedUsagesOnly = ICdsAnalysisPreferences.WHERE_USED_ONLY_RELEASED_USAGES.equals(propertyName);
 
-			if (!showFromUsesChanged && !showAssocUsesChanged) {
+			if (!showFromUsesChanged && !showAssocUsesChanged && !releasedUsagesOnly) {
 				return;
 			}
 			// trigger refresh of where used analysis
@@ -126,6 +130,9 @@ public class WhereUsedInCdsAnalysisView extends CdsAnalysisPage {
 			SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.DATA_SOURCE), USES_IN_SELECT_PREF_KEY, true);
 		this.showAssocUses = new PreferenceToggleAction(Messages.WhereUsedInCdsAnalysisView_ShowUsesInAssociationsAction_xmit,
 			SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.ASSOCIATION), USES_IN_ASSOC_PREF_KEY, false);
+		this.releasedUsagesOnly = new PreferenceToggleAction(
+			Messages.WhereUsedInCdsAnalysisView_OnlyUsagesInReleasedEntities_xmit, null,
+			ICdsAnalysisPreferences.WHERE_USED_ONLY_RELEASED_USAGES, false);
 		this.showAssocUses.addPropertyChangeListener((event) -> {
 			if (!this.showAssocUses.isChecked()) {
 				this.showFromUses.setChecked(true);
@@ -182,6 +189,7 @@ public class WhereUsedInCdsAnalysisView extends CdsAnalysisPage {
 		super.fillPullDownMenu(menu);
 		menu.appendToGroup(IContextMenuConstants.GROUP_FILTERING, this.showFromUses);
 		menu.appendToGroup(IContextMenuConstants.GROUP_FILTERING, this.showAssocUses);
+		menu.appendToGroup(IContextMenuConstants.GROUP_ADDITIONS, this.releasedUsagesOnly);
 	}
 
 	@Override
@@ -207,7 +215,7 @@ public class WhereUsedInCdsAnalysisView extends CdsAnalysisPage {
 			if (element instanceof LoadingElement) {
 				text.append(node.getDisplayName(), StylerFactory.ITALIC_STYLER);
 			} else {
-				text.append(" "); // for broader image due to overlay
+				text.append(" "); // for broader image due to overlay //$NON-NLS-1$
 				text.append(node.getDisplayName());
 			}
 
