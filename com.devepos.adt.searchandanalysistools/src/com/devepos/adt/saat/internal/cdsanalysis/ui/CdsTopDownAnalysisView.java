@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.preference.JFacePreferences;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.JFaceResources;
@@ -26,6 +27,7 @@ import com.devepos.adt.saat.IContextMenuConstants;
 import com.devepos.adt.saat.IDestinationProvider;
 import com.devepos.adt.saat.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.cdsanalysis.CdsTopDownElementInfoProvider;
+import com.devepos.adt.saat.internal.cdsanalysis.ICdsAnalysisPreferences;
 import com.devepos.adt.saat.internal.cdsanalysis.ISqlRelationInfo;
 import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
 import com.devepos.adt.saat.internal.elementinfo.LazyLoadingRefreshMode;
@@ -51,6 +53,7 @@ import com.devepos.adt.saat.internal.util.IImages;
  * @author stockbal
  */
 public class CdsTopDownAnalysisView extends CdsAnalysisPage {
+
 	private enum Column {
 		OBJECT_NAME(400, Messages.CdsTopDownAnalysisView_ObjectTypeColumn_xmit),
 		RELATION(100, Messages.CdsTopDownAnalysisView_SqlRelationColumn_xmit);
@@ -67,6 +70,7 @@ public class CdsTopDownAnalysisView extends CdsAnalysisPage {
 
 	private PreferenceToggleAction showDescriptions;
 	private PreferenceToggleAction showAliasNames;
+	private PreferenceToggleAction loadAssociations;
 	private static final String SHOW_DESCRIPTIONS_PREF_KEY = "com.devepos.adt.saat.cdstopdownanalysis.showDescriptions"; //$NON-NLS-1$
 	private static final String SHOW_ALIAS_NAMES_PREF_KEY = "com.devepos.adt.saat.cdstopdownanalysis.showAliasNames"; //$NON-NLS-1$
 	private final List<Column> columns;
@@ -79,8 +83,10 @@ public class CdsTopDownAnalysisView extends CdsAnalysisPage {
 		super(parentView);
 		this.columns = Arrays.asList(Column.OBJECT_NAME, Column.RELATION);
 		this.propertyChangeListener = event -> {
-			if (event.getProperty().equals(SHOW_ALIAS_NAMES_PREF_KEY) || event.getProperty().equals(SHOW_DESCRIPTIONS_PREF_KEY)) {
+			if (SHOW_ALIAS_NAMES_PREF_KEY.equals(event.getProperty()) || SHOW_DESCRIPTIONS_PREF_KEY.equals(event.getProperty())) {
 				getViewer().refresh();
+			} else if (ICdsAnalysisPreferences.TOP_DOWN_LOAD_ASSOCIATIONS.equals(event.getProperty())) {
+				refreshAnalysis();
 			}
 		};
 		SearchAndAnalysisPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(this.propertyChangeListener);
@@ -136,7 +142,13 @@ public class CdsTopDownAnalysisView extends CdsAnalysisPage {
 
 	@Override
 	protected void configureTreeViewer(final TreeViewer treeViewer) {
-		treeViewer.setContentProvider(new LazyLoadingTreeContentProvider(LazyLoadingRefreshMode.ROOT_AND_NON_LAZY_CHILDREN, 1));
+		final LazyLoadingTreeContentProvider contentProvider = new LazyLoadingTreeContentProvider(
+			LazyLoadingRefreshMode.ROOT_AND_NON_LAZY_CHILDREN, 1);
+		contentProvider.setExpansionChecker((node) -> {
+			final ISqlRelationInfo relation = node.getAdapter(ISqlRelationInfo.class);
+			return relation != null && !"ASSOCIATIONS".equals(relation.getType()); //$NON-NLS-1$
+		});
+		treeViewer.setContentProvider(contentProvider);
 		treeViewer.setUseHashlookup(true);
 		treeViewer.getTree().setHeaderVisible(true);
 		ColumnViewerToolTipSupport.enableFor(treeViewer);
@@ -171,6 +183,8 @@ public class CdsTopDownAnalysisView extends CdsAnalysisPage {
 		super.fillPullDownMenu(menu);
 		menu.appendToGroup(IContextMenuConstants.GROUP_PROPERTIES, this.showDescriptions);
 		menu.appendToGroup(IContextMenuConstants.GROUP_PROPERTIES, this.showAliasNames);
+		menu.appendToGroup(IContextMenuConstants.GROUP_PROPERTIES, new Separator());
+		menu.appendToGroup(IContextMenuConstants.GROUP_PROPERTIES, this.loadAssociations);
 		menu.appendToGroup(IContextMenuConstants.GROUP_ADDITIONS, this.showColorsAndFontsPrefs);
 	}
 
@@ -181,6 +195,8 @@ public class CdsTopDownAnalysisView extends CdsAnalysisPage {
 			null, SHOW_DESCRIPTIONS_PREF_KEY, true);
 		this.showAliasNames = new PreferenceToggleAction(Messages.CdsTopDownAnalysisView_ShowAliasNamesToggleAction_xmit, null,
 			SHOW_ALIAS_NAMES_PREF_KEY, true);
+		this.loadAssociations = new PreferenceToggleAction(Messages.CdsTopDownAnalysisView_LoadAssociationsToggleAction_xmit,
+			null, ICdsAnalysisPreferences.TOP_DOWN_LOAD_ASSOCIATIONS, false);
 		this.showColorsAndFontsPrefs = new OpenColorPreferencePageAction(IColorConstants.CDS_ANALYSIS_ALIAS_NAME);
 	}
 
@@ -201,15 +217,13 @@ public class CdsTopDownAnalysisView extends CdsAnalysisPage {
 			}
 
 			if (this.showAliasNames.isChecked()) {
-				if (element instanceof IAdaptable) {
-					ISqlRelationInfo relationalInfo = null;
-					relationalInfo = ((IAdaptable) element).getAdapter(ISqlRelationInfo.class);
-					if (relationalInfo != null) {
-						final String alias = relationalInfo.getAliasName();
-						if (alias != null && !alias.isEmpty()) {
-							text.append(" [" + alias + "] ", //$NON-NLS-1$ //$NON-NLS-2$
-								StylerFactory.createCustomStyler(SWT.NORMAL, IColorConstants.CDS_ANALYSIS_ALIAS_NAME, null));
-						}
+				ISqlRelationInfo relationalInfo = null;
+				relationalInfo = node.getAdapter(ISqlRelationInfo.class);
+				if (relationalInfo != null) {
+					final String alias = relationalInfo.getAliasName();
+					if (alias != null && !alias.isEmpty()) {
+						text.append(" [" + alias + "] ", //$NON-NLS-1$ //$NON-NLS-2$
+							StylerFactory.createCustomStyler(SWT.NORMAL, IColorConstants.CDS_ANALYSIS_ALIAS_NAME, null));
 					}
 				}
 			}

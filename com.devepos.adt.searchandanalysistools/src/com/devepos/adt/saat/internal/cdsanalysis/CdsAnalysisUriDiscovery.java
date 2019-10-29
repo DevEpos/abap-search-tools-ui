@@ -1,6 +1,7 @@
 package com.devepos.adt.saat.internal.cdsanalysis;
 
 import java.net.URI;
+import java.util.Map;
 
 import com.devepos.adt.saat.internal.util.UriDiscoveryBase;
 import com.sap.adt.compatibility.uritemplate.IAdtUriTemplate;
@@ -34,41 +35,21 @@ public class CdsAnalysisUriDiscovery extends UriDiscoveryBase {
 	}
 
 	/**
-	 * Creates a valid REST resource URI to perform a top-down analysis for the
-	 * given CDS View
+	 * Creates a valid REST resource URI to perform a CDS analysis for the given CDS
+	 * View
 	 *
-	 * @param  cdsViewName name of a CDS view
-	 * @return             REST resource URI
+	 * @param  cdsViewName  name of a CDS view
+	 * @param  parameterMap map of parameters for URI template
+	 * @return              REST resource URI
 	 */
-	public URI createTopDownCdsAnalysisResourceUri(final String cdsViewName) {
+	public URI createCdsAnalysisResourceUri(final String cdsViewName, final Map<String, Object> parameterMap) {
 		final IAdtUriTemplate template = getCdsAnalysisTemplate();
 		URI uri = null;
 		if (template != null) {
 			if (template.containsVariable("cdsViewName")) { //$NON-NLS-1$
 				template.set("cdsViewName", cdsViewName); //$NON-NLS-1$
 			}
-			uri = URI.create(template.expand());
-		}
-		return uri;
-	}
-
-	/**
-	 * Creates a valid REST resource URI to perform a usage analysis for the given
-	 * CDS View
-	 *
-	 * @param  cdsViewName name of a CDS view
-	 * @return             REST resource URI
-	 */
-	public URI createUsageAnalysisResourceUri(final String cdsViewName) {
-		final IAdtUriTemplate template = getCdsAnalysisTemplate();
-		URI uri = null;
-		if (template != null) {
-			if (template.containsVariable("cdsViewName")) { //$NON-NLS-1$
-				template.set("cdsViewName", cdsViewName); //$NON-NLS-1$
-			}
-			if (template.containsVariable("usageAnalysis")) { //$NON-NLS-1$
-				template.set("usageAnalysis", "X"); //$NON-NLS-1$ //$NON-NLS-2$
-			}
+			fillTemplateWithParams(template, parameterMap);
 			uri = URI.create(template.expand());
 		}
 		return uri;

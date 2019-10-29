@@ -48,6 +48,8 @@ import com.devepos.adt.saat.IContextMenuConstants;
 import com.devepos.adt.saat.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.elementinfo.ElementInfoRetrievalServiceFactory;
 import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
+import com.devepos.adt.saat.internal.help.HelpContexts;
+import com.devepos.adt.saat.internal.help.HelpUtil;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.ui.DummyPart;
 import com.devepos.adt.saat.internal.util.IImages;
@@ -109,6 +111,8 @@ public class CdsAnalysis extends PageBookView {
 
 		super.createPartControl(this.pageContent);
 		getPageBook().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+		HelpUtil.setHelp(this.pageContent, HelpContexts.CDS_ANALYZER);
 
 		initializeToolBar();
 		initializePageSwitcher();

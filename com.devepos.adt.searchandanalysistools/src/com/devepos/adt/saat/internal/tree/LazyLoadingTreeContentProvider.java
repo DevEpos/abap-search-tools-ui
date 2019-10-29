@@ -32,9 +32,24 @@ import com.devepos.adt.saat.internal.util.IImages;
  */
 public class LazyLoadingTreeContentProvider implements ITreeContentProvider {
 
+	@FunctionalInterface
+	public interface IExpanderCheckFunction {
+		/**
+		 * If the given tree node should be expanded the method has to return
+		 * <code>true</code> <br>
+		 * The default implementation allows expansion for all nodes. Sub classes should
+		 * override for custom logic
+		 *
+		 * @param  node tree node that has child nodes
+		 * @return      <code>true</code> if the given node should be expanded
+		 */
+		boolean shouldExpandNode(ITreeNode node);
+	}
+
 	private TreeViewer viewer;
 	private final int refreshModeExpansionLevel;
 	private final LazyLoadingRefreshMode refreshMode;
+	private IExpanderCheckFunction expansionCheck;
 
 	/**
 	 * Creates new instance of a tree content provider that support lazy loading of
@@ -75,6 +90,16 @@ public class LazyLoadingTreeContentProvider implements ITreeContentProvider {
 		this.refreshMode = refreshMode;
 		assertTrue(refreshExpansionLevel == TreeViewer.ALL_LEVELS || refreshExpansionLevel > 0);
 		this.refreshModeExpansionLevel = refreshExpansionLevel;
+	}
+
+	/**
+	 * Sets expansion checker to be used during refresh of lazy loading loading node
+	 *
+	 * @param expansionCheck the check function to be used during expansion of a
+	 *                       {@link ICollectionNode}
+	 */
+	public void setExpansionChecker(final IExpanderCheckFunction expansionCheck) {
+		this.expansionCheck = expansionCheck;
 	}
 
 	@Override
@@ -244,16 +269,22 @@ public class LazyLoadingTreeContentProvider implements ITreeContentProvider {
 				.filter(child -> child instanceof ICollectionTreeNode)
 				.collect(Collectors.toList())) {
 				if (refreshMode == LazyLoadingRefreshMode.ROOT_AND_ALL_CHILDREN) {
-					LazyLoadingTreeContentProvider.this.viewer.expandToLevel(child,
-						LazyLoadingTreeContentProvider.this.refreshModeExpansionLevel, true);
-				} else {
-					if (child instanceof ILazyLoadingNode) {
-						continue;
-					}
-					LazyLoadingTreeContentProvider.this.viewer.expandToLevel(child,
-						LazyLoadingTreeContentProvider.this.refreshModeExpansionLevel, true);
+					expandNode(child);
+				} else if (refreshMode == LazyLoadingRefreshMode.ROOT_AND_NON_LAZY_CHILDREN
+					&& !(child instanceof ILazyLoadingNode)) {
+					expandNode(child);
 				}
 			}
+		}
+
+		private void expandNode(final ITreeNode child) {
+			if (LazyLoadingTreeContentProvider.this.expansionCheck != null) {
+				if (!LazyLoadingTreeContentProvider.this.expansionCheck.shouldExpandNode(child)) {
+					return;
+				}
+			}
+			LazyLoadingTreeContentProvider.this.viewer.expandToLevel(child,
+				LazyLoadingTreeContentProvider.this.refreshModeExpansionLevel, true);
 		}
 
 	}

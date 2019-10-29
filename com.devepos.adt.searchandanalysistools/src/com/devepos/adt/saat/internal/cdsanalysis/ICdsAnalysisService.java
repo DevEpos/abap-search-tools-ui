@@ -39,12 +39,13 @@ public interface ICdsAnalysisService {
 	/**
 	 * Loads SELECT Part of a single CDS View
 	 *
-	 * @param  cdsView       the name of the CDS view for which the SELECT part
-	 *                       should be loaded
-	 * @param  destinationId the destination of ID of the ABAP project
+	 * @param  cdsView          the name of the CDS view for which the SELECT part
+	 *                          should be loaded
+	 * @param  loadAssociations if <code>true</code> associations are also loaded
+	 * @param  destinationId    the destination of ID of the ABAP project
 	 * @return
 	 */
-	IAdtObjectReferenceElementInfo loadTopDownAnalysis(String cdsView, String destinationId);
+	IAdtObjectReferenceElementInfo loadTopDownAnalysis(String cdsView, boolean loadAssociations, String destinationId);
 
 	/**
 	 * Loads Used entities in the dependency tree of the given CDS view

@@ -1,6 +1,8 @@
 package com.devepos.adt.saat.internal.cdsanalysis;
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
 import com.devepos.adt.saat.internal.elementinfo.IElementInfo;
@@ -21,13 +23,20 @@ import com.sap.adt.communication.session.ISystemSession;
 public class CdsAnalysisService implements ICdsAnalysisService {
 
 	@Override
-	public IAdtObjectReferenceElementInfo loadTopDownAnalysis(final String cdsView, final String destinationId) {
-		return loadAnalysis(cdsView, destinationId, false);
+	public IAdtObjectReferenceElementInfo loadTopDownAnalysis(final String cdsView, final boolean loadAssociations,
+		final String destinationId) {
+		final Map<String, Object> parameters = new HashMap<>();
+		if (loadAssociations) {
+			parameters.put("withAssociations", "X"); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+		return loadAnalysis(cdsView, destinationId, parameters, false);
 	}
 
 	@Override
 	public IAdtObjectReferenceElementInfo loadUsedEntitiesAnalysis(final String cdsView, final String destinationId) {
-		return loadAnalysis(cdsView, destinationId, true);
+		final Map<String, Object> parameters = new HashMap<>();
+		parameters.put("usageAnalysis", "X"); //$NON-NLS-1$ //$NON-NLS-2$
+		return loadAnalysis(cdsView, destinationId, parameters, true);
 	}
 
 	@Override
@@ -91,7 +100,7 @@ public class CdsAnalysisService implements ICdsAnalysisService {
 	 * Load analysis information
 	 */
 	private IAdtObjectReferenceElementInfo loadAnalysis(final String cdsView, final String destinationId,
-		final boolean usageAnalysis) {
+		final Map<String, Object> parameters, final boolean usageAnalysis) {
 		if (destinationId == null || cdsView == null) {
 			return null;
 		}
@@ -103,8 +112,7 @@ public class CdsAnalysisService implements ICdsAnalysisService {
 			usageAnalysis);
 		final CdsAnalysisUriDiscovery uriDiscovery = new CdsAnalysisUriDiscovery(projectProvider.getDestinationId());
 
-		final URI resourceUri = usageAnalysis ? uriDiscovery.createUsageAnalysisResourceUri(cdsView)
-			: uriDiscovery.createTopDownCdsAnalysisResourceUri(cdsView);
+		final URI resourceUri = uriDiscovery.createCdsAnalysisResourceUri(cdsView, parameters);
 
 		return getFieldAnalysis(projectProvider, adtObjectHandler, resourceUri);
 	}

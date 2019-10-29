@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.eclipse.osgi.util.NLS;
 
+import com.devepos.adt.saat.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.elementinfo.IElementInfo;
 import com.devepos.adt.saat.internal.elementinfo.IElementInfoCollection;
 import com.devepos.adt.saat.internal.elementinfo.IElementInfoProvider;
@@ -20,8 +21,11 @@ public class CdsTopDownElementInfoProvider implements IElementInfoProvider {
 
 	@Override
 	public List<IElementInfo> getElements() {
+		final boolean loadAssociations = SearchAndAnalysisPlugin.getDefault()
+			.getPreferenceStore()
+			.getBoolean(ICdsAnalysisPreferences.TOP_DOWN_LOAD_ASSOCIATIONS);
 		final IElementInfo cdsTopDownInfo = CdsAnalysisServiceFactory.createCdsAnalysisService()
-			.loadTopDownAnalysis(this.cdsViewName, this.destinationId);
+			.loadTopDownAnalysis(this.cdsViewName, loadAssociations, this.destinationId);
 		if (cdsTopDownInfo != null) {
 			return ((IElementInfoCollection) cdsTopDownInfo).getChildren();
 		}

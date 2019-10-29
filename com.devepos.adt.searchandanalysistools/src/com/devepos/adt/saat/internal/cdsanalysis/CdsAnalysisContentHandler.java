@@ -56,8 +56,8 @@ public class CdsAnalysisContentHandler extends AdtObjectElementInfoContentHandle
 
 		if (uri != null && !uri.isEmpty() && type != null && !type.isEmpty()) {
 			final IAdtObjectReferenceElementInfo adtObjRefInfo = new AdtObjectReferenceElementInfo(name, rawName, description);
-			final IAdtObjectReference adtObjectRef = AdtObjectReferenceModelFactory.createReference(this.destinationId, name, type,
-				uri);
+			final IAdtObjectReference adtObjectRef = AdtObjectReferenceModelFactory.createReference(this.destinationId, name,
+				type, uri);
 			adtObjectRef.setPackageName(packageName);
 			adtObjRefInfo.setAdtObjectReference(adtObjectRef);
 			if (this.usageAnalysis) {
@@ -109,6 +109,10 @@ public class CdsAnalysisContentHandler extends AdtObjectElementInfoContentHandle
 			String imageId = null;
 			String rawName = null;
 			switch (name) {
+			case "ASSOCIATIONS": //$NON-NLS-1$
+				rawName = Messages.CdsAnalysis_NodeNameAssociations;
+				imageId = IImages.ASSOCIATION;
+				break;
 			case "SELECT": //$NON-NLS-1$
 				rawName = Messages.CdsAnalysis_NodeNameSelect;
 				imageId = IImages.SELECT_PART;
@@ -125,10 +129,74 @@ public class CdsAnalysisContentHandler extends AdtObjectElementInfoContentHandle
 				rawName = Messages.CdsAnalysis_NodeNameResult;
 				imageId = IImages.JOIN_RESULT_SOURCE;
 				break;
+			/*
+			 * In case a separate folder for the select part of the top down analysis makes
+			 * more sense during active "Show associations" option
+			 */
+//			case "FROM":
+//				rawName = "Select From";
+//				imageId = IImages.DATA_SOURCE;
 			}
 			return new ElementInfoCollection(name, rawName, imageId, null);
 		}
 		return null;
+	}
+
+	private void setSqlRelationalInfo(final List<IXmlElement> children, final IElementInfo elementInfo) {
+		if (children == null) {
+			return;
+		}
+		final SqlRelation relationInfo = new SqlRelation();
+
+		String associationName = null;
+		boolean isAssociation = false;
+
+		for (final IXmlElement propertyEl : children) {
+			final String attribute = propertyEl.getAttributeValue(IXmlTags.AT_KEY);
+			if ("TYPE".equals(attribute)) { //$NON-NLS-1$
+				relationInfo.type = propertyEl.getText();
+			} else if ("RELATION".equals(attribute)) { //$NON-NLS-1$
+				switch (propertyEl.getText()) {
+				case "LEFT_OUTER_JOIN": //$NON-NLS-1$
+					relationInfo.relation = Messages.CdsAnalysis_SqlRelationLeftOuterJoin;
+					break;
+				case "RIGHT_OUTER_JOIN": //$NON-NLS-1$
+					relationInfo.relation = Messages.CdsAnalysis_SqlRelationRightOuterJoin;
+					break;
+				case "FULL_OUTER_JOIN": //$NON-NLS-1$
+					relationInfo.relation = Messages.CdsAnalysis_SqlRelationFullOuterJoin;
+					break;
+				case "INNER_JOIN": //$NON-NLS-1$
+					relationInfo.relation = Messages.CdsAnalysis_SqlRelationInnerJoin;
+					break;
+				case "CROSS_JOIN": //$NON-NLS-1$
+					relationInfo.relation = Messages.CdsAnalysis_SqlRelationCrossJoin;
+					break;
+				case "FROM": //$NON-NLS-1$
+					relationInfo.relation = Messages.CdsAnalysis_SqlRelationFrom;
+					break;
+				case "ASSOCIATION": //$NON-NLS-1$
+					relationInfo.relation = Messages.CdsAnalysis_SqlRelationAssociation;
+					isAssociation = true;
+					break;
+				}
+			} else if ("ALIAS".equals(attribute)) { //$NON-NLS-1$
+				relationInfo.aliasName = propertyEl.getText();
+			} else if ("API_STATE".equals(attribute)) { //$NON-NLS-1$
+				relationInfo.setApiState(propertyEl.getText());
+			} else if ("SOURCE_TYPE".equals(attribute)) { //$NON-NLS-1$
+				relationInfo.setSourceType(CdsSourceType.getFromId(propertyEl.getText()));
+			} else if ("ASSOCIATION_NAME".equals(attribute)) { //$NON-NLS-1$
+				associationName = propertyEl.getText();
+			}
+		}
+		if (isAssociation && associationName != null && !associationName.isEmpty()) {
+			elementInfo.setDisplayName(String.format("%s (%s)", associationName, elementInfo.getDisplayName()));
+		}
+
+		if (relationInfo != null && relationInfo.type != null) {
+			elementInfo.setAdditionalInfo(relationInfo);
+		}
 	}
 
 	private void setAdditionalInfo(final IXmlElement element, final IElementInfo elementInfo) {
@@ -180,51 +248,6 @@ public class CdsAnalysisContentHandler extends AdtObjectElementInfoContentHandle
 			}
 		}
 		elementInfo.setAdditionalInfo(usageInfo);
-	}
-
-	private void setSqlRelationalInfo(final List<IXmlElement> children, final IElementInfo elementInfo) {
-		if (children == null) {
-			return;
-		}
-		final SqlRelation relationInfo = new SqlRelation();
-
-		for (final IXmlElement propertyEl : children) {
-			final String attribute = propertyEl.getAttributeValue(IXmlTags.AT_KEY);
-			if (attribute.equals("TYPE")) { //$NON-NLS-1$
-				relationInfo.type = propertyEl.getText();
-			} else if (attribute.equals("RELATION")) { //$NON-NLS-1$
-				switch (propertyEl.getText()) {
-				case "LEFT_OUTER_JOIN": //$NON-NLS-1$
-					relationInfo.relation = Messages.CdsAnalysis_SqlRelationLeftOuterJoin;
-					break;
-				case "RIGHT_OUTER_JOIN": //$NON-NLS-1$
-					relationInfo.relation = Messages.CdsAnalysis_SqlRelationRightOuterJoin;
-					break;
-				case "FULL_OUTER_JOIN": //$NON-NLS-1$
-					relationInfo.relation = Messages.CdsAnalysis_SqlRelationFullOuterJoin;
-					break;
-				case "INNER_JOIN": //$NON-NLS-1$
-					relationInfo.relation = Messages.CdsAnalysis_SqlRelationInnerJoin;
-					break;
-				case "CROSS_JOIN": //$NON-NLS-1$
-					relationInfo.relation = Messages.CdsAnalysis_SqlRelationCrossJoin;
-					break;
-				case "FROM": //$NON-NLS-1$
-					relationInfo.relation = Messages.CdsAnalysis_SqlRelationFrom;
-					break;
-				}
-			} else if (attribute.equals("ALIAS")) { //$NON-NLS-1$
-				relationInfo.aliasName = propertyEl.getText();
-			} else if (attribute.equals("API_STATE")) { //$NON-NLS-1$
-				relationInfo.setApiState(propertyEl.getText());
-			} else if (attribute.equals("SOURCE_TYPE")) { //$NON-NLS-1$
-				relationInfo.setSourceType(CdsSourceType.getFromId(propertyEl.getText()));
-			}
-		}
-
-		if (relationInfo != null && relationInfo.type != null) {
-			elementInfo.setAdditionalInfo(relationInfo);
-		}
 	}
 
 	private final class SqlRelation extends ExtendedAdtObjectInfo implements ISqlRelationInfo {
