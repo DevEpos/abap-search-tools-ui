@@ -48,8 +48,9 @@ class ElementInfoRetrievalService implements IElementInfoRetrievalService {
 		if (type.equals(ObjectType.CDS_VIEW.getAdtExecutionType())) {
 			adtObjectHandler = new CdsViewElementInfoContentHandler(destinationId,
 				uriDiscovery.getCDSSecondaryElementInfoTemplate() != null, anlyticsURIDiscovery.getLauncherTemplate() != null);
-			paramsMap.put("showAssocName", //$NON-NLS-1$
-				SearchAndAnalysisPlugin.getDefault().getPreferenceStore().getBoolean(IPreferences.SHOW_FULL_ASSOCIATION_NAME));
+			if (SearchAndAnalysisPlugin.getDefault().getPreferenceStore().getBoolean(IPreferences.SHOW_FULL_ASSOCIATION_NAME)) {
+				paramsMap.put("showAssocName", "X"); //$NON-NLS-1$ //$NON-NLS-2$
+			}
 			objectType = ObjectType.CDS_VIEW;
 		} else if (type.equals(ObjectType.TABLE.getAdtExecutionType())) {
 			adtObjectHandler = new TableElementInfoContentHandler(destinationId);
@@ -116,6 +117,9 @@ class ElementInfoRetrievalService implements IElementInfoRetrievalService {
 		final IContentHandler<IAdtObjectReferenceElementInfo> adtObjectHandler = new BasicElementInfoContentHandler(
 			destinationId);
 		final ElementInfoUriDiscovery uriDiscovery = new ElementInfoUriDiscovery(projectProvider.getDestinationId());
+		if (!uriDiscovery.isResourceDiscoverySuccessful()) {
+			return null;
+		}
 
 		final Map<String, Object> paramsMap = new HashMap<>();
 		paramsMap.put("basicInfoOnly", "X");
