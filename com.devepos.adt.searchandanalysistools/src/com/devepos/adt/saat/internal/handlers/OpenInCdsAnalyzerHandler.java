@@ -42,13 +42,12 @@ public abstract class OpenInCdsAnalyzerHandler extends AbstractHandler {
 		}
 		final IAdtObject selectedObject = selectedObjects.get(0);
 		final IProject project = selectedObject.getProject();
-		if (!isFeatureAvailable(project)) {
-			MessageDialog.openInformation(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-				Messages.Dialog_InfoTitle_xmsg,
-				NLS.bind(Messages.CdsAnalysis_FeatureIsNotSupported_xmsg, AdtUtil.getDestinationId(project)));
+		if (!canExecute(selectedObject)) {
 			return null;
 		}
-		if (!canExecute(selectedObject)) {
+		if (!isFeatureAvailable(project)) {
+			MessageDialog.openInformation(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+				Messages.Dialog_InfoTitle_xmsg, NLS.bind(getFeatureUnavailableMessage(), AdtUtil.getDestinationId(project)));
 			return null;
 		}
 		final CdsAnalysis cdsAnalyzerView = ViewPartLookup.getCdsAnalysisView();
@@ -65,6 +64,13 @@ public abstract class OpenInCdsAnalyzerHandler extends AbstractHandler {
 		}
 		return null;
 
+	}
+
+	/**
+	 * @return the message text to be used if the given feature is not available
+	 */
+	protected String getFeatureUnavailableMessage() {
+		return Messages.CdsAnalysis_FeatureIsNotSupported_xmsg;
 	}
 
 	protected boolean isFeatureAvailable(final IProject project) {

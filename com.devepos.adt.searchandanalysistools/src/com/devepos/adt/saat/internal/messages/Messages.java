@@ -78,8 +78,10 @@ public class Messages extends NLS {
 	public static String CdsAnalysis_GoToNextPage_xtol;
 	public static String CdsAnalysis_GoToPreviousPage_xtol;
 	public static String CdsAnalysis_ManagePagesAction_xmit;
+	public static String CdsAnalysis_TopDownAnalsysisFeatureNotAvailable;
 	public static String CdsAnalysis_TopDownAnalysisProviderDescription_xmsg;
 	public static String CdsAnalysis_UsageAnalysisProviderDescription_xmsg;
+	public static String CdsAnalysis_UsedEntitiesFeatureNotAvailable;
 	public static String CdsAnalysis_UsesInAssociationsTreeNode_xlfd;
 	public static String CdsAnalysis_UsesInSelectTreeNode_xfld;
 	public static String CdsAnalysis_WhereUsedProviderDescription_xmsg;

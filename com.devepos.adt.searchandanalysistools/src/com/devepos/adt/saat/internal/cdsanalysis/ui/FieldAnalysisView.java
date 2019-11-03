@@ -23,6 +23,7 @@ import com.devepos.adt.saat.IContextMenuConstants;
 import com.devepos.adt.saat.IDestinationProvider;
 import com.devepos.adt.saat.ObjectType;
 import com.devepos.adt.saat.SearchAndAnalysisPlugin;
+import com.devepos.adt.saat.internal.cdsanalysis.FieldAnalysisUriDiscovery;
 import com.devepos.adt.saat.internal.ddicaccess.DdicRepositoryAccessFactory;
 import com.devepos.adt.saat.internal.ddicaccess.IDdicRepositoryAccess;
 import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
@@ -58,6 +59,7 @@ public class FieldAnalysisView extends CdsAnalysisPage {
 	private String currentEntity;
 	private IDestinationProvider destProvider;
 	private PreferenceToggleAction searchDbViewUsages;
+	FieldAnalysisUriDiscovery uriDiscovery;
 
 	public FieldAnalysisView(final CdsAnalysis viewPart) {
 		super(viewPart);
@@ -147,6 +149,7 @@ public class FieldAnalysisView extends CdsAnalysisPage {
 		if (type == null) {
 			return;
 		}
+		this.uriDiscovery = new FieldAnalysisUriDiscovery(destProvider.getDestinationId());
 		this.currentEntity = adtObjectInfo.getDisplayName();
 		this.destProvider = destProvider;
 		this.hierarchyView.setEntityInformation(adtObjectInfo.getDisplayName(), destProvider, type);

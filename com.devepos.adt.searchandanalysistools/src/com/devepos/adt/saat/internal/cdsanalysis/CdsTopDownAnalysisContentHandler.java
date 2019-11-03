@@ -20,17 +20,14 @@ import com.sap.adt.communication.message.IMessageBody;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 
 /**
- * Content handler for deserializing the Top-down or dependency usages
- * information for a CDS view
- *
+ * Content Handler for CDS Top Down Analysis
+ * 
  * @author stockbal
  */
-public class CdsAnalysisContentHandler extends AdtObjectElementInfoContentHandlerBase {
-	private final boolean usageAnalysis;
+public class CdsTopDownAnalysisContentHandler extends AdtObjectElementInfoContentHandlerBase {
 
-	public CdsAnalysisContentHandler(final String destinationId, final boolean usageAnalysis) {
+	public CdsTopDownAnalysisContentHandler(final String destinationId) {
 		super(destinationId);
-		this.usageAnalysis = usageAnalysis;
 	}
 
 	@Override
@@ -60,21 +57,15 @@ public class CdsAnalysisContentHandler extends AdtObjectElementInfoContentHandle
 				type, uri);
 			adtObjectRef.setPackageName(packageName);
 			adtObjRefInfo.setAdtObjectReference(adtObjectRef);
-			if (this.usageAnalysis) {
+			final ObjectType objectType = ObjectType.getFromAdtType(adtObjectRef.getType());
+			if (objectType != null && objectType != ObjectType.CDS_VIEW) {
 				adtObjRefInfo.setLazyLoadingSupport(false);
 			} else {
-				final ObjectType objectType = ObjectType.getFromAdtType(adtObjectRef.getType());
-				if (objectType != null && objectType != ObjectType.CDS_VIEW) {
-					adtObjRefInfo.setLazyLoadingSupport(false);
-				} else {
-					adtObjRefInfo.setElementInfoProvider(new CdsTopDownElementInfoProvider(this.destinationId, name));
-				}
+				adtObjRefInfo.setElementInfoProvider(new CdsTopDownElementInfoProvider(this.destinationId, name));
 			}
 			elementInfo = adtObjRefInfo;
 		} else {
-			if (!this.usageAnalysis) {
-				elementInfo = createRelationalNode(element, name);
-			}
+			elementInfo = createRelationalNode(element, name);
 		}
 
 		if (elementInfo == null) {
@@ -204,50 +195,10 @@ public class CdsAnalysisContentHandler extends AdtObjectElementInfoContentHandle
 			return;
 		}
 		for (final IXmlElement propertiesEl : element.getChildren()) {
-			if (propertiesEl.getName().equals(IXmlTags.EL_PROPERTIES)) {
-				if (this.usageAnalysis) {
-					setDatasourceUsageInfo(propertiesEl.getChildren(), elementInfo);
-				} else {
-					setSqlRelationalInfo(propertiesEl.getChildren(), elementInfo);
-				}
+			if (IXmlTags.EL_PROPERTIES.equals(propertiesEl.getName())) {
+				setSqlRelationalInfo(propertiesEl.getChildren(), elementInfo);
 			}
 		}
-	}
-
-	private void setDatasourceUsageInfo(final List<IXmlElement> children, final IElementInfo elementInfo) {
-		if (children == null) {
-			return;
-		}
-		final CdsEntityUsageInfo usageInfo = new CdsEntityUsageInfo();
-
-		for (final IXmlElement propertyEl : children) {
-			final String attribute = propertyEl.getAttributeValue(IXmlTags.AT_KEY);
-
-			try {
-				switch (attribute) {
-				case "OCCURRENCE": //$NON-NLS-1$
-					usageInfo.occurrence = Integer.parseInt(propertyEl.getText().trim());
-					break;
-				case "USED_ENTITIES_COUNT": //$NON-NLS-1$
-					usageInfo.usedEntitiesCount = Integer.parseInt(propertyEl.getText().trim());
-					break;
-				case "USED_JOIN_COUNT": //$NON-NLS-1$
-					usageInfo.usedJoinCount = Integer.parseInt(propertyEl.getText().trim());
-					break;
-				case "USED_UNION_COUNT": //$NON-NLS-1$
-					usageInfo.usedUnionCount = Integer.parseInt(propertyEl.getText().trim());
-					break;
-				case "API_STATE": //$NON-NLS-1$
-					usageInfo.setApiState(propertyEl.getText());
-					break;
-				case "SOURCE_TYPE": //$NON-NLS-1$
-					usageInfo.setSourceType(CdsSourceType.getFromId(propertyEl.getText()));
-					break;
-				}
-			} catch (final NumberFormatException exc) {
-			}
-		}
-		elementInfo.setAdditionalInfo(usageInfo);
 	}
 
 	private final class SqlRelation extends ExtendedAdtObjectInfo implements ISqlRelationInfo {
@@ -269,34 +220,6 @@ public class CdsAnalysisContentHandler extends AdtObjectElementInfoContentHandle
 		@Override
 		public String getAliasName() {
 			return this.aliasName;
-		}
-
-	}
-
-	private final class CdsEntityUsageInfo extends ExtendedAdtObjectInfo implements ICdsEntityUsageInfo {
-		public int occurrence;
-		public int usedEntitiesCount;
-		public int usedJoinCount;
-		public int usedUnionCount;
-
-		@Override
-		public int getOccurrence() {
-			return this.occurrence;
-		}
-
-		@Override
-		public int getUsedEntitiesCount() {
-			return this.usedEntitiesCount;
-		}
-
-		@Override
-		public int getUsedJoinCount() {
-			return this.usedJoinCount;
-		}
-
-		@Override
-		public int getUsedUnionCount() {
-			return this.usedUnionCount;
 		}
 
 	}

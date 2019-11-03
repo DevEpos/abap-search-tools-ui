@@ -100,6 +100,8 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 
 	private IAbapProjectProvider projectProvider;
 	private boolean isDbBrowserIntegrationAvailable;
+	private boolean isCdsTopDownAnalysisAvailable;
+	private boolean isCdsUsedEntitiesAnalysisAvailable;
 	private final IPreferenceStore prefStore;
 
 	public ObjectSearchResultPage() {
@@ -180,7 +182,7 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 			this.state = uiState instanceof UIState ? (UIState) uiState : null;
 			this.searchQuery = (ObjectSearchQuery) this.result.getQuery();
 			this.projectProvider = this.searchQuery.getProjectProvider();
-			checkDbBrowserIntegration();
+			checkFeatureAvailibility();
 			if (!NewSearchUI.isQueryRunning(this.searchQuery)) {
 				updateUiState();
 			}
@@ -271,11 +273,17 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 		return composite;
 	}
 
-	private void checkDbBrowserIntegration() {
+	private void checkFeatureAvailibility() {
 		this.isDbBrowserIntegrationAvailable = false;
+		this.isCdsTopDownAnalysisAvailable = false;
+		this.isCdsUsedEntitiesAnalysisAvailable = false;
 		if (this.projectProvider != null && this.projectProvider.ensureLoggedOn()) {
 			this.isDbBrowserIntegrationAvailable = AdtUtil.isSapGuiDbBrowserAvailable(this.projectProvider.getProject());
+			this.isCdsTopDownAnalysisAvailable = AdtUtil.isCdsTopDownAnalysisAvailable(this.projectProvider.getProject());
+			this.isCdsUsedEntitiesAnalysisAvailable = AdtUtil
+				.isCdsUsedEntitiesAnalysisAvailable(this.projectProvider.getProject());
 		}
+
 	}
 
 	private void initializeActions() {
@@ -397,7 +405,7 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 			// check if action is supported in the current project
 			if (new CdsAnalysisUriDiscovery(this.projectProvider.getDestinationId()).getCdsAnalysisUri() != null) {
 				menu.add(new Separator(com.devepos.adt.saat.IContextMenuConstants.GROUP_CDS_ANALYSIS));
-				if (singleCdsViewSelected) {
+				if (singleCdsViewSelected && this.isCdsTopDownAnalysisAvailable) {
 					MenuItemFactory.addCdsAnalyzerCommandItem(menu, com.devepos.adt.saat.IContextMenuConstants.GROUP_CDS_ANALYSIS,
 						ICommandConstants.CDS_TOP_DOWN_ANALYSIS);
 				}
@@ -405,7 +413,7 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 					MenuItemFactory.addCdsAnalyzerCommandItem(menu, com.devepos.adt.saat.IContextMenuConstants.GROUP_CDS_ANALYSIS,
 						ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS);
 				}
-				if (singleCdsViewSelected) {
+				if (singleCdsViewSelected && this.isCdsUsedEntitiesAnalysisAvailable) {
 					MenuItemFactory.addCdsAnalyzerCommandItem(menu, com.devepos.adt.saat.IContextMenuConstants.GROUP_CDS_ANALYSIS,
 						ICommandConstants.USED_ENTITIES_ANALYSIS);
 				}

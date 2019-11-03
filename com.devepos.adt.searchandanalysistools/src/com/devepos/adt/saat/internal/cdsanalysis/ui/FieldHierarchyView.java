@@ -147,13 +147,14 @@ public class FieldHierarchyView implements IDestinationProvider {
 		final String fieldName = node.getName();
 		FieldHierarchyViewerInput input = this.fieldInputMap.get(fieldName);
 		if (input == null) {
+			// check if top down is possible
 			// create new input
-			final LazyLoadingFolderNode topDownNode = this.currentInputObjectType == ObjectType.CDS_VIEW
-				? new LazyLoadingFolderNode(this.currentEntityName, this.currentEntityName,
+			LazyLoadingFolderNode topDownNode = null;
+			if (this.parentView.uriDiscovery.isHierarchyAnalysisAvailable()
+				&& this.currentInputObjectType == ObjectType.CDS_VIEW) {
+				topDownNode = new LazyLoadingFolderNode(this.currentEntityName, this.currentEntityName,
 					new CdsFieldTopDownElementInfoProvider(getDestinationId(), this.currentEntityName, fieldName),
-					node.getParent().getImageId(), null, null)
-				: null;
-			if (topDownNode != null) {
+					node.getParent().getImageId(), null, null);
 				topDownNode.getProperties().put(ICdsAnalysisConstants.FIELD_PROP, node.getDisplayName());
 			}
 			input = new FieldHierarchyViewerInput(this.hierarchyTreeViewer, topDownNode, this.currentEntityName, fieldName, this);

@@ -89,16 +89,16 @@ public class DynamicOpenInMenuUtility {
 					add(new Separator());
 				}
 				final boolean isCdsView = this.adtObjects.get(0).getObjectType() == ObjectType.CDS_VIEW;
-				if (isCdsView) {
+				if (isCdsView && AdtUtil.isCdsTopDownAnalysisAvailable(this.project)) {
 					MenuItemFactory.addCdsAnalyzerCommandItem(this, null, ICommandConstants.CDS_TOP_DOWN_ANALYSIS);
 				}
 				MenuItemFactory.addCdsAnalyzerCommandItem(this, null, ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS);
-				if (isCdsView) {
+				if (isCdsView && AdtUtil.isCdsUsedEntitiesAnalysisAvailable(this.project)) {
 					MenuItemFactory.addCdsAnalyzerCommandItem(this, null, ICommandConstants.USED_ENTITIES_ANALYSIS);
 				}
 				MenuItemFactory.addCdsAnalyzerCommandItem(this, null, ICommandConstants.FIELD_ANALYSIS);
 				// Additional actions only exist for CDS view at the moment
-				if (isCdsView && AdtUtil.isNavigationTargetsFeatureAvailable(DynamicOpenInMenuManager.this.project)) {
+				if (isCdsView && AdtUtil.isNavigationTargetsFeatureAvailable(this.project)) {
 					add(new Separator());
 					add(new ExternalNavigationTargetsMenu(this.adtObjects.get(0), this.project));
 				}

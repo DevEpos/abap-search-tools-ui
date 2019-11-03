@@ -272,8 +272,8 @@ public class AdtUtil {
 	/**
 	 * Checks if the object search is available in the given project
 	 *
-	 * @param  project
-	 * @return         <code>true</code> if the object search is available
+	 * @param  project ABAP Project
+	 * @return         <code>true</code> if feature is available
 	 */
 	public static boolean isObjectSearchAvailable(final IProject project) {
 		final IAbapProject abapProject = project.getAdapter(IAbapProject.class);
@@ -285,26 +285,53 @@ public class AdtUtil {
 	/**
 	 * Checks if navigation targets for an ADT object can be determined
 	 *
-	 * @param  project
-	 * @return         <code>true</code> if the feature is available
+	 * @param  project ABAP Project
+	 * @return         <code>true</code> if feature is available
 	 */
 	public static boolean isNavigationTargetsFeatureAvailable(final IProject project) {
 		final IAbapProject abapProject = project.getAdapter(IAbapProject.class);
 		final NavigationTargetsUriDiscovery uriDiscovery = new NavigationTargetsUriDiscovery(abapProject.getDestinationId());
-		return uriDiscovery.getNavTargetsUri() != null;
+		return uriDiscovery.isResourceDiscoverySuccessful() && uriDiscovery.getNavTargetsUri() != null;
 	}
 
 	/**
-	 * Checks if the CDS Analysis feature is available for the given object
+	 * Checks if the CDS Analysis feature is available for the given project
 	 *
-	 * @param  project
-	 * @return
+	 * @param  project ABAP Project
+	 * @return         <code>true</code> if feature is available
 	 */
 	public static boolean isCdsAnalysisAvailable(final IProject project) {
 		final IAbapProject abapProject = project.getAdapter(IAbapProject.class);
 
 		final CdsAnalysisUriDiscovery uriDiscovery = new CdsAnalysisUriDiscovery(abapProject.getDestinationId());
-		return uriDiscovery.getCdsAnalysisUri() != null;
+		return uriDiscovery.isResourceDiscoverySuccessful() && uriDiscovery.getCdsAnalysisUri() != null;
+	}
+
+	/**
+	 * Checks if the CDS Top Down analysis is available in the given project
+	 *
+	 * @param  project ABAP Project
+	 * @return         <code>true</code> if feature is available
+	 */
+	public static boolean isCdsTopDownAnalysisAvailable(final IProject project) {
+		final IAbapProject abapProject = project.getAdapter(IAbapProject.class);
+
+		final CdsAnalysisUriDiscovery uriDiscovery = new CdsAnalysisUriDiscovery(abapProject.getDestinationId());
+		return uriDiscovery.isResourceDiscoverySuccessful() && uriDiscovery.isTopDownAnalysisAvailable();
+	}
+
+	/**
+	 * Checks if the CDS Used Entities Analysis feature is available for the given
+	 * project
+	 *
+	 * @param  project ABAP Project
+	 * @return         <code>true</code> if feature is available
+	 */
+	public static boolean isCdsUsedEntitiesAnalysisAvailable(final IProject project) {
+		final IAbapProject abapProject = project.getAdapter(IAbapProject.class);
+
+		final CdsAnalysisUriDiscovery uriDiscovery = new CdsAnalysisUriDiscovery(abapProject.getDestinationId());
+		return uriDiscovery.isResourceDiscoverySuccessful() && uriDiscovery.isUsedEntitiesAnalysisAvailable();
 	}
 
 	/**

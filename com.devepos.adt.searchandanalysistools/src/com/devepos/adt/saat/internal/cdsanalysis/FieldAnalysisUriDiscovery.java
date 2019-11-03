@@ -11,11 +11,12 @@ import com.sap.adt.compatibility.uritemplate.IAdtUriTemplate;
  * @author stockbal
  */
 public class FieldAnalysisUriDiscovery extends UriDiscoveryBase {
-	private static final String DISCOVERY_SCHEME = "http://www.devepos.com/adt/saat/dbfield/hierarchy"; //$NON-NLS-1$
-	private static final String DISCOVERY_RELATION_FIELD_ANALYSIS = "http://www.devepos.com/adt/relations/saat/dbfield/hierarchy"; //$NON-NLS-1$
-	private static final String DISCOVERY_TERM_FIELD_ANALYSIS = "db-fields-hierarchy"; //$NON-NLS-1$
+	private static final String DISCOVERY_SCHEME = "http://www.devepos.com/adt/saat/columninfo"; //$NON-NLS-1$
+	private static final String DISCOVERY_RELATION_COLUMN_INFO = "http://www.devepos.com/adt/relations/saat/columninfo"; //$NON-NLS-1$
+	private static final String DISCOVERY_TERM_COLUMN_INFO = "column-information"; //$NON-NLS-1$
+	private static final String DISCOVERY_TEMPLATE_COL_HIERARCHY = "/hierarchy"; //$NON-NLS-1$
+	private static final String DISCOVERY_TEMPLATE_COL_WHERE_USED = "/whereUsed"; //$NON-NLS-1$
 	private static final String FIELD_PARAMETER = "field"; //$NON-NLS-1$
-	private static final String MODE_PARAMETER = "mode"; //$NON-NLS-1$
 	private static final String NAME_PARAMETER = "name"; //$NON-NLS-1$
 	private static final String SEARCH_CALC_FIELDS_PARAMETER = "searchCalcFields"; //$NON-NLS-1$
 	private static final String SEARCH_DB_VIEWS_PARAMETER = "searchDbViewUsages"; //$NON-NLS-1$
@@ -28,14 +29,36 @@ public class FieldAnalysisUriDiscovery extends UriDiscoveryBase {
 	 * @return Retrieves Resource URI for the Database field Analysis
 	 */
 	public URI getFieldAnalysisUri() {
-		return getUriFromCollectionMember(DISCOVERY_TERM_FIELD_ANALYSIS);
+		return getUriFromCollectionMember(DISCOVERY_TERM_COLUMN_INFO);
+	}
+
+	/**
+	 * Returns <code>true</code> if the column hierarchy (top-down) analysis is
+	 * available in the current destination
+	 *
+	 * @return <code>true</code> if the column hierarchy (top-down) analysis is
+	 *         available in the current destination
+	 */
+	public boolean isHierarchyAnalysisAvailable() {
+		return getFieldAnalysisTemplate(DISCOVERY_TEMPLATE_COL_HIERARCHY) != null;
+	}
+
+	/**
+	 * Returns <code>true</code> if the column where-used analysis is available in
+	 * the current destination
+	 *
+	 * @return <code>true</code> if the column where-used analysis is available in
+	 *         the current destination
+	 */
+	public boolean isWhereUsedAnalysisAvailable() {
+		return getFieldAnalysisTemplate(DISCOVERY_TEMPLATE_COL_WHERE_USED) != null;
 	}
 
 	/**
 	 * @return ADT URI template for the Database field Analysis Resource
 	 */
-	public IAdtUriTemplate getFieldAnalysisTemplate() {
-		return getTemplate(DISCOVERY_TERM_FIELD_ANALYSIS, DISCOVERY_RELATION_FIELD_ANALYSIS);
+	public IAdtUriTemplate getFieldAnalysisTemplate(final String templateUriPart) {
+		return getTemplate(DISCOVERY_TERM_COLUMN_INFO, DISCOVERY_RELATION_COLUMN_INFO + templateUriPart);
 	}
 
 	/**
@@ -48,7 +71,7 @@ public class FieldAnalysisUriDiscovery extends UriDiscoveryBase {
 	 */
 	public URI createTopDownCdsAnalysisResourceUri(final String cdsViewName, final String field) {
 		URI uri = null;
-		final IAdtUriTemplate template = createResourceUriTemplate(cdsViewName, field, "hierarchy"); //$NON-NLS-1$
+		final IAdtUriTemplate template = createResourceUriTemplate(cdsViewName, field, DISCOVERY_TEMPLATE_COL_HIERARCHY);
 		if (template != null) {
 			uri = URI.create(template.expand());
 		}
@@ -70,7 +93,7 @@ public class FieldAnalysisUriDiscovery extends UriDiscoveryBase {
 	public URI createWhereUsedAnalysisResourceUri(final String objectName, final String field, final boolean searchCalcFields,
 		final boolean searchDbViews) {
 		URI uri = null;
-		final IAdtUriTemplate template = createResourceUriTemplate(objectName, field, "whereUsed"); //$NON-NLS-1$
+		final IAdtUriTemplate template = createResourceUriTemplate(objectName, field, DISCOVERY_TEMPLATE_COL_WHERE_USED);
 		if (template != null) {
 			if (template.containsVariable(SEARCH_CALC_FIELDS_PARAMETER) && searchCalcFields) {
 				template.set(SEARCH_CALC_FIELDS_PARAMETER, "X");
@@ -83,17 +106,14 @@ public class FieldAnalysisUriDiscovery extends UriDiscoveryBase {
 		return uri;
 	}
 
-	private IAdtUriTemplate createResourceUriTemplate(final String name, final String field, final String mode) {
-		final IAdtUriTemplate template = getFieldAnalysisTemplate();
+	private IAdtUriTemplate createResourceUriTemplate(final String name, final String field, final String templateUriPart) {
+		final IAdtUriTemplate template = getFieldAnalysisTemplate(templateUriPart);
 		if (template != null) {
 			if (template.containsVariable(NAME_PARAMETER)) {
 				template.set(NAME_PARAMETER, name);
 			}
 			if (template.containsVariable(FIELD_PARAMETER)) {
 				template.set(FIELD_PARAMETER, field);
-			}
-			if (template.containsVariable(MODE_PARAMETER)) {
-				template.set(MODE_PARAMETER, mode);
 			}
 		}
 		return template;
