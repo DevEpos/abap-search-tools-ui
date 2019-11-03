@@ -163,4 +163,25 @@ public class AdtObjectReferenceElementInfo extends ElementInfoBase implements IA
 		return null;
 	}
 
+	@Override
+	public int size() {
+		return this.children == null ? 0 : this.children.size();
+	}
+
+	@Override
+	public IElementInfo getChild(final String name) {
+		if (!hasChildren() || name == null) {
+			return null;
+		}
+		return this.children.stream().filter(el -> name.equals(name)).findFirst().orElse(null);
+	}
+
+	@Override
+	public boolean hasChild(final String name) {
+		if (!hasChildren() || name == null) {
+			return false;
+		}
+		return this.children.stream().anyMatch(el -> name.equals(el.getName()));
+	}
+
 }
