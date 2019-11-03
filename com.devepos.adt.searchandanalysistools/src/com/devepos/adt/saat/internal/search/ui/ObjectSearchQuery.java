@@ -1,6 +1,7 @@
 package com.devepos.adt.saat.internal.search.ui;
 
 import java.net.URI;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -111,12 +112,15 @@ public class ObjectSearchQuery implements ISearchQuery {
 		restResource.addContentHandler(new ObjectSearchContentHandler(projectProvider.getDestinationId()));
 
 		try {
-			final IAdtObjectReferenceElementInfo[] searchResult = restResource.get(monitor, AdtUtil.getHeaders(),
-				IAdtObjectReferenceElementInfo[].class);
-			if (!this.searchRequest.shouldReadAllEntries() && searchResult.length > this.searchRequest.getMaxResults()) {
+			final com.devepos.adt.saat.internal.search.ObjectSearchResult searchResult = restResource.get(monitor,
+				AdtUtil.getHeaders(), com.devepos.adt.saat.internal.search.ObjectSearchResult.class);
+
+			final List<IAdtObjectReferenceElementInfo> rawResult = searchResult.getRawResult();
+			if (rawResult != null && !this.searchRequest.shouldReadAllEntries()
+				&& rawResult.size() > this.searchRequest.getMaxResults()) {
 				this.searchResult.setHasMoreResults(true);
 			}
-			this.searchResult.addSearchResult(searchResult);
+			this.searchResult.addSearchResult(rawResult, searchResult.getPackageResult());
 			monitor.worked(1);
 			monitor.done();
 			return Status.OK_STATUS;

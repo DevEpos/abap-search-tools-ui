@@ -1,13 +1,13 @@
 package com.devepos.adt.saat.internal.search.ui;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.osgi.util.NLS;
@@ -39,7 +39,8 @@ public class ObjectSearchResult implements ISearchResult {
 	private boolean hasMoreResults;
 	private IAdtObjectReference tempPackageReference;
 	private static final IAdtObjectReferenceNode[] EMPTY_RESULT = new IAdtObjectReferenceNode[0];
-	private IAdtObjectReferenceElementInfo[] searchResult;
+	private List<IAdtObjectReferenceElementInfo> searchResult;
+	private List<IAdtObjectReferenceElementInfo> packageResult;
 
 	public ObjectSearchResult(final ObjectSearchQuery searchQuery) {
 		this.searchQuery = searchQuery;
@@ -102,13 +103,16 @@ public class ObjectSearchResult implements ISearchResult {
 		this.hasMoreResults = hasMoreResults;
 	}
 
-	public void addSearchResult(final IAdtObjectReferenceElementInfo[] searchResult) {
+	public void addSearchResult(final List<IAdtObjectReferenceElementInfo> searchResult,
+		final List<IAdtObjectReferenceElementInfo> packageResult) {
 		final ObjectSearchResultEvent resultEvent = new ObjectSearchResultEvent(this);
-		if (searchResult != null && searchResult.length > 0) {
+		if (searchResult != null && searchResult.size() > 0) {
 			this.searchResult = searchResult;
-			this.resultCount = this.searchResult.length;
+			this.packageResult = packageResult;
+			this.resultCount = this.searchResult.size();
 		} else {
 			this.searchResult = null;
+			this.packageResult = null;
 			this.packages = null;
 			this.treeResult = null;
 			this.resultCount = 0;
@@ -141,7 +145,7 @@ public class ObjectSearchResult implements ISearchResult {
 	}
 
 	public List<IAdtObjectReferenceElementInfo> getResult() {
-		return this.searchResult != null ? Arrays.asList(this.searchResult) : new ArrayList<>();
+		return this.searchResult != null ? this.searchResult : new ArrayList<>();
 	}
 
 	public void cleanup() {
@@ -163,6 +167,7 @@ public class ObjectSearchResult implements ISearchResult {
 
 	private void createResult() {
 		final List<IAdtObjectReferenceNode> nodes = new ArrayList<>(this.resultCount);
+
 		for (final IAdtObjectReferenceElementInfo adtObjRefInfo : this.searchResult) {
 			if (IAdtObjectTypeConstants.PACKAGE.equals(adtObjRefInfo.getAdtType())) {
 				continue;
@@ -180,28 +185,30 @@ public class ObjectSearchResult implements ISearchResult {
 	private void createGroupedResult() {
 		final List<IAdtObjectReferenceNode> nodes = new LinkedList<>();
 		final List<IAdtObjectReferenceNode> packageNodes = new LinkedList<>();
-		final Map<String, IAdtObjectReferenceNode> nodeMap = new HashMap<>();
+		final Map<String, IAdtObjectReferenceNode> nodeMap = new TreeMap<>();
 
 		for (final IAdtObjectReferenceElementInfo adtObjRefInfo : this.searchResult) {
 			IAdtObjectReferenceNode node = null;
-			if (!IAdtObjectTypeConstants.PACKAGE.equals(adtObjRefInfo.getAdtType())) {
-				final LazyLoadingAdtObjectReferenceNode lazyLoadingNode = new LazyLoadingAdtObjectReferenceNode(
-					adtObjRefInfo.getName(), adtObjRefInfo.getDisplayName(), adtObjRefInfo.getDescription(),
-					adtObjRefInfo.getAdtObjectReference(), null);
-				lazyLoadingNode.setElementInfoProvider(adtObjRefInfo.getElementInfoProvider());
-				lazyLoadingNode.setAdditionalInfo(adtObjRefInfo.getAdditionalInfo());
-				node = lazyLoadingNode;
-			} else {
-				if (TEMP_PACKAGE_NAME.equals(adtObjRefInfo.getName())) {
-					this.tempPackageReference = adtObjRefInfo.getAdtObjectReference();
-					continue;
-				}
-				node = new PackageNode(adtObjRefInfo.getName(), adtObjRefInfo.getDescription(),
-					adtObjRefInfo.getAdtObjectReference());
-				node.setAdditionalInfo(adtObjRefInfo.getAdditionalInfo());
-				packageNodes.add(node);
-			}
+			final LazyLoadingAdtObjectReferenceNode lazyLoadingNode = new LazyLoadingAdtObjectReferenceNode(
+				adtObjRefInfo.getName(), adtObjRefInfo.getDisplayName(), adtObjRefInfo.getDescription(),
+				adtObjRefInfo.getAdtObjectReference(), null);
+			lazyLoadingNode.setElementInfoProvider(adtObjRefInfo.getElementInfoProvider());
+			lazyLoadingNode.setAdditionalInfo(adtObjRefInfo.getAdditionalInfo());
+			node = lazyLoadingNode;
+			node.setAdditionalInfo(adtObjRefInfo.getAdditionalInfo());
 
+			nodeMap.put(String.format(KEY_PATTERN, adtObjRefInfo.getName(), adtObjRefInfo.getAdtType()), node);
+		}
+		for (final IAdtObjectReferenceElementInfo adtObjRefInfo : this.packageResult) {
+			IAdtObjectReferenceNode node = null;
+			if (TEMP_PACKAGE_NAME.equals(adtObjRefInfo.getName())) {
+				this.tempPackageReference = adtObjRefInfo.getAdtObjectReference();
+				continue;
+			}
+			node = new PackageNode(adtObjRefInfo.getName(), adtObjRefInfo.getDescription(),
+				adtObjRefInfo.getAdtObjectReference());
+			node.setAdditionalInfo(adtObjRefInfo.getAdditionalInfo());
+			packageNodes.add(node);
 			nodeMap.put(String.format(KEY_PATTERN, adtObjRefInfo.getName(), adtObjRefInfo.getAdtType()), node);
 		}
 

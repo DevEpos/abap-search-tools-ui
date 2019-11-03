@@ -22,7 +22,7 @@ import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
  *
  * @author stockbal
  */
-public class ObjectSearchContentHandler implements IContentHandler<IAdtObjectReferenceElementInfo[]> {
+public class ObjectSearchContentHandler implements IContentHandler<ObjectSearchResult> {
 	private final String destinationId;
 	protected final AdtStaxContentHandlerUtility utility = new AdtStaxContentHandlerUtility();
 
@@ -31,17 +31,28 @@ public class ObjectSearchContentHandler implements IContentHandler<IAdtObjectRef
 	}
 
 	@Override
-	public IAdtObjectReferenceElementInfo[] deserialize(final IMessageBody body,
-		final Class<? extends IAdtObjectReferenceElementInfo[]> dataType) {
-		final List<IAdtObjectReferenceElementInfo> result = new ArrayList<>();
+	public ObjectSearchResult deserialize(final IMessageBody body, final Class<? extends ObjectSearchResult> dataType) {
+		final ObjectSearchResult result = new ObjectSearchResult();
+		final List<IAdtObjectReferenceElementInfo> rawResult = new ArrayList<>();
+		final List<IAdtObjectReferenceElementInfo> packageResult = new ArrayList<>();
 
 		final IXmlElement rootElement = this.utility.parseXML(body, IXmlTags.EL_PROPERTY);
 
-		if (rootElement != null && rootElement.getName().equals(IXmlTags.EL_ELEMENT_INFOS)) {
-			deserializeResult(rootElement, result);
+		if (rootElement == null || !IXmlTags.EL_ELEMENT_INFOS.equals(rootElement.getName())) {
+			return result;
 		}
 
-		return result.toArray(new IAdtObjectReferenceElementInfo[result.size()]);
+		for (final IXmlElement childElement : rootElement.getChildren()) {
+			final String type = childElement.getAttributeValue(IXmlTags.AT_TYPE);
+			if ("rawResult".equals(type)) { //$NON-NLS-1$
+				deserializeResult(childElement, rawResult);
+				result.setRawResult(rawResult);
+			} else if ("packages".equals(type)) { //$NON-NLS-1$
+				deserializeResult(childElement, packageResult);
+				result.setPackageResult(packageResult);
+			}
+		}
+		return result;
 	}
 
 	@Override
@@ -50,29 +61,30 @@ public class ObjectSearchContentHandler implements IContentHandler<IAdtObjectRef
 	}
 
 	@Override
-	public Class<IAdtObjectReferenceElementInfo[]> getSupportedDataType() {
-		return IAdtObjectReferenceElementInfo[].class;
+	public Class<ObjectSearchResult> getSupportedDataType() {
+		return ObjectSearchResult.class;
 	}
 
 	@Override
-	public IMessageBody serialize(final IAdtObjectReferenceElementInfo[] arg0, final Charset arg1) {
+	public IMessageBody serialize(final ObjectSearchResult arg0, final Charset arg1) {
 		return null;
 	}
 
-	private void deserializeResult(final IXmlElement rootElement, final List<IAdtObjectReferenceElementInfo> result) {
+	private void deserializeResult(final IXmlElement rootElement, final List<IAdtObjectReferenceElementInfo> collection) {
 		for (final IXmlElement elementInfoElement : rootElement.getChildren()) {
+			final String type = elementInfoElement.getAttributeValue(IXmlTags.AT_TYPE);
 			final String name = elementInfoElement.getAttributeValue(IXmlTags.AT_NAME);
 			final String rawName = elementInfoElement.getAttributeValue(IXmlTags.AT_RAW_NAME);
 			final String description = elementInfoElement.getAttributeValue(IXmlTags.AT_DESCRIPTION);
 			final String packageName = elementInfoElement.getAttributeValue(IXmlTags.AT_PACKAGE_NAME);
 			final String uri = elementInfoElement.getAttributeValue(IXmlTags.AT_URI);
-			final String type = elementInfoElement.getAttributeValue(IXmlTags.AT_TYPE);
 			final String owner = elementInfoElement.getAttributeValue(IXmlTags.AT_OWNER);
+
 			final IAdtObjectReferenceElementInfo elementInfo = new AdtObjectReferenceElementInfo(name, rawName, description);
 
 			if (name != null && !name.isEmpty() && uri != null && !uri.isEmpty() && type != null && !type.isEmpty()) {
-				final IAdtObjectReference adtObjectRef = AdtObjectReferenceModelFactory.createReference(this.destinationId, name, type,
-					uri);
+				final IAdtObjectReference adtObjectRef = AdtObjectReferenceModelFactory.createReference(this.destinationId, name,
+					type, uri);
 				adtObjectRef.setPackageName(packageName);
 				elementInfo.setAdtObjectReference(adtObjectRef);
 				elementInfo.setElementInfoProvider(new ObjectSearchElementInfoProvider(this.destinationId, adtObjectRef));
@@ -89,7 +101,7 @@ public class ObjectSearchContentHandler implements IContentHandler<IAdtObjectRef
 					elementInfo.setAdditionalInfo(extendedElementInfo);
 				}
 			}
-			result.add(elementInfo);
+			collection.add(elementInfo);
 		}
 	}
 
