@@ -105,7 +105,6 @@ public class SearchPatternAnalyzer {
 		for (final String paramSection : paramSections) {
 			result.addAll(Stream.of(paramSection.substring(parameterKeyLower.length() + 1).split(VALUE_LIST_SEP))
 				.filter(value -> !value.isEmpty())
-				.map(value -> value.toLowerCase(Locale.ENGLISH))
 				.collect(Collectors.toList()));
 		}
 		return result;
