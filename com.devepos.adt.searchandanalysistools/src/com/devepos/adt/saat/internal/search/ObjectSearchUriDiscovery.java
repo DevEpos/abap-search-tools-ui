@@ -20,14 +20,6 @@ public class ObjectSearchUriDiscovery extends UriDiscoveryBase {
 	private static final String DISCOVERY_SCHEME = "http://www.devepos.com/adt/saat/objectsearch";
 	private static final String DISCOVERY_RELATION_SEARCH = "http://www.devepos.com/adt/relations/saat/objectsearch";
 	private static final String DISCOVERY_TERM_OBJECT_SEARCH = "search";
-	private static final String DISCOVERY_TERM_ANNOTATION_VALUE_HELP = "annotation";
-	private static final String DISCOVERY_TERM_ANNOTATION_VALUE_VALUE_HELP = "annotationvalue";
-	private static final String DISCOVERY_TERM_DB_ENTITY_VH = "dbentity";
-	private static final String DISCOVERY_TERM_CDS_FIELD_VH = "cdsfield";
-	private static final String DISCOVERY_TERM_TABLE_FIELD_VH = "tablefield";
-	private static final String DISCOVERY_TERM_CDS_TYPE_VH = "cdstype";
-	private static final String DISCOVERY_TERM_RELEASE_STATE_VH = "releasestate";
-	private static final String DISCOVERY_TERM_CDS_EXTENSION_VH = "cdsextension";
 	private static final String NAMED_ITEM_TEMPLATE = "{?maxItemCount,name,description,data}";
 
 	/**
@@ -79,112 +71,9 @@ public class ObjectSearchUriDiscovery extends UriDiscoveryBase {
 		return uri;
 	}
 
-	/**
-	 * Retrieves URI template for the annotation value help
-	 *
-	 * @return
-	 */
-	public IAdtUriTemplate getAnnotationValueHelpTemplate() {
-		return getNamedItemTemplateForUri(getAnnotationValueHelpUri());
-	}
-
-	/**
-	 * Retrieves resource URI for annotation value help
-	 *
-	 * @return
-	 */
-	public URI getAnnotationValueHelpUri() {
-		return getUriFromCollectionMember(DISCOVERY_TERM_ANNOTATION_VALUE_HELP);
-	}
-
-	/**
-	 * Retrieves URI template for the annotation value help
-	 *
-	 * @return
-	 */
-	public IAdtUriTemplate getAnnotationValueValueHelpTemplate() {
-		return getNamedItemTemplateForUri(getAnnotationValueValueHelpUri());
-	}
-
-	/**
-	 * Retrieves resource URI for annotation value help
-	 *
-	 * @return
-	 */
-	public URI getAnnotationValueValueHelpUri() {
-		return getUriFromCollectionMember(DISCOVERY_TERM_ANNOTATION_VALUE_VALUE_HELP);
-	}
-
-	/**
-	 * Retrieves URI template for the CDS field value help
-	 *
-	 * @return
-	 */
-	public IAdtUriTemplate getCdsFieldValueHelpTemplate() {
-		return getNamedItemTemplateForUri(getCdsFieldValueHelpUri());
-	}
-
-	/**
-	 * Retrieves resource URI for the CDS field value help
-	 *
-	 * @return
-	 */
-	public URI getCdsFieldValueHelpUri() {
-		return getUriFromCollectionMember(DISCOVERY_TERM_CDS_FIELD_VH);
-	}
-
-	/**
-	 * Retrieves URI template for the CDS type value help
-	 *
-	 * @return
-	 */
-	public IAdtUriTemplate getCdsTypeValueHelpTemplate() {
-		return getNamedItemTemplateForUri(getCdsTypeValueHelpUri());
-	}
-
-	/**
-	 * Retrieves resource URI for the CDS type value help
-	 *
-	 * @return
-	 */
-	public URI getCdsTypeValueHelpUri() {
-		return getUriFromCollectionMember(DISCOVERY_TERM_CDS_TYPE_VH);
-	}
-
-	/**
-	 * Retrieves URI template for the database entity value help
-	 *
-	 * @return
-	 */
-	public IAdtUriTemplate getDbEntityValueHelpTemplate() {
-		return getNamedItemTemplateForUri(getDbEntityValueHelpUri());
-	}
-
-	/**
-	 * Retrieves resource URI for the database entity value help
-	 *
-	 * @return
-	 */
-	public URI getDbEntityValueHelpUri() {
-		return getUriFromCollectionMember(DISCOVERY_TERM_DB_ENTITY_VH);
-	}
-
-	/**
-	 * Retrieves URI template for the CDS extension value help
-	 *
-	 * @return
-	 */
-	public IAdtUriTemplate getCdsExtensionValueHelpTemplate() {
-		return getNamedItemTemplateForUri(getCdsExtensionValueHelpUri());
-	}
-
-	/**
-	 * Retrieves resource URI for the CDS extension value help
-	 *
-	 * @return
-	 */
-	public URI getCdsExtensionValueHelpUri() {
-		return getUriFromCollectionMember(DISCOVERY_TERM_CDS_EXTENSION_VH);
+	public IAdtUriTemplate getTemplateByDiscoveryTerm(final String discoveryTerm) {
+		final URI uri = getUriFromCollectionMember(discoveryTerm);
+		return uri != null ? getNamedItemTemplateForUri(uri) : null;
 	}
 
 	/**
@@ -203,42 +92,6 @@ public class ObjectSearchUriDiscovery extends UriDiscoveryBase {
 	 */
 	public IAdtUriTemplate getObjectSearchTemplate(final SearchType searchType) {
 		return getTemplate(DISCOVERY_TERM_OBJECT_SEARCH, DISCOVERY_RELATION_SEARCH + "/" + searchType.getUriTerm());
-	}
-
-	/**
-	 * Retrieves URI template for the Release state value help
-	 *
-	 * @return
-	 */
-	public IAdtUriTemplate getReleaseStateValueHelpTemplate() {
-		return getNamedItemTemplateForUri(getReleaseStateValueHelpUri());
-	}
-
-	/**
-	 * Retrieves resource URI for the Release state value help
-	 *
-	 * @return
-	 */
-	public URI getReleaseStateValueHelpUri() {
-		return getUriFromCollectionMember(DISCOVERY_TERM_RELEASE_STATE_VH);
-	}
-
-	/**
-	 * Retrieves URI template for the table field value help
-	 *
-	 * @return
-	 */
-	public IAdtUriTemplate getTableFieldValueHelpTemplate() {
-		return getNamedItemTemplateForUri(getTableFieldValueHelpUri());
-	}
-
-	/**
-	 * Retrieves resource URI for the table field value help
-	 *
-	 * @return
-	 */
-	public URI getTableFieldValueHelpUri() {
-		return getUriFromCollectionMember(DISCOVERY_TERM_TABLE_FIELD_VH);
 	}
 
 	private IAdtUriTemplate getNamedItemTemplateForUri(final URI uri) {

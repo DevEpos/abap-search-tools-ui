@@ -25,7 +25,6 @@ import com.devepos.adt.saat.internal.search.ReleaseStateSearchParameter;
 import com.devepos.adt.saat.internal.search.SearchParameterFactory;
 import com.devepos.adt.saat.internal.search.SearchType;
 import com.devepos.adt.saat.internal.search.SelectFromSearchParameter;
-import com.devepos.adt.saat.internal.search.TypeSearchParameter;
 import com.devepos.adt.saat.internal.search.UserSearchParameter;
 import com.devepos.adt.saat.internal.util.IAbapProjectProvider;
 
@@ -104,9 +103,10 @@ public class SearchPatternProvider implements ISearchParameterHandler {
 				parameters.add(new AnnotationSearchParameter(this.projectProvider));
 				parameters.add(SearchParameterFactory.createCdsParamParameter());
 				parameters.add(SearchParameterFactory.createHasParameterParameter());
-				parameters.add(new TypeSearchParameter(this.projectProvider));
+				parameters.add(SearchParameterFactory.createCdsTypeParameter(this.projectProvider));
 			} else if (this.searchType == SearchType.DB_TABLE_VIEW) {
 				parameters.add(new FieldSearchParameter(this.projectProvider, NamedItemType.TABLE_FIELD));
+				parameters.add(SearchParameterFactory.createTableTypeParameter(this.projectProvider));
 			}
 			this.parameterMap.put(this.searchType, parameters);
 		}

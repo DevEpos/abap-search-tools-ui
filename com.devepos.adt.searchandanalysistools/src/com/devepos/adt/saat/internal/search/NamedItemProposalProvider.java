@@ -30,7 +30,7 @@ public class NamedItemProposalProvider {
 	protected String destinationId;
 	protected final QueryParameterName parameterName;
 	protected final NamedItemType namedItemType;
-	private final boolean isCachingActive;
+	protected final boolean isCachingActive;
 	private Map<String, INamedItem[]> cache;
 
 	/**

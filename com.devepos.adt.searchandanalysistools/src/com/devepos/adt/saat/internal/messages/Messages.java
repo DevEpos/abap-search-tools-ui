@@ -225,6 +225,7 @@ public class Messages extends NLS {
 	public static String SearchPatternAnalyzer_DescriptionParamParameter_xmsg;
 	public static String SearchPatternAnalyzer_DescriptionParamsParameter_xmsg;
 	public static String SearchPatternAnalyzer_DescriptionMaxRowsParameter_xmsg;
+	public static String SearchPatternAnalyzer_DescriptionTableTypeParameter_xmsg;
 	public static String SearchPatternAnalyzer_NoValuePartPossibleIfKeyIsNegated_xmsg;
 	public static String TreeContentProvider_FallbackNodeLoadingJobText_xmsg;
 	public static String TreeContentProvider_LoadingText_xtit;
