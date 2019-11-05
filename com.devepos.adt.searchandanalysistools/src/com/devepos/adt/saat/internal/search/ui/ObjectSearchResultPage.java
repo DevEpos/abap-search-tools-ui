@@ -174,7 +174,6 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 			// clean up old search
 			this.result.removeListener(this);
 		}
-
 		this.result = (ObjectSearchResult) search;
 		if (this.result != null) {
 			this.result.addListener(this);
@@ -240,6 +239,11 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 				activeSearchPage.bringToTop(this.searchViewPart);
 			}
 			this.searchViewPart.updateLabel();
+			final IAbapProjectProvider projectProvider = this.searchQuery.getProjectProvider();
+			if (projectProvider != this.projectProvider) {
+				this.projectProvider = projectProvider;
+				checkFeatureAvailibility();
+			}
 			this.searchResultTree.setInput(e.getSearchResult());
 			if (this.groupByPackageAction.isChecked()) {
 				expandAllPackages();
