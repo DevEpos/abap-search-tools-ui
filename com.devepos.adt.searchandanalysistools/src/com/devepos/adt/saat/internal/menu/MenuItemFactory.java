@@ -12,8 +12,8 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.menus.CommandContributionItem;
 import org.eclipse.ui.menus.CommandContributionItemParameter;
 
-import com.devepos.adt.saat.ICommandConstants;
-import com.devepos.adt.saat.SearchAndAnalysisPlugin;
+import com.devepos.adt.saat.internal.ICommandConstants;
+import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.handlers.OpenInDbBrowserHandler;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.util.IImages;

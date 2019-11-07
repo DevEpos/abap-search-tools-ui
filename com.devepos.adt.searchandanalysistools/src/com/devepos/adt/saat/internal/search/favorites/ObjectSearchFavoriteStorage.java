@@ -13,7 +13,7 @@ import org.eclipse.emf.ecore.EObject;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.xmi.XMLResource;
 
-import com.devepos.adt.saat.SearchAndAnalysisPlugin;
+import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavoritesFactory;
 import com.devepos.adt.saat.model.objectsearchfavorites.util.ObjectSearchFavoritesResourceFactoryImpl;
 import com.devepos.adt.saat.search.favorites.IObjectSearchFavorites;

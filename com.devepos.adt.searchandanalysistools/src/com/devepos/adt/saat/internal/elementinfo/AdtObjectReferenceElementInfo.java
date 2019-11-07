@@ -3,7 +3,7 @@ package com.devepos.adt.saat.internal.elementinfo;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.devepos.adt.saat.IDestinationProvider;
+import com.devepos.adt.saat.internal.IDestinationProvider;
 import com.devepos.adt.saat.internal.util.AdtUtil;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 

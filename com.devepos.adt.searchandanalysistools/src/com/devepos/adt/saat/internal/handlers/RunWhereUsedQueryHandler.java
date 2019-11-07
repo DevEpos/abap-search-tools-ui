@@ -17,8 +17,8 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import com.devepos.adt.saat.IAdtObjectTypeConstants;
-import com.devepos.adt.saat.ObjectType;
+import com.devepos.adt.saat.internal.IAdtObjectTypeConstants;
+import com.devepos.adt.saat.internal.ObjectType;
 import com.devepos.adt.saat.internal.elementinfo.ElementInfoRetrievalServiceFactory;
 import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
 import com.devepos.adt.saat.internal.messages.Messages;

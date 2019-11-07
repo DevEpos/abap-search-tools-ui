@@ -1,4 +1,4 @@
-package com.devepos.adt.saat;
+package com.devepos.adt.saat.internal;
 
 /**
  * Provides information about a destination to an ABAP project

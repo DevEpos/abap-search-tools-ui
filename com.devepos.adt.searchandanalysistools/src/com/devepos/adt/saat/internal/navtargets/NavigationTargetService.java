@@ -2,7 +2,7 @@ package com.devepos.adt.saat.internal.navtargets;
 
 import java.net.URI;
 
-import com.devepos.adt.saat.ObjectType;
+import com.devepos.adt.saat.internal.ObjectType;
 import com.devepos.adt.saat.internal.util.AbapProjectProviderAccessor;
 import com.devepos.adt.saat.internal.util.AdtUtil;
 import com.devepos.adt.saat.internal.util.IAbapProjectProvider;

@@ -2,7 +2,7 @@ package com.devepos.adt.saat.internal.cdsanalysis;
 
 import java.util.Map;
 
-import com.devepos.adt.saat.CdsSourceType;
+import com.devepos.adt.saat.internal.CdsSourceType;
 import com.devepos.adt.saat.internal.elementinfo.AdtObjectElementInfoContentHandlerBase;
 import com.devepos.adt.saat.internal.elementinfo.AdtObjectReferenceElementInfo;
 import com.devepos.adt.saat.internal.elementinfo.ContentHandlerUtil;

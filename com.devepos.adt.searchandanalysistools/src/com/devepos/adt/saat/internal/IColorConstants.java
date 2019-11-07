@@ -1,4 +1,4 @@
-package com.devepos.adt.saat;
+package com.devepos.adt.saat.internal;
 
 public interface IColorConstants {
 	String COLOR_NAMESPACE = "com.devepos.adt.saat."; //$NON-NLS-1$

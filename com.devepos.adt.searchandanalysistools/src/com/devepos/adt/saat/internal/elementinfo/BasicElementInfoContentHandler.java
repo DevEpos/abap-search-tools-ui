@@ -1,7 +1,7 @@
 package com.devepos.adt.saat.internal.elementinfo;
 
-import com.devepos.adt.saat.CdsSourceType;
-import com.devepos.adt.saat.IDataSourceType;
+import com.devepos.adt.saat.internal.CdsSourceType;
+import com.devepos.adt.saat.internal.IDataSourceType;
 import com.devepos.adt.saat.internal.util.IXmlElement;
 import com.devepos.adt.saat.internal.util.IXmlTags;
 import com.sap.adt.communication.message.IMessageBody;

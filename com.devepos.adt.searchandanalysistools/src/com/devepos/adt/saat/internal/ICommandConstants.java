@@ -1,4 +1,4 @@
-package com.devepos.adt.saat;
+package com.devepos.adt.saat.internal;
 
 /**
  * Constants for the commands in the DB Browser tools Plugin

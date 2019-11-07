@@ -15,7 +15,7 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.SelectionDialog;
 
-import com.devepos.adt.saat.SearchAndAnalysisPlugin;
+import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.search.ObjectSearchEngine;
 import com.devepos.adt.saat.internal.search.SearchType;

@@ -3,7 +3,7 @@ package com.devepos.adt.saat.internal.ui;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.viewers.TreeViewer;
 
-import com.devepos.adt.saat.SearchAndAnalysisPlugin;
+import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.util.IImages;
 

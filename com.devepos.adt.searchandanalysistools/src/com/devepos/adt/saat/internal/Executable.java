@@ -4,9 +4,6 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 
-import com.devepos.adt.saat.IExecutable;
-import com.devepos.adt.saat.SearchAndAnalysisPlugin;
-
 public abstract class Executable implements IExecutable {
 
 	@Override

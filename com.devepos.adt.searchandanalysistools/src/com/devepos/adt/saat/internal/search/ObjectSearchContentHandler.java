@@ -4,7 +4,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.devepos.adt.saat.CdsSourceType;
+import com.devepos.adt.saat.internal.CdsSourceType;
 import com.devepos.adt.saat.internal.elementinfo.AdtObjectReferenceElementInfo;
 import com.devepos.adt.saat.internal.elementinfo.ExtendedAdtObjectInfo;
 import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;

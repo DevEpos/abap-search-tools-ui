@@ -24,8 +24,8 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.WorkbenchPart;
 
-import com.devepos.adt.saat.ObjectType;
-import com.devepos.adt.saat.SearchAndAnalysisPlugin;
+import com.devepos.adt.saat.internal.ObjectType;
+import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.cdsanalysis.CdsAnalysisUriDiscovery;
 import com.devepos.adt.saat.internal.dbbrowserintegration.DbBrowserIntegrationUriDiscovery;
 import com.devepos.adt.saat.internal.ddicaccess.DdicRepositoryAccessFactory;

@@ -4,8 +4,8 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.devepos.adt.saat.ObjectType;
-import com.devepos.adt.saat.SearchAndAnalysisPlugin;
+import com.devepos.adt.saat.internal.ObjectType;
+import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.analytics.AnalysisForOfficeUriDiscovery;
 import com.devepos.adt.saat.internal.preferences.IPreferences;
 import com.devepos.adt.saat.internal.util.AbapProjectProviderAccessor;

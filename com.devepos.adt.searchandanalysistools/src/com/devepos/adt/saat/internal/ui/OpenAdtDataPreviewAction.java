@@ -5,7 +5,7 @@ import java.util.List;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.action.Action;
 
-import com.devepos.adt.saat.SearchAndAnalysisPlugin;
+import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.util.AdtObjectExecutor;
 import com.devepos.adt.saat.internal.util.IImages;

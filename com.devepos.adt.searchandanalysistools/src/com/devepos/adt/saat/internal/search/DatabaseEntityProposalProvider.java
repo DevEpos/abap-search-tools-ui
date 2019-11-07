@@ -2,7 +2,7 @@ package com.devepos.adt.saat.internal.search;
 
 import org.eclipse.jface.fieldassist.IContentProposal;
 
-import com.devepos.adt.saat.ObjectType;
+import com.devepos.adt.saat.internal.ObjectType;
 import com.devepos.adt.saat.internal.search.contentassist.SearchParameterProposal;
 import com.devepos.adt.saat.internal.util.IAbapProjectProvider;
 

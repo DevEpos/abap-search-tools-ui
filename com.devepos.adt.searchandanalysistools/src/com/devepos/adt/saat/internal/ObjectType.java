@@ -1,4 +1,4 @@
-package com.devepos.adt.saat;
+package com.devepos.adt.saat.internal;
 
 /**
  * Relevant (ADT) Object type for the Plugin

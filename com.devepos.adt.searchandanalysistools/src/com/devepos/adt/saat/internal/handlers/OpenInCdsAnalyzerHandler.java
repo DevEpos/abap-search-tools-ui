@@ -10,7 +10,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.PlatformUI;
 
-import com.devepos.adt.saat.ObjectType;
+import com.devepos.adt.saat.internal.ObjectType;
 import com.devepos.adt.saat.internal.cdsanalysis.ui.CdsAnalysis;
 import com.devepos.adt.saat.internal.cdsanalysis.ui.CdsAnalysis.AnalysisMode;
 import com.devepos.adt.saat.internal.messages.Messages;

@@ -3,8 +3,8 @@ package com.devepos.adt.saat.internal.search.contentassist;
 import org.eclipse.jface.fieldassist.IContentProposal;
 import org.eclipse.swt.graphics.Image;
 
-import com.devepos.adt.saat.ObjectType;
-import com.devepos.adt.saat.SearchAndAnalysisPlugin;
+import com.devepos.adt.saat.internal.ObjectType;
+import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.util.IImages;
 
 /**

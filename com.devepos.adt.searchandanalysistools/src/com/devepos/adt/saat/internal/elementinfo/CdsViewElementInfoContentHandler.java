@@ -1,7 +1,7 @@
 package com.devepos.adt.saat.internal.elementinfo;
 
-import com.devepos.adt.saat.CdsSourceType;
-import com.devepos.adt.saat.IDestinationProvider;
+import com.devepos.adt.saat.internal.CdsSourceType;
+import com.devepos.adt.saat.internal.IDestinationProvider;
 import com.devepos.adt.saat.internal.analytics.OpenWithAnalysisForOfficeExecutable;
 import com.devepos.adt.saat.internal.analytics.OpenWithQueryMonitorExecutable;
 import com.devepos.adt.saat.internal.messages.Messages;

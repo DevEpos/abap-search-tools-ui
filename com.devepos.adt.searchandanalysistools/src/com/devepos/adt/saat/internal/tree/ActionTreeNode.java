@@ -1,6 +1,6 @@
 package com.devepos.adt.saat.internal.tree;
 
-import com.devepos.adt.saat.IExecutable;
+import com.devepos.adt.saat.internal.IExecutable;
 
 /**
  * Represents a node in a {@link org.eclipse.jface.viewers.TreeViewer}

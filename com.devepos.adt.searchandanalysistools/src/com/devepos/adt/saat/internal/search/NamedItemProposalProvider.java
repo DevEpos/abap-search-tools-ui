@@ -12,7 +12,7 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.fieldassist.IContentProposal;
 
-import com.devepos.adt.saat.SearchAndAnalysisPlugin;
+import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.search.contentassist.SearchParameterProposal;
 import com.devepos.adt.saat.internal.util.IAbapProjectProvider;
 import com.devepos.adt.saat.internal.util.StringUtil;

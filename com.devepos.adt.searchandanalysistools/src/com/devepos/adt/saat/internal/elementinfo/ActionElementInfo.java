@@ -1,6 +1,6 @@
 package com.devepos.adt.saat.internal.elementinfo;
 
-import com.devepos.adt.saat.IExecutable;
+import com.devepos.adt.saat.internal.IExecutable;
 
 /**
  * Represents the action which can be executed on an element information

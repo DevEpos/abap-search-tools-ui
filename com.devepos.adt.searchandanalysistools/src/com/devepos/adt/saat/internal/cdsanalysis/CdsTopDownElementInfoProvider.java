@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.eclipse.osgi.util.NLS;
 
-import com.devepos.adt.saat.SearchAndAnalysisPlugin;
+import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.elementinfo.IElementInfo;
 import com.devepos.adt.saat.internal.elementinfo.IElementInfoCollection;
 import com.devepos.adt.saat.internal.elementinfo.IElementInfoProvider;

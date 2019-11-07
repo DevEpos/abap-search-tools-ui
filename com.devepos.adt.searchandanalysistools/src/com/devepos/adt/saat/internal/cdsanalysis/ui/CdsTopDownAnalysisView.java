@@ -21,11 +21,11 @@ import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 
-import com.devepos.adt.saat.IColorConstants;
-import com.devepos.adt.saat.ICommandConstants;
-import com.devepos.adt.saat.IContextMenuConstants;
-import com.devepos.adt.saat.IDestinationProvider;
-import com.devepos.adt.saat.SearchAndAnalysisPlugin;
+import com.devepos.adt.saat.internal.IColorConstants;
+import com.devepos.adt.saat.internal.ICommandConstants;
+import com.devepos.adt.saat.internal.IContextMenuConstants;
+import com.devepos.adt.saat.internal.IDestinationProvider;
+import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.cdsanalysis.CdsTopDownElementInfoProvider;
 import com.devepos.adt.saat.internal.cdsanalysis.ICdsAnalysisPreferences;
 import com.devepos.adt.saat.internal.cdsanalysis.ISqlRelationInfo;

@@ -13,8 +13,8 @@ import org.eclipse.emf.ecore.EReference;
 import org.eclipse.emf.ecore.EStructuralFeature;
 import org.eclipse.emf.ecore.resource.Resource;
 
-import com.devepos.adt.saat.IDestinationProvider;
-import com.devepos.adt.saat.ObjectType;
+import com.devepos.adt.saat.internal.IDestinationProvider;
+import com.devepos.adt.saat.internal.ObjectType;
 import com.sap.adt.tools.core.model.adtcore.IAdtExtension;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 

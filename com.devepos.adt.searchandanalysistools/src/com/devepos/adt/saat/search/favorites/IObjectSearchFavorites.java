@@ -2,7 +2,7 @@ package com.devepos.adt.saat.search.favorites;
 
 import java.util.List;
 
-import com.devepos.adt.saat.IModificationProvider;
+import com.devepos.adt.saat.internal.IModificationProvider;
 import com.devepos.adt.saat.internal.search.ui.ObjectSearchRequest;
 import com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavorite;
 

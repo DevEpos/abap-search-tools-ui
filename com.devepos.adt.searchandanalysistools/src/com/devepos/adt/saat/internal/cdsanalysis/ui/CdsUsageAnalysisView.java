@@ -22,10 +22,10 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 
-import com.devepos.adt.saat.ICommandConstants;
-import com.devepos.adt.saat.IContextMenuConstants;
-import com.devepos.adt.saat.IDestinationProvider;
-import com.devepos.adt.saat.SearchAndAnalysisPlugin;
+import com.devepos.adt.saat.internal.ICommandConstants;
+import com.devepos.adt.saat.internal.IContextMenuConstants;
+import com.devepos.adt.saat.internal.IDestinationProvider;
+import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.cdsanalysis.CdsAnalysisServiceFactory;
 import com.devepos.adt.saat.internal.cdsanalysis.ICdsEntityUsageInfo;
 import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;

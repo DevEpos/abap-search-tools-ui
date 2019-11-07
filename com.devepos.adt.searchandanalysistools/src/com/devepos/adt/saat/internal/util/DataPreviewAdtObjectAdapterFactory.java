@@ -7,8 +7,8 @@ import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.TreeNode;
 import org.eclipse.ui.IFileEditorInput;
 
-import com.devepos.adt.saat.IDestinationProvider;
-import com.devepos.adt.saat.ObjectType;
+import com.devepos.adt.saat.internal.IDestinationProvider;
+import com.devepos.adt.saat.internal.ObjectType;
 import com.devepos.adt.saat.internal.tree.IAdtObjectReferenceNode;
 import com.sap.adt.project.IProjectProvider;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;

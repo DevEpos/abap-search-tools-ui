@@ -16,7 +16,7 @@ import org.eclipse.jface.fieldassist.IContentProposal;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.widgets.Display;
 
-import com.devepos.adt.saat.SearchAndAnalysisPlugin;
+import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.messages.Messages;
 
 /**

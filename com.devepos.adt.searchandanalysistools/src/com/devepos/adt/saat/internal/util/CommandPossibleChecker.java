@@ -3,8 +3,8 @@ package com.devepos.adt.saat.internal.util;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.devepos.adt.saat.ICommandConstants;
-import com.devepos.adt.saat.ObjectType;
+import com.devepos.adt.saat.internal.ICommandConstants;
+import com.devepos.adt.saat.internal.ObjectType;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 
 public class CommandPossibleChecker {

@@ -36,11 +36,11 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.Page;
 
-import com.devepos.adt.saat.ICommandConstants;
-import com.devepos.adt.saat.IContextMenuConstants;
-import com.devepos.adt.saat.IDataSourceType;
-import com.devepos.adt.saat.IDestinationProvider;
-import com.devepos.adt.saat.SearchAndAnalysisPlugin;
+import com.devepos.adt.saat.internal.ICommandConstants;
+import com.devepos.adt.saat.internal.IContextMenuConstants;
+import com.devepos.adt.saat.internal.IDataSourceType;
+import com.devepos.adt.saat.internal.IDestinationProvider;
+import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
 import com.devepos.adt.saat.internal.menu.MenuItemFactory;
 import com.devepos.adt.saat.internal.messages.Messages;

@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import com.devepos.adt.saat.CdsSourceType;
+import com.devepos.adt.saat.internal.CdsSourceType;
 import com.devepos.adt.saat.internal.search.ObjectSearchElementInfoProvider;
 import com.devepos.adt.saat.internal.util.AdtObjectReferenceModelFactory;
 import com.devepos.adt.saat.internal.util.AdtStaxContentHandlerUtility;

@@ -22,11 +22,11 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.part.PageBook;
 
-import com.devepos.adt.saat.ICommandConstants;
-import com.devepos.adt.saat.IContextMenuConstants;
-import com.devepos.adt.saat.IDestinationProvider;
-import com.devepos.adt.saat.ObjectType;
-import com.devepos.adt.saat.SearchAndAnalysisPlugin;
+import com.devepos.adt.saat.internal.ICommandConstants;
+import com.devepos.adt.saat.internal.IContextMenuConstants;
+import com.devepos.adt.saat.internal.IDestinationProvider;
+import com.devepos.adt.saat.internal.ObjectType;
+import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.cdsanalysis.CdsFieldTopDownElementInfoProvider;
 import com.devepos.adt.saat.internal.cdsanalysis.ICdsAnalysisConstants;
 import com.devepos.adt.saat.internal.menu.MenuItemFactory;

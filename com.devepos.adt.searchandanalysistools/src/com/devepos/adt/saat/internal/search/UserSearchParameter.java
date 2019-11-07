@@ -12,7 +12,7 @@ import org.eclipse.jface.fieldassist.IContentProposal;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
 
-import com.devepos.adt.saat.SearchAndAnalysisPlugin;
+import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.search.contentassist.SearchParameterProposal;
 import com.devepos.adt.saat.internal.util.IAbapProjectProvider;

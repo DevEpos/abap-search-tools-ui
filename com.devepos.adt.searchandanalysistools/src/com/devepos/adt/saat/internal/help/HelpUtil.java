@@ -3,7 +3,7 @@ package com.devepos.adt.saat.internal.help;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.PlatformUI;
 
-import com.devepos.adt.saat.SearchAndAnalysisPlugin;
+import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 
 /**
  * Utility for easily setting help context to controls

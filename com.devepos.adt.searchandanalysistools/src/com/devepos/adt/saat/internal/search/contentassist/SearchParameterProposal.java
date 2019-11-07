@@ -4,7 +4,7 @@ import java.util.Locale;
 
 import org.eclipse.jface.fieldassist.IContentProposal;
 
-import com.devepos.adt.saat.ObjectType;
+import com.devepos.adt.saat.internal.ObjectType;
 import com.devepos.adt.saat.internal.search.QueryParameterName;
 
 /**

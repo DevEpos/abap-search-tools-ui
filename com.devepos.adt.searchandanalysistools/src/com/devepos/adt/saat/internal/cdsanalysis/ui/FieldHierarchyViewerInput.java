@@ -2,8 +2,8 @@ package com.devepos.adt.saat.internal.cdsanalysis.ui;
 
 import org.eclipse.jface.viewers.TreeViewer;
 
-import com.devepos.adt.saat.IDestinationProvider;
-import com.devepos.adt.saat.SearchAndAnalysisPlugin;
+import com.devepos.adt.saat.internal.IDestinationProvider;
+import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.cdsanalysis.FieldWhereUsedInCdsElementInfoProvider;
 import com.devepos.adt.saat.internal.tree.ILazyLoadingNode;
 import com.devepos.adt.saat.internal.tree.LazyLoadingFolderNode;

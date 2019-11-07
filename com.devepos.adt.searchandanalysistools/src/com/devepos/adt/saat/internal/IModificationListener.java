@@ -1,4 +1,4 @@
-package com.devepos.adt.saat;
+package com.devepos.adt.saat.internal;
 
 /**
  * This listener interface can be used to listen for modifications of any kind

@@ -46,9 +46,9 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.Page;
 
-import com.devepos.adt.saat.ICommandConstants;
-import com.devepos.adt.saat.ObjectType;
-import com.devepos.adt.saat.SearchAndAnalysisPlugin;
+import com.devepos.adt.saat.internal.ICommandConstants;
+import com.devepos.adt.saat.internal.ObjectType;
+import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.cdsanalysis.CdsAnalysisUriDiscovery;
 import com.devepos.adt.saat.internal.menu.MenuItemFactory;
 import com.devepos.adt.saat.internal.messages.Messages;
@@ -393,7 +393,7 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 		if (!previewAdtObjRefs.isEmpty()) {
 			menu.add(new OpenAdtDataPreviewAction(this.projectProvider.getProject(), previewAdtObjRefs));
 			if (this.isDbBrowserIntegrationAvailable) {
-				menu.add(new Separator(com.devepos.adt.saat.IContextMenuConstants.GROUP_DB_BROWSER));
+				menu.add(new Separator(com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_DB_BROWSER));
 				MenuItemFactory.addOpenInDbBrowserCommand(menu, false);
 				MenuItemFactory.addOpenInDbBrowserCommand(menu, true);
 			}
@@ -408,28 +408,28 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 		if (singleDataPreviewObjectSelected) {
 			// check if action is supported in the current project
 			if (new CdsAnalysisUriDiscovery(this.projectProvider.getDestinationId()).getCdsAnalysisUri() != null) {
-				menu.add(new Separator(com.devepos.adt.saat.IContextMenuConstants.GROUP_CDS_ANALYSIS));
+				menu.add(new Separator(com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_CDS_ANALYSIS));
 				if (singleCdsViewSelected && this.isCdsTopDownAnalysisAvailable) {
-					MenuItemFactory.addCdsAnalyzerCommandItem(menu, com.devepos.adt.saat.IContextMenuConstants.GROUP_CDS_ANALYSIS,
+					MenuItemFactory.addCdsAnalyzerCommandItem(menu, com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_CDS_ANALYSIS,
 						ICommandConstants.CDS_TOP_DOWN_ANALYSIS);
 				}
 				if (!previewAdtObjRefs.isEmpty()) {
-					MenuItemFactory.addCdsAnalyzerCommandItem(menu, com.devepos.adt.saat.IContextMenuConstants.GROUP_CDS_ANALYSIS,
+					MenuItemFactory.addCdsAnalyzerCommandItem(menu, com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_CDS_ANALYSIS,
 						ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS);
 				}
 				if (singleCdsViewSelected && this.isCdsUsedEntitiesAnalysisAvailable) {
-					MenuItemFactory.addCdsAnalyzerCommandItem(menu, com.devepos.adt.saat.IContextMenuConstants.GROUP_CDS_ANALYSIS,
+					MenuItemFactory.addCdsAnalyzerCommandItem(menu, com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_CDS_ANALYSIS,
 						ICommandConstants.USED_ENTITIES_ANALYSIS);
 				}
 				if (!previewAdtObjRefs.isEmpty()) {
-					MenuItemFactory.addCdsAnalyzerCommandItem(menu, com.devepos.adt.saat.IContextMenuConstants.GROUP_CDS_ANALYSIS,
+					MenuItemFactory.addCdsAnalyzerCommandItem(menu, com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_CDS_ANALYSIS,
 						ICommandConstants.FIELD_ANALYSIS);
 				}
 
 			}
 		}
 		if (selectionHasExpandedNodes || hasCollapsedPackages) {
-			menu.add(new Separator(com.devepos.adt.saat.IContextMenuConstants.GROUP_NODE_ACTIONS));
+			menu.add(new Separator(com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_NODE_ACTIONS));
 			if (hasCollapsedPackages) {
 				menu.add(this.expandPackageNodesAction);
 			}

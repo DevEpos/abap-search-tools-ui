@@ -1,6 +1,6 @@
 package com.devepos.adt.saat.internal.navtargets;
 
-import com.devepos.adt.saat.ObjectType;
+import com.devepos.adt.saat.internal.ObjectType;
 
 /**
  * Service which handles the retrieval of available navigation targets for ADT

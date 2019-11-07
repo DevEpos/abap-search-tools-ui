@@ -4,8 +4,8 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.devepos.adt.saat.IDestinationProvider;
-import com.devepos.adt.saat.ObjectType;
+import com.devepos.adt.saat.internal.IDestinationProvider;
+import com.devepos.adt.saat.internal.ObjectType;
 import com.devepos.adt.saat.internal.util.AdtUtil;
 import com.devepos.adt.saat.internal.util.AdtWhereUsedAdapterFactory;
 import com.sap.adt.project.IProjectProvider;

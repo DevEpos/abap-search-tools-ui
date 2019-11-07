@@ -16,8 +16,8 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.ui.IWorkbenchPartSite;
 
-import com.devepos.adt.saat.IDataSourceType;
-import com.devepos.adt.saat.SearchAndAnalysisPlugin;
+import com.devepos.adt.saat.internal.IDataSourceType;
+import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.cdsanalysis.ICdsAnalysisConstants;
 import com.devepos.adt.saat.internal.elementinfo.LazyLoadingRefreshMode;
 import com.devepos.adt.saat.internal.messages.Messages;

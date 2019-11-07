@@ -18,11 +18,11 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 
-import com.devepos.adt.saat.ICommandConstants;
-import com.devepos.adt.saat.IContextMenuConstants;
-import com.devepos.adt.saat.IDestinationProvider;
-import com.devepos.adt.saat.ObjectType;
-import com.devepos.adt.saat.SearchAndAnalysisPlugin;
+import com.devepos.adt.saat.internal.ICommandConstants;
+import com.devepos.adt.saat.internal.IContextMenuConstants;
+import com.devepos.adt.saat.internal.IDestinationProvider;
+import com.devepos.adt.saat.internal.ObjectType;
+import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.cdsanalysis.FieldAnalysisUriDiscovery;
 import com.devepos.adt.saat.internal.ddicaccess.DdicRepositoryAccessFactory;
 import com.devepos.adt.saat.internal.ddicaccess.IDdicRepositoryAccess;

@@ -2,7 +2,7 @@ package com.devepos.adt.saat.internal.search;
 
 import org.eclipse.osgi.util.NLS;
 
-import com.devepos.adt.saat.SearchAndAnalysisPlugin;
+import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.util.IAbapProjectProvider;
 import com.devepos.adt.saat.internal.util.IImages;

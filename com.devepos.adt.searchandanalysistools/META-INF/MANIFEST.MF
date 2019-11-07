@@ -4,7 +4,7 @@ Bundle-Name: %pluginName
 Bundle-SymbolicName: com.devepos.adt.searchandanalysistools;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-ClassPath: .
-Bundle-Activator: com.devepos.adt.saat.SearchAndAnalysisPlugin
+Bundle-Activator: com.devepos.adt.saat.internal.SearchAndAnalysisPlugin
 Bundle-Vendor: %providerName
 Bundle-Localization: OSGI-INF/l10n/bundle
 Require-Bundle: org.eclipse.ui,

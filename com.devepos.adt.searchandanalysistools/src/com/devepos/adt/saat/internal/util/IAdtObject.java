@@ -2,7 +2,7 @@ package com.devepos.adt.saat.internal.util;
 
 import org.eclipse.core.resources.IProject;
 
-import com.devepos.adt.saat.ObjectType;
+import com.devepos.adt.saat.internal.ObjectType;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 
 /**

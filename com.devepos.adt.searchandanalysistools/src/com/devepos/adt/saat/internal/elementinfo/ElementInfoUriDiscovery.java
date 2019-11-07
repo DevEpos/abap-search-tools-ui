@@ -3,7 +3,7 @@ package com.devepos.adt.saat.internal.elementinfo;
 import java.net.URI;
 import java.util.Map;
 
-import com.devepos.adt.saat.ObjectType;
+import com.devepos.adt.saat.internal.ObjectType;
 import com.devepos.adt.saat.internal.util.UriDiscoveryBase;
 import com.sap.adt.compatibility.uritemplate.IAdtUriTemplate;
 

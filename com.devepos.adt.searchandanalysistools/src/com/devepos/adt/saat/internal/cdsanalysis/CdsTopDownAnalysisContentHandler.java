@@ -2,8 +2,8 @@ package com.devepos.adt.saat.internal.cdsanalysis;
 
 import java.util.List;
 
-import com.devepos.adt.saat.CdsSourceType;
-import com.devepos.adt.saat.ObjectType;
+import com.devepos.adt.saat.internal.CdsSourceType;
+import com.devepos.adt.saat.internal.ObjectType;
 import com.devepos.adt.saat.internal.elementinfo.AdtObjectElementInfoContentHandlerBase;
 import com.devepos.adt.saat.internal.elementinfo.AdtObjectReferenceElementInfo;
 import com.devepos.adt.saat.internal.elementinfo.ElementInfoCollection;

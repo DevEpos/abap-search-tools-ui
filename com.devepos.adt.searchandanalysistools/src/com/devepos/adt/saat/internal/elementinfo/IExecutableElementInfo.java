@@ -1,6 +1,6 @@
 package com.devepos.adt.saat.internal.elementinfo;
 
-import com.devepos.adt.saat.IExecutable;
+import com.devepos.adt.saat.internal.IExecutable;
 
 /**
  * Element information that holds an Action

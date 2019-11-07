@@ -4,7 +4,7 @@ import java.net.URI;
 
 import org.eclipse.core.resources.IProject;
 
-import com.devepos.adt.saat.IDestinationProvider;
+import com.devepos.adt.saat.internal.IDestinationProvider;
 import com.sap.adt.project.IProjectProvider;
 import com.sap.adt.tools.core.AdtObjectReference;
 import com.sap.adt.tools.core.IAdtObjectReference;

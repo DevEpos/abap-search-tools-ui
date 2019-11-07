@@ -16,7 +16,7 @@ import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.part.WorkbenchPart;
 
-import com.devepos.adt.saat.SearchAndAnalysisPlugin;
+import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.analytics.AnalysisForOfficeLauncherContentHandler;
 import com.devepos.adt.saat.internal.analytics.AnalysisForOfficeUriDiscovery;
 import com.devepos.adt.saat.internal.messages.Messages;
