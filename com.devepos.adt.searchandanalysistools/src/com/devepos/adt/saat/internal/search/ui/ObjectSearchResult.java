@@ -19,11 +19,11 @@ import com.devepos.adt.saat.internal.IAdtObjectTypeConstants;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
 import com.devepos.adt.saat.internal.messages.Messages;
+import com.devepos.adt.saat.internal.search.IExtendedAdtObjectInfo;
 import com.devepos.adt.saat.internal.tree.IAdtObjectReferenceNode;
 import com.devepos.adt.saat.internal.tree.LazyLoadingAdtObjectReferenceNode;
 import com.devepos.adt.saat.internal.tree.PackageNode;
 import com.devepos.adt.saat.internal.util.IImages;
-import com.devepos.adt.saat.search.model.IExtendedAdtObjectInfo;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 
 public class ObjectSearchResult implements ISearchResult {

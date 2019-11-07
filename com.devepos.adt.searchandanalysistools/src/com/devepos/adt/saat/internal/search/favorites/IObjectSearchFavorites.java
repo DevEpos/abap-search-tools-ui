@@ -1,4 +1,4 @@
-package com.devepos.adt.saat.search.favorites;
+package com.devepos.adt.saat.internal.search.favorites;
 
 import java.util.List;
 

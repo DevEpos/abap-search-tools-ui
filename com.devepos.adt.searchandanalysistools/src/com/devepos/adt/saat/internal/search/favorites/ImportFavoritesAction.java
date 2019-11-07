@@ -12,7 +12,6 @@ import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.util.IImages;
 import com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavorite;
-import com.devepos.adt.saat.search.favorites.IObjectSearchFavorites;
 
 /**
  * Imports search favorites from a file

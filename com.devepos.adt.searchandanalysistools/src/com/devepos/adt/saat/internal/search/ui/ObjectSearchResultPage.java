@@ -52,6 +52,7 @@ import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.cdsanalysis.CdsAnalysisUriDiscovery;
 import com.devepos.adt.saat.internal.menu.MenuItemFactory;
 import com.devepos.adt.saat.internal.messages.Messages;
+import com.devepos.adt.saat.internal.search.IExtendedAdtObjectInfo;
 import com.devepos.adt.saat.internal.tree.ActionTreeNode;
 import com.devepos.adt.saat.internal.tree.IAdtObjectReferenceNode;
 import com.devepos.adt.saat.internal.tree.ICollectionTreeNode;
@@ -69,7 +70,6 @@ import com.devepos.adt.saat.internal.ui.StylerFactory;
 import com.devepos.adt.saat.internal.util.AdtUtil;
 import com.devepos.adt.saat.internal.util.IAbapProjectProvider;
 import com.devepos.adt.saat.internal.util.IImages;
-import com.devepos.adt.saat.search.model.IExtendedAdtObjectInfo;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 
 /**

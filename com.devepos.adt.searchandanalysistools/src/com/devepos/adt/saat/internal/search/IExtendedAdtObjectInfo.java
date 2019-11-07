@@ -1,4 +1,4 @@
-package com.devepos.adt.saat.search.model;
+package com.devepos.adt.saat.internal.search;
 
 import com.devepos.adt.saat.internal.IDataSourceType;
 import com.devepos.adt.saat.internal.ObjectType;

@@ -9,7 +9,6 @@ import org.eclipse.ui.PlatformUI;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.util.IImages;
-import com.devepos.adt.saat.search.favorites.IObjectSearchFavorites;
 
 /**
  * Exports the current search favorites to the file system

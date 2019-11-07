@@ -24,7 +24,6 @@ import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.search.ui.ObjectSearchRequest;
 import com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavorite;
 import com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavoritesFactory;
-import com.devepos.adt.saat.search.favorites.IObjectSearchFavorites;
 
 /**
  * Dialog for creating an executed search as a favorite

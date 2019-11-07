@@ -8,7 +8,6 @@ import com.devepos.adt.saat.internal.IModificationListener.ModificationKind;
 import com.devepos.adt.saat.internal.search.ui.ObjectSearchRequest;
 import com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavorite;
 import com.devepos.adt.saat.model.objectsearchfavorites.impl.ObjectSearchFavoritesFactoryImpl;
-import com.devepos.adt.saat.search.favorites.IObjectSearchFavorites;
 
 /**
  * Implementation of the {@link IObjectSearchFavorites} of the object search

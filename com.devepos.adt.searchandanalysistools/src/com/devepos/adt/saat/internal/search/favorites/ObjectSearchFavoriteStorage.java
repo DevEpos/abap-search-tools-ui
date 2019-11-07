@@ -16,7 +16,6 @@ import org.eclipse.emf.ecore.xmi.XMLResource;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavoritesFactory;
 import com.devepos.adt.saat.model.objectsearchfavorites.util.ObjectSearchFavoritesResourceFactoryImpl;
-import com.devepos.adt.saat.search.favorites.IObjectSearchFavorites;
 
 /**
  * Handles the serializing/deserializing of object search favorites

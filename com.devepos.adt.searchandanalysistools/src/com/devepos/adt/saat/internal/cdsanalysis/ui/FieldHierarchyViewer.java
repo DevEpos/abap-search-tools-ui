@@ -21,13 +21,13 @@ import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.cdsanalysis.ICdsAnalysisConstants;
 import com.devepos.adt.saat.internal.elementinfo.LazyLoadingRefreshMode;
 import com.devepos.adt.saat.internal.messages.Messages;
+import com.devepos.adt.saat.internal.search.IExtendedAdtObjectInfo;
 import com.devepos.adt.saat.internal.tree.IAdtObjectReferenceNode;
 import com.devepos.adt.saat.internal.tree.ITreeNode;
 import com.devepos.adt.saat.internal.tree.LazyLoadingTreeContentProvider;
 import com.devepos.adt.saat.internal.tree.LazyLoadingTreeContentProvider.LoadingElement;
 import com.devepos.adt.saat.internal.ui.StylerFactory;
 import com.devepos.adt.saat.internal.util.IImages;
-import com.devepos.adt.saat.search.model.IExtendedAdtObjectInfo;
 
 /**
  * Tree Viewer for displaying Top-Down hierarchy of a database field or the

@@ -1,7 +1,7 @@
 package com.devepos.adt.saat.internal.elementinfo;
 
 import com.devepos.adt.saat.internal.IDataSourceType;
-import com.devepos.adt.saat.search.model.IExtendedAdtObjectInfo;
+import com.devepos.adt.saat.internal.search.IExtendedAdtObjectInfo;
 
 public class ExtendedAdtObjectInfo implements IExtendedAdtObjectInfo {
 

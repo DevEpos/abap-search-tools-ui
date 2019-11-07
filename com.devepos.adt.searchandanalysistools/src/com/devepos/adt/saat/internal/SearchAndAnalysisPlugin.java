@@ -18,10 +18,10 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
+import com.devepos.adt.saat.internal.search.favorites.IObjectSearchFavorites;
 import com.devepos.adt.saat.internal.search.favorites.ObjectSearchFavoriteStorage;
 import com.devepos.adt.saat.internal.search.favorites.ObjectSearchFavorites;
 import com.devepos.adt.saat.internal.util.IImages;
-import com.devepos.adt.saat.search.favorites.IObjectSearchFavorites;
 
 /**
  * The activator class controls the plug-in life cycle
