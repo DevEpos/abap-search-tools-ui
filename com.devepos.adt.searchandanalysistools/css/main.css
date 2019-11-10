@@ -80,6 +80,10 @@ table th {
 		monospace;
 }
 
+.example-description {
+	padding: 4px 0 0 0;
+}
+
 .heading {
 	color: #595959;
 	font-family: "Arial Black", Arial, Arial Unicode MS, Helvetica,
