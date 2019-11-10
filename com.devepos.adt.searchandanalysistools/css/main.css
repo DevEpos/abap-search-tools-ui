@@ -1,10 +1,35 @@
+#doc-page,
+html,
+#doc-body,
 body {
 	background-color: #FFF;
 	color: #333;
-	font-family: Arial, Arial Unicode MS, Helvetica, sans-serif;
-	font-size: 0.8em;
+	font-family: Verdana,sans-serif;
+}
+#doc-body,
+body {
 	margin: 0;
 	padding: 0 20px 20px 50px;
+}
+
+#doc-body,
+body,
+p,
+.doc-p
+li {
+	font-size: 13px !important;
+}
+
+.list {
+	font-size: 13px;
+	margin: 0;
+	padding: 0 20px 20px 30px;
+	font-family: Verdana,sans-serif;
+}
+
+.list li {
+	font-size: 13px;
+	padding: 2px 0;
 }
 
 figure {
@@ -45,7 +70,7 @@ table th {
 	background-color: #f5f5f5;
 }
 
-code {
+.code {
 	background-color: rgba(27, 31, 35, .05);
 	border-radius: 3px;
 	font-size: 85%;
@@ -55,28 +80,28 @@ code {
 		monospace;
 }
 
-h1, h2, h3, h4, h5 {
+.heading {
 	color: #595959;
 	font-family: "Arial Black", Arial, Arial Unicode MS, Helvetica,
 		sans-serif;
 }
 
-a:link {
+a.link:link {
 	color: #0063a4;
 	text-decoration: none;
 }
 
-a:visited {
+a.link:visited {
 	color: #0063a4;
 	text-decoration: none;
 }
 
-a:active {
+a.link:active {
 	color: #0063a4;
 	text-decoration: none;
 }
 
-a:hover {
+a.link:hover {
 	color: #0063a4;
 	text-decoration: underline;
 }
