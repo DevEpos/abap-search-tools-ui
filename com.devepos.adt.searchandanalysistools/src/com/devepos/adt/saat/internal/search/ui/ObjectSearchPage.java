@@ -152,6 +152,19 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 	}
 
 	/**
+	 * Sets the search type drop down to the given search type
+	 * 
+	 * @param searchType the search type to be selected in the dialog
+	 */
+	public void setSearchType(final SearchType searchType) {
+		if (this.searchTypeViewer == null || this.searchTypeViewer.getControl().isDisposed()) {
+			return;
+		}
+
+		this.searchTypeViewer.setSelection(new StructuredSelection(searchType));
+	}
+
+	/**
 	 * Sets control input from the given {@link ObjectSearchRequest}
 	 *
 	 * @param request the Object Search Request to be used
@@ -614,4 +627,5 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 			this.searchInput.setFocus();
 		}
 	}
+
 }

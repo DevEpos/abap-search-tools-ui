@@ -1,38 +1,31 @@
 package com.devepos.adt.saat.internal.cdsanalysis.ui;
 
-import java.text.DecimalFormat;
-
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.preference.JFacePreferences;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider;
 import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
+import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.PlatformUI;
 
 import com.devepos.adt.saat.internal.ICommandConstants;
 import com.devepos.adt.saat.internal.IContextMenuConstants;
-import com.devepos.adt.saat.internal.IDestinationProvider;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.cdsanalysis.ICdsAnalysisPreferences;
-import com.devepos.adt.saat.internal.cdsanalysis.WhereUsedInCdsElementInfoProvider;
-import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
 import com.devepos.adt.saat.internal.menu.MenuItemFactory;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.tree.ICollectionTreeNode;
 import com.devepos.adt.saat.internal.tree.ILazyLoadingListener;
-import com.devepos.adt.saat.internal.tree.ILazyLoadingNode;
 import com.devepos.adt.saat.internal.tree.IStyledTreeNode;
 import com.devepos.adt.saat.internal.tree.ITreeNode;
-import com.devepos.adt.saat.internal.tree.LazyLoadingAdtObjectReferenceNode;
 import com.devepos.adt.saat.internal.tree.LazyLoadingTreeContentProvider;
 import com.devepos.adt.saat.internal.tree.LazyLoadingTreeContentProvider.LoadingElement;
 import com.devepos.adt.saat.internal.ui.PreferenceToggleAction;
 import com.devepos.adt.saat.internal.ui.StylerFactory;
+import com.devepos.adt.saat.internal.ui.TreeViewUiState;
+import com.devepos.adt.saat.internal.ui.ViewUiState;
 import com.devepos.adt.saat.internal.util.CommandPossibleChecker;
 import com.devepos.adt.saat.internal.util.IImages;
 
@@ -42,9 +35,7 @@ import com.devepos.adt.saat.internal.util.IImages;
  * @see    {@link CdsAnalyzerPage}
  * @author stockbal
  */
-public class WhereUsedInCdsAnalysisView extends CdsAnalysisPage {
-	private static final String INDETERMINATE_COUNT = "?"; //$NON-NLS-1$
-	private String rootWhereUsedCount = INDETERMINATE_COUNT;
+public class WhereUsedInCdsAnalysisView extends CdsAnalysisPage<WhereUsedInCdsAnalysis> {
 	private final ILazyLoadingListener lazyLoadingListener;
 	private PreferenceToggleAction showFromUses;
 	private PreferenceToggleAction showAssocUses;
@@ -52,18 +43,12 @@ public class WhereUsedInCdsAnalysisView extends CdsAnalysisPage {
 	private static final String USES_IN_SELECT_PREF_KEY = "com.devepos.adt.saat.whereusedincds.showReferencesInSelectPartOfCds"; //$NON-NLS-1$
 	private static final String USES_IN_ASSOC_PREF_KEY = "com.devepos.adt.saat.whereusedincds.showReferencesInAssocPartOfCds"; //$NON-NLS-1$
 	private final IPropertyChangeListener propertyChangeListener;
-	private WhereUsedInCdsElementInfoProvider rootWhereUsedProvider;
-	private ILazyLoadingNode cdsWhereUsedNode;
 
-	public WhereUsedInCdsAnalysisView(final CdsAnalysis parentView) {
+	public WhereUsedInCdsAnalysisView(final CdsAnalysisView parentView) {
 		super(parentView);
 		this.lazyLoadingListener = (count) -> {
-			this.rootWhereUsedCount = NLS.bind(
-				count == 1 ? Messages.WhereUsedInCdsAnalysisView_SingleReferenceLabelSuffix_xfld
-					: Messages.WhereUsedInCdsAnalysisView_MultipleReferencesLabelSuffix_xfld,
-				new DecimalFormat("###,###").format(count)); //$NON-NLS-1$
 			PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
-				getViewPart().updateLabel();
+				parentView.updateLabel();
 			});
 		};
 
@@ -77,44 +62,10 @@ public class WhereUsedInCdsAnalysisView extends CdsAnalysisPage {
 				return;
 			}
 			// trigger refresh of where used analysis
-			this.rootWhereUsedProvider.updateSearchParameters(this.showFromUses.isChecked(), this.showAssocUses.isChecked());
+			this.analysisResult.updateWhereUsedProvider(this.showFromUses.isChecked(), this.showAssocUses.isChecked());
 			refreshAnalysis();
 		};
 		SearchAndAnalysisPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(this.propertyChangeListener);
-	}
-
-	@Override
-	public Image getImage() {
-		return SearchAndAnalysisPlugin.getDefault().getImage(IImages.WHERE_USED_IN);
-	}
-
-	@Override
-	public ImageDescriptor getImageDescriptor() {
-		return SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.WHERE_USED_IN);
-	}
-
-	@Override
-	public String getLabelPrefix() {
-		if (this.showAssocUses == null && this.showFromUses == null) {
-			return Messages.WhereUsedInCdsAnalysisView_ViewLabel_xfld;
-		} else {
-			if (this.showAssocUses.isChecked() && this.showFromUses.isChecked()) {
-				return Messages.WhereUsedInCdsAnalysisView_ViewLabel_xfld;
-			} else if (this.showAssocUses.isChecked()) {
-				return Messages.WhereUsedInCdsAnalysisView_ViewLabelAssocSearch_xfld;
-			} else {
-				return Messages.WhereUsedInCdsAnalysisView_ViewLabelSelectFromSearch_xlfd;
-			}
-		}
-	}
-
-	@Override
-	public String getLabel() {
-		if (this.rootWhereUsedCount.equals(INDETERMINATE_COUNT)) {
-			return super.getLabel();
-		} else {
-			return String.format("%s  -  %s", super.getLabel(), this.rootWhereUsedCount); //$NON-NLS-1$
-		}
 	}
 
 	@Override
@@ -170,23 +121,34 @@ public class WhereUsedInCdsAnalysisView extends CdsAnalysisPage {
 	}
 
 	@Override
-	protected void setTreeInput(final IAdtObjectReferenceElementInfo cdsViewAdtObj, final TreeViewer treeViewer) {
-		final LazyLoadingAdtObjectReferenceNode node = new LazyLoadingAdtObjectReferenceNode(cdsViewAdtObj.getName(),
-			cdsViewAdtObj.getDisplayName(), cdsViewAdtObj.getDescription(), cdsViewAdtObj.getAdtObjectReference(), null);
-		final IDestinationProvider destProvider = cdsViewAdtObj.getAdapter(IDestinationProvider.class);
-		this.rootWhereUsedProvider = new WhereUsedInCdsElementInfoProvider(
-			destProvider != null ? destProvider.getDestinationId() : null, cdsViewAdtObj.getName(), this.showFromUses.isChecked(),
-			this.showAssocUses.isChecked());
-		this.cdsWhereUsedNode = node;
-		node.setElementInfoProvider(this.rootWhereUsedProvider);
-		node.addLazyLoadingListener(this.lazyLoadingListener);
-		treeViewer.setInput(new Object[] { node });
-		treeViewer.expandAll();
+	protected ViewUiState getUiState() {
+		final TreeViewUiState uiState = new TreeViewUiState();
+		uiState.setFromTreeViewer((TreeViewer) getViewer());
+		return uiState;
 	}
 
 	@Override
-	protected void fillPullDownMenu(final IMenuManager menu) {
-		super.fillPullDownMenu(menu);
+	protected void loadInput(final ViewUiState uiState) {
+		final TreeViewer viewer = (TreeViewer) getViewer();
+		if (this.analysisResult.isResultLoaded()) {
+			viewer.setInput(this.analysisResult.getResult());
+			this.analysisResult.updateWhereUsedProvider(this.showFromUses.isChecked(), this.showAssocUses.isChecked());
+			if (uiState != null && uiState instanceof TreeViewUiState) {
+				((TreeViewUiState) uiState).applyToTreeViewer(viewer);
+			}
+		} else {
+			this.analysisResult.createResult(this.lazyLoadingListener);
+			this.analysisResult.updateWhereUsedProvider(this.showFromUses.isChecked(), this.showAssocUses.isChecked());
+			viewer.setInput(this.analysisResult.getResult());
+			this.analysisResult.setResultLoaded(true);
+			viewer.expandAll();
+		}
+	}
+
+	@Override
+	public void setActionBars(final IActionBars actionBars) {
+		super.setActionBars(actionBars);
+		final IMenuManager menu = actionBars.getMenuManager();
 		menu.appendToGroup(IContextMenuConstants.GROUP_FILTERING, this.showFromUses);
 		menu.appendToGroup(IContextMenuConstants.GROUP_FILTERING, this.showAssocUses);
 		menu.appendToGroup(IContextMenuConstants.GROUP_ADDITIONS, this.releasedUsagesOnly);
@@ -194,11 +156,7 @@ public class WhereUsedInCdsAnalysisView extends CdsAnalysisPage {
 
 	@Override
 	protected void refreshAnalysis() {
-		if (this.cdsWhereUsedNode == null) {
-			return;
-		}
-		this.cdsWhereUsedNode.resetLoadedState();
-		this.rootWhereUsedCount = INDETERMINATE_COUNT;
+		this.analysisResult.refreshAnalysis();
 		getViewPart().updateLabel();
 		getViewer().refresh();
 	}
@@ -234,5 +192,4 @@ public class WhereUsedInCdsAnalysisView extends CdsAnalysisPage {
 		}
 		return text;
 	}
-
 }

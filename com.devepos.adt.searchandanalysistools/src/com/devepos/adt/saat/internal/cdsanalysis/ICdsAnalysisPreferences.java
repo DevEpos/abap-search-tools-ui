@@ -1,13 +1,13 @@
 package com.devepos.adt.saat.internal.cdsanalysis;
 
-import com.devepos.adt.saat.internal.cdsanalysis.ui.CdsAnalysis;
+import com.devepos.adt.saat.internal.cdsanalysis.ui.CdsAnalysisView;
 import com.devepos.adt.saat.internal.cdsanalysis.ui.CdsTopDownAnalysisView;
 import com.devepos.adt.saat.internal.cdsanalysis.ui.CdsUsageAnalysisView;
 
 /**
  * Preferences constants for CDS Analysis
  *
- * @see    {@link CdsAnalysis}
+ * @see    {@link CdsAnalysisView}
  * @see    {@link CdsTopDownAnalysisView}
  * @see    {@link CdsUsageAnalysisView}
  * @author stockbal

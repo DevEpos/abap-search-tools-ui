@@ -16,7 +16,7 @@ public class HelpUtil {
 	 * Sets the help with the given context id to the given control
 	 *
 	 * @param control   a control
-	 * @param contextId unique id of a help context
+	 * @param contextId relative id of a help context
 	 */
 	public static void setHelp(final Control control, final HelpContexts context) {
 		if (control == null || control.isDisposed()) {
@@ -25,5 +25,15 @@ public class HelpUtil {
 		PlatformUI.getWorkbench()
 			.getHelpSystem()
 			.setHelp(control, SearchAndAnalysisPlugin.PLUGIN_ID + "." + context.getHelpContextId());
+	}
+
+	/**
+	 * Returns the fully qualified help context id for the given context
+	 *
+	 * @param  context relative id of a help context
+	 * @return
+	 */
+	public static String getFullyQualifiedContextId(final HelpContexts context) {
+		return SearchAndAnalysisPlugin.PLUGIN_ID + "." + context.getHelpContextId();
 	}
 }

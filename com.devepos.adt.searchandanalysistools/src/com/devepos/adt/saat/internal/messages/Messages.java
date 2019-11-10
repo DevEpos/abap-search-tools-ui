@@ -74,10 +74,10 @@ public class Messages extends NLS {
 	public static String SearchHistorySelectionDialog_PreviousSearches_xtit;
 	public static String SearchPatternProvider_loading_xmsg;
 	public static String SearchPatternContentProvider_loadingJob_xmsg;
-	public static String CdsAnalysis_CloseAllPagesAction_xmit;
+	public static String CdsAnalysis_ClearHistoryAction_xmit;
 	public static String CdsAnalysis_GoToNextPage_xtol;
 	public static String CdsAnalysis_GoToPreviousPage_xtol;
-	public static String CdsAnalysis_ManagePagesAction_xmit;
+	public static String CdsAnalysis_ManageHistory_xmit;
 	public static String CdsAnalysis_TopDownAnalsysisFeatureNotAvailable;
 	public static String CdsAnalysis_TopDownAnalysisProviderDescription_xmsg;
 	public static String CdsAnalysis_UsageAnalysisProviderDescription_xmsg;
@@ -106,9 +106,11 @@ public class Messages extends NLS {
 	public static String CdsAnalysis_CloseAllPages_xtol;
 	public static String CdsAnalysis_CloseCurrentPage_xtol;
 	public static String CdsAnalysis_FeatureIsNotSupported_xmsg;
+	public static String CdsAnalysis_HistoryNumberInvalid_xmsg;
 	public static String CdsAnalysis_LoadAdtObjectJobName_xmsg;
 	public static String CdsAnalysis_ManageCdsAnalysisPagesTableHeader_xfld;
-	public static String CdsAnalysis_ManageCdsAnalysisPagesTitle_xmsg;
+	public static String CdsAnalysis_ManageCdsAnalysisHistoryTitle_xmsg;
+	public static String CdsAnalysis_MaxHistoryNumberText_xfld;
 	public static String CdsAnalysis_NodeNameResult;
 	public static String CdsAnalysis_NodeNameAssociations;
 	public static String CdsAnalysis_NodeNameSelect;
@@ -124,6 +126,11 @@ public class Messages extends NLS {
 	public static String CdsAnalysis_SqlRelationLeftOuterJoin;
 	public static String CdsAnalysis_SqlRelationRightOuterJoin;
 	public static String CdsAnalysis_SwitchAnalysisPages_xtol;
+	public static String CdsAnalysisWelcome_HelpSuffix_xlnk;
+	public static String CdsAnalysisWelcome_Option1_xmsg;
+	public static String CdsAnalysisWelcome_Option2_xmsg;
+	public static String CdsAnalysisWelcome_Option3_xmsg;
+	public static String CdsAnalyzer_MaxHistoryNumberText2_fld;
 	public static String CdsFieldTopDownElementInfoProvider_ProviderDescription_xmsg;
 	public static String WhereUsedInCdsAnalysisView_MultipleReferencesLabelSuffix_xfld;
 	public static String WhereUsedInCdsAnalysisView_OnlyUsagesInReleasedEntities_xmit;

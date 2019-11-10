@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider;
 import org.eclipse.jface.viewers.StyledString;
@@ -16,7 +15,6 @@ import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.jface.viewers.ViewerComparator;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Tree;
@@ -24,22 +22,15 @@ import org.eclipse.swt.widgets.TreeColumn;
 
 import com.devepos.adt.saat.internal.ICommandConstants;
 import com.devepos.adt.saat.internal.IContextMenuConstants;
-import com.devepos.adt.saat.internal.IDestinationProvider;
-import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
-import com.devepos.adt.saat.internal.cdsanalysis.CdsAnalysisServiceFactory;
 import com.devepos.adt.saat.internal.cdsanalysis.ICdsEntityUsageInfo;
-import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
-import com.devepos.adt.saat.internal.elementinfo.IElementInfo;
-import com.devepos.adt.saat.internal.elementinfo.IElementInfoCollection;
-import com.devepos.adt.saat.internal.elementinfo.IElementInfoProvider;
 import com.devepos.adt.saat.internal.menu.MenuItemFactory;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.tree.ILazyLoadingNode;
 import com.devepos.adt.saat.internal.tree.ITreeNode;
-import com.devepos.adt.saat.internal.tree.LazyLoadingAdtObjectReferenceNode;
 import com.devepos.adt.saat.internal.tree.LazyLoadingTreeContentProvider;
+import com.devepos.adt.saat.internal.ui.TreeViewUiState;
+import com.devepos.adt.saat.internal.ui.ViewUiState;
 import com.devepos.adt.saat.internal.util.CommandPossibleChecker;
-import com.devepos.adt.saat.internal.util.IImages;
 
 /**
  * Dependency usage analysis page of CDS Analysis page
@@ -47,7 +38,7 @@ import com.devepos.adt.saat.internal.util.IImages;
  * @see    {@link CdsAnalyzerPage}
  * @author stockbal
  */
-public class CdsUsageAnalysisView extends CdsAnalysisPage {
+public class CdsUsageAnalysisView extends CdsAnalysisPage<CdsUsedEntitiesAnalysis> {
 	private enum Column {
 		OBJECT_NAME(400, Messages.CdsUsageAnalysisView_ObjectNameColumn_xfld),
 		OCCURRENCES(80, Messages.CdsUsageAnalysisView_OccurrencesColumn_xfld),
@@ -88,24 +79,9 @@ public class CdsUsageAnalysisView extends CdsAnalysisPage {
 	private final List<Column> columns;
 	private SortListener sortListener;
 
-	public CdsUsageAnalysisView(final CdsAnalysis parentView) {
+	public CdsUsageAnalysisView(final CdsAnalysisView parentView) {
 		super(parentView);
 		this.columns = Arrays.asList(Column.values());
-	}
-
-	@Override
-	public Image getImage() {
-		return SearchAndAnalysisPlugin.getDefault().getImage(IImages.USAGE_ANALYZER);
-	}
-
-	@Override
-	public ImageDescriptor getImageDescriptor() {
-		return SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.USAGE_ANALYZER);
-	}
-
-	@Override
-	public String getLabelPrefix() {
-		return Messages.CdsUsageAnalysisView_ViewLabel_xfld;
 	}
 
 	@Override
@@ -126,30 +102,25 @@ public class CdsUsageAnalysisView extends CdsAnalysisPage {
 	}
 
 	@Override
-	protected void setTreeInput(final IAdtObjectReferenceElementInfo cdsViewAdtObj, final TreeViewer treeViewer) {
-		final LazyLoadingAdtObjectReferenceNode node = new LazyLoadingAdtObjectReferenceNode(cdsViewAdtObj.getName(),
-			cdsViewAdtObj.getDisplayName(), cdsViewAdtObj.getDescription(), cdsViewAdtObj.getAdtObjectReference(), null);
-		final IDestinationProvider destProvider = cdsViewAdtObj.getAdapter(IDestinationProvider.class);
-		node.setElementInfoProvider(new IElementInfoProvider() {
-			@Override
-			public String getProviderDescription() {
-				return NLS.bind(Messages.CdsAnalysis_UsageAnalysisProviderDescription_xmsg, cdsViewAdtObj.getDisplayName());
-			}
+	protected ViewUiState getUiState() {
+		final TreeViewUiState uiState = new TreeViewUiState();
+		uiState.setFromTreeViewer((TreeViewer) getViewer());
+		return uiState;
+	}
 
-			@Override
-			public List<IElementInfo> getElements() {
-				if (destProvider == null) {
-					return null;
-				}
-				final IElementInfo cdsTopDownInfo = CdsAnalysisServiceFactory.createCdsAnalysisService()
-					.loadUsedEntitiesAnalysis(cdsViewAdtObj.getName(), destProvider.getDestinationId());
-				if (cdsTopDownInfo != null) {
-					return ((IElementInfoCollection) cdsTopDownInfo).getChildren();
-				}
-				return null;
+	@Override
+	protected void loadInput(final ViewUiState uiState) {
+		final TreeViewer viewer = (TreeViewer) getViewer();
+		viewer.setInput(this.analysisResult.getResult());
+
+		if (this.analysisResult.isResultLoaded()) {
+			// update ui state
+			if (uiState != null && uiState instanceof TreeViewUiState) {
+				((TreeViewUiState) uiState).applyToTreeViewer(viewer);
 			}
-		});
-		treeViewer.setInput(node);
+		} else {
+			this.analysisResult.setResultLoaded(true);
+		}
 	}
 
 	@Override

@@ -58,7 +58,7 @@ public class FieldHierarchyView implements IDestinationProvider {
 	private ITreeNode fieldNode;
 	private final CLabel hierarchyViewerPaneLabel;
 	private FieldHierarchyViewer hierarchyTreeViewer;
-	private final Map<String, FieldHierarchyViewerInput> fieldInputMap;
+	private Map<String, FieldHierarchyViewerInput> fieldInputMap;
 	private FieldHierarchyViewerInput currentFieldInput;
 	private ObjectType currentInputObjectType;
 	private String currentEntityName;
@@ -99,6 +99,28 @@ public class FieldHierarchyView implements IDestinationProvider {
 	 */
 	public void clearInputCache() {
 		this.fieldInputMap.clear();
+	}
+
+	/**
+	 * Returns the current input cache
+	 *
+	 * @return the current input cache
+	 */
+	public Map<String, FieldHierarchyViewerInput> getInputCache() {
+		return this.fieldInputMap;
+	}
+
+	/**
+	 * Updates the field to hierarchy viewer input cache
+	 * 
+	 * @param inputCache the field hierarchy viewer cache
+	 */
+	public void setInputCache(final Map<String, FieldHierarchyViewerInput> inputCache) {
+		if (inputCache == null) {
+			this.fieldInputMap = new HashMap<>();
+		} else {
+			this.fieldInputMap = inputCache;
+		}
 	}
 
 	/**

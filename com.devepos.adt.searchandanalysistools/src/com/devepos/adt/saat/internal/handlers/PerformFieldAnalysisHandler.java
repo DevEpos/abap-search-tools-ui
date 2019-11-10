@@ -1,6 +1,9 @@
 package com.devepos.adt.saat.internal.handlers;
 
-import com.devepos.adt.saat.internal.cdsanalysis.ui.CdsAnalysis.AnalysisMode;
+import com.devepos.adt.saat.internal.cdsanalysis.CdsAnalysisType;
+import com.devepos.adt.saat.internal.cdsanalysis.ui.CdsAnalysis;
+import com.devepos.adt.saat.internal.cdsanalysis.ui.FieldAnalysis;
+import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
 import com.devepos.adt.saat.internal.util.IAdtObject;
 
 /**
@@ -11,7 +14,7 @@ import com.devepos.adt.saat.internal.util.IAdtObject;
 public class PerformFieldAnalysisHandler extends OpenInCdsAnalyzerHandler {
 
 	public PerformFieldAnalysisHandler() {
-		super(AnalysisMode.FIELD_ANALYSIS);
+		super(CdsAnalysisType.FIELD_ANALYSIS);
 	}
 
 	@Override
@@ -21,5 +24,10 @@ public class PerformFieldAnalysisHandler extends OpenInCdsAnalyzerHandler {
 		 * that was successfully adapted from the current selection
 		 */
 		return true;
+	}
+
+	@Override
+	protected CdsAnalysis createTypedAnalysis(final IAdtObjectReferenceElementInfo objectRefInfo) {
+		return new FieldAnalysis(objectRefInfo);
 	}
 }

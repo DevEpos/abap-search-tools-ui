@@ -5,7 +5,7 @@ import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
-import com.devepos.adt.saat.internal.cdsanalysis.ui.CdsAnalysis;
+import com.devepos.adt.saat.internal.cdsanalysis.ui.CdsAnalysisView;
 import com.devepos.adt.saat.internal.util.Logging;
 
 /**
@@ -20,13 +20,13 @@ public class ViewPartLookup {
 	 *
 	 * @return
 	 */
-	public static CdsAnalysis getCdsAnalysisView() {
-		CdsAnalysis view = null;
+	public static CdsAnalysisView getCdsAnalysisView() {
+		CdsAnalysisView view = null;
 		final IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 		try {
-			final IViewPart viewPart = page.showView(CdsAnalysis.VIEW_ID);
-			if (viewPart instanceof CdsAnalysis) {
-				view = (CdsAnalysis) viewPart;
+			final IViewPart viewPart = page.showView(CdsAnalysisView.VIEW_ID);
+			if (viewPart instanceof CdsAnalysisView) {
+				view = (CdsAnalysisView) viewPart;
 			}
 		} catch (final PartInitException e) {
 			Logging.getLogger(ViewPartLookup.class).error(e);

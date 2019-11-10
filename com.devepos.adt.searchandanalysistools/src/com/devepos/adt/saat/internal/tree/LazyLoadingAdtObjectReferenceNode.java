@@ -116,6 +116,9 @@ public class LazyLoadingAdtObjectReferenceNode extends AdtObjectReferenceNode im
 
 	@Override
 	public void addLazyLoadingListener(final ILazyLoadingListener l) {
+		if (l == null) {
+			throw new IllegalArgumentException();
+		}
 		this.lazyLoadingListeners.add(l);
 	}
 

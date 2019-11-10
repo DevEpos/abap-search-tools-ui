@@ -173,6 +173,7 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 		if (this.result != null) {
 			// clean up old search
 			this.result.removeListener(this);
+			this.searchResultTree.setInput(null);
 		}
 		this.result = (ObjectSearchResult) search;
 		if (this.result != null) {
@@ -410,20 +411,23 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 			if (new CdsAnalysisUriDiscovery(this.projectProvider.getDestinationId()).getCdsAnalysisUri() != null) {
 				menu.add(new Separator(com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_CDS_ANALYSIS));
 				if (singleCdsViewSelected && this.isCdsTopDownAnalysisAvailable) {
-					MenuItemFactory.addCdsAnalyzerCommandItem(menu, com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_CDS_ANALYSIS,
+					MenuItemFactory.addCdsAnalyzerCommandItem(menu,
+						com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_CDS_ANALYSIS,
 						ICommandConstants.CDS_TOP_DOWN_ANALYSIS);
 				}
 				if (!previewAdtObjRefs.isEmpty()) {
-					MenuItemFactory.addCdsAnalyzerCommandItem(menu, com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_CDS_ANALYSIS,
+					MenuItemFactory.addCdsAnalyzerCommandItem(menu,
+						com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_CDS_ANALYSIS,
 						ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS);
 				}
 				if (singleCdsViewSelected && this.isCdsUsedEntitiesAnalysisAvailable) {
-					MenuItemFactory.addCdsAnalyzerCommandItem(menu, com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_CDS_ANALYSIS,
+					MenuItemFactory.addCdsAnalyzerCommandItem(menu,
+						com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_CDS_ANALYSIS,
 						ICommandConstants.USED_ENTITIES_ANALYSIS);
 				}
 				if (!previewAdtObjRefs.isEmpty()) {
-					MenuItemFactory.addCdsAnalyzerCommandItem(menu, com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_CDS_ANALYSIS,
-						ICommandConstants.FIELD_ANALYSIS);
+					MenuItemFactory.addCdsAnalyzerCommandItem(menu,
+						com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_CDS_ANALYSIS, ICommandConstants.FIELD_ANALYSIS);
 				}
 
 			}

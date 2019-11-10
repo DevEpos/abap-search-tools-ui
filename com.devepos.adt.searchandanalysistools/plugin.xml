@@ -217,7 +217,7 @@
                   commandId="com.devepos.adt.saat.objectsearch.command.openSearchDialog"
                   icon="icons/ABAPSearch.png"
                   label="%command.objectsearch.opendialog.name"
-                  style="push">
+                  style="pulldown">
                <visibleWhen
                      checkEnabled="false">
                   <reference
@@ -247,6 +247,14 @@
                id="com.devepos.adt.saat.objectsearch.dynamicFavoriteMenu">
          </dynamic>
       </menuContribution>
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:com.devepos.adt.saat.objectsearch.command.openSearchDialog">
+         <dynamic
+               class="com.devepos.adt.saat.internal.menu.ObjectSearchModesMenu"
+               id="com.devepos.adt.saat.objectsearch.dynamicSearchMenu">
+         </dynamic>
+      </menuContribution>
    </extension>
      <extension
            point="org.eclipse.ui.preferencePages">
@@ -266,7 +274,7 @@
            point="org.eclipse.ui.views">
         <view
               category="com.sap.adt.views"
-              class="com.devepos.adt.saat.internal.cdsanalysis.ui.CdsAnalysis"
+              class="com.devepos.adt.saat.internal.cdsanalysis.ui.CdsAnalysisView"
               icon="icons/CdsAnalyzerView.png"
               id="com.devepos.adt.saat.views.cdsanalyzer"
               name="%view.cdsanalysis.name"

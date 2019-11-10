@@ -7,7 +7,7 @@ import com.devepos.adt.saat.internal.IModificationListener;
 import com.devepos.adt.saat.internal.IModificationListener.ModificationKind;
 import com.devepos.adt.saat.internal.search.ui.ObjectSearchRequest;
 import com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavorite;
-import com.devepos.adt.saat.model.objectsearchfavorites.impl.ObjectSearchFavoritesFactoryImpl;
+import com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavoritesFactory;
 
 /**
  * Implementation of the {@link IObjectSearchFavorites} of the object search
@@ -25,7 +25,7 @@ public class ObjectSearchFavorites implements IObjectSearchFavorites {
 
 	@Override
 	public void addFavorite(final ObjectSearchRequest searchRequest) {
-		final IObjectSearchFavorite newFavorite = ObjectSearchFavoritesFactoryImpl.init().createObjectSearchFavorite();
+		final IObjectSearchFavorite newFavorite = IObjectSearchFavoritesFactory.eINSTANCE.createObjectSearchFavorite();
 		newFavorite.setObjectName(searchRequest.getSearchTerm());
 		newFavorite.setSearchFilter(searchRequest.getParametersString());
 		newFavorite.setMaxResults(searchRequest.getMaxResults());

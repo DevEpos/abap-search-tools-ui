@@ -3,12 +3,10 @@ package com.devepos.adt.saat.internal.cdsanalysis.ui;
 import java.util.List;
 
 import org.eclipse.core.runtime.IAdaptable;
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.preference.JFacePreferences;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider.IStyledLabelProvider;
 import org.eclipse.jface.viewers.IDecoration;
 import org.eclipse.jface.viewers.ILabelProvider;
@@ -30,9 +28,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
-import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchCommandConstants;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.Page;
 
@@ -43,7 +39,6 @@ import com.devepos.adt.saat.internal.IDestinationProvider;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
 import com.devepos.adt.saat.internal.menu.MenuItemFactory;
-import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.search.IExtendedAdtObjectInfo;
 import com.devepos.adt.saat.internal.tree.ActionTreeNode;
 import com.devepos.adt.saat.internal.tree.IAdtObjectReferenceNode;
@@ -58,6 +53,7 @@ import com.devepos.adt.saat.internal.ui.OpenAdtObjectAction;
 import com.devepos.adt.saat.internal.ui.SelectionProviderAdapter;
 import com.devepos.adt.saat.internal.ui.SelectionProviderProxy;
 import com.devepos.adt.saat.internal.ui.StylerFactory;
+import com.devepos.adt.saat.internal.ui.ViewUiState;
 import com.devepos.adt.saat.internal.util.AbapProjectProviderAccessor;
 import com.devepos.adt.saat.internal.util.CommandPossibleChecker;
 import com.devepos.adt.saat.internal.util.IAbapProjectProvider;
@@ -69,18 +65,18 @@ import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
  *
  * @author stockbal
  */
-public abstract class CdsAnalysisPage extends Page {
+public abstract class CdsAnalysisPage<T extends CdsAnalysis> extends Page {
 
 	protected Composite composite;
-	protected IAdtObjectReferenceElementInfo adtObjectInfo;
 	protected IAbapProjectProvider projectProvider;
+	protected T analysisResult;
 	private StructuredViewer viewer;
-	private final CdsAnalysis parentView;
+	private final CdsAnalysisView parentView;
 	private MenuManager menuMgr;
 	private SelectionProviderProxy selectionProvider;
 	private CopyToClipboardAction copyToClipBoardAction;
 
-	public CdsAnalysisPage(final CdsAnalysis viewPart) {
+	public CdsAnalysisPage(final CdsAnalysisView viewPart) {
 		this.parentView = viewPart;
 	}
 
@@ -112,39 +108,13 @@ public abstract class CdsAnalysisPage extends Page {
 
 		final IToolBarManager tbm = getSite().getActionBars().getToolBarManager();
 		tbm.removeAll();
-		CdsAnalysis.createToolBarGroups(tbm);
+		CdsAnalysisView.createToolBarGroups(tbm);
 		fillToolbar(tbm);
 		tbm.update(false);
 	}
 
 	protected ISelectionProvider createSelectionProvider() {
 		return new SelectionProviderAdapter();
-	}
-
-	/**
-	 * Returns an image descriptor to proper the purpose of this analysis page
-	 * <p>
-	 * The default implementation returns <code>null</code>. <br>
-	 * Subclasses should override this method
-	 * </p>
-	 *
-	 * @return
-	 */
-	public Image getImage() {
-		return null;
-	}
-
-	/**
-	 * Returns an image to proper describe the purpose of this analysis page
-	 * <p>
-	 * The default implementation returns <code>null</code>. <br>
-	 * Subclasses should override this method
-	 * </p>
-	 *
-	 * @return
-	 */
-	public ImageDescriptor getImageDescriptor() {
-		return null;
 	}
 
 	@Override
@@ -157,50 +127,30 @@ public abstract class CdsAnalysisPage extends Page {
 	 *
 	 * @return
 	 */
-	public CdsAnalysis getViewPart() {
+	public CdsAnalysisView getViewPart() {
 		return this.parentView;
-	}
-
-	/**
-	 * Returns the label for this CDS Analysis page
-	 *
-	 * @return
-	 */
-	public String getLabel() {
-		if (this.adtObjectInfo == null) {
-			return null;
-		}
-		String systemId = null;
-		final IDestinationProvider destProvider = this.adtObjectInfo.getAdapter(IDestinationProvider.class);
-		if (destProvider != null) {
-			systemId = destProvider.getSystemId();
-		}
-
-		if (systemId == null) {
-			return String.format("%s: '%s'", getLabelPrefix(), this.adtObjectInfo.getDisplayName()); //$NON-NLS-1$
-		} else {
-			return String.format("%s: '%s' [%s]", getLabelPrefix(), this.adtObjectInfo.getDisplayName(), systemId); //$NON-NLS-1$
-		}
-
 	}
 
 	/**
 	 * Analyzes the given CDS View (or Database table/view for Where-Used) and shows
 	 * the result in the structured viewer of the page
 	 *
-	 * @param adtObjectInfo ADT object information
+	 * @param analysis the analysis input for the page
 	 */
-	public final void setInput(final IAdtObjectReferenceElementInfo adtObjectInfo) {
-		this.adtObjectInfo = adtObjectInfo;
-		if (this.viewer == null && this.viewer.getControl().isDisposed()) {
-			return;
+	@SuppressWarnings("unchecked")
+	public final void setInput(final CdsAnalysis analysis, final ViewUiState uiState) {
+		if (this.analysisResult != null) {
+			clearViewerInput();
 		}
-		final IDestinationProvider destProvider = ((IAdaptable) adtObjectInfo).getAdapter(IDestinationProvider.class);
-		if (destProvider != null) {
-			this.projectProvider = AbapProjectProviderAccessor.getProviderForDestination(destProvider.getDestinationId());
+		this.analysisResult = (T) analysis;
+		if (analysis != null) {
+			final IAdtObjectReferenceElementInfo adtObjectInfo = analysis.getAdtObjectInfo();
+			final IDestinationProvider destProvider = ((IAdaptable) adtObjectInfo).getAdapter(IDestinationProvider.class);
+			if (destProvider != null) {
+				this.projectProvider = AbapProjectProviderAccessor.getProviderForDestination(destProvider.getDestinationId());
+			}
+			loadInput(uiState);
 		}
-		setTreeInput(this.adtObjectInfo, (TreeViewer) this.viewer);
-		fillPullDownMenu(getSite().getActionBars().getMenuManager());
 	}
 
 	@Override
@@ -209,6 +159,25 @@ public abstract class CdsAnalysisPage extends Page {
 			this.viewer.getControl().setFocus();
 		} else if (this.composite != null) {
 			this.composite.setFocus();
+		}
+	}
+
+	/**
+	 * Returns the current result displayed in this page
+	 *
+	 * @return
+	 */
+	public T getAnalysisResult() {
+		return this.analysisResult;
+	}
+
+	/**
+	 * Clears viewer input before new content is set
+	 */
+	protected void clearViewerInput() {
+		// perform some clean up
+		if (this.viewer != null && !this.viewer.getControl().isDisposed()) {
+			this.viewer.setInput(null);
 		}
 	}
 
@@ -234,12 +203,18 @@ public abstract class CdsAnalysisPage extends Page {
 	}
 
 	/**
-	 * Sets the input for the the current tree viewer
-	 *
-	 * @param adtObjectInfo the ADT object reference information
-	 * @param treeViewer    the tree viewer instance where the input should be set
+	 * Loads the current input into the analysis page
+	 * 
+	 * @param uiState the UI state from the last activation or <code>null</code>
 	 */
-	protected abstract void setTreeInput(IAdtObjectReferenceElementInfo adtObjectInfo, TreeViewer treeViewer);
+	protected abstract void loadInput(ViewUiState uiState);
+
+	/**
+	 * Retrieves the current UI state of the page
+	 *
+	 * @return the current UI state of the page
+	 */
+	protected abstract ViewUiState getUiState();
 
 	/**
 	 * Refreshes the current analysis content
@@ -252,13 +227,6 @@ public abstract class CdsAnalysisPage extends Page {
 	 * @param treeViewer the tree viewer to be configures
 	 */
 	protected abstract void configureTreeViewer(TreeViewer treeViewer);
-
-	/**
-	 * Returns the prefix for the label of this page
-	 *
-	 * @return
-	 */
-	protected abstract String getLabelPrefix();
 
 	/**
 	 * Returns the viewer of this page if {@link #FLAG_LAYOUT_FLAT} is set then a
@@ -411,22 +379,9 @@ public abstract class CdsAnalysisPage extends Page {
 	 * @param tbm the toolbar manager of the pages' site
 	 */
 	protected void fillToolbar(final IToolBarManager tbm) {
-		tbm.appendToGroup(IContextMenuConstants.GROUP_EDIT, new ClosePageAction(false));
-		tbm.appendToGroup(IContextMenuConstants.GROUP_EDIT, new ClosePageAction(true));
 		if (this.viewer instanceof TreeViewer) {
 			tbm.appendToGroup(IContextMenuConstants.GROUP_NODE_ACTIONS, new CollapseAllTreeNodesAction((TreeViewer) this.viewer));
 		}
-	}
-
-	/**
-	 * Fill the pull down menu of the View
-	 * <p>
-	 * Default implementation does nothing. Subclasses may override
-	 * </p>
-	 *
-	 * @param menu the menu
-	 */
-	protected void fillPullDownMenu(final IMenuManager menu) {
 	}
 
 	/**
@@ -465,38 +420,8 @@ public abstract class CdsAnalysisPage extends Page {
 	 * @param mgr the menu manager instance
 	 */
 	protected final void fillContextMenu(final IMenuManager mgr) {
-		CdsAnalysis.createContextMenuGroups(mgr);
+		CdsAnalysisView.createContextMenuGroups(mgr);
 		fillContextMenu(mgr, new CommandPossibleChecker(false));
-	}
-
-	/**
-	 * Action to close this or all open Analysis pages
-	 *
-	 * @author stockbal
-	 */
-	private class ClosePageAction extends Action {
-		private final boolean closeOthersToo;
-
-		public ClosePageAction(final boolean closeOthersToo) {
-			super(closeOthersToo ? Messages.CdsAnalysis_CloseAllPages_xtol : Messages.CdsAnalysis_CloseCurrentPage_xtol);
-			if (closeOthersToo) {
-				setImageDescriptor(
-					PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_ELCL_REMOVEALL));
-			} else {
-				setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().getImageDescriptor(ISharedImages.IMG_ELCL_REMOVE));
-			}
-			this.closeOthersToo = closeOthersToo;
-		}
-
-		@Override
-		public void run() {
-			if (this.closeOthersToo) {
-				CdsAnalysisPage.this.parentView.closeAllPages();
-			} else {
-				CdsAnalysisPage.this.parentView.closePage(CdsAnalysisPage.this);
-			}
-		}
-
 	}
 
 	class TreeViewerLabelProvider extends LabelProvider implements ILabelProvider, IStyledLabelProvider {
@@ -550,5 +475,4 @@ public abstract class CdsAnalysisPage extends Page {
 			this.viewer.refresh(false);
 		}
 	}
-
 }

@@ -1,20 +1,18 @@
 package com.devepos.adt.saat.internal.cdsanalysis.ui;
 
-import java.util.List;
+import java.util.Map;
 
 import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ViewForm;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 
@@ -22,26 +20,20 @@ import com.devepos.adt.saat.internal.ICommandConstants;
 import com.devepos.adt.saat.internal.IContextMenuConstants;
 import com.devepos.adt.saat.internal.IDestinationProvider;
 import com.devepos.adt.saat.internal.ObjectType;
-import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.cdsanalysis.FieldAnalysisUriDiscovery;
-import com.devepos.adt.saat.internal.ddicaccess.DdicRepositoryAccessFactory;
-import com.devepos.adt.saat.internal.ddicaccess.IDdicRepositoryAccess;
 import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
-import com.devepos.adt.saat.internal.elementinfo.IElementInfo;
-import com.devepos.adt.saat.internal.elementinfo.IElementInfoProvider;
 import com.devepos.adt.saat.internal.menu.MenuItemFactory;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.tree.IAdtObjectReferenceNode;
-import com.devepos.adt.saat.internal.tree.ILazyLoadingNode;
 import com.devepos.adt.saat.internal.tree.ITreeNode;
-import com.devepos.adt.saat.internal.tree.LazyLoadingAdtObjectReferenceNode;
 import com.devepos.adt.saat.internal.tree.LazyLoadingTreeContentProvider;
 import com.devepos.adt.saat.internal.tree.SimpleInfoTreeNode;
 import com.devepos.adt.saat.internal.ui.PreferenceToggleAction;
 import com.devepos.adt.saat.internal.ui.PrefixedAsteriskFilteredTree;
+import com.devepos.adt.saat.internal.ui.TreeViewUiState;
+import com.devepos.adt.saat.internal.ui.ViewUiState;
 import com.devepos.adt.saat.internal.util.AdtUtil;
 import com.devepos.adt.saat.internal.util.CommandPossibleChecker;
-import com.devepos.adt.saat.internal.util.IImages;
 
 /**
  * Analysis page for analyzing the fields of a database entity like (Table, View
@@ -49,7 +41,7 @@ import com.devepos.adt.saat.internal.util.IImages;
  *
  * @author stockbal
  */
-public class FieldAnalysisView extends CdsAnalysisPage {
+public class FieldAnalysisView extends CdsAnalysisPage<FieldAnalysis> {
 
 	static final String SEARCH_DB_VIEWS_WHERE_USED_PREF_KEY = "com.devepos.adt.saat.fieldanalysis.searchDbViewUsages"; //$NON-NLS-1$
 	private SashForm fieldsHierarchySplitter;
@@ -61,18 +53,8 @@ public class FieldAnalysisView extends CdsAnalysisPage {
 	private PreferenceToggleAction searchDbViewUsages;
 	FieldAnalysisUriDiscovery uriDiscovery;
 
-	public FieldAnalysisView(final CdsAnalysis viewPart) {
+	public FieldAnalysisView(final CdsAnalysisView viewPart) {
 		super(viewPart);
-	}
-
-	@Override
-	public Image getImage() {
-		return SearchAndAnalysisPlugin.getDefault().getImage(IImages.FIELD_ANALYSIS);
-	}
-
-	@Override
-	public ImageDescriptor getImageDescriptor() {
-		return SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.FIELD_ANALYSIS);
 	}
 
 	@Override
@@ -100,8 +82,9 @@ public class FieldAnalysisView extends CdsAnalysisPage {
 	}
 
 	@Override
-	protected void fillPullDownMenu(final IMenuManager menu) {
-		super.fillPullDownMenu(menu);
+	public void setActionBars(final IActionBars actionBars) {
+		super.setActionBars(actionBars);
+		final IMenuManager menu = actionBars.getMenuManager();
 		menu.add(this.searchDbViewUsages);
 	}
 
@@ -114,7 +97,7 @@ public class FieldAnalysisView extends CdsAnalysisPage {
 
 	@Override
 	protected TreeViewer createTreeViewer(final Composite parent) {
-		// just the returns the viewer of the filtered tree
+		// just returns the viewer of the filtered tree
 		return this.fieldsTree.getViewer();
 	}
 
@@ -141,32 +124,39 @@ public class FieldAnalysisView extends CdsAnalysisPage {
 	}
 
 	@Override
-	protected void setTreeInput(final IAdtObjectReferenceElementInfo adtObjectInfo, final TreeViewer treeViewer) {
-		final LazyLoadingAdtObjectReferenceNode node = new LazyLoadingAdtObjectReferenceNode(adtObjectInfo.getName(),
-			adtObjectInfo.getDisplayName(), adtObjectInfo.getDescription(), adtObjectInfo.getAdtObjectReference(), null);
+	protected ViewUiState getUiState() {
+		final UiState state = new UiState();
+		state.setFromTreeViewer((TreeViewer) getViewer());
+		return state;
+	}
+
+	@Override
+	protected void clearViewerInput() {
+		super.clearViewerInput();
+		this.hierarchyView.clearInputCache();
+	}
+
+	@Override
+	protected void loadInput(final ViewUiState uiState) {
+		final IAdtObjectReferenceElementInfo adtObjectInfo = this.analysisResult.getAdtObjectInfo();
 		final IDestinationProvider destProvider = adtObjectInfo.getAdapter(IDestinationProvider.class);
 		final ObjectType type = ObjectType.getFromAdtType(adtObjectInfo.getAdtObjectReference().getType());
-		if (type == null) {
-			return;
-		}
 		this.uriDiscovery = new FieldAnalysisUriDiscovery(destProvider.getDestinationId());
 		this.currentEntity = adtObjectInfo.getDisplayName();
 		this.destProvider = destProvider;
 		this.hierarchyView.setEntityInformation(adtObjectInfo.getDisplayName(), destProvider, type);
-		node.setElementInfoProvider(new IElementInfoProvider() {
-			@Override
-			public String getProviderDescription() {
-				return NLS.bind(Messages.FieldAnalysisView_FieldLoadingProviderDesc_xmsg, adtObjectInfo.getDisplayName());
-			}
 
-			@Override
-			public List<IElementInfo> getElements() {
-				final IDdicRepositoryAccess ddicRepoAccess = DdicRepositoryAccessFactory.createDdicAccess();
-				return ddicRepoAccess.getElementColumnInformation(destProvider.getDestinationId(), adtObjectInfo.getUri());
+		final TreeViewer viewer = (TreeViewer) getViewer();
+		viewer.setInput(this.analysisResult.getResult());
+		if (this.analysisResult.isResultLoaded()) {
+			// update ui state
+			if (uiState != null && uiState instanceof UiState) {
+				((TreeViewUiState) uiState).applyToTreeViewer(viewer);
 			}
-		});
-		treeViewer.setInput(new Object[] { node });
-		treeViewer.expandAll();
+		} else {
+			this.analysisResult.setResultLoaded(true);
+			viewer.expandAll();
+		}
 	}
 
 	@Override
@@ -185,10 +175,8 @@ public class FieldAnalysisView extends CdsAnalysisPage {
 		if (refreshFieldsTree) {
 			// refresh complete field tree
 			this.fieldsTree.getFilterControl().setText(""); //$NON-NLS-1$
-			final ILazyLoadingNode node = (ILazyLoadingNode) nodes[0];
 			this.hierarchyView.clearInputCache();
-
-			node.resetLoadedState();
+			this.analysisResult.refreshAnalysis();
 			getViewPart().updateLabel();
 			getViewer().refresh();
 		} else {
@@ -231,11 +219,6 @@ public class FieldAnalysisView extends CdsAnalysisPage {
 
 	}
 
-	@Override
-	protected String getLabelPrefix() {
-		return Messages.FieldAnalysisView_ViewLabel_xfld;
-	}
-
 	/*
 	 * Creates the filtered tree for the display of the fields of a database entity
 	 */
@@ -275,4 +258,23 @@ public class FieldAnalysisView extends CdsAnalysisPage {
 		};
 	}
 
+	private class UiState extends TreeViewUiState {
+		private Map<String, FieldHierarchyViewerInput> hierarchyInputCache;
+
+		@Override
+		public void setFromTreeViewer(final TreeViewer viewer) {
+			super.setFromTreeViewer(viewer);
+			if (FieldAnalysisView.this.hierarchyView != null) {
+				this.hierarchyInputCache = FieldAnalysisView.this.hierarchyView.getInputCache();
+			}
+		}
+
+		@Override
+		public void applyToTreeViewer(final TreeViewer viewer) {
+			super.applyToTreeViewer(viewer);
+			if (FieldAnalysisView.this.hierarchyView != null) {
+				FieldAnalysisView.this.hierarchyView.setInputCache(this.hierarchyInputCache);
+			}
+		}
+	}
 }

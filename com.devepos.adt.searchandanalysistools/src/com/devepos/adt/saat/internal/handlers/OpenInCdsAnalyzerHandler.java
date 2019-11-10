@@ -6,15 +6,20 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.ICoreRunnable;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.PlatformUI;
 
 import com.devepos.adt.saat.internal.ObjectType;
+import com.devepos.adt.saat.internal.cdsanalysis.CdsAnalysisType;
 import com.devepos.adt.saat.internal.cdsanalysis.ui.CdsAnalysis;
-import com.devepos.adt.saat.internal.cdsanalysis.ui.CdsAnalysis.AnalysisMode;
+import com.devepos.adt.saat.internal.cdsanalysis.ui.CdsAnalysisKey;
+import com.devepos.adt.saat.internal.cdsanalysis.ui.CdsAnalysisManager;
+import com.devepos.adt.saat.internal.elementinfo.ElementInfoRetrievalServiceFactory;
+import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
 import com.devepos.adt.saat.internal.messages.Messages;
-import com.devepos.adt.saat.internal.ui.ViewPartLookup;
 import com.devepos.adt.saat.internal.util.AbapProjectProviderAccessor;
 import com.devepos.adt.saat.internal.util.AbapProjectProxy;
 import com.devepos.adt.saat.internal.util.AdtUtil;
@@ -28,9 +33,9 @@ import com.sap.adt.tools.core.project.IAbapProject;
  * @author stockbal
  */
 public abstract class OpenInCdsAnalyzerHandler extends AbstractHandler {
-	private final AnalysisMode mode;
+	private final CdsAnalysisType mode;
 
-	protected OpenInCdsAnalyzerHandler(final AnalysisMode mode) {
+	protected OpenInCdsAnalyzerHandler(final CdsAnalysisType mode) {
 		this.mode = mode;
 	}
 
@@ -50,21 +55,52 @@ public abstract class OpenInCdsAnalyzerHandler extends AbstractHandler {
 				Messages.Dialog_InfoTitle_xmsg, NLS.bind(getFeatureUnavailableMessage(), AdtUtil.getDestinationId(project)));
 			return null;
 		}
-		final CdsAnalysis cdsAnalyzerView = ViewPartLookup.getCdsAnalysisView();
-		if (cdsAnalyzerView != null) {
-			cdsAnalyzerView.setFocus();
-			final IAbapProject abapProject = selectedObject.getProject().getAdapter(IAbapProject.class);
-			// register the abapProject
-			AbapProjectProviderAccessor.registerProjectProvider(new AbapProjectProxy(selectedObject.getProject()));
-			final IAdtObjectReference objectRef = selectedObject.getReference();
-			if (objectRef != null && objectRef.getUri() != null) {
-				// set the selected object in the Analysis View
-				cdsAnalyzerView.analyzeAdtObject(this.mode, objectRef.getUri(), abapProject.getDestinationId());
-			}
+		final IAbapProject abapProject = selectedObject.getProject().getAdapter(IAbapProject.class);
+		// register the abapProject
+		AbapProjectProviderAccessor.registerProjectProvider(new AbapProjectProxy(selectedObject.getProject()));
+		final IAdtObjectReference objectRef = selectedObject.getReference();
+		if (objectRef != null && objectRef.getUri() != null) {
+			analyzeObject(objectRef, abapProject.getDestinationId());
 		}
 		return null;
 
 	}
+
+	private void analyzeObject(final IAdtObjectReference objectRef, final String destinationId) {
+		final CdsAnalysisManager analysisManager = CdsAnalysisManager.getInstance();
+		final CdsAnalysisKey analysisKey = new CdsAnalysisKey(this.mode, objectRef.getUri(), destinationId);
+		final CdsAnalysis existing = analysisManager.getExistingAnalysis(analysisKey);
+		if (existing == null) {
+			// determine ADT information about CDS view
+			final Job adtObjectRetrievalJob = Job.create(Messages.CdsAnalysis_LoadAdtObjectJobName_xmsg,
+				(ICoreRunnable) monitor -> {
+					// check if search is possible in selected project
+					final IAdtObjectReferenceElementInfo adtObjectRefElemInfo = ElementInfoRetrievalServiceFactory.createService()
+						.retrieveBasicElementInformation(destinationId, objectRef.getUri());
+					if (adtObjectRefElemInfo != null) {
+						final CdsAnalysis newAnalysis = createTypedAnalysis(adtObjectRefElemInfo);
+						PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
+							analysisManager.addAnalysis(newAnalysis);
+							analysisManager.registerAnalysis(analysisKey, newAnalysis);
+							analysisManager.showAnalysis(newAnalysis);
+						});
+					}
+				});
+			adtObjectRetrievalJob.schedule();
+
+		} else {
+			analysisManager.showAnalysis(existing);
+		}
+
+	}
+
+	/**
+	 * Creates CDS analysis object which can be shown in the CDS Analyzer view
+	 *
+	 * @param  objectRefInfo information about ADT object reference
+	 * @return               the created CDS analysis instance
+	 */
+	protected abstract CdsAnalysis createTypedAnalysis(IAdtObjectReferenceElementInfo objectRefInfo);
 
 	/**
 	 * @return the message text to be used if the given feature is not available
@@ -83,4 +119,5 @@ public abstract class OpenInCdsAnalyzerHandler extends AbstractHandler {
 	protected boolean canExecute(final IAdtObject selectedObject) {
 		return selectedObject.getObjectType() == ObjectType.CDS_VIEW;
 	}
+
 }

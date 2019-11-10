@@ -7,7 +7,6 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.preference.JFacePreferences;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.viewers.CellLabelProvider;
@@ -20,31 +19,28 @@ import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.ui.IActionBars;
 
 import com.devepos.adt.saat.internal.IColorConstants;
 import com.devepos.adt.saat.internal.ICommandConstants;
 import com.devepos.adt.saat.internal.IContextMenuConstants;
-import com.devepos.adt.saat.internal.IDestinationProvider;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
-import com.devepos.adt.saat.internal.cdsanalysis.CdsTopDownElementInfoProvider;
 import com.devepos.adt.saat.internal.cdsanalysis.ICdsAnalysisPreferences;
 import com.devepos.adt.saat.internal.cdsanalysis.ISqlRelationInfo;
-import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
 import com.devepos.adt.saat.internal.elementinfo.LazyLoadingRefreshMode;
 import com.devepos.adt.saat.internal.menu.MenuItemFactory;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.tree.IAdtObjectReferenceNode;
-import com.devepos.adt.saat.internal.tree.ILazyLoadingNode;
 import com.devepos.adt.saat.internal.tree.IStyledTreeNode;
 import com.devepos.adt.saat.internal.tree.ITreeNode;
-import com.devepos.adt.saat.internal.tree.LazyLoadingAdtObjectReferenceNode;
 import com.devepos.adt.saat.internal.tree.LazyLoadingTreeContentProvider;
 import com.devepos.adt.saat.internal.tree.LazyLoadingTreeContentProvider.LoadingElement;
 import com.devepos.adt.saat.internal.ui.OpenColorPreferencePageAction;
 import com.devepos.adt.saat.internal.ui.PreferenceToggleAction;
 import com.devepos.adt.saat.internal.ui.StylerFactory;
+import com.devepos.adt.saat.internal.ui.TreeViewUiState;
+import com.devepos.adt.saat.internal.ui.ViewUiState;
 import com.devepos.adt.saat.internal.util.CommandPossibleChecker;
-import com.devepos.adt.saat.internal.util.IImages;
 
 /**
  * Top-Down Analysis of CDS Analysis page
@@ -52,7 +48,7 @@ import com.devepos.adt.saat.internal.util.IImages;
  * @see    {@link CdsAnalyzerPage}
  * @author stockbal
  */
-public class CdsTopDownAnalysisView extends CdsAnalysisPage {
+public class CdsTopDownAnalysisView extends CdsAnalysisPage<CdsTopDownAnalysis> {
 
 	private enum Column {
 		OBJECT_NAME(400, Messages.CdsTopDownAnalysisView_ObjectTypeColumn_xmit),
@@ -74,12 +70,11 @@ public class CdsTopDownAnalysisView extends CdsAnalysisPage {
 	private static final String SHOW_DESCRIPTIONS_PREF_KEY = "com.devepos.adt.saat.cdstopdownanalysis.showDescriptions"; //$NON-NLS-1$
 	private static final String SHOW_ALIAS_NAMES_PREF_KEY = "com.devepos.adt.saat.cdstopdownanalysis.showAliasNames"; //$NON-NLS-1$
 	private final List<Column> columns;
-	private LazyLoadingAdtObjectReferenceNode cdsNode;
 	private final IPropertyChangeListener propertyChangeListener;
 	private OpenColorPreferencePageAction showColorsAndFontsPrefs;
 	private final IPropertyChangeListener colorPropertyChangeListener;
 
-	public CdsTopDownAnalysisView(final CdsAnalysis parentView) {
+	public CdsTopDownAnalysisView(final CdsAnalysisView parentView) {
 		super(parentView);
 		this.columns = Arrays.asList(Column.OBJECT_NAME, Column.RELATION);
 		this.propertyChangeListener = event -> {
@@ -102,25 +97,10 @@ public class CdsTopDownAnalysisView extends CdsAnalysisPage {
 	}
 
 	@Override
-	public Image getImage() {
-		return SearchAndAnalysisPlugin.getDefault().getImage(IImages.TOP_DOWN);
-	}
-
-	@Override
-	public ImageDescriptor getImageDescriptor() {
-		return SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.TOP_DOWN);
-	}
-
-	@Override
 	public void dispose() {
 		super.dispose();
 		SearchAndAnalysisPlugin.getDefault().getPreferenceStore().removePropertyChangeListener(this.propertyChangeListener);
 		JFaceResources.getColorRegistry().removeListener(this.colorPropertyChangeListener);
-	}
-
-	@Override
-	public String getLabelPrefix() {
-		return Messages.CdsTopDownAnalysisView_ViewLabel_xfld;
 	}
 
 	@Override
@@ -156,31 +136,41 @@ public class CdsTopDownAnalysisView extends CdsAnalysisPage {
 	}
 
 	@Override
-	protected void setTreeInput(final IAdtObjectReferenceElementInfo cdsObjInfo, final TreeViewer treeViewer) {
-		final LazyLoadingAdtObjectReferenceNode node = new LazyLoadingAdtObjectReferenceNode(cdsObjInfo.getName(),
-			cdsObjInfo.getDisplayName(), cdsObjInfo.getDescription(), cdsObjInfo.getAdtObjectReference(), null);
-		final IDestinationProvider destProvider = cdsObjInfo.getAdapter(IDestinationProvider.class);
-		node.setElementInfoProvider(new CdsTopDownElementInfoProvider(
-			destProvider != null ? destProvider.getDestinationId() : null, cdsObjInfo.getName()));
-		node.setAdditionalInfo(cdsObjInfo.getAdditionalInfo());
-		this.cdsNode = node;
-		treeViewer.setInput(new Object[] { node });
-		treeViewer.expandAll();
+	protected ViewUiState getUiState() {
+		final TreeViewUiState uiState = new TreeViewUiState();
+		uiState.setFromTreeViewer((TreeViewer) getViewer());
+		return uiState;
 	}
 
 	@Override
-	protected void refreshAnalysis() {
-		if (this.cdsNode != null && this.cdsNode instanceof ILazyLoadingNode) {
-			final TreeViewer viewer = (TreeViewer) getViewer();
-			viewer.collapseAll();
-			((ILazyLoadingNode) this.cdsNode).resetLoadedState();
+	protected void loadInput(final ViewUiState uiState) {
+		final TreeViewer viewer = (TreeViewer) getViewer();
+
+		if (this.analysisResult.isResultLoaded()) {
+			viewer.setInput(this.analysisResult.getResult());
+			// update ui state
+			if (uiState != null && uiState instanceof TreeViewUiState) {
+				((TreeViewUiState) uiState).applyToTreeViewer(viewer);
+			}
+		} else {
+			this.analysisResult.setResultLoaded(true);
+			viewer.setInput(this.analysisResult.getResult());
 			viewer.expandAll();
 		}
 	}
 
 	@Override
-	protected void fillPullDownMenu(final IMenuManager menu) {
-		super.fillPullDownMenu(menu);
+	protected void refreshAnalysis() {
+		final TreeViewer viewer = (TreeViewer) getViewer();
+		viewer.collapseAll();
+		this.analysisResult.refreshAnalysis();
+		viewer.expandAll();
+	}
+
+	@Override
+	public void setActionBars(final IActionBars actionBars) {
+		super.setActionBars(actionBars);
+		final IMenuManager menu = actionBars.getMenuManager();
 		menu.appendToGroup(IContextMenuConstants.GROUP_PROPERTIES, this.showDescriptions);
 		menu.appendToGroup(IContextMenuConstants.GROUP_PROPERTIES, this.showAliasNames);
 		menu.appendToGroup(IContextMenuConstants.GROUP_PROPERTIES, new Separator());

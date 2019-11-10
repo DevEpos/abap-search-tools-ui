@@ -41,5 +41,9 @@ public interface IPreferences {
 	 * The default {@link SearchType} for the object search
 	 */
 	String DEFAULT_SEARCH_TYPE = "com.devepos.adt.saat.objectsearch.defaultSearchType"; //$NON-NLS-1$
+	/**
+	 * Maximum number of history entries in the CDS Analyzer view
+	 */
+	String MAX_CDS_ANALYZER_HISTORY = "com.devepos.adt.saat.cdsanalyzer.maxHistorySize"; //$NON-NLS-1$
 
 }

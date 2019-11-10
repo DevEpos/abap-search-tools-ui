@@ -22,6 +22,7 @@ import org.eclipse.swt.widgets.Text;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.search.ui.ObjectSearchRequest;
+import com.devepos.adt.saat.internal.util.IImages;
 import com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavorite;
 import com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavoritesFactory;
 
@@ -39,8 +40,6 @@ public class NewSearchFavoriteDialog extends StatusDialog {
 	private boolean isProjectIndependent;
 	private final ObjectSearchRequest searchRequest;
 	private final IObjectSearchFavorites favoriteManager;
-
-	private Button isAndSearchActiveCheckBox;
 
 	public NewSearchFavoriteDialog(final Shell parent, final ObjectSearchRequest searchRequest) {
 		super(parent);
@@ -73,6 +72,8 @@ public class NewSearchFavoriteDialog extends StatusDialog {
 	protected Control createDialogArea(final Composite container) {
 		final Composite ancestor = (Composite) super.createDialogArea(container);
 
+		setImage(SearchAndAnalysisPlugin.getDefault().getImage(IImages.FAVORITES));
+
 		createSearchParametersGroup(ancestor);
 		createFavoriteParameters(ancestor);
 
@@ -95,10 +96,11 @@ public class NewSearchFavoriteDialog extends StatusDialog {
 		createReadOnlyTextWithLabel(Messages.NewSearchFavoriteDialog_SearchFilter_xlfd, this.searchRequest.getParametersString(),
 			group);
 
-		this.isAndSearchActiveCheckBox = new Button(group, SWT.CHECK);
-		this.isAndSearchActiveCheckBox.setText(Messages.ObjectSearch_UseAndFilter_xtol);
-		this.isAndSearchActiveCheckBox.setSelection(this.searchRequest.isAndSearchActive());
-		GridDataFactory.fillDefaults().span(2, 1).applyTo(this.isAndSearchActiveCheckBox);
+		final Button isAndSearchActiveCheckBox = new Button(group, SWT.CHECK);
+		isAndSearchActiveCheckBox.setText(Messages.ObjectSearch_UseAndFilter_xtol);
+		isAndSearchActiveCheckBox.setSelection(this.searchRequest.isAndSearchActive());
+		isAndSearchActiveCheckBox.setEnabled(false);
+		GridDataFactory.fillDefaults().span(2, 1).applyTo(isAndSearchActiveCheckBox);
 	}
 
 	private void createReadOnlyTextWithLabel(final String label, final String content, final Composite parent) {
@@ -203,7 +205,7 @@ public class NewSearchFavoriteDialog extends StatusDialog {
 		if (!this.isProjectIndependent) {
 			newFavorite.setDestinationId(this.searchRequest.getDestinationId());
 		}
-		newFavorite.setAndSearchActive(this.isAndSearchActiveCheckBox.getSelection());
+		newFavorite.setAndSearchActive(this.searchRequest.isAndSearchActive());
 		newFavorite.setSearchFilter(this.searchRequest.getParametersString());
 		newFavorite.setObjectName(this.searchRequest.getSearchTerm());
 		newFavorite.setSearchType(this.searchRequest.getSearchType().name());
