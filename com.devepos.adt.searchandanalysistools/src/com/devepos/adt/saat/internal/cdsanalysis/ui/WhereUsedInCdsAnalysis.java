@@ -35,21 +35,9 @@ public class WhereUsedInCdsAnalysis extends CdsAnalysis {
 		return new Object[] { this.node };
 	}
 
-	/**
-	 * @param showSelectFromUses the showSelectFromUses to set
-	 */
-	public void setShowSelectFromUses(final boolean showSelectFromUses) {
-		this.showSelectFromUses = showSelectFromUses;
-	}
-
-	/**
-	 * @param showAssocUses the showAssocUses to set
-	 */
-	public void setShowAssocUses(final boolean showAssocUses) {
-		this.showAssocUses = showAssocUses;
-	}
-
 	public void updateWhereUsedProvider(final boolean showSelectUses, final boolean showAssocUses) {
+		this.showAssocUses = showAssocUses;
+		this.showSelectFromUses = showSelectUses;
 		this.rootWhereUsedProvider.updateSearchParameters(showSelectUses, showAssocUses);
 	}
 

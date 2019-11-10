@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.actions.ActionGroup;
@@ -56,6 +57,16 @@ public class RadioActionGroup extends ActionGroup {
 			return action.isChecked();
 		}
 		return false;
+	}
+
+	/**
+	 * Sets the action with the given id to the isChecked state. <br>
+	 * It does not notfiy any listeners of the update
+	 *
+	 * @param actionId the id of an action in this group
+	 */
+	public void setActionChecked(final String actionId) {
+		toggleAction(actionId, true, false);
 	}
 
 	/**
@@ -123,9 +134,11 @@ public class RadioActionGroup extends ActionGroup {
 	 * @param tbm a tool bar manager where the radio actions should be added to
 	 */
 	public void contributeToToolbar(final IToolBarManager tbm) {
-		for (final Action radioAction : this.actions) {
-			tbm.add(radioAction);
-		}
+		this.actions.forEach(a -> tbm.add(a));
+	}
+
+	public void contributeToMenuManager(final MenuManager menuManager) {
+		this.actions.forEach(a -> menuManager.add(a));
 	}
 
 	@Override
@@ -155,21 +168,18 @@ public class RadioActionGroup extends ActionGroup {
 		this.actionListener.remove(l);
 	}
 
-	private void toggleAction(final String actionId) {
-//		boolean isAlreadyToggled = false;
-		for (final ToggleAction action : this.actions) {
-			if (actionId.equals(action.actionId)) {
-				this.toggledAction = action;
-//				if (action.isChecked()) {
-//					isAlreadyToggled = true;
-//				}
-//			} else {
-//				action.setChecked(false);
-			}
+	private void toggleAction(final String actionId, final boolean setChecked, final boolean notifyListeners) {
+		final ToggleAction action = this.actions.stream().filter(a -> actionId.equals(a.actionId)).findFirst().orElse(null);
+		if (action == null) {
+			return;
 		}
-//		if (!isAlreadyToggled) {
-		fireToggled(actionId);
-//		}
+		this.toggledAction = action;
+		if (setChecked) {
+			this.toggledAction.setChecked(true);
+		}
+		if (notifyListeners) {
+			fireToggled(actionId);
+		}
 	}
 
 	private void fireToggled(final String actionId) {
@@ -190,7 +200,7 @@ public class RadioActionGroup extends ActionGroup {
 		@Override
 		public void run() {
 			if (isChecked()) {
-				toggleAction(this.actionId);
+				toggleAction(this.actionId, false, true);
 			}
 		}
 	}

@@ -27,6 +27,15 @@ public class PreferenceToggleAction extends Action {
 		setChecked(checked);
 	}
 
+	/**
+	 * Returns the preference key this action toggles
+	 * 
+	 * @return
+	 */
+	public String getPreferenceKey() {
+		return this.preferenceKey;
+	}
+
 	@Override
 	public final void run() {
 		try {

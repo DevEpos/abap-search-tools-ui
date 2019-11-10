@@ -3,6 +3,7 @@ package com.devepos.adt.saat.internal.cdsanalysis.ui;
 import java.util.Map;
 
 import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -20,6 +21,7 @@ import com.devepos.adt.saat.internal.ICommandConstants;
 import com.devepos.adt.saat.internal.IContextMenuConstants;
 import com.devepos.adt.saat.internal.IDestinationProvider;
 import com.devepos.adt.saat.internal.ObjectType;
+import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.cdsanalysis.FieldAnalysisUriDiscovery;
 import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
 import com.devepos.adt.saat.internal.menu.MenuItemFactory;
@@ -30,7 +32,9 @@ import com.devepos.adt.saat.internal.tree.LazyLoadingTreeContentProvider;
 import com.devepos.adt.saat.internal.tree.SimpleInfoTreeNode;
 import com.devepos.adt.saat.internal.ui.PreferenceToggleAction;
 import com.devepos.adt.saat.internal.ui.PrefixedAsteriskFilteredTree;
+import com.devepos.adt.saat.internal.ui.ToggleViewLayoutAction;
 import com.devepos.adt.saat.internal.ui.TreeViewUiState;
+import com.devepos.adt.saat.internal.ui.ViewLayoutOrientation;
 import com.devepos.adt.saat.internal.ui.ViewUiState;
 import com.devepos.adt.saat.internal.util.AdtUtil;
 import com.devepos.adt.saat.internal.util.CommandPossibleChecker;
@@ -44,6 +48,7 @@ import com.devepos.adt.saat.internal.util.CommandPossibleChecker;
 public class FieldAnalysisView extends CdsAnalysisPage<FieldAnalysis> {
 
 	static final String SEARCH_DB_VIEWS_WHERE_USED_PREF_KEY = "com.devepos.adt.saat.fieldanalysis.searchDbViewUsages"; //$NON-NLS-1$
+	private static final String VIEW_LAYOUT_PREF_KEY = "com.devepos.adt.saat.fieldanalysis.viewLayout"; //$NON-NLS-1$
 	private SashForm fieldsHierarchySplitter;
 	private FilteredTree fieldsTree;
 	private ViewForm fieldsViewerViewForm;
@@ -52,6 +57,7 @@ public class FieldAnalysisView extends CdsAnalysisPage<FieldAnalysis> {
 	private IDestinationProvider destProvider;
 	private PreferenceToggleAction searchDbViewUsages;
 	FieldAnalysisUriDiscovery uriDiscovery;
+	private ToggleViewLayoutAction viewLayoutToggleAction;
 
 	public FieldAnalysisView(final CdsAnalysisView viewPart) {
 		super(viewPart);
@@ -60,7 +66,9 @@ public class FieldAnalysisView extends CdsAnalysisPage<FieldAnalysis> {
 	@Override
 	public void createControl(final Composite parent) {
 		super.createControl(parent);
-
+		SearchAndAnalysisPlugin.getDefault()
+			.getPreferenceStore()
+			.setDefault(VIEW_LAYOUT_PREF_KEY, ViewLayoutOrientation.AUTOMATIC.name());
 		registerViewerToClipboardAction(this.hierarchyView.getViewer());
 	}
 
@@ -86,6 +94,8 @@ public class FieldAnalysisView extends CdsAnalysisPage<FieldAnalysis> {
 		super.setActionBars(actionBars);
 		final IMenuManager menu = actionBars.getMenuManager();
 		menu.add(this.searchDbViewUsages);
+		menu.add(new Separator());
+		menu.add(this.viewLayoutToggleAction);
 	}
 
 	@Override
@@ -93,6 +103,8 @@ public class FieldAnalysisView extends CdsAnalysisPage<FieldAnalysis> {
 		super.createActions();
 		this.searchDbViewUsages = new PreferenceToggleAction(Messages.FieldAnalysisView_SearchDbViewsInWhereUsed_xmit, null,
 			SEARCH_DB_VIEWS_WHERE_USED_PREF_KEY, false);
+		this.viewLayoutToggleAction = new ToggleViewLayoutAction(this.fieldsHierarchySplitter, getControl(), VIEW_LAYOUT_PREF_KEY,
+			true, true, true);
 	}
 
 	@Override
@@ -119,7 +131,6 @@ public class FieldAnalysisView extends CdsAnalysisPage<FieldAnalysis> {
 		 * dynamically
 		 */
 		this.hierarchyView.setVisible(false);
-
 		return this.fieldsHierarchySplitter;
 	}
 
@@ -152,6 +163,8 @@ public class FieldAnalysisView extends CdsAnalysisPage<FieldAnalysis> {
 			// update ui state
 			if (uiState != null && uiState instanceof UiState) {
 				((TreeViewUiState) uiState).applyToTreeViewer(viewer);
+			} else {
+				viewer.expandAll();
 			}
 		} else {
 			this.analysisResult.setResultLoaded(true);

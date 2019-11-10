@@ -256,6 +256,13 @@ public class SearchAndAnalysisPlugin extends AbstractUIPlugin {
 		registerImage(imageRegistry, IImages.IMPORT, "icons/full/etool16/import_wiz.png", "org.eclipse.ui");
 		registerImage(imageRegistry, IImages.EXPORT, "icons/full/etool16/export_wiz.png", "org.eclipse.ui");
 
+		// images for layout
+		registerImage(imageRegistry, IImages.VERTICAL_LAYOUT, "icons/full/elcl16/verticalOrientation.png", "org.eclipse.search");
+		registerImage(imageRegistry, IImages.AUTOMATIC_LAYOUT, "icons/full/elcl16/automaticOrientation.png",
+			"org.eclipse.search");
+		registerImage(imageRegistry, IImages.HORIZONTAL_LAYOUT, "icons/full/elcl16/horizontalOrientation.png",
+			"org.eclipse.search");
+
 		// register overlay images
 		registerImage(imageRegistry, IImages.RELEASED_API_OVR, "icons/ovr/Released.png");
 		registerImage(imageRegistry, IImages.SOURCE_TYPE_FUNCTION_OVR, "icons/ovr/Function.png");

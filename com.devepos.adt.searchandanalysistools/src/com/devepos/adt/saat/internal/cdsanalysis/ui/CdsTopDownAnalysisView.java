@@ -12,6 +12,7 @@ import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.StructuredViewer;
 import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -151,6 +152,12 @@ public class CdsTopDownAnalysisView extends CdsAnalysisPage<CdsTopDownAnalysis> 
 			// update ui state
 			if (uiState != null && uiState instanceof TreeViewUiState) {
 				((TreeViewUiState) uiState).applyToTreeViewer(viewer);
+			} else {
+				final Object[] input = (Object[]) viewer.getInput();
+				if (input != null && input.length >= 1) {
+					viewer.expandToLevel(input[0], 1);
+					viewer.setSelection(new StructuredSelection(input[0]));
+				}
 			}
 		} else {
 			this.analysisResult.setResultLoaded(true);

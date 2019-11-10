@@ -103,13 +103,15 @@ public class CdsAnalysisView extends PageBookView implements ICdsAnalysisListene
 
 		initializeToolBar();
 		initializePageSwitcher();
+
+		showLatestAnalysis();
 	}
 
 	@Override
 	public void dispose() {
-		super.dispose();
 		CdsAnalysisManager.getInstance().removeCdsAnalysisListener(this);
 		CdsAnalysisViewManager.getInstance().cdsAnalysisViewClosed(this);
+		super.dispose();
 	}
 
 	/**
@@ -390,6 +392,14 @@ public class CdsAnalysisView extends PageBookView implements ICdsAnalysisListene
 			}
 		};
 
+	}
+
+	private void showLatestAnalysis() {
+		if (!CdsAnalysisManager.getInstance().hasAnalyses()) {
+			return;
+		}
+		final CdsAnalysis[] analyses = CdsAnalysisManager.getInstance().getAnalyses();
+		showCdsAnalysis(analyses[0]);
 	}
 
 	/**
