@@ -39,8 +39,28 @@ public class ReleaseStateSearchParameter extends NamedItemProposalProvider imple
 
 	@Override
 	protected IContentProposal createProposalFromNamedItem(final INamedItem item, final String query) {
-		return new SearchParameterProposal(item.getName(), this.parameterName, item.getDescription(), item.getData(), null,
-			query);
+		return new SearchParameterProposal(item.getName(), this.parameterName, item.getDescription(),
+			getDescriptionFromItem(item.getData()), null, query);
+	}
+
+	/*
+	 * Retrieve long text information from description
+	 */
+	private String getDescriptionFromItem(final String description) {
+		if (description == null || description.isEmpty()) {
+			return null;
+		}
+		final String[] itemDescrComponents = description.split("@@##@@"); //$NON-NLS-1$
+		if (itemDescrComponents.length < 2) {
+			return null;
+		}
+
+		final String longText = itemDescrComponents[1];
+		final String[] longTextParts = longText.split("="); //$NON-NLS-1$
+		if (longTextParts == null || longTextParts.length < 2) {
+			return null;
+		}
+		return longTextParts[1];
 	}
 
 	@Override
