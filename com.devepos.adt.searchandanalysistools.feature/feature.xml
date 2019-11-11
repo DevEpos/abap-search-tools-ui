@@ -10,8 +10,13 @@
 Currently the following ABAP Types are supported
 - CDS View
 - Database Table/View
-
-Furthermore it provides a View for CDS Analysis
+Furthermore it provides a View for analyzing CDS Views. The following
+analyses are supported at the moment.
+- Top-Down analysis of a CDS View
+- Used-Entities analysis of a CDS View
+- Where-Used in CDS View for a CDS View/Database table/Database
+view
+- Field Analysis for a CDS View/Database table/Database view
    </description>
 
    <copyright url="http://www.example.com/copyright">
