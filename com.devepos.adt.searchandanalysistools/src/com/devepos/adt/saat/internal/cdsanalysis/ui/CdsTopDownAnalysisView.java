@@ -10,7 +10,6 @@ import org.eclipse.jface.preference.JFacePreferences;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.viewers.CellLabelProvider;
-import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.StructuredViewer;
@@ -36,6 +35,7 @@ import com.devepos.adt.saat.internal.tree.IStyledTreeNode;
 import com.devepos.adt.saat.internal.tree.ITreeNode;
 import com.devepos.adt.saat.internal.tree.LazyLoadingTreeContentProvider;
 import com.devepos.adt.saat.internal.tree.LazyLoadingTreeContentProvider.LoadingElement;
+import com.devepos.adt.saat.internal.ui.NativeColumnViewerToolTipSupport;
 import com.devepos.adt.saat.internal.ui.OpenColorPreferencePageAction;
 import com.devepos.adt.saat.internal.ui.PreferenceToggleAction;
 import com.devepos.adt.saat.internal.ui.StylerFactory;
@@ -132,7 +132,7 @@ public class CdsTopDownAnalysisView extends CdsAnalysisPage<CdsTopDownAnalysis> 
 		treeViewer.setContentProvider(contentProvider);
 		treeViewer.setUseHashlookup(true);
 		treeViewer.getTree().setHeaderVisible(true);
-		ColumnViewerToolTipSupport.enableFor(treeViewer);
+		NativeColumnViewerToolTipSupport.enableFor(treeViewer);
 		createColumns(treeViewer);
 	}
 
@@ -265,17 +265,20 @@ public class CdsTopDownAnalysisView extends CdsAnalysisPage<CdsTopDownAnalysis> 
 
 		@Override
 		public String getToolTipText(final Object element) {
-			if (element instanceof IAdtObjectReferenceNode) {
-				final IAdtObjectReferenceNode adtNode = (IAdtObjectReferenceNode) element;
-				final StringBuffer tooltip = new StringBuffer();
-				appendTooltipInfo(tooltip, Messages.CdsTopDownAnalysisView_NameTooltipPart_xtol, adtNode.getDisplayName());
-				appendTooltipInfo(tooltip, Messages.CdsTopDownAnalysisView_DescriptionTooltipPart_xtol, adtNode.getDescription());
-				final ISqlRelationInfo relationInfo = adtNode.getAdapter(ISqlRelationInfo.class);
-				if (relationInfo != null) {
-					appendTooltipInfo(tooltip, Messages.CdsTopDownAnalysisView_AliasTooltipPart_xtol,
-						relationInfo.getAliasName());
+			if (this.column == Column.OBJECT_NAME) {
+				if (element instanceof IAdtObjectReferenceNode) {
+					final IAdtObjectReferenceNode adtNode = (IAdtObjectReferenceNode) element;
+					final StringBuffer tooltip = new StringBuffer();
+					appendTooltipInfo(tooltip, Messages.CdsTopDownAnalysisView_NameTooltipPart_xtol, adtNode.getDisplayName());
+					appendTooltipInfo(tooltip, Messages.CdsTopDownAnalysisView_DescriptionTooltipPart_xtol,
+						adtNode.getDescription());
+					final ISqlRelationInfo relationInfo = adtNode.getAdapter(ISqlRelationInfo.class);
+					if (relationInfo != null) {
+						appendTooltipInfo(tooltip, Messages.CdsTopDownAnalysisView_AliasTooltipPart_xtol,
+							relationInfo.getAliasName());
+					}
+					return tooltip.toString();
 				}
-				return tooltip.toString();
 			}
 			return super.getToolTipText(element);
 		}
