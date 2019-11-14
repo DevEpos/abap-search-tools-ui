@@ -42,6 +42,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IMemento;
+import org.eclipse.ui.IWorkbenchCommandConstants;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.Page;
@@ -134,6 +135,7 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 		tbm.appendToGroup(IContextMenuConstants.GROUP_EDIT, this.collapseAllNodesAction);
 		tbm.appendToGroup(IContextMenuConstants.GROUP_EDIT, this.expandAllAction);
 		tbm.appendToGroup(IContextMenuConstants.GROUP_VIEWER_SETUP, this.groupByPackageAction);
+		this.copyToClipBoardAction.setActionDefinitionId(IWorkbenchCommandConstants.EDIT_COPY);
 		actionBars.setGlobalActionHandler(ActionFactory.COPY.getId(), this.copyToClipBoardAction);
 		actionBars.updateActionBars();
 
