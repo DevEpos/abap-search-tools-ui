@@ -47,6 +47,22 @@ public class ObjectSearchUriDiscovery extends UriDiscoveryBase {
 	}
 
 	/**
+	 * Returns <code>true</code> if the given parameter is supported for the given
+	 * search type
+	 *
+	 * @param  searchType the search type
+	 * @param  parameter  the parameter to be checked
+	 * @return
+	 */
+	public boolean isParameterSupported(final QueryParameterName parameter, final SearchType searchType) {
+		final IAdtUriTemplate searchUriTemplate = getObjectSearchTemplate(searchType);
+		if (searchUriTemplate == null) {
+			return false;
+		}
+		return searchUriTemplate.containsVariable(parameter.toString());
+	}
+
+	/**
 	 * Creates a valid REST resource URI from the given map of parameter values and
 	 * the given query string
 	 *

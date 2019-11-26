@@ -133,6 +133,7 @@ public class Messages extends NLS {
 	public static String CdsAnalyzer_MaxHistoryNumberText2_fld;
 	public static String CdsFieldTopDownElementInfoProvider_ProviderDescription_xmsg;
 	public static String WhereUsedInCdsAnalysisView_MultipleReferencesLabelSuffix_xfld;
+	public static String WhereUsedInCdsAnalysisView_OnlyLocallyDefinedAssocUsages_xmit;
 	public static String WhereUsedInCdsAnalysisView_OnlyUsagesInReleasedEntities_xmit;
 	public static String WhereUsedInCdsAnalysisView_ShowUsesInAssociationsAction_xmit;
 	public static String WhereUsedInCdsAnalysisView_ShowUsesInSelectPartAction_xmit;

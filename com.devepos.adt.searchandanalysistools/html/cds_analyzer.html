@@ -46,11 +46,38 @@
 		The <em>Where-Used</em> Analysis provides a way to display all usages of a CDS View (or Database
 		Table/View) in either the <em>SELECT</em> Part or as Associations in other CDS Views.
 	</p>
-	<h3 class="heading" id="usage_analysis">Used Entities Analysis</h3>
+	<p>There are several options which you can use to control the analysis</p>
+
 	<figure id="figure3">
+		<img src="../images/CdsAnalyzer-WhereUsedAnalysis-Options.png">
+		<figcaption>
+			<strong>Figure 3:</strong> Options in Where-Used Analysis</i>
+		</figcaption>
+	</figure>
+	<ol class="list">
+		<li>This setting controls whether <i>Uses in SELECT-Parts</i> of a CDS View will be shown
+		</li>
+		<li>This setting controls whether <i>Uses as Associations</i> of a CDS View will be shown
+		</li>
+		<li>If this setting is checked only usages in CDS Views which have an API state of type <i>Released</i>
+			will be shown
+			<blockquote>
+				This feature is only available starting from <strong>NW 7.50</strong>
+			</blockquote>
+		</li>
+		<li>This setting is only relevant if the setting <i>Show Uses in Associations of CDS</i> is
+			active. If checked, the usage is only valid if the association to the triggering CDS View is
+			defined locally (i.e. not propagated)
+			<blockquote>
+				This feature is only available starting from <strong>NW 7.52</strong>
+			</blockquote>
+		</li>
+	</ol>
+	<h3 class="heading" id="usage_analysis">Used Entities Analysis</h3>
+	<figure id="figure4">
 		<img src="../images/CdsAnalyzer-UsedEntitiesAnalysis.png">
 		<figcaption>
-			<strong>Figure 3:</strong> Example of <i>Used Entities Analysis</i>
+			<strong>Figure 4:</strong> Example of <i>Used Entities Analysis</i>
 		</figcaption>
 	</figure>
 	<p>

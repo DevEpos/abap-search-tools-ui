@@ -38,6 +38,7 @@ public class WhereUsedInCdsElementInfoProvider implements IElementInfoProvider {
 	private boolean searchSelectFrom;
 	private boolean searchAssocications;
 	private QueryParameterName searchParameter;
+	private boolean localAssociationsOnly;
 
 	/**
 	 * Creates a new Where Used in CDS view Element info provider
@@ -93,6 +94,10 @@ public class WhereUsedInCdsElementInfoProvider implements IElementInfoProvider {
 		updateSearchParameters(searchSelectFrom, searchAssociations, null);
 	}
 
+	public void setLocalAssociationsOnly(final boolean localAssociationsOnly) {
+		this.localAssociationsOnly = localAssociationsOnly;
+	}
+
 	@Override
 	public List<IElementInfo> getElements() {
 		final ObjectContainer<List<IElementInfo>> elementInfoWrapper = new ObjectContainer<>(new ArrayList<IElementInfo>());
@@ -105,6 +110,9 @@ public class WhereUsedInCdsElementInfoProvider implements IElementInfoProvider {
 		searchRequest.setProjectProvider(AbapProjectProviderAccessor.getProviderForDestination(this.destinationId));
 		final Map<String, Object> parameters = new HashMap<>();
 		parameters.put(this.searchParameter.toString(), this.adtObjectName);
+		if (this.localAssociationsOnly) {
+			parameters.put(QueryParameterName.LOCAL_DECLARED_ASSOC_ONLY.toString(), "X"); //$NON-NLS-1$
+		}
 		if (SearchAndAnalysisPlugin.getDefault()
 			.getPreferenceStore()
 			.getBoolean(ICdsAnalysisPreferences.WHERE_USED_ONLY_RELEASED_USAGES)) {
@@ -174,9 +182,13 @@ public class WhereUsedInCdsElementInfoProvider implements IElementInfoProvider {
 			imageId = IImages.ASSOCIATION;
 			name = Messages.CdsAnalysis_UsesInAssociationsTreeNode_xlfd;
 		}
-		return new LazyLoadingElementInfo(name, name, imageId,
-			new WhereUsedInCdsElementInfoProvider(this.destinationId, this.adtObjectName, this.searchSelectFrom,
-				this.searchAssocications, searchFrom ? QueryParameterName.SELECT_SOURCE_IN : QueryParameterName.ASSOCIATED_IN));
+		final WhereUsedInCdsElementInfoProvider provider = new WhereUsedInCdsElementInfoProvider(this.destinationId,
+			this.adtObjectName, this.searchSelectFrom, this.searchAssocications,
+			searchFrom ? QueryParameterName.SELECT_SOURCE_IN : QueryParameterName.ASSOCIATED_IN);
+		if (!searchFrom) {
+			provider.setLocalAssociationsOnly(this.localAssociationsOnly);
+		}
+		return new LazyLoadingElementInfo(name, name, imageId, provider);
 	}
 
 }

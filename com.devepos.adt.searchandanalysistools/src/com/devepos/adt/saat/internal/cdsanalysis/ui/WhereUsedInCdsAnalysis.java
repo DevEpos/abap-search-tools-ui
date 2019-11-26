@@ -25,6 +25,7 @@ public class WhereUsedInCdsAnalysis extends CdsAnalysis {
 	private boolean showSelectFromUses = true;
 	private boolean showAssocUses;
 	private LazyLoadingAdtObjectReferenceNode node;
+	private boolean localAssociationsOnly;
 
 	public WhereUsedInCdsAnalysis(final IAdtObjectReferenceElementInfo adtObjectInfo) {
 		super(adtObjectInfo);
@@ -39,6 +40,11 @@ public class WhereUsedInCdsAnalysis extends CdsAnalysis {
 		this.showAssocUses = showAssocUses;
 		this.showSelectFromUses = showSelectUses;
 		this.rootWhereUsedProvider.updateSearchParameters(showSelectUses, showAssocUses);
+	}
+
+	public void setLocalAssociationsOnly(final boolean localAssociationsOnly) {
+		this.localAssociationsOnly = localAssociationsOnly;
+		this.rootWhereUsedProvider.setLocalAssociationsOnly(localAssociationsOnly);
 	}
 
 	@Override
@@ -105,6 +111,7 @@ public class WhereUsedInCdsAnalysis extends CdsAnalysis {
 			destProvider != null ? destProvider.getDestinationId() : null, this.adtObjectInfo.getName(), this.showSelectFromUses,
 			this.showAssocUses);
 		this.cdsWhereUsedNode = this.node;
+		this.rootWhereUsedProvider.setLocalAssociationsOnly(this.localAssociationsOnly);
 		this.node.setElementInfoProvider(this.rootWhereUsedProvider);
 		this.node.addLazyLoadingListener(lazyLoadingListener);
 		this.node.addLazyLoadingListener(l);

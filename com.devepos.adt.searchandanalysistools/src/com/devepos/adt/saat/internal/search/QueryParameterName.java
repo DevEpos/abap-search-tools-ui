@@ -81,7 +81,12 @@ public enum QueryParameterName {
 	 * If <code>true</code> this parameter control whether the package hierarchy of
 	 * the found ADT objects will get determined
 	 */
-	WITH_PACKAGE_HIERARCHY("WITHPACKAGEHIERARCHY", "withPackageHierarchy");
+	WITH_PACKAGE_HIERARCHY("WITHPACKAGEHIERARCHY", "withPackageHierarchy"),
+	/**
+	 * If <code>true</code> this parameter controls whether the search will only
+	 * consider association usages if they are defined locally in the CDS view
+	 */
+	LOCAL_DECLARED_ASSOC_ONLY("LOCALDECLAREDASSOCONLY", "localDeclaredAssocOnly");
 
 	private String stringForm;
 	private String key;

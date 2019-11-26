@@ -13,10 +13,15 @@ import org.eclipse.ui.PlatformUI;
 
 import com.devepos.adt.saat.internal.ICommandConstants;
 import com.devepos.adt.saat.internal.IContextMenuConstants;
+import com.devepos.adt.saat.internal.IDestinationProvider;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.cdsanalysis.ICdsAnalysisPreferences;
+import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
 import com.devepos.adt.saat.internal.menu.MenuItemFactory;
 import com.devepos.adt.saat.internal.messages.Messages;
+import com.devepos.adt.saat.internal.search.ObjectSearchUriDiscovery;
+import com.devepos.adt.saat.internal.search.QueryParameterName;
+import com.devepos.adt.saat.internal.search.SearchType;
 import com.devepos.adt.saat.internal.tree.ICollectionTreeNode;
 import com.devepos.adt.saat.internal.tree.ILazyLoadingListener;
 import com.devepos.adt.saat.internal.tree.IStyledTreeNode;
@@ -41,8 +46,10 @@ public class WhereUsedInCdsAnalysisView extends CdsAnalysisPage<WhereUsedInCdsAn
 	private PreferenceToggleAction showFromUses;
 	private PreferenceToggleAction showAssocUses;
 	private PreferenceToggleAction releasedUsagesOnly;
+	private PreferenceToggleAction localAssociationsOnly;
 	private static final String USES_IN_SELECT_PREF_KEY = "com.devepos.adt.saat.whereusedincds.showReferencesInSelectPartOfCds"; //$NON-NLS-1$
 	private static final String USES_IN_ASSOC_PREF_KEY = "com.devepos.adt.saat.whereusedincds.showReferencesInAssocPartOfCds"; //$NON-NLS-1$
+	private static final String LOCAL_ASSOCIATIONS_ONLY_PREF_KEY = "com.devepos.adt.saat.whereusedincds.onlyLocalDefinedAssociation"; //$NON-NLS-1$
 	private final IPropertyChangeListener propertyChangeListener;
 
 	public WhereUsedInCdsAnalysisView(final CdsAnalysisView parentView) {
@@ -57,14 +64,23 @@ public class WhereUsedInCdsAnalysisView extends CdsAnalysisPage<WhereUsedInCdsAn
 			final String propertyName = event.getProperty();
 			final boolean showFromUsesChanged = USES_IN_SELECT_PREF_KEY.equals(propertyName);
 			final boolean showAssocUsesChanged = USES_IN_ASSOC_PREF_KEY.equals(propertyName);
-			final boolean releasedUsagesOnly = ICdsAnalysisPreferences.WHERE_USED_ONLY_RELEASED_USAGES.equals(propertyName);
+			final boolean localAssocsOnlyChanged = LOCAL_ASSOCIATIONS_ONLY_PREF_KEY.equals(propertyName);
+			final boolean releasedUsagesOnlyChanged = ICdsAnalysisPreferences.WHERE_USED_ONLY_RELEASED_USAGES
+				.equals(propertyName);
 
-			if (!showFromUsesChanged && !showAssocUsesChanged && !releasedUsagesOnly) {
+			if (!showFromUsesChanged && !showAssocUsesChanged && !releasedUsagesOnlyChanged && !localAssocsOnlyChanged) {
 				return;
 			}
 			// trigger refresh of where used analysis
 			this.analysisResult.updateWhereUsedProvider(this.showFromUses.isChecked(), this.showAssocUses.isChecked());
-			refreshAnalysis();
+			this.analysisResult.setLocalAssociationsOnly(this.localAssociationsOnly.isChecked());
+			if (localAssocsOnlyChanged) {
+				if (this.showAssocUses.isChecked()) {
+					refreshAnalysis();
+				}
+			} else {
+				refreshAnalysis();
+			}
 		};
 		SearchAndAnalysisPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(this.propertyChangeListener);
 	}
@@ -82,6 +98,9 @@ public class WhereUsedInCdsAnalysisView extends CdsAnalysisPage<WhereUsedInCdsAn
 			SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.DATA_SOURCE), USES_IN_SELECT_PREF_KEY, true);
 		this.showAssocUses = new PreferenceToggleAction(Messages.WhereUsedInCdsAnalysisView_ShowUsesInAssociationsAction_xmit,
 			SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.ASSOCIATION), USES_IN_ASSOC_PREF_KEY, false);
+		this.localAssociationsOnly = new PreferenceToggleAction(
+			Messages.WhereUsedInCdsAnalysisView_OnlyLocallyDefinedAssocUsages_xmit, null, LOCAL_ASSOCIATIONS_ONLY_PREF_KEY,
+			false);
 		this.releasedUsagesOnly = new PreferenceToggleAction(
 			Messages.WhereUsedInCdsAnalysisView_OnlyUsagesInReleasedEntities_xmit, null,
 			ICdsAnalysisPreferences.WHERE_USED_ONLY_RELEASED_USAGES, false);
@@ -130,10 +149,12 @@ public class WhereUsedInCdsAnalysisView extends CdsAnalysisPage<WhereUsedInCdsAn
 
 	@Override
 	protected void loadInput(final ViewUiState uiState) {
+		checkFeatureState();
 		final TreeViewer viewer = (TreeViewer) getViewer();
 		if (this.analysisResult.isResultLoaded()) {
 			viewer.setInput(this.analysisResult.getResult());
 			this.analysisResult.updateWhereUsedProvider(this.showFromUses.isChecked(), this.showAssocUses.isChecked());
+			this.analysisResult.setLocalAssociationsOnly(this.localAssociationsOnly.isChecked());
 			if (uiState != null && uiState instanceof TreeViewUiState) {
 				((TreeViewUiState) uiState).applyToTreeViewer(viewer);
 			} else {
@@ -146,6 +167,7 @@ public class WhereUsedInCdsAnalysisView extends CdsAnalysisPage<WhereUsedInCdsAn
 		} else {
 			this.analysisResult.createResult(this.lazyLoadingListener);
 			this.analysisResult.updateWhereUsedProvider(this.showFromUses.isChecked(), this.showAssocUses.isChecked());
+			this.analysisResult.setLocalAssociationsOnly(this.localAssociationsOnly.isChecked());
 			viewer.setInput(this.analysisResult.getResult());
 			this.analysisResult.setResultLoaded(true);
 			viewer.expandAll();
@@ -159,6 +181,7 @@ public class WhereUsedInCdsAnalysisView extends CdsAnalysisPage<WhereUsedInCdsAn
 		menu.appendToGroup(IContextMenuConstants.GROUP_FILTERING, this.showFromUses);
 		menu.appendToGroup(IContextMenuConstants.GROUP_FILTERING, this.showAssocUses);
 		menu.appendToGroup(IContextMenuConstants.GROUP_ADDITIONS, this.releasedUsagesOnly);
+		menu.appendToGroup(IContextMenuConstants.GROUP_ADDITIONS, this.localAssociationsOnly);
 	}
 
 	@Override
@@ -198,5 +221,15 @@ public class WhereUsedInCdsAnalysisView extends CdsAnalysisPage<WhereUsedInCdsAn
 			}
 		}
 		return text;
+	}
+
+	private void checkFeatureState() {
+		final IAdtObjectReferenceElementInfo adtObjElemInfo = this.analysisResult.getAdtObjectInfo();
+		final IDestinationProvider destProvider = adtObjElemInfo.getAdapter(IDestinationProvider.class);
+		final ObjectSearchUriDiscovery uriDiscovery = new ObjectSearchUriDiscovery(destProvider.getDestinationId());
+		this.localAssociationsOnly
+			.setEnabled(uriDiscovery.isParameterSupported(QueryParameterName.LOCAL_DECLARED_ASSOC_ONLY, SearchType.CDS_VIEW));
+		this.releasedUsagesOnly
+			.setEnabled(uriDiscovery.isParameterSupported(QueryParameterName.RELEASE_STATE, SearchType.CDS_VIEW));
 	}
 }

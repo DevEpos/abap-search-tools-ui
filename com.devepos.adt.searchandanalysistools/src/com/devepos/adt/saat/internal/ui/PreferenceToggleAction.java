@@ -29,7 +29,7 @@ public class PreferenceToggleAction extends Action {
 
 	/**
 	 * Returns the preference key this action toggles
-	 * 
+	 *
 	 * @return
 	 */
 	public String getPreferenceKey() {
