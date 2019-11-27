@@ -47,6 +47,7 @@ public class WhereUsedInCdsAnalysisView extends CdsAnalysisPage<WhereUsedInCdsAn
 	private PreferenceToggleAction showAssocUses;
 	private PreferenceToggleAction releasedUsagesOnly;
 	private PreferenceToggleAction localAssociationsOnly;
+	private boolean isLocalAssocOnlyFeatureAvailable;
 	private static final String USES_IN_SELECT_PREF_KEY = "com.devepos.adt.saat.whereusedincds.showReferencesInSelectPartOfCds"; //$NON-NLS-1$
 	private static final String USES_IN_ASSOC_PREF_KEY = "com.devepos.adt.saat.whereusedincds.showReferencesInAssocPartOfCds"; //$NON-NLS-1$
 	private static final String LOCAL_ASSOCIATIONS_ONLY_PREF_KEY = "com.devepos.adt.saat.whereusedincds.onlyLocalDefinedAssociation"; //$NON-NLS-1$
@@ -105,6 +106,7 @@ public class WhereUsedInCdsAnalysisView extends CdsAnalysisPage<WhereUsedInCdsAn
 			Messages.WhereUsedInCdsAnalysisView_OnlyUsagesInReleasedEntities_xmit, null,
 			ICdsAnalysisPreferences.WHERE_USED_ONLY_RELEASED_USAGES, false);
 		this.showAssocUses.addPropertyChangeListener((event) -> {
+			this.localAssociationsOnly.setEnabled(this.showAssocUses.isChecked() && this.isLocalAssocOnlyFeatureAvailable);
 			if (!this.showAssocUses.isChecked()) {
 				this.showFromUses.setChecked(true);
 			}
@@ -227,8 +229,9 @@ public class WhereUsedInCdsAnalysisView extends CdsAnalysisPage<WhereUsedInCdsAn
 		final IAdtObjectReferenceElementInfo adtObjElemInfo = this.analysisResult.getAdtObjectInfo();
 		final IDestinationProvider destProvider = adtObjElemInfo.getAdapter(IDestinationProvider.class);
 		final ObjectSearchUriDiscovery uriDiscovery = new ObjectSearchUriDiscovery(destProvider.getDestinationId());
-		this.localAssociationsOnly
-			.setEnabled(uriDiscovery.isParameterSupported(QueryParameterName.LOCAL_DECLARED_ASSOC_ONLY, SearchType.CDS_VIEW));
+		this.isLocalAssocOnlyFeatureAvailable = uriDiscovery.isParameterSupported(QueryParameterName.LOCAL_DECLARED_ASSOC_ONLY,
+			SearchType.CDS_VIEW);
+		this.localAssociationsOnly.setEnabled(this.isLocalAssocOnlyFeatureAvailable && this.showAssocUses.isChecked());
 		this.releasedUsagesOnly
 			.setEnabled(uriDiscovery.isParameterSupported(QueryParameterName.RELEASE_STATE, SearchType.CDS_VIEW));
 	}

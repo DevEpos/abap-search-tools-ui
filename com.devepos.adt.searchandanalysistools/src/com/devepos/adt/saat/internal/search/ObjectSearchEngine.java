@@ -1,13 +1,16 @@
 package com.devepos.adt.saat.internal.search;
 
+import java.text.MessageFormat;
 import java.util.Map;
 
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.search.internal.ui.SearchDialog;
 import org.eclipse.search.ui.NewSearchUI;
 import org.eclipse.search2.internal.ui.SearchView;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
+import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.search.contentassist.SearchPatternProvider;
 import com.devepos.adt.saat.internal.search.ui.ObjectSearchPage;
 import com.devepos.adt.saat.internal.search.ui.ObjectSearchQuery;
@@ -31,20 +34,32 @@ public class ObjectSearchEngine {
 	 * @see            {@link NewSearchUI}
 	 */
 	public static void runSearchFromFavorite(final IObjectSearchFavorite favorite) {
-		final String searchFilter = favorite.getSearchFilter();
-		final ObjectSearchRequest searchRequest = createRequestFromFavorite(favorite);
 		final IAbapProjectProvider projectProvider = AbapProjectProviderAccessor
 			.getProviderForDestination(favorite.getDestinationId());
-		searchRequest.setProjectProvider(projectProvider);
+		if (projectProvider == null) {
+			MessageDialog.openError(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+				Messages.Dialog_ErrorTitle_xmsg,
+				MessageFormat.format(Messages.ObjectSearch_NoProjectFound_xmsg, favorite.getDestinationId()));
+			openFavoriteInSearchDialog(favorite);
+		} else {
+			final String searchFilter = favorite.getSearchFilter();
+			final ObjectSearchRequest searchRequest = createRequestFromFavorite(favorite);
 
-		if (searchFilter != null && !searchFilter.isEmpty()) {
-			final SearchPatternProvider patternProvider = new SearchPatternProvider(projectProvider,
-				searchRequest.getSearchType());
+			searchRequest.setProjectProvider(projectProvider);
 
-			final Map<String, Object> parameterMap = patternProvider.getSearchParameters(searchFilter);
-			searchRequest.setParameters(parameterMap, searchFilter);
+			if (!projectProvider.ensureLoggedOn()) {
+				return;
+			}
+
+			if (searchFilter != null && !searchFilter.isEmpty()) {
+				final SearchPatternProvider patternProvider = new SearchPatternProvider(projectProvider,
+					searchRequest.getSearchType());
+
+				final Map<String, Object> parameterMap = patternProvider.getSearchParameters(searchFilter);
+				searchRequest.setParameters(parameterMap, searchFilter);
+			}
+			NewSearchUI.runQueryInBackground(new ObjectSearchQuery(searchRequest));
 		}
-		NewSearchUI.runQueryInBackground(new ObjectSearchQuery(searchRequest));
 	}
 
 	/**

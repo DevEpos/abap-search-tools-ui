@@ -66,6 +66,7 @@ public class Messages extends NLS {
 	public static String ObjectSearch_InfoSearchString_Question_xmsg;
 	public static String ObjectSearch_InfoSearchString_Negation_xmsg;
 	public static String ObjectSearch_InfoSearchString_Notes_xmsg;
+	public static String ObjectSearch_NoProjectFound_xmsg;
 	public static String OpenColorPreferencePageAction_ActionName_xtol;
 	public static String OpenInUtil_AnalysisForOfficeNotActive_xmsg;
 	public static String SearchHistorySelectionDialog_AddFavorite_xbut;
@@ -149,6 +150,7 @@ public class Messages extends NLS {
 	public static String DbBrowser_featureIsNotAvailable_xmsg;
 	public static String DbBrowser_xtit;
 	public static String Dialog_InfoTitle_xmsg;
+	public static String Dialog_ErrorTitle_xmsg;
 	public static String ElementInfoProvider_RetrievingElementInfoDescription_xmsg;
 	public static String ElementInformation_AccessControls_xtit;
 	public static String ElementInformation_AnalysisForOfficeTarget_xtit;

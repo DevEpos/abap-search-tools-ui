@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.runtime.Assert;
 
 import com.sap.adt.project.AdtCoreProjectServiceFactory;
 import com.sap.adt.project.IAdtCoreProjectService;
@@ -40,7 +39,6 @@ public class AbapProjectProviderAccessor {
 			}
 		}
 
-		Assert.isNotNull(projectProvider);
 		return projectProvider;
 	}
 
@@ -50,7 +48,9 @@ public class AbapProjectProviderAccessor {
 	 * @param projectProvider the {@link IAbapProjectProvider} to be registered
 	 */
 	public static void registerProjectProvider(final IAbapProjectProvider projectProvider) {
-		Assert.isNotNull(projectProvider);
+		if (projectProvider == null) {
+			return;
+		}
 
 		if (projectProviderMap == null) {
 			projectProviderMap = new HashMap<>();
