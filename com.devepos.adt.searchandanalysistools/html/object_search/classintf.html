@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html id="doc-page">
+<head>
+<link rel="stylesheet" type="text/css" href="../../css/main.css" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>ABAP Object Search + for type Class/Interface</title>
+</head>
+
+<body id="doc-body">
+	<h2 class="heading">Search for Classes / Interfaces</h2>
+	<p>
+		The search type <i>Class/Interface</i> supports the following search filters:
+	</p>
+	<table>
+		<thead>
+			<tr>
+				<th>Filter</th>
+				<th>Description</th>
+				<th>Negation Support</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><img class="param-image" alt="Owner" src="../../icons/User.png">owner</td>
+				<td>Author (Responsible Person)</td>
+				<td><input type="checkbox" disabled checked></input></td>
+			</tr>
+			<tr>
+				<td><img class="param-image" alt="Owner" src="../../icons/Package.png">package</td>
+				<td>Development Package</td>
+				<td><input type="checkbox" disabled checked></input></td>
+			</tr>
+			<tr>
+				<td><img class="param-image" alt="Owner" src="../../icons/Documentation.png">desc</td>
+				<td>Description</td>
+				<td><input type="checkbox" disabled checked></input></td>
+			</tr>
+			<tr>
+				<td><img class="param-image" alt="Owner" src="../../icons/APIState.png">api</td>
+				<td>Release State</td>
+				<td><input type="checkbox" disabled></input></td>
+			</tr>
+			<tr>
+				<td><img class="param-image" alt="Owner" src="../../icons/TypeFolder.png">type</td>
+				<td>Restrict search to Class and/or Interface</td>
+				<td><input type="checkbox" disabled checked></input></td>
+			</tr>
+			<tr>
+				<td><img class="param-image" alt="Owner" src="../../icons/Folder.png">cat</td>
+				<td>Class Category (e.g. Exception)</td>
+				<td><input type="checkbox" disabled checked></input></td>
+			</tr>
+			<tr>
+				<td><img class="param-image" alt="Owner" src="../../icons/Properties.png">flag</td>
+				<td>Properties of a Class (e.g. Abstract)</td>
+				<td><input type="checkbox" disabled checked></input></td>
+			</tr>
+			<tr>
+				<td><img class="param-image" alt="Owner" src="../../icons/Version.gif">lang</td>
+				<td>Language Version (e.g. Unicode)</td>
+				<td><input type="checkbox" disabled checked></input></td>
+			</tr>
+			<tr>
+				<td><img class="param-image" alt="Owner" src="../../icons/Friend.png">friend</td>
+				<td>Global Friends of a Class</td>
+				<td><input type="checkbox" disabled checked></input></td>
+			</tr>
+			<tr>
+				<td><img class="param-image" alt="Owner" src="../../icons/SuperType.png">super</td>
+				<td>Super Class</td>
+				<td><input type="checkbox" disabled checked></input></td>
+			</tr>
+			<tr>
+				<td><img class="param-image" alt="Owner" src="../../icons/Interface.png">intf</td>
+				<td>Using/Implementing Interfaces</td>
+				<td><input type="checkbox" disabled checked></input></td>
+			</tr>
+			<tr>
+				<td><img class="param-image" alt="Owner" src="../../icons/Method.png">meth</td>
+				<td>Methods of Class/Interface</td>
+				<td><input type="checkbox" disabled checked></input></td>
+			</tr>
+			<tr>
+				<td><img class="param-image" alt="Owner" src="../../icons/Attribute.png">attr</td>
+				<td>Attributes of Class/Interface</td>
+				<td><input type="checkbox" disabled checked></input></td>
+			</tr>
+		</tbody>
+	</table>
+
+	<h3 class="heading" id="searchExamples">Search Examples</h3>
+
+	<ul class="list">
+		<li><i>Search Filters</i>: <code class="code"><strong>cat</strong>:exception,area_class</code>
+			/ <i>Maximum Results</i>: <code class="code">500</code>
+			<div class="example-description">Searches for all Shared Memory Area Classes and Exception
+				Classes, also the maximum result count is raised to 500</div></li>
+	</ul>
+	<ul class="list">
+		<li><i>Search Filters</i>: <code class="code"><strong>attr</strong>:c_*=*constant*</code>
+			<div class="example-description">
+				Searches for all Classes/Interfaces that have attributes that starts with <code class="code">c_</code>
+				and whose initial value contains <code class="code">constant</code>
+			</div></li>
+	</ul>
+	<ul class="list">
+		<li><i>Search Filters</i>: <code class="code"><strong>meth</strong>:get_field,set_field</code>
+			/ <i>Use AND Search</i>: <input type="checkbox" checked disabled>
+			<div class="example-description">
+				Searches for all Classes/Interfaces that have the methods <code class="code">get_field</code> and
+				<code class="code">set_field</code>
+			</div></li>
+	</ul>
+</body>
+</html>

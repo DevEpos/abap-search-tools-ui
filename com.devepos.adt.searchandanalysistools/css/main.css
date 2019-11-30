@@ -20,6 +20,11 @@ li {
 	font-size: 13px !important;
 }
 
+.param-image {
+	vertical-align: middle;
+	padding-right: 5px;
+}
+
 .list {
 	font-size: 13px;
 	margin: 0;

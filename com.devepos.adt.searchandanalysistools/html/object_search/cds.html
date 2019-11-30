@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html id="doc-page">
+<head>
+<link rel="stylesheet" type="text/css" href="../../css/main.css" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>ABAP Object Search + for type CDS View</title>
+</head>
+
+<body id="doc-body">
+	<h2 class="heading">Search for CDS Views</h2>
+	<p>
+		The search type <i>CDS View</i> supports the following search filters:
+	</p>
+	<table>
+		<thead>
+			<tr>
+				<th>Filter</th>
+				<th>Description</th>
+				<th>Negation Support</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><img class="param-image" alt="Owner" src="../../icons/User.png">owner</td>
+				<td>Author (Responsible Person)</td>
+				<td><input type="checkbox" disabled checked></input></td>
+			</tr>
+			<tr>
+				<td><img class="param-image" alt="Owner" src="../../icons/Package.png">package</td>
+				<td>Development Package</td>
+				<td><input type="checkbox" disabled checked></input></td>
+			</tr>
+			<tr>
+				<td><img class="param-image" alt="Owner" src="../../icons/Documentation.png">desc</td>
+				<td>Description</td>
+				<td><input type="checkbox" disabled checked></input></td>
+			</tr>
+			<tr>
+				<td><img class="param-image" alt="Owner" src="../../icons/APIState.png">api</td>
+				<td>Release State</td>
+				<td><input type="checkbox" disabled></input></td>
+			</tr>
+			<tr>
+				<td><img class="param-image" alt="Owner" src="../../icons/SelectFromSource.png">from</td>
+				<td>Entities in SELECT Part</td>
+				<td><input type="checkbox" disabled checked></input></td>
+			</tr>
+			<tr>
+				<td><img class="param-image" alt="Owner" src="../../icons/AssociationDeclaration.png">assoc</td>
+				<td>Associations in the View</td>
+				<td><input type="checkbox" disabled checked></input></td>
+			</tr>
+			<tr>
+				<td><img class="param-image" alt="Owner" src="../../icons/Column.png">field</td>
+				<td>Field in the View</td>
+				<td><input type="checkbox" disabled checked></input></td>
+			</tr>
+			<tr>
+				<td><img class="param-image" alt="Owner" src="../../icons/ExtensionPoint.png">extby</td>
+				<td>Extension Views</td>
+				<td><input type="checkbox" disabled></input></td>
+			</tr>
+			<tr>
+				<td><img class="param-image" alt="Owner" src="../../icons/Annotation.png">anno</td>
+				<td>Annotations / Annotation Values</td>
+				<td><input type="checkbox" disabled checked></input></td>
+			</tr>
+			<tr>
+				<td><img class="param-image" alt="Owner" src="../../icons/ImportingParameter.png">param</td>
+				<td>Parameters</td>
+				<td><input type="checkbox" disabled checked></input></td>
+			</tr>
+			<tr>
+				<td><img class="param-image" alt="Owner" src="../../icons/ImportingParameter.png">params</td>
+				<td>Views with or without parameters</td>
+				<td><input type="checkbox" disabled></input></td>
+			</tr>
+			<tr>
+				<td><img class="param-image" alt="Owner" src="../../icons/TypeFolder.png">type</td>
+				<td>Type of the CDS View</td>
+				<td><input type="checkbox" disabled checked></input></td>
+			</tr>
+		</tbody>
+	</table>
+	<br>
+	<h3 class="heading">Special notes about some search filters</h3>
+	<h4 class="heading">Search by annotation</h4>
+	<p>
+		For the <em>annotation</em> filter there exists a special option as annotations in a CDS view
+		always consist of a <i>name</i> and a <i>value</i>. To use this kind of search, you must adhere to
+		the following pattern: <code class="code"> <strong>anno</strong>:&lt;name_1&gt;=&lt;value_1&gt;,&lt;name_x&gt;=&lt;value_x&gt;
+		</code> . Of course, you also can combine name-only searches with name-value searches, e.g. <code class="code">
+			<strong>anno</strong>:&lt;name_1&gt;,&lt;name_2&gt;=&lt;value_2&gt;
+		</code> . Either name and/or value also allow usage of wildcards
+	</p>
+
+	<h3 class="heading" id="searchExamples">Search Examples</h3>
+	<ul class="list">
+		<li><i>Search Filters</i>: <code class="code"><strong>from</strong>:mara,marc</code> / <i>Maximum
+				Results</i>: <code class="code">500</code>
+			<div class="example-description">Searches for all CDS views that select from tables mara or
+				marc, also the maximum result count is raised to 500</div></li>
+	</ul>
+	<ul class="list">
+		<li><i>Search Filters</i>: <code class="code"><strong>assoc</strong>:i_prod* <strong>api</strong>:released</code>
+			<div class="example-description">Searches for all CDS views that have an association to
+				entities that start with "i_prod" and have a released api state</div></li>
+	</ul>
+	<ul class="list">
+		<li><i>Object Name</i>: <code class="code">i_*</code> / <i>Search Filters</i>: <code
+			class="code"><strong>params</strong>:true <strong>type</strong>:hierarchy</code>
+			<div class="example-description">Searches for all CDS views that have parameters and are of
+				type "hierarchy" and whose name starts with "i_"</div></li>
+	</ul>
+	<ul class="list">
+		<li><i>Search Filters</i>: <code class="code"><strong>desc</strong>:*Mater*</code>
+			<div class="example-description">Searches for all CDS Views whose Description contains the
+				string "Mater"</div></li>
+	</ul>
+	<ul class="list">
+		<li><i>Search Filters</i>: <code class="code"><strong>anno</strong>:analytics*query</code>
+			<div class="example-description">Searches for all CDS Views that have an annotation like
+				"analytics*query"</div></li>
+	</ul>
+	<ul class="list">
+		<li><i>Search Filters</i>: <code class="code"><strong>anno</strong>:vdm.private*=true,*query*=true</code>
+			<div class="example-description">Searches for all CDS Views that have an annotation
+				@VDM.private: true or an Annotation like *query*: true</div></li>
+	</ul>
+</body>
+</html>

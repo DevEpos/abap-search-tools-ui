@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html id="doc-page">
+<head>
+<link rel="stylesheet" type="text/css" href="../../css/main.css" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>ABAP Object Search + for type Database Table/View</title>
+</head>
+
+<body id="doc-body">
+	<h2 class="heading">Search for Database Table/View</h2>
+	<p>
+		The search type <i>Database Table/View</i> supports the following search filters:
+	</p>
+	
+	<table>
+		<thead>
+			<tr>
+				<th>Filter</th>
+				<th>Description</th>
+				<th>Negation Support</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td><img class="param-image" alt="Owner" src="../../icons/User.png">owner</td>
+				<td>Author (Responsible Person)</td>
+				<td><input type="checkbox" disabled checked></input></td>
+			</tr>
+			<tr>
+				<td><img class="param-image" alt="Owner" src="../../icons/Package.png">package</td>
+				<td>Development Package</td>
+				<td><input type="checkbox" disabled checked></input></td>
+			</tr>
+			<tr>
+				<td><img class="param-image" alt="Owner" src="../../icons/Documentation.png">desc</td>
+				<td>Description</td>
+				<td><input type="checkbox" disabled checked></input></td>
+			</tr>
+			<tr>
+				<td><img class="param-image" alt="Owner" src="../../icons/Column.png">field</td>
+				<td>Field in the Table/View</td>
+				<td><input type="checkbox" disabled checked></input></td>
+			</tr>
+			<tr>
+				<td><img class="param-image" alt="Owner" src="../../icons/TypeFolder.png">type</td>
+				<td>Type of Database Entity</td>
+				<td><input type="checkbox" disabled checked></input></td>
+			</tr>
+		</tbody>
+	</table>	
+	<br>
+	<h3 class="heading" id="searchExamples">Search Examples</h3>
+	<ul class="list">
+		<li><i>Search Filters</i>: <code class="code"><strong>field</strong>:matnr <strong>desc</strong>:*Cond*
+				<strong>package</strong>:test*"</code>
+			<div class="example-description">Searches for all database tables/views that have a field
+				named "MATNR", whose description contains "Cond", and that lie in a development package starting
+				with "TEST"</div></li>
+	</ul>
+	<ul class="list">
+		<li><i>Object Name</i>: <code class="code">cs*</code> / <i>Search Filters</i>: <code
+			class="code"><strong>owner</strong>: sy-uname</code>
+			<div class="example-description">Searches for all database tables/views where the
+				responsible person is the currently logged on user and which start with the name "CS"</div></li>
+	</ul>
+</body>
+</html>

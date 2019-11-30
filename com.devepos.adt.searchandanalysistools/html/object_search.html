@@ -3,20 +3,23 @@
 <head>
 <link rel="stylesheet" type="text/css" href="../css/main.css" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>ABAP Search and Analysis Tools</title>
+<title>ABAP Object Search +</title>
 </head>
 
 <body id="doc-body">
 	<h2 class="heading">ABAP Object Search +</h2>
-	<p>The <i>ABAP Object Search +</i> is similar to the <i>ABAP Quick search</i> (i.e. <code class="code">STRG</code>+<code class="code">SHIFT</code>+<code class="code">A</code>). 
-	It is integrated in the eclipse <i>Search</i> dialog, which can be called via <code class="code">STRG</code>+ <code class="code">H</code> or the eclipse menu 
-	<i>Search ➠ Search...</i><p>
 	<p>
-		It currently offers the following search types
-	<ul class="list">
-		<li>CDS View</li>
-		<li>Database Table/View</li>
-	</ul> 
+		The <i>ABAP Object Search +</i> is similar to the <i>ABAP Quick search</i> (i.e. <code
+			class="code">STRG</code>+<code class="code">SHIFT</code>+<code class="code">A</code>). It is
+		integrated in the eclipse <i>Search</i> dialog, which can be called via <code class="code">STRG</code>+
+		<code class="code">H</code> or the eclipse menu <i>Search ➠ Search...</i>
+	<p>
+	<p>It currently supports the following search types
+	<ul id="supported-types" class="list">
+		<li><a class="link" href="object_search/cds.html">CDS View</a></li>
+		<li><a class="link" href="object_search/dbtabview.html">Database Table/View</a></li>
+		<li><a class="link" href="object_search/classintf.html">Class / Interface</a></li>
+	</ul>
 	</p>
 	<h3 class="heading">The User Interface</h3>
 	<figure id="figure1">
@@ -59,40 +62,16 @@
 		</figcaption>
 	</figure>
 
-	<h4 class="heading">Use Option exclusion to find objects that don't comply with certain criteria</h4>
+	<h4 class="heading">Use Option exclusion to find objects that don't comply with certain
+		criteria</h4>
 	<p>
 		If you want to exclude entities which possess a certain option value from the result view you do
-		this either with a leading <code class="code"><strong>!</strong></code> or <code class="code"><strong>&lt;&gt;</strong></code>
-		. So let's say you want objects whose description contains <code class="code">Mat</code> but don't want to see
-		those which contain <code class="code">cond</code> you do this with the following query: <code class="code"> <strong>desc</strong>:*Mat*,!*cond*
-		</code>
-	</p>
-	<p>The option exclusion is currently supported for the following search filters</p>
-	<ul class="list">
-		<li>owner</li>
-		<li>package</li>
-		<li>param</li>
-		<li>desc</li>
-		<li>api</li>
-		<li>from</li>
-		<li>assoc</li>
-		<li>field</li>
-		<li>anno</li>
-		<li>type</li>
-	</ul>
-
-	<h3 class="heading">Special notes about some search filters</h3>
-	<h4 class="heading">Search by annotation</h4>
-	<p>
-		For the <em>annotation</em> filter there exists a special option as annotations in a CDS view
-		always consist of a <i>name</i> and a <i>value</i>. To use this kind of search, you must adhere to
-		the following pattern: <code class="code"> <strong>anno</strong>:&lt;name_1&gt;=&lt;value_1&gt;,&lt;name_x&gt;=&lt;value_x&gt;
-		</code> . Of course, you also can combine name-only searches with name-value searches, e.g. <code class="code">
-			<strong>anno</strong>:&lt;name_1&gt;,&lt;name_2&gt;=&lt;value_2&gt;
-		</code> . Either name and/or value also allow usage of wildcards
-	</p>
-	<p>
-		For an example look in the section <a class="link" href="#searchExamples">Examples</a> below.
+		this either with a leading <code class="code"><strong>!</strong></code>. So let's say you want
+		objects whose description contains <code class="code">Mat</code> but don't want to see those which
+		contain <code class="code">cond</code> you do this with the following query: <code class="code">
+			<strong>desc</strong>:*Mat*,!*cond*
+		</code>. See the concrete <a class="link" href="#supported-types">search type</a> to see which parameters
+		support this feature.
 	</p>
 
 	<h3 class="heading" id="and_search_for_filter">Additional search settings</h3>
@@ -101,22 +80,23 @@
 	</h4>
 	<p>
 		Normally the options of a search filter are interpreted with a logical <code class="code"><strong>OR</strong></code>
-		. So if you have the following query: <code class="code"><strong>field</strong>: product,plant</code> , the
-		search would return all objects that have a field named <em>product</em> <code class="code"><strong>or</strong></code>
-		a field named <em>plant</em>
+		. So if you have the following query: <code class="code"><strong>field</strong>:
+			product,plant</code> , the search would return all objects that have a field named <em>product</em> <code
+			class="code"><strong>or</strong></code> a field named <em>plant</em>
 	</p>
 	<p>
 		But sometimes you may want to find only the objects that have all the specified fields. In this
 		case you have to activate the setting <em>Use "AND" instead of "OR" during search</em>. You can do
-		this by setting the checkbox in the search dialog (see <a class="link" href="#figure1">Figure 1</a>)
+		this by setting the checkbox in the search dialog (see <a class="link" href="#figure1">Figure
+			1</a>)
 	</p>
 	<p>Regardless of it's activation state this setting will only be used for search filters where
 		it makes sense, i.e. where multiple values are at all possible.</p>
 
 	<h3 class="heading">The Search result View</h3>
 	<h4 class="heading">Working with the Search Results</h4>
-	<p>Once a search returns some results they are displayed in the Search View.
-		For each found object there are several options available</p>
+	<p>Once a search returns some results they are displayed in the Search View. For each found
+		object there are several options available</p>
 	<ul class="list">
 		<li>Opening the object in the corresponding eclipse editor (if one is registered for the
 			type) by double clicking on it</li>
@@ -125,7 +105,7 @@
 	<figure>
 		<img src="../images/SearchView-ContextMenu.png">
 		<figcaption>
-			<strong>Figure 5:</strong> Context Menu for a one or several nodes
+			<strong>Figure 4:</strong> Context Menu for a one or several nodes
 		</figcaption>
 	</figure>
 	<p>
@@ -137,7 +117,8 @@
 		</li>
 		<li>Open the selected objects in the SAP GUI Transaction <em>DB Browser</em><br>
 			<blockquote>
-				<strong>Note</strong>: The DB Browser feature needs to be installed in the ABAP System for this to work
+				<strong>Note</strong>: The DB Browser feature needs to be installed in the ABAP System for this
+				to work
 			</blockquote></li>
 	</ul>
 	<h4 class="heading">Sub Nodes of a Result Object</h4>
@@ -154,74 +135,9 @@
 	<figure>
 		<img src="../images/SearchView-ExpansionExample.png">
 		<figcaption>
-			<strong>Figure 6:</strong> Example of an expanded Tree Node
+			<strong>Figure 5:</strong> Example of an expanded Tree Node
 		</figcaption>
 	</figure>
 
-	<h3 class="heading" id="searchExamples">Search Examples</h3>
-	<h4 class="heading">CDS View Searches</h4>
-	<ul class="list">
-		<li><i>Search Filters</i>: <code class="code"><strong>from</strong>:mara,marc</code> / <i>Maximum Results</i>: <code class="code">500</code>
-		<div class="example-description">
-		Searches for all CDS views that select from tables mara or marc, also the maximum result
-			count is raised to 500
-		</div>
-		</li>
-	</ul>
-	<ul class="list">
-		<li><i>Search Filters</i>: <code class="code"><strong>assoc</strong>:i_prod* <strong>api</strong>:released</code>
-		<div class="example-description">
-		Searches for all CDS views that have an association to entities that start with "i_prod"
-			and have a released api state
-		</div>		
-		</li>
-	</ul>
-	<ul class="list">
-		<li><i>Object Name</i>: <code class="code">i_*</code> / <i>Search Filters</i>: <code class="code"><strong>params</strong>:true <strong>type</strong>:hierarchy</code>
-		<div class="example-description">
-		Searches for all CDS views that have parameters and are of type "hierarchy" and whose
-			name starts with "i_"
-		</div>
-		</li>
-	</ul>
-	<ul class="list">
-		<li><i>Search Filters</i>: <code class="code"><strong>desc</strong>:*Mater*</code>
-		<div class="example-description">
-		Searches for all CDS Views whose Description contains the string "Mater"
-		</div>
-		</li>
-	</ul>
-	<ul class="list">
-		<li><i>Search Filters</i>: <code class="code"><strong>anno</strong>:analytics*query</code>
-		<div class="example-description">
-		Searches for all CDS Views that have an annotation like "analytics*query"
-		</div>
-		</li>
-	</ul>
-	<ul class="list">
-		<li><i>Search Filters</i>: <code class="code"><strong>anno</strong>:vdm.private*=true,*query*=true</code>
-		<div class="example-description">
-		Searches for all CDS Views that have an annotation @VDM.private: true or an Annotation
-			like *query*: true
-		</div>
-		</li>
-	</ul>
-	<h4>Database Table/View Searches</h4>
-	<ul class="list">
-		<li><i>Search Filters</i>: <code class="code"><strong>field</strong>:matnr <strong>desc</strong>:*Cond* <strong>package</strong>:test*"</code>
-		<div class="example-description">
-		Searches for all database tables/views that have a field named "MATNR", whose description
-			contains "Cond", and that lie in a development package starting with "TEST"
-		</div>
-		</li>
-	</ul>
-	<ul class="list">
-		<li><i>Object Name</i>: <code class="code">cs*</code> / <i>Search Filters</i>: <code class="code"><strong>owner</strong>: sy-uname</code>
-		<div class="example-description">
-		Searches for all database tables/views where the responsible person is the currently
-			logged on user and which start with the name "CS"
-		</div>
-		</li>
-	</ul>
 </body>
 </html>
