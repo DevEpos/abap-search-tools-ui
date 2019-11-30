@@ -14,7 +14,11 @@ public enum NamedItemType {
 	TABLE_TYPE("tabletype"),
 	API_STATE("releasestate"),
 	CDS_TYPE("cdstype"),
-	CDS_EXTENSION("cdsextension");
+	CDS_EXTENSION("cdsextension"),
+	CLASS_TYPE("classtype"),
+	ABAP_CLASS_LANGUAGE("abaplanguage"),
+	CLASS_CATEGORY("classcategory"),
+	CLASS_FLAG("classflag");
 
 	private String discoveryTerm;
 
@@ -24,7 +28,7 @@ public enum NamedItemType {
 
 	/**
 	 * Returns the discovery term of this named item type
-	 * 
+	 *
 	 * @return the discovery term of this named item type
 	 */
 	public String getDiscoveryTerm() {

@@ -109,6 +109,8 @@ public class AdtUtil {
 				return IImages.VIEW_DEFINITION;
 			case CLASS:
 				return IImages.CLASS;
+			case INTERFACE:
+				return IImages.INTERFACE;
 			case TABLE_SETTINGS:
 				return IImages.TECHNICAL_SETTINGS;
 			case METADATA_EXT:

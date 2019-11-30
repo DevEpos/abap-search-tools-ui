@@ -47,6 +47,14 @@ public interface IImages {
 	 */
 	String CLASS = "IMG_CLASS";
 	/**
+	 * Identifies image for interface
+	 */
+	String INTERFACE = "IMG_INTERFACE";
+	/**
+	 * Identifies image for class/interface
+	 */
+	String CLASS_INTERFACE = "IMG_CLASS_INTF";
+	/**
 	 * Icon for a list of history entries
 	 */
 	String HISTORY_LIST = "IMG_HISTORY_LIST";
@@ -307,4 +315,24 @@ public interface IImages {
 	 * Image id for "Package"
 	 */
 	String PACKAGE = PACKAGE_PARAM;
+	/**
+	 * Image id for "Version"
+	 */
+	String ABAP_VERSION = "IMG_VERSION";
+	/**
+	 * Images id for "Global Friend"
+	 */
+	String FRIEND = "IMG_FRIEND";
+	/**
+	 * Image id for "Super type"
+	 */
+	String SUPER_TYPE = "IMG_SUPER_TYPE";
+	/**
+	 * Image id for "Method"
+	 */
+	String METHOD = "IMG_METHOD";
+	/**
+	 * Image id for "Attribute"
+	 */
+	String ATTRIBUTE = "IMG_ATTRIBUTE";
 }

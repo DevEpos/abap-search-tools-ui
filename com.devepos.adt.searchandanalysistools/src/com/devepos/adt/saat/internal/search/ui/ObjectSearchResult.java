@@ -20,6 +20,7 @@ import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.search.IExtendedAdtObjectInfo;
+import com.devepos.adt.saat.internal.tree.AdtObjectReferenceNode;
 import com.devepos.adt.saat.internal.tree.IAdtObjectReferenceNode;
 import com.devepos.adt.saat.internal.tree.LazyLoadingAdtObjectReferenceNode;
 import com.devepos.adt.saat.internal.tree.PackageNode;
@@ -172,12 +173,19 @@ public class ObjectSearchResult implements ISearchResult {
 			if (IAdtObjectTypeConstants.PACKAGE.equals(adtObjRefInfo.getAdtType())) {
 				continue;
 			}
-			final LazyLoadingAdtObjectReferenceNode lazyLoadingNode = new LazyLoadingAdtObjectReferenceNode(
-				adtObjRefInfo.getName(), adtObjRefInfo.getDisplayName(), adtObjRefInfo.getDescription(),
-				adtObjRefInfo.getAdtObjectReference(), null);
-			lazyLoadingNode.setElementInfoProvider(adtObjRefInfo.getElementInfoProvider());
-			lazyLoadingNode.setAdditionalInfo(adtObjRefInfo.getAdditionalInfo());
-			nodes.add(lazyLoadingNode);
+			if (adtObjRefInfo.hasLazyLoadingSupport()) {
+				final LazyLoadingAdtObjectReferenceNode lazyLoadingNode = new LazyLoadingAdtObjectReferenceNode(
+					adtObjRefInfo.getName(), adtObjRefInfo.getDisplayName(), adtObjRefInfo.getDescription(),
+					adtObjRefInfo.getAdtObjectReference(), null);
+				lazyLoadingNode.setElementInfoProvider(adtObjRefInfo.getElementInfoProvider());
+				lazyLoadingNode.setAdditionalInfo(adtObjRefInfo.getAdditionalInfo());
+				nodes.add(lazyLoadingNode);
+			} else {
+				final AdtObjectReferenceNode nonLazyLoadingNode = new AdtObjectReferenceNode(adtObjRefInfo.getName(),
+					adtObjRefInfo.getDisplayName(), adtObjRefInfo.getDescription(), adtObjRefInfo.getAdtObjectReference(), null);
+				nonLazyLoadingNode.setAdditionalInfo(adtObjRefInfo.getAdditionalInfo());
+				nodes.add(nonLazyLoadingNode);
+			}
 		}
 		this.treeResult = nodes.toArray(new IAdtObjectReferenceNode[nodes.size()]);
 	}
@@ -189,12 +197,20 @@ public class ObjectSearchResult implements ISearchResult {
 
 		for (final IAdtObjectReferenceElementInfo adtObjRefInfo : this.searchResult) {
 			IAdtObjectReferenceNode node = null;
-			final LazyLoadingAdtObjectReferenceNode lazyLoadingNode = new LazyLoadingAdtObjectReferenceNode(
-				adtObjRefInfo.getName(), adtObjRefInfo.getDisplayName(), adtObjRefInfo.getDescription(),
-				adtObjRefInfo.getAdtObjectReference(), null);
-			lazyLoadingNode.setElementInfoProvider(adtObjRefInfo.getElementInfoProvider());
-			lazyLoadingNode.setAdditionalInfo(adtObjRefInfo.getAdditionalInfo());
-			node = lazyLoadingNode;
+			if (adtObjRefInfo.hasLazyLoadingSupport()) {
+				final LazyLoadingAdtObjectReferenceNode lazyLoadingNode = new LazyLoadingAdtObjectReferenceNode(
+					adtObjRefInfo.getName(), adtObjRefInfo.getDisplayName(), adtObjRefInfo.getDescription(),
+					adtObjRefInfo.getAdtObjectReference(), null);
+				lazyLoadingNode.setElementInfoProvider(adtObjRefInfo.getElementInfoProvider());
+				lazyLoadingNode.setAdditionalInfo(adtObjRefInfo.getAdditionalInfo());
+				node = lazyLoadingNode;
+			} else {
+				final AdtObjectReferenceNode nonLazyLoadingNode = new AdtObjectReferenceNode(adtObjRefInfo.getName(),
+					adtObjRefInfo.getDisplayName(), adtObjRefInfo.getDescription(), adtObjRefInfo.getAdtObjectReference(), null);
+				nonLazyLoadingNode.setAdditionalInfo(adtObjRefInfo.getAdditionalInfo());
+				node = nonLazyLoadingNode;
+			}
+
 			node.setAdditionalInfo(adtObjRefInfo.getAdditionalInfo());
 
 			nodeMap.put(String.format(KEY_PATTERN, adtObjRefInfo.getName(), adtObjRefInfo.getAdtType()), node);

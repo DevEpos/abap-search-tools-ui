@@ -1,15 +1,15 @@
 package com.devepos.adt.saat.internal.search;
 
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.swt.graphics.Image;
 
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.util.IImages;
 
 public enum SearchType {
-	// TODO: not yet supported by any backend system
-//	ALL("All", "all"),
 	CDS_VIEW("CDS View", "cds", IImages.CDS_VIEW),
-	DB_TABLE_VIEW("Database Table/View", "dbtabview", IImages.TABLE_DEFINITION);
+	DB_TABLE_VIEW("Database Table/View", "dbtabview", IImages.TABLE_DEFINITION),
+	CLASS_INTERFACE("Class/Interface", "classintf", IImages.CLASS_INTERFACE);
 
 	private final String name;
 	private final String uriTerm;
@@ -42,6 +42,10 @@ public enum SearchType {
 
 	public ImageDescriptor getImageDescriptor() {
 		return SearchAndAnalysisPlugin.getDefault().getImageDescriptor(this.imageId);
+	}
+
+	public Image getImage() {
+		return SearchAndAnalysisPlugin.getDefault().getImage(this.imageId);
 	}
 
 	@Override

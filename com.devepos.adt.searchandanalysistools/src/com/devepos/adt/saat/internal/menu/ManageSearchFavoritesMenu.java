@@ -17,7 +17,6 @@ import com.devepos.adt.saat.internal.search.SearchType;
 import com.devepos.adt.saat.internal.search.favorites.ExportFavoritesAction;
 import com.devepos.adt.saat.internal.search.favorites.IObjectSearchFavorites;
 import com.devepos.adt.saat.internal.search.favorites.ImportFavoritesAction;
-import com.devepos.adt.saat.internal.util.IImages;
 import com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavorite;
 
 /**
@@ -58,11 +57,11 @@ public class ManageSearchFavoritesMenu extends CompoundContributionItem {
 						runSearch(favorite);
 					}
 				};
-				if (SearchType.CDS_VIEW.name().equals(favorite.getSearchType())) {
-					favoriteAction.setImageDescriptor(SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.CDS_VIEW));
-				} else if (SearchType.DB_TABLE_VIEW.name().equals(favorite.getSearchType())) {
-					favoriteAction
-						.setImageDescriptor(SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.TABLE_DEFINITION));
+
+				try {
+					final SearchType searchType = SearchType.valueOf(favorite.getSearchType());
+					favoriteAction.setImageDescriptor(searchType.getImageDescriptor());
+				} catch (NullPointerException | IllegalArgumentException exc) {
 				}
 				items.add(new ActionContributionItem(favoriteAction));
 			}

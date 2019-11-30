@@ -11,7 +11,6 @@ import com.devepos.adt.saat.internal.util.IImages;
  * Label provider for the DB Object Search content assist
  *
  * @author stockbal
- *
  */
 public class LabelProvider extends org.eclipse.jface.viewers.LabelProvider {
 
@@ -36,7 +35,10 @@ public class LabelProvider extends org.eclipse.jface.viewers.LabelProvider {
 			case ANNOTATION:
 				return SearchAndAnalysisPlugin.getDefault().getImage(IImages.ANNOTATION_PARAM);
 			case TYPE:
+			case CATEGORY:
 				return SearchAndAnalysisPlugin.getDefault().getImage(IImages.ABAP_TYPE);
+			case ABAP_LANGUAGE:
+				return SearchAndAnalysisPlugin.getDefault().getImage(IImages.ABAP_VERSION);
 			default:
 				return null;
 			}
@@ -71,7 +73,7 @@ public class LabelProvider extends org.eclipse.jface.viewers.LabelProvider {
 	/**
 	 * Retrieves the image for the given type
 	 *
-	 * @param type
+	 * @param  type
 	 * @return
 	 */
 	private Image getImageForType(final ObjectType objectType) {

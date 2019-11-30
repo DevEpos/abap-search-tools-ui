@@ -86,7 +86,39 @@ public enum QueryParameterName {
 	 * If <code>true</code> this parameter controls whether the search will only
 	 * consider association usages if they are defined locally in the CDS view
 	 */
-	LOCAL_DECLARED_ASSOC_ONLY("LOCALDECLAREDASSOCONLY", "localDeclaredAssocOnly");
+	LOCAL_DECLARED_ASSOC_ONLY("LOCALDECLAREDASSOCONLY", "localDeclaredAssocOnly"),
+	/**
+	 * Search for classes with a given global friend
+	 */
+	FRIEND("FRIEND", "friend"),
+	/**
+	 * Search for classes with a certain category (e.g. "Exception")
+	 */
+	CATEGORY("CAT", "category"),
+	/**
+	 * Search for classes with a given ABAP Language (e.g. "Key User")
+	 */
+	ABAP_LANGUAGE("LANG", "abapLanguage"),
+	/**
+	 * Search for classes/interfaces that use a certain interface
+	 */
+	INTERFACE("INTF", "interface"),
+	/**
+	 * Search for Classes that have a certain super class
+	 */
+	SUPER_TYPE("SUPER", "superType"),
+	/**
+	 * Search for Classes that have a certain attribute
+	 */
+	ATTRIBUTE("ATTR", "attribute"),
+	/**
+	 * Search for Classes that have a certain method
+	 */
+	METHOD("METH", "method"),
+	/**
+	 * Search classes for a set of properties
+	 */
+	FLAG("FLAG", "flag");
 
 	private String stringForm;
 	private String key;

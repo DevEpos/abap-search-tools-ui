@@ -20,6 +20,7 @@ public interface IAdtObjectTypeConstants {
 	String VIEW_SIMPLE_TYPE = "VIEW";
 
 	String CLASS_DEFINITION_TYPE = "CLAS/OC";
+	String INTERFACE_DEFINITION = "INTF/OI";
 
 	String BUSINESS_OBJECT_TYPE = "BOBF";
 

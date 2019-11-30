@@ -39,7 +39,6 @@ import org.eclipse.ui.dialogs.SelectionDialog;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.search.SearchType;
-import com.devepos.adt.saat.internal.util.IImages;
 import com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavorite;
 
 /**
@@ -305,11 +304,9 @@ public class ManageSearchFavoritesDialog extends SelectionDialog {
 		public Image getImage(final Object element) {
 			final IObjectSearchFavorite favorite = (IObjectSearchFavorite) element;
 
-			if (SearchType.CDS_VIEW.name().equals(favorite.getSearchType())) {
-				return SearchAndAnalysisPlugin.getDefault().getImage(IImages.CDS_VIEW);
-			} else if (SearchType.DB_TABLE_VIEW.name().equals(favorite.getSearchType())) {
-				return SearchAndAnalysisPlugin.getDefault().getImage(IImages.TABLE_DEFINITION);
-			} else {
+			try {
+				return SearchType.valueOf(favorite.getSearchType()).getImage();
+			} catch (NullPointerException | IllegalArgumentException exc) {
 				return null;
 			}
 		}

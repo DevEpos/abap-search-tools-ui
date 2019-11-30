@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.devepos.adt.saat.internal.CdsSourceType;
+import com.devepos.adt.saat.internal.IAdtObjectTypeConstants;
 import com.devepos.adt.saat.internal.elementinfo.AdtObjectReferenceElementInfo;
 import com.devepos.adt.saat.internal.elementinfo.ExtendedAdtObjectInfo;
 import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
@@ -87,7 +88,12 @@ public class ObjectSearchContentHandler implements IContentHandler<ObjectSearchR
 					type, uri);
 				adtObjectRef.setPackageName(packageName);
 				elementInfo.setAdtObjectReference(adtObjectRef);
-				elementInfo.setElementInfoProvider(new ObjectSearchElementInfoProvider(this.destinationId, adtObjectRef));
+				if (IAdtObjectTypeConstants.CLASS_DEFINITION_TYPE.equals(type)
+					|| IAdtObjectTypeConstants.INTERFACE_DEFINITION.equals(type)) {
+					elementInfo.setLazyLoadingSupport(false);
+				} else {
+					elementInfo.setElementInfoProvider(new ObjectSearchElementInfoProvider(this.destinationId, adtObjectRef));
+				}
 			}
 			addAdditionalResultInformation(elementInfoElement, elementInfo);
 

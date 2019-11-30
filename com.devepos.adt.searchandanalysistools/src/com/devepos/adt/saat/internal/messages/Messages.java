@@ -223,6 +223,7 @@ public class Messages extends NLS {
 	public static String SearchPatternAnalyzer_ErrorUnsupportedParamValue_xmsg;
 	public static String SearchPatternAnalyzer_ErrorWildcardsNotSupportedInParam_xmsg;
 	public static String SearchPatternAnalyzer_DescriptionCdsTypeParameter_xmsg;
+	public static String SearchPatternAnalyzer_DescriptionClassTypeParameter_xmsg;
 	public static String SearchPatternAnalyzer_DescriptionDescriptionParameter_xmsg;
 	public static String SearchPatternAnalyzer_DescriptionPackageParameter_xmsg;
 	public static String SearchPatternAnalyzer_DescriptionUserParameter_xmsg;
@@ -236,6 +237,14 @@ public class Messages extends NLS {
 	public static String SearchPatternAnalyzer_DescriptionParamsParameter_xmsg;
 	public static String SearchPatternAnalyzer_DescriptionMaxRowsParameter_xmsg;
 	public static String SearchPatternAnalyzer_DescriptionTableTypeParameter_xmsg;
+	public static String SearchPatternAnalyzer_DescriptionFlagParameter_xmsg;
+	public static String SearchPatternAnalyzer_DescriptionAttributeParameter_xmsg;
+	public static String SearchPatternAnalyzer_DescriptionMethodParameter_xmsg;
+	public static String SearchPatternAnalyzer_DescriptionSuperTypeParameter_xmsg;
+	public static String SearchPatternAnalyzer_DescriptionInterfaceParameter_xmsg;
+	public static String SearchPatternAnalyzer_DescriptionAbapLangParameter_xmsg;
+	public static String SearchPatternAnalyzer_DescriptionClassCategoryParameter_xmsg;
+	public static String SearchPatternAnalyzer_DescriptionFriendParameter_xmsg;
 	public static String SearchPatternAnalyzer_NoValuePartPossibleIfKeyIsNegated_xmsg;
 	public static String ToggleViewLayoutAction_AutomaticOrientation_xmit;
 	public static String ToggleViewLayoutAction_HorizontalOrientation_xmit;

@@ -107,6 +107,17 @@ public class SearchPatternProvider implements ISearchParameterHandler {
 			} else if (this.searchType == SearchType.DB_TABLE_VIEW) {
 				parameters.add(new FieldSearchParameter(this.projectProvider, NamedItemType.TABLE_FIELD));
 				parameters.add(SearchParameterFactory.createTableTypeParameter(this.projectProvider));
+			} else if (this.searchType == SearchType.CLASS_INTERFACE) {
+				parameters.add(new ReleaseStateSearchParameter(this.projectProvider));
+				parameters.add(SearchParameterFactory.createClassTypeParameter(this.projectProvider));
+				parameters.add(SearchParameterFactory.createClassCategoryParameter(this.projectProvider));
+				parameters.add(SearchParameterFactory.createClassFlagParameter(this.projectProvider));
+				parameters.add(SearchParameterFactory.createAbapLanguageParameter(this.projectProvider));
+				parameters.add(SearchParameterFactory.createFriendParameter());
+				parameters.add(SearchParameterFactory.createSuperTypeParameter());
+				parameters.add(SearchParameterFactory.createInterfaceParameter());
+				parameters.add(SearchParameterFactory.createMethodParameter());
+				parameters.add(SearchParameterFactory.createAttributeParameter());
 			}
 			this.parameterMap.put(this.searchType, parameters);
 		}

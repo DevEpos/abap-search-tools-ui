@@ -153,7 +153,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 
 	/**
 	 * Sets the search type drop down to the given search type
-	 * 
+	 *
 	 * @param searchType the search type to be selected in the dialog
 	 */
 	public void setSearchType(final SearchType searchType) {

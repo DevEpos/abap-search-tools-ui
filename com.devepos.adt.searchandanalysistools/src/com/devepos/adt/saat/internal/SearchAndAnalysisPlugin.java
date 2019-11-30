@@ -45,10 +45,6 @@ public class SearchAndAnalysisPlugin extends AbstractUIPlugin {
 	public void start(final BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-
-//		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getSelectionService().addSelectionListener((part, selection) -> {
-//			Logging.getLogger(getClass()).log(new Status(IStatus.INFO, PLUGIN_ID, selection.toString() + "," + part.getTitle()));
-//		});
 	}
 
 	@Override
@@ -220,6 +216,8 @@ public class SearchAndAnalysisPlugin extends AbstractUIPlugin {
 		registerImage(imageRegistry, IImages.PROPERTIES, "icons/Properties.png");
 		registerImage(imageRegistry, IImages.DATE, "icons/Date.png");
 		registerImage(imageRegistry, IImages.CLASS, "icons/Class.png");
+		registerImage(imageRegistry, IImages.INTERFACE, "icons/Interface.png");
+		registerImage(imageRegistry, IImages.CLASS_INTERFACE, "icons/ClassInterface.png");
 		registerImage(imageRegistry, IImages.RELEASED, "icons/Success.png");
 		registerImage(imageRegistry, IImages.NOT_RELEASED, "icons/Error.png");
 		registerImage(imageRegistry, IImages.FOLDER, "icons/Folder.png");
@@ -255,6 +253,11 @@ public class SearchAndAnalysisPlugin extends AbstractUIPlugin {
 		registerImage(imageRegistry, IImages.FUNCTION, "icons/Function.png");
 		registerImage(imageRegistry, IImages.IMPORT, "icons/full/etool16/import_wiz.png", "org.eclipse.ui");
 		registerImage(imageRegistry, IImages.EXPORT, "icons/full/etool16/export_wiz.png", "org.eclipse.ui");
+		registerImage(imageRegistry, IImages.ABAP_VERSION, "icons/Version.gif");
+		registerImage(imageRegistry, IImages.SUPER_TYPE, "icons/SuperType.png");
+		registerImage(imageRegistry, IImages.FRIEND, "icons/Friend.png");
+		registerImage(imageRegistry, IImages.ATTRIBUTE, "icons/Attribute.png");
+		registerImage(imageRegistry, IImages.METHOD, "icons/Method.png");
 
 		// images for layout
 		registerImage(imageRegistry, IImages.VERTICAL_LAYOUT, "icons/full/elcl16/verticalOrientation.png", "org.eclipse.search");

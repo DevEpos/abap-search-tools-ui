@@ -86,11 +86,10 @@ public class SearchFavoritesAction extends Action implements IMenuCreator {
 						runSearch(favorite);
 					}
 				};
-				if (SearchType.CDS_VIEW.name().equals(favorite.getSearchType())) {
-					favoriteAction.setImageDescriptor(SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.CDS_VIEW));
-				} else if (SearchType.DB_TABLE_VIEW.name().equals(favorite.getSearchType())) {
-					favoriteAction
-						.setImageDescriptor(SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.TABLE_DEFINITION));
+				try {
+					final SearchType searchType = SearchType.valueOf(favorite.getSearchType());
+					favoriteAction.setImageDescriptor(searchType.getImageDescriptor());
+				} catch (NullPointerException | IllegalArgumentException exc) {
 				}
 				addActionToMenu(this.menu, favoriteAction);
 			}
