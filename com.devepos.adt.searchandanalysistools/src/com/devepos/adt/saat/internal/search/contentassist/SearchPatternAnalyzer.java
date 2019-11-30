@@ -1,5 +1,6 @@
 package com.devepos.adt.saat.internal.search.contentassist;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -226,14 +227,17 @@ public class SearchPatternAnalyzer {
 		// 2) check if parameter has custom validation implemented for values
 		// 3) check if value is one of the buffered values
 		// 4) check if wildcard values are allowed
+		// 5) check if negation is allowed
 		if (!param.supportsMultipleValues() && paramValues.length > 1) {
 			throw new CoreException(new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID,
 				NLS.bind(Messages.SearchPatternAnalyzer_ErrorParamAllowsOnlySingleValues_xmsg, param.getLabel())));
-		} else if (param instanceof IValidatable) {
+		}
+		if (param instanceof IValidatable) {
 			for (final String value : paramValues) {
 				((IValidatable) param).validate(value);
 			}
-		} else if (param.isBuffered() && param instanceof ISearchProposalProvider) {
+		}
+		if (param.isBuffered() && param instanceof ISearchProposalProvider) {
 			for (String value : paramValues) {
 				value = removeNegation(param, value);
 				final List<IContentProposal> proposalList = ((ISearchProposalProvider) param).getProposalList(value);
@@ -242,10 +246,17 @@ public class SearchPatternAnalyzer {
 						NLS.bind(Messages.SearchPatternAnalyzer_ErrorUnsupportedParamValue_xmsg, param.getLabel(), value)));
 				}
 			}
-		} else if (!param.supportsPatternValues()) {
+		}
+		if (!param.supportsPatternValues()) {
 			if (Stream.of(paramValues).anyMatch(value -> value.contains(ANY_VALUE_CHAR) || value.contains(SOME_VALUE_CHAR))) {
 				throw new CoreException(new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID,
 					NLS.bind(Messages.SearchPatternAnalyzer_ErrorWildcardsNotSupportedInParam_xmsg, param.getLabel())));
+			}
+		}
+		if (!param.supportsNegatedValues()) {
+			if (Stream.of(paramValues).anyMatch(value -> StringUtil.startsWithNegationCharacter(value))) {
+				throw new CoreException(new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID,
+					MessageFormat.format("Parameter ''{0}'' does not permit negation", param.getLabel())));
 			}
 		}
 

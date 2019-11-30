@@ -8,8 +8,7 @@ import java.util.regex.Pattern;
  * @author stockbal
  */
 public class StringUtil {
-	private static final String NEGATION1 = "!"; //$NON-NLS-1$
-	private static final String NEGATION2 = "<>"; //$NON-NLS-1$
+	public static final String NEGATION1 = "!"; //$NON-NLS-1$
 
 	/**
 	 * Compiles pattern for the given query string
@@ -38,7 +37,7 @@ public class StringUtil {
 		if (value == null || value.isEmpty()) {
 			return false;
 		}
-		return value.startsWith(NEGATION1) || value.startsWith(NEGATION2);
+		return value.startsWith(NEGATION1);
 	}
 
 	/**
@@ -54,8 +53,6 @@ public class StringUtil {
 		int negationCharLength;
 		if (value.startsWith(NEGATION1)) {
 			negationCharLength = 1;
-		} else if (value.startsWith(NEGATION2)) {
-			negationCharLength = 2;
 		} else {
 			return value;
 		}
