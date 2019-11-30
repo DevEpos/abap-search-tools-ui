@@ -126,8 +126,10 @@ public class WhereUsedInCdsElementInfoProvider implements IElementInfoProvider {
 		if (queryRunStatus.isOK()) {
 			final List<IAdtObjectReferenceElementInfo> result = ((ObjectSearchResult) searchQuery.getSearchResult()).getResult();
 			for (final IAdtObjectReferenceElementInfo elementInfo : result) {
-				elementInfo.setElementInfoProvider(new WhereUsedInCdsElementInfoProvider(this.destinationId,
-					elementInfo.getName(), this.searchSelectFrom, this.searchAssocications));
+				final WhereUsedInCdsElementInfoProvider elemInfoProvider = new WhereUsedInCdsElementInfoProvider(
+					this.destinationId, elementInfo.getName(), this.searchSelectFrom, this.searchAssocications);
+				elemInfoProvider.setLocalAssociationsOnly(this.localAssociationsOnly);
+				elementInfo.setElementInfoProvider(elemInfoProvider);
 				elementInfoWrapper.getObject().add(elementInfo);
 			}
 		}
