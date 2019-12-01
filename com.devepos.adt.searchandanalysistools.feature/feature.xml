@@ -2,7 +2,7 @@
 <feature
       id="com.devepos.adt.searchandanalysistools"
       label="ABAP Search and Analysis Tools"
-      version="1.0.2.qualifier"
+      version="1.1.0.qualifier"
       provider-name="DEVEPOS">
 
    <description>
@@ -10,6 +10,7 @@
 Currently the following ABAP Types are supported
 - CDS View
 - Database Table/View
+- Class/Interface
 Furthermore it provides a View for analyzing CDS Views. The following
 analyses are supported at the moment.
 - Top-Down analysis of a CDS View
