@@ -23,7 +23,7 @@ public class SearchParameterFactory {
 		return new SearchParameter(QueryParameterName.DESCRIPTION,
 			MessageFormat.format(Messages.SearchPatternAnalyzer_DescriptionDescriptionParameter_xmsg,
 				QueryParameterName.DESCRIPTION.getLowerCaseKey(), "*material*"), //$NON-NLS-1$
-			SearchAndAnalysisPlugin.getDefault().getImage(IImages.DESCRIPTION_PARAM));
+			SearchAndAnalysisPlugin.getDefault().getImage(IImages.DESCRIPTION_PARAM), true, true, true);
 	}
 
 	/**
@@ -49,7 +49,7 @@ public class SearchParameterFactory {
 		return new SearchParameter(QueryParameterName.CDS_PARAMETER,
 			MessageFormat.format(Messages.SearchPatternAnalyzer_DescriptionParamParameter_xmsg,
 				QueryParameterName.CDS_PARAMETER.getLowerCaseKey(), "p_plant"), //$NON-NLS-1$
-			SearchAndAnalysisPlugin.getDefault().getImage(IImages.PARAMETER_PARAM));
+			SearchAndAnalysisPlugin.getDefault().getImage(IImages.PARAMETER_PARAM), true, true, true);
 	}
 
 	/**
