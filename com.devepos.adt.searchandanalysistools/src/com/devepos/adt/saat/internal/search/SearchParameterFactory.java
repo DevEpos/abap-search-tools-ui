@@ -169,7 +169,7 @@ public class SearchParameterFactory {
 	 */
 	public static ISearchParameter createSuperTypeParameter() {
 		return new SearchParameter(QueryParameterName.SUPER_TYPE,
-			MessageFormat.format(Messages.SearchPatternAnalyzer_DescriptionFriendParameter_xmsg,
+			MessageFormat.format(Messages.SearchPatternAnalyzer_DescriptionSuperTypeParameter_xmsg,
 				QueryParameterName.SUPER_TYPE.getLowerCaseKey()),
 			SearchAndAnalysisPlugin.getDefault().getImage(IImages.SUPER_TYPE), true, true, true);
 	}
