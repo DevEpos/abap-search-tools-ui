@@ -256,9 +256,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 			// check if the selected search type is available in the selected project
 			this.searchPatternProvider.setSearchType(selectedSearchType);
 			this.searchRequest.setSearchType(selectedSearchType);
-			final IStatus searchTypeStatus = validateSearchType(selectedSearchType);
-			validateAndSetStatus(searchTypeStatus);
-			if (searchTypeStatus.isOK()) {
+			if (validateAndSetStatus(validateSearchType(selectedSearchType))) {
 				validateParameterPattern();
 			}
 			updateOKStatus();
@@ -423,11 +421,13 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 		this.projectField.addModifyListener(e -> {
 			final String projectName = this.projectField.getText();
 			setProject(projectName);
-			final IStatus projectStatus = validateProject(projectName);
-			validateAndSetStatus(projectStatus);
-			if (projectStatus != null && projectStatus.isOK()) {
-				validateAndSetStatus(validateSearchType(this.searchRequest.getSearchType()));
+
+			if (validateAndSetStatus(validateProject(projectName))) {
+				if (validateAndSetStatus(validateSearchType(this.searchRequest.getSearchType()))) {
+					validateParameterPattern();
+				}
 			}
+
 			updateOKStatus();
 		});
 
@@ -564,9 +564,10 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 		});
 	}
 
-	private void validateAndSetStatus(final IStatus status) {
+	private boolean validateAndSetStatus(final IStatus status) {
 		final IStatus validatedStatus = validateStatus(status);
 		setStatus(validatedStatus);
+		return validatedStatus == null || validatedStatus.isOK();
 	}
 
 	private IStatus validateStatus(IStatus status) {
