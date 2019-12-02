@@ -580,10 +580,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 		if (status.getCode() == this.currentStatus.getCode()) {
 			return status;
 		}
-		if (status.getSeverity() >= this.currentStatus.getSeverity()) {
-			return status;
-		}
-		return this.currentStatus;
+		return status;
 	}
 
 	private void updateMaxResults() {
