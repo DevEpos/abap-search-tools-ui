@@ -258,6 +258,7 @@ public class SearchAndAnalysisPlugin extends AbstractUIPlugin {
 		registerImage(imageRegistry, IImages.FRIEND, "icons/Friend.png");
 		registerImage(imageRegistry, IImages.ATTRIBUTE, "icons/Attribute.png");
 		registerImage(imageRegistry, IImages.METHOD, "icons/Method.png");
+		registerImage(imageRegistry, IImages.ENABLED_CHECKBOX, "icons/EnabledCheckbox.png");
 
 		// images for layout
 		registerImage(imageRegistry, IImages.VERTICAL_LAYOUT, "icons/full/elcl16/verticalOrientation.png", "org.eclipse.search");

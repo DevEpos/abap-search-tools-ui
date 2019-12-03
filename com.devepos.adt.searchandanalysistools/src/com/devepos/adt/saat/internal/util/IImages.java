@@ -335,4 +335,8 @@ public interface IImages {
 	 * Image id for "Attribute"
 	 */
 	String ATTRIBUTE = "IMG_ATTRIBUTE";
+	/**
+	 * Image id for "Enabled Checkbox"
+	 */
+	String ENABLED_CHECKBOX = "IMG_ENABLED_CHECKBOX";
 }

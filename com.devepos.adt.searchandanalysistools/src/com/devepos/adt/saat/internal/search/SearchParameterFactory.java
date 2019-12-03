@@ -143,7 +143,7 @@ public class SearchParameterFactory {
 			NamedItemType.CLASS_FLAG, true, ""); //$NON-NLS-1$
 		parameter.setDescription(MessageFormat.format(Messages.SearchPatternAnalyzer_DescriptionFlagParameter_xmsg,
 			QueryParameterName.FLAG.getLowerCaseKey()));
-		parameter.setImage(SearchAndAnalysisPlugin.getDefault().getImage(IImages.PROPERTIES));
+		parameter.setImage(SearchAndAnalysisPlugin.getDefault().getImage(IImages.ENABLED_CHECKBOX));
 		parameter.setSupportsNegatedValues(true);
 		return parameter;
 	}
