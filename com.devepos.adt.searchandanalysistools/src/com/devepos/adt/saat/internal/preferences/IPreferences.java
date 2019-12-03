@@ -45,5 +45,10 @@ public interface IPreferences {
 	 * Maximum number of history entries in the CDS Analyzer view
 	 */
 	String MAX_CDS_ANALYZER_HISTORY = "com.devepos.adt.saat.cdsanalyzer.maxHistorySize"; //$NON-NLS-1$
+	/**
+	 * Sets focus to search type field in object page, otherwise on the first input
+	 * field
+	 */
+	String FOCUS_ON_SEARCH_TYPE = "com.devepos.adt.saat.objectsearch.focusOnSearchType";
 
 }

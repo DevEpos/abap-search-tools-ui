@@ -620,10 +620,26 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 		}
 	}
 
-	private void setFocus() {
+	/**
+	 * Sets focus to first input field
+	 */
+	public void setFocusToFirstInput() {
 		if (this.searchInput != null && !this.searchInput.isDisposed()) {
 			this.searchInput.setFocus();
 		}
+	}
+
+	private void setFocus() {
+		final boolean focusOnSearchType = this.prefStore.getBoolean(IPreferences.FOCUS_ON_SEARCH_TYPE);
+
+		if (focusOnSearchType) {
+			if (this.searchTypeViewer != null && !this.searchTypeViewer.getControl().isDisposed()) {
+				this.searchTypeViewer.getControl().setFocus();
+			}
+		} else {
+			setFocusToFirstInput();
+		}
+
 	}
 
 }

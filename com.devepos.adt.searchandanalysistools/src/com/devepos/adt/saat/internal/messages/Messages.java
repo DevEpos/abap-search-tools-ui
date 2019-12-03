@@ -196,6 +196,7 @@ public class Messages extends NLS {
 	public static String MainPreferencePage_CursorAtEndSetting_xfld;
 	public static String MainPreferencePage_DefaultSearchTypeSetting_xfld;
 	public static String MainPreferencePage_DisplayAssociationName_xckl;
+	public static String MainPreferencePage_FocusOnSearchType_xfld;
 	public static String MainPreferencePage_GeneralSettings_xgrp;
 	public static String MainPreferencePage_MaxResultsSetting_xfld;
 	public static String MainPreferencePage_OverwriteSearchQuerySetting_xfld;

@@ -55,6 +55,7 @@ public class ObjectSearchModesMenu extends CompoundContributionItem {
 		if (dialog.getSelectedPage() instanceof ObjectSearchPage) {
 			final ObjectSearchPage searchDialog = (ObjectSearchPage) dialog.getSelectedPage();
 			searchDialog.setSearchType(searchType);
+			searchDialog.setFocusToFirstInput();
 		}
 		dialog.setBlockOnOpen(true);
 	}

@@ -21,6 +21,7 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
 	public void initializeDefaultPreferences() {
 		final IPreferenceStore store = SearchAndAnalysisPlugin.getDefault().getPreferenceStore();
 		store.setDefault(IPreferences.CURSOR_AT_END_OF_SEARCH_INPUT, true);
+		store.setDefault(IPreferences.FOCUS_ON_SEARCH_TYPE, false);
 		store.setDefault(IPreferences.OVERWRITE_OPENED_SEARCH_QUERY, false);
 		store.setDefault(IPreferences.DEFAULT_SEARCH_TYPE, SearchType.CDS_VIEW.name());
 		store.setDefault(IPreferences.MAX_SEARCH_RESULTS, 50);
