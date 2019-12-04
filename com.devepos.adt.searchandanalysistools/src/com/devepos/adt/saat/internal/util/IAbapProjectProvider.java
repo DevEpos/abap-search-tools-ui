@@ -3,6 +3,7 @@ package com.devepos.adt.saat.internal.util;
 import org.eclipse.core.resources.IProject;
 
 import com.sap.adt.communication.session.ISystemSession;
+import com.sap.adt.destinations.model.IDestinationData;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 import com.sap.adt.tools.core.project.IAbapProject;
 
@@ -36,7 +37,7 @@ public interface IAbapProjectProvider {
 
 	/**
 	 * Sets the project in the project provider
-	 * 
+	 *
 	 * @param project the project to be used
 	 */
 	void setProject(IProject project);
@@ -54,6 +55,13 @@ public interface IAbapProjectProvider {
 	 * @return
 	 */
 	String getDestinationId();
+
+	/**
+	 * Returns the destination data of the ABAP Project
+	 * 
+	 * @return the destination data of the ABAP Project
+	 */
+	IDestinationData getDestinationData();
 
 	/**
 	 * Ensures that the current user is logged on to the project

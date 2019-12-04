@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.devepos.adt.saat.internal.search.SearchType;
 import com.devepos.adt.saat.internal.util.IAbapProjectProvider;
+import com.sap.adt.destinations.model.IDestinationData;
 
 /**
  * Search request for an Object Search. <br>
@@ -47,8 +48,12 @@ public class ObjectSearchRequest {
 
 	@Override
 	public String toString() {
-		final String[] destination = getDestinationId().split("_");
-		return String.format("'%s' (%s) [%s-%s]", getQuery(), getSearchType(), destination[0], destination[1]);
+		final String destinationInfo = getDestinationInfo();
+		if (destinationInfo.isEmpty()) {
+			return String.format("'%s' (%s)", getQuery(), getSearchType());
+		} else {
+			return String.format("'%s' (%s) [%s]", getQuery(), getSearchType(), destinationInfo);
+		}
 	}
 
 	public String getQuery() {
@@ -149,4 +154,12 @@ public class ObjectSearchRequest {
 		return this.parametersString != null ? this.parametersString : "";
 	}
 
+	private String getDestinationInfo() {
+		if (this.projectProvider == null || !this.projectProvider.hasProject()) {
+			return "";
+		} else {
+			final IDestinationData destData = this.projectProvider.getDestinationData();
+			return String.format("%s-%s", destData.getSystemConfiguration().getSystemId(), destData.getClient());
+		}
+	}
 }

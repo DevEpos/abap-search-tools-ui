@@ -8,6 +8,7 @@ import org.eclipse.ui.PlatformUI;
 
 import com.sap.adt.communication.session.AdtSystemSessionFactory;
 import com.sap.adt.communication.session.ISystemSession;
+import com.sap.adt.destinations.model.IDestinationData;
 import com.sap.adt.destinations.ui.logon.AdtLogonServiceUIFactory;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 import com.sap.adt.tools.core.project.IAbapProject;
@@ -115,5 +116,13 @@ public class AbapProjectProxy implements IAbapProjectProvider {
 	@Override
 	public IAbapProjectProvider copy() {
 		return new AbapProjectProxy(this.project.orElse(null));
+	}
+
+	@Override
+	public IDestinationData getDestinationData() {
+		if (!hasProject()) {
+			return null;
+		}
+		return getAbapProject().getDestinationData();
 	}
 }

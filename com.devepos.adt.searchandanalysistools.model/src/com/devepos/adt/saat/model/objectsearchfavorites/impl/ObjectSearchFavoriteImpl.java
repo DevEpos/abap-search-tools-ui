@@ -43,7 +43,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 	/**
 	 * The default value of the '{@link #getObjectName() <em>Object Name</em>}'
 	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see       #getObjectName()
 	 * @generated
 	 * @ordered
@@ -53,7 +53,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 	/**
 	 * The cached value of the '{@link #getObjectName() <em>Object Name</em>}'
 	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see       #getObjectName()
 	 * @generated
 	 * @ordered
@@ -63,7 +63,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 	/**
 	 * The default value of the '{@link #getSearchFilter() <em>Search Filter</em>}'
 	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see       #getSearchFilter()
 	 * @generated
 	 * @ordered
@@ -73,7 +73,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 	/**
 	 * The cached value of the '{@link #getSearchFilter() <em>Search Filter</em>}'
 	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see       #getSearchFilter()
 	 * @generated
 	 * @ordered
@@ -83,7 +83,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 	/**
 	 * The default value of the '{@link #getDescription() <em>Description</em>}'
 	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see       #getDescription()
 	 * @generated
 	 * @ordered
@@ -93,7 +93,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 	/**
 	 * The cached value of the '{@link #getDescription() <em>Description</em>}'
 	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see       #getDescription()
 	 * @generated
 	 * @ordered
@@ -103,7 +103,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 	/**
 	 * The default value of the '{@link #getDestinationId() <em>Destination
 	 * Id</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see       #getDestinationId()
 	 * @generated
 	 * @ordered
@@ -113,7 +113,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 	/**
 	 * The cached value of the '{@link #getDestinationId() <em>Destination Id</em>}'
 	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see       #getDestinationId()
 	 * @generated
 	 * @ordered
@@ -123,7 +123,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 	/**
 	 * The default value of the '{@link #isAndSearchActive() <em>And Search
 	 * Active</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see       #isAndSearchActive()
 	 * @generated
 	 * @ordered
@@ -133,7 +133,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 	/**
 	 * The cached value of the '{@link #isAndSearchActive() <em>And Search
 	 * Active</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see       #isAndSearchActive()
 	 * @generated
 	 * @ordered
@@ -143,7 +143,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 	/**
 	 * The default value of the '{@link #getSearchType() <em>Search Type</em>}'
 	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see       #getSearchType()
 	 * @generated
 	 * @ordered
@@ -153,7 +153,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 	/**
 	 * The cached value of the '{@link #getSearchType() <em>Search Type</em>}'
 	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see       #getSearchType()
 	 * @generated
 	 * @ordered
@@ -163,7 +163,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 	/**
 	 * The default value of the '{@link #isProjectIndependent() <em>Project
 	 * Independent</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see       #isProjectIndependent()
 	 * @generated
 	 * @ordered
@@ -173,7 +173,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 	/**
 	 * The cached value of the '{@link #isProjectIndependent() <em>Project
 	 * Independent</em>}' attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see       #isProjectIndependent()
 	 * @generated
 	 * @ordered
@@ -183,7 +183,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 	/**
 	 * The default value of the '{@link #getMaxResults() <em>Max Results</em>}'
 	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see       #getMaxResults()
 	 * @generated
 	 * @ordered
@@ -193,7 +193,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 	/**
 	 * The cached value of the '{@link #getMaxResults() <em>Max Results</em>}'
 	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see       #getMaxResults()
 	 * @generated
 	 * @ordered
@@ -203,7 +203,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 	/**
 	 * The default value of the '{@link #isAllResults() <em>All Results</em>}'
 	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see       #isAllResults()
 	 * @generated
 	 * @ordered
@@ -213,7 +213,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 	/**
 	 * The cached value of the '{@link #isAllResults() <em>All Results</em>}'
 	 * attribute. <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @see       #isAllResults()
 	 * @generated
 	 * @ordered
@@ -222,7 +222,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated
 	 */
 	protected ObjectSearchFavoriteImpl() {
@@ -231,7 +231,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated
 	 */
 	@Override
@@ -241,7 +241,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated
 	 */
 	@Override
@@ -251,7 +251,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated
 	 */
 	@Override
@@ -266,7 +266,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated
 	 */
 	@Override
@@ -276,7 +276,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated
 	 */
 	@Override
@@ -291,7 +291,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated
 	 */
 	@Override
@@ -301,7 +301,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated
 	 */
 	@Override
@@ -316,7 +316,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated
 	 */
 	@Override
@@ -326,7 +326,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated
 	 */
 	@Override
@@ -341,7 +341,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated
 	 */
 	@Override
@@ -351,7 +351,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated
 	 */
 	@Override
@@ -367,7 +367,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated
 	 */
 	@Override
@@ -377,7 +377,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated
 	 */
 	@Override
@@ -392,7 +392,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated
 	 */
 	@Override
@@ -402,7 +402,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated
 	 */
 	@Override
@@ -418,7 +418,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated
 	 */
 	@Override
@@ -428,7 +428,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated
 	 */
 	@Override
@@ -443,7 +443,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated
 	 */
 	@Override
@@ -453,7 +453,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated
 	 */
 	@Override
@@ -468,7 +468,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated
 	 */
 	@Override
@@ -498,7 +498,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated
 	 */
 	@Override
@@ -537,7 +537,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated
 	 */
 	@Override
@@ -576,7 +576,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 
 	/**
 	 * <!-- begin-user-doc --> <!-- end-user-doc -->
-	 * 
+	 *
 	 * @generated
 	 */
 	@Override
@@ -618,10 +618,9 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 		if (isProjectIndependent()) {
 			destinationId = "[?] ";
 		} else {
-			destinationId = getDestinationId();
-			if (destinationId != null) {
-				final String[] destinationData = destinationId.split("_");
-				destinationId = String.format("[%s-%s] ", destinationData[0], destinationData[1]);
+			final String[] destinationData = getDestinationId().split("_");
+			if (destinationData != null && destinationData.length >= 1) {
+				destinationId = String.format("[%s] ", destinationData[0]);
 			} else {
 				destinationId = "";
 			}
