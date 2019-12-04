@@ -36,7 +36,7 @@ public class ObjectSearchEngine {
 	public static void runSearchFromFavorite(final IObjectSearchFavorite favorite) {
 		final IAbapProjectProvider projectProvider = AbapProjectProviderAccessor
 			.getProviderForDestination(favorite.getDestinationId());
-		if (projectProvider == null) {
+		if (projectProvider == null || !projectProvider.hasProject()) {
 			MessageDialog.openError(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
 				Messages.Dialog_ErrorTitle_xmsg,
 				MessageFormat.format(Messages.ObjectSearch_NoProjectFound_xmsg, favorite.getDestinationId()));

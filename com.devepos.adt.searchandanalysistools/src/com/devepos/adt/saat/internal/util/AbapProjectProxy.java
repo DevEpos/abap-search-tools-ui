@@ -90,7 +90,7 @@ public class AbapProjectProxy implements IAbapProjectProvider {
 
 	@Override
 	public boolean hasProject() {
-		return this.project.isPresent();
+		return this.project.isPresent() && getAbapProject() != null;
 	}
 
 	@Override
