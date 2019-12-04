@@ -1,6 +1,7 @@
 package com.devepos.adt.saat.internal.search.ui;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jface.action.Action;
@@ -316,27 +317,40 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 		this.searchResultTree = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
 		this.searchResultTree.setContentProvider(new TreeContentProvider());
 		this.searchResultTree.setLabelProvider(new DelegatingStyledCellLabelProvider(new ViewLabelProvider()));
-		this.searchResultTree.addDoubleClickListener(event -> {
+		this.searchResultTree.addOpenListener(event -> {
 			final ITreeSelection sel = (ITreeSelection) event.getSelection();
-			final Object selectedObject = sel.getFirstElement();
-			if (selectedObject instanceof IAdtObjectReferenceNode) {
-				final IAdtObjectReferenceNode selectedAdtObject = (IAdtObjectReferenceNode) selectedObject;
-
-				if (selectedAdtObject != null) {
-					this.searchQuery.getProjectProvider().openObjectReference(selectedAdtObject.getObjectReference());
-				}
-			} else if (selectedObject instanceof ICollectionTreeNode) {
-				final boolean isExpanded = this.searchResultTree.getExpandedState(selectedObject);
-				if (isExpanded) {
-					this.searchResultTree.collapseToLevel(selectedObject, 1);
-				} else {
-					this.searchResultTree.expandToLevel(selectedObject, 1);
-				}
-			} else if (selectedObject instanceof ActionTreeNode) {
-				((ActionTreeNode) selectedObject).getAction().execute();
+			final Iterator<?> selIter = sel.iterator();
+			while (selIter.hasNext()) {
+				handleOpenOnTreeNode(selIter.next());
 			}
 		});
+		this.searchResultTree.addDoubleClickListener(event -> {
+			final ITreeSelection sel = (ITreeSelection) event.getSelection();
+			handleOpenOnTreeNode(sel.getFirstElement());
+		});
 
+	}
+
+	private void handleOpenOnTreeNode(final Object node) {
+		if (node == null) {
+			return;
+		}
+		if (node instanceof IAdtObjectReferenceNode) {
+			final IAdtObjectReferenceNode selectedAdtObject = (IAdtObjectReferenceNode) node;
+
+			if (selectedAdtObject != null) {
+				this.searchQuery.getProjectProvider().openObjectReference(selectedAdtObject.getObjectReference());
+			}
+		} else if (node instanceof ICollectionTreeNode) {
+			final boolean isExpanded = this.searchResultTree.getExpandedState(node);
+			if (isExpanded) {
+				this.searchResultTree.collapseToLevel(node, 1);
+			} else {
+				this.searchResultTree.expandToLevel(node, 1);
+			}
+		} else if (node instanceof ActionTreeNode) {
+			((ActionTreeNode) node).getAction().execute();
+		}
 	}
 
 	private void hookContextMenu() {

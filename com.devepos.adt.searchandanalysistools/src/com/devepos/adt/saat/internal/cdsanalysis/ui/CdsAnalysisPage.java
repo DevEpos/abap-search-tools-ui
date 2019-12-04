@@ -1,5 +1,6 @@
 package com.devepos.adt.saat.internal.cdsanalysis.ui;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.runtime.IAdaptable;
@@ -204,7 +205,7 @@ public abstract class CdsAnalysisPage<T extends CdsAnalysis> extends Page {
 
 	/**
 	 * Loads the current input into the analysis page
-	 * 
+	 *
 	 * @param uiState the UI state from the last activation or <code>null</code>
 	 */
 	protected abstract void loadInput(ViewUiState uiState);
@@ -271,29 +272,48 @@ public abstract class CdsAnalysisPage<T extends CdsAnalysis> extends Page {
 	protected void registerTreeListeners() {
 		this.viewer.addDoubleClickListener(event -> {
 			final ITreeSelection sel = (ITreeSelection) event.getSelection();
-			final Object selectedObject = sel.getFirstElement();
-			if (selectedObject instanceof IAdtObjectReferenceNode) {
-				final IAdtObjectReferenceNode selectedAdtObject = (IAdtObjectReferenceNode) selectedObject;
-
-				if (selectedAdtObject != null) {
-					final IDestinationProvider destProvider = selectedAdtObject.getAdapter(IDestinationProvider.class);
-					if (destProvider != null) {
-						final IAbapProjectProvider projectProvider = AbapProjectProviderAccessor
-							.getProviderForDestination(destProvider.getDestinationId());
-						projectProvider.openObjectReference(selectedAdtObject.getObjectReference());
-					}
-				}
-			} else if (selectedObject instanceof ICollectionTreeNode) {
-				final boolean isExpanded = ((TreeViewer) this.viewer).getExpandedState(selectedObject);
-				if (isExpanded) {
-					((TreeViewer) this.viewer).collapseToLevel(selectedObject, 1);
-				} else {
-					((TreeViewer) this.viewer).expandToLevel(selectedObject, 1);
-				}
-			} else if (selectedObject instanceof ActionTreeNode) {
-				((ActionTreeNode) selectedObject).getAction().execute();
+			handleOpenOnNode(sel.getFirstElement());
+		});
+		this.viewer.addOpenListener(event -> {
+			final ITreeSelection sel = (ITreeSelection) event.getSelection();
+			final Iterator<?> selectionIter = sel.iterator();
+			while (selectionIter.hasNext()) {
+				handleOpenOnNode(selectionIter.next());
 			}
 		});
+	}
+
+	/**
+	 * Handles the open event on one or several tree nodes in the main tree viewer
+	 * of the CDS Analysis page
+	 * 
+	 * @param treeNode the tree node to be handled
+	 */
+	protected void handleOpenOnNode(final Object treeNode) {
+		if (treeNode == null) {
+			return;
+		}
+		if (treeNode instanceof IAdtObjectReferenceNode) {
+			final IAdtObjectReferenceNode selectedAdtObject = (IAdtObjectReferenceNode) treeNode;
+
+			if (selectedAdtObject != null) {
+				final IDestinationProvider destProvider = selectedAdtObject.getAdapter(IDestinationProvider.class);
+				if (destProvider != null) {
+					final IAbapProjectProvider projectProvider = AbapProjectProviderAccessor
+						.getProviderForDestination(destProvider.getDestinationId());
+					projectProvider.openObjectReference(selectedAdtObject.getObjectReference());
+				}
+			}
+		} else if (treeNode instanceof ICollectionTreeNode) {
+			final boolean isExpanded = ((TreeViewer) this.viewer).getExpandedState(treeNode);
+			if (isExpanded) {
+				((TreeViewer) this.viewer).collapseToLevel(treeNode, 1);
+			} else {
+				((TreeViewer) this.viewer).expandToLevel(treeNode, 1);
+			}
+		} else if (treeNode instanceof ActionTreeNode) {
+			((ActionTreeNode) treeNode).getAction().execute();
+		}
 	}
 
 	/**
