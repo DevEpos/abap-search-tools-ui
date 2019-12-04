@@ -24,6 +24,7 @@ import com.devepos.adt.saat.internal.search.favorites.IObjectSearchFavorites;
 import com.devepos.adt.saat.internal.search.favorites.ImportFavoritesAction;
 import com.devepos.adt.saat.internal.search.favorites.ManageSearchFavoritesDialog;
 import com.devepos.adt.saat.internal.search.favorites.NewSearchFavoriteDialog;
+import com.devepos.adt.saat.internal.search.favorites.ObjectSearchFavoritesUtil;
 import com.devepos.adt.saat.internal.util.IImages;
 import com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavorite;
 
@@ -80,7 +81,7 @@ public class SearchFavoritesAction extends Action implements IMenuCreator {
 			addActionToMenu(this.menu, noFavoritesAction);
 		} else {
 			for (final IObjectSearchFavorite favorite : this.favoriteManager.getFavorites()) {
-				final IAction favoriteAction = new Action(favorite.toString()) {
+				final IAction favoriteAction = new Action(ObjectSearchFavoritesUtil.getFavoriteDisplayName(favorite)) {
 					@Override
 					public void run() {
 						runSearch(favorite);

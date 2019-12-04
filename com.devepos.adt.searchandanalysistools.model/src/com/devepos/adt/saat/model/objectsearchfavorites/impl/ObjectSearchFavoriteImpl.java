@@ -614,25 +614,27 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
 			return super.toString();
 		}
 
-		String destinationId = null;
-		if (isProjectIndependent()) {
-			destinationId = "[?] ";
-		} else {
-			final String[] destinationData = getDestinationId().split("_");
-			if (destinationData != null && destinationData.length >= 1) {
-				destinationId = String.format("[%s] ", destinationData[0]);
-			} else {
-				destinationId = "";
-			}
-		}
-		String objectName = getObjectName();
-		if (objectName != null && !objectName.isEmpty()) {
-			objectName += " ";
-		} else {
-			objectName = "";
-		}
-
-		return String.format("%s%s - '%s'", destinationId, getDescription(), objectName + getSearchFilter());
+		final StringBuilder result = new StringBuilder(super.toString());
+		result.append(" (objectName: ");
+		result.append(this.objectName);
+		result.append(", searchFilter: ");
+		result.append(this.searchFilter);
+		result.append(", description: ");
+		result.append(this.description);
+		result.append(", destinationId: ");
+		result.append(this.destinationId);
+		result.append(", andSearchActive: ");
+		result.append(this.andSearchActive);
+		result.append(", searchType: ");
+		result.append(this.searchType);
+		result.append(", projectIndependent: ");
+		result.append(this.projectIndependent);
+		result.append(", maxResults: ");
+		result.append(this.maxResults);
+		result.append(", allResults: ");
+		result.append(this.allResults);
+		result.append(')');
+		return result.toString();
 	}
 
 } // ObjectSearchFavoriteImpl

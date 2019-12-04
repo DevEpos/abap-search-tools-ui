@@ -17,6 +17,7 @@ import com.devepos.adt.saat.internal.search.SearchType;
 import com.devepos.adt.saat.internal.search.favorites.ExportFavoritesAction;
 import com.devepos.adt.saat.internal.search.favorites.IObjectSearchFavorites;
 import com.devepos.adt.saat.internal.search.favorites.ImportFavoritesAction;
+import com.devepos.adt.saat.internal.search.favorites.ObjectSearchFavoritesUtil;
 import com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavorite;
 
 /**
@@ -51,7 +52,7 @@ public class ManageSearchFavoritesMenu extends CompoundContributionItem {
 			items.add(new ActionContributionItem(noFavoritesAction));
 		} else {
 			for (final IObjectSearchFavorite favorite : this.favoriteManager.getFavorites()) {
-				final IAction favoriteAction = new Action(favorite.toString()) {
+				final IAction favoriteAction = new Action(ObjectSearchFavoritesUtil.getFavoriteDisplayName(favorite)) {
 					@Override
 					public void run() {
 						runSearch(favorite);

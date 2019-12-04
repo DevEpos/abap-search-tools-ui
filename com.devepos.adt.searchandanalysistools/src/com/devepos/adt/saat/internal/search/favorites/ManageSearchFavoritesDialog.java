@@ -297,7 +297,7 @@ public class ManageSearchFavoritesDialog extends SelectionDialog {
 
 		@Override
 		public String getText(final Object element) {
-			return ((IObjectSearchFavorite) element).toString();
+			return ObjectSearchFavoritesUtil.getFavoriteDisplayName((IObjectSearchFavorite) element);
 		}
 
 		@Override
