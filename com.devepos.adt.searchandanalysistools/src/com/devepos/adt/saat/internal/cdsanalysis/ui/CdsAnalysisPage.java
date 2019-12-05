@@ -270,10 +270,6 @@ public abstract class CdsAnalysisPage<T extends CdsAnalysis> extends Page {
 	 * Subclasses may override
 	 */
 	protected void registerTreeListeners() {
-		this.viewer.addDoubleClickListener(event -> {
-			final ITreeSelection sel = (ITreeSelection) event.getSelection();
-			handleOpenOnNode(sel.getFirstElement());
-		});
 		this.viewer.addOpenListener(event -> {
 			final ITreeSelection sel = (ITreeSelection) event.getSelection();
 			final Iterator<?> selectionIter = sel.iterator();
@@ -286,7 +282,7 @@ public abstract class CdsAnalysisPage<T extends CdsAnalysis> extends Page {
 	/**
 	 * Handles the open event on one or several tree nodes in the main tree viewer
 	 * of the CDS Analysis page
-	 * 
+	 *
 	 * @param treeNode the tree node to be handled
 	 */
 	protected void handleOpenOnNode(final Object treeNode) {

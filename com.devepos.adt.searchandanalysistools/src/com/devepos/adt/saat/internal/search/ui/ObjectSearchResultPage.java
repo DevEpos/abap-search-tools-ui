@@ -324,11 +324,6 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 				handleOpenOnTreeNode(selIter.next());
 			}
 		});
-		this.searchResultTree.addDoubleClickListener(event -> {
-			final ITreeSelection sel = (ITreeSelection) event.getSelection();
-			handleOpenOnTreeNode(sel.getFirstElement());
-		});
-
 	}
 
 	private void handleOpenOnTreeNode(final Object node) {
