@@ -295,7 +295,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).span(2, 1).grab(true, false).applyTo(this.searchInput);
 		SWTUtil.addTextEditMenu(this.searchInput);
 		this.searchInput.addModifyListener(e -> {
-			ObjectSearchPage.this.searchRequest.setSearchTerm(ObjectSearchPage.this.searchInput.getText());
+			ObjectSearchPage.this.searchRequest.setSearchTerm(ObjectSearchPage.this.searchInput.getText().trim());
 			updateOKStatus();
 		});
 
