@@ -198,6 +198,20 @@ public class NewSearchFavoriteDialog extends StatusDialog {
 	}
 
 	@Override
+	protected void updateStatus(final IStatus status) {
+		super.updateStatus(status);
+		final IStatus currentStatus = getStatus();
+		if (currentStatus.matches(IStatus.ERROR)) {
+			final Shell shell = getShell();
+			if (shell == null) {
+				return;
+			}
+			shell.pack(true);
+			shell.layout(true);
+		}
+	}
+
+	@Override
 	protected void okPressed() {
 		final IObjectSearchFavorite newFavorite = IObjectSearchFavoritesFactory.eINSTANCE.createObjectSearchFavorite();
 		newFavorite.setDescription(this.favoriteDescription);
