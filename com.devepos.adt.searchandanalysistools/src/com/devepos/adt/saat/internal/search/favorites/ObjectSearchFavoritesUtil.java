@@ -22,6 +22,6 @@ public final class ObjectSearchFavoritesUtil {
 		final String systemId = String.format("[%s] ",
 			favorite.isProjectIndependent() ? "?" : DestinationUtil.getSystemId(favorite.getDestinationId()));
 		return String.format("%s%s - '%s'", systemId, favorite.getDescription(),
-			favorite.getObjectName() + favorite.getSearchFilter());
+			String.format("%s %s", favorite.getObjectName(), favorite.getSearchFilter()).trim());
 	}
 }
