@@ -186,7 +186,7 @@ public class NewSearchFavoriteDialog extends StatusDialog {
 			// check if there already is a favorite with this description
 			if (this.favoriteManager.contains(this.isProjectIndependent ? null : this.searchRequest.getDestinationId(),
 				this.searchRequest.getSearchType().name(), this.favoriteDescription)) {
-				status = new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, IStatus.ERROR,
+				status = new Status(IStatus.WARNING, SearchAndAnalysisPlugin.PLUGIN_ID, IStatus.WARNING,
 					NLS.bind(Messages.NewSearchFavoriteDialog_DuplicateFavoriteError_xmsg, this.favoriteDescription), null);
 			}
 		}
@@ -201,7 +201,7 @@ public class NewSearchFavoriteDialog extends StatusDialog {
 	protected void updateStatus(final IStatus status) {
 		super.updateStatus(status);
 		final IStatus currentStatus = getStatus();
-		if (currentStatus.matches(IStatus.ERROR)) {
+		if (currentStatus.matches(IStatus.ERROR | IStatus.WARNING)) {
 			final Shell shell = getShell();
 			if (shell == null) {
 				return;
