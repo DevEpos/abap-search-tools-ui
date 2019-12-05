@@ -203,6 +203,7 @@ public class Messages extends NLS {
 	public static String MainPreferencePage_RememberLastProject_xfld;
 	public static String MainPreferencePage_SearchHistorySize_xfld;
 	public static String MainPreferencePage_SearchSettings_xgrp;
+	public static String MainPreferencePage_UseCurrentTextSelectionForObjName_xfld;
 	public static String ManageSearchFavoritesDialog_Title_xtit;
 	public static String NewSearchFavoriteDialog_CreateFavorite_xbut;
 	public static String NewSearchFavoriteDialog_Description_xfld;

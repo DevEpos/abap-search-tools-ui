@@ -49,6 +49,11 @@ public interface IPreferences {
 	 * Sets focus to search type field in object page, otherwise on the first input
 	 * field
 	 */
-	String FOCUS_ON_SEARCH_TYPE = "com.devepos.adt.saat.objectsearch.focusOnSearchType";
+	String FOCUS_ON_SEARCH_TYPE = "com.devepos.adt.saat.objectsearch.focusOnSearchType"; //$NON-NLS-1$
+	/**
+	 * Boolean preferences to use current text selection in object name field in
+	 * search dialog
+	 */
+	String TAKE_TEXT_SELECTION_INTO_SEARCH = "com.devepos.adt.saat.objectsearch.considerTextSelection"; //$NON-NLS-1$
 
 }

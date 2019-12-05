@@ -88,8 +88,9 @@ public class MainPreferencePage extends PreferencePage implements IWorkbenchPref
 
 		addBooleanEditor(IPreferences.CURSOR_AT_END_OF_SEARCH_INPUT, Messages.MainPreferencePage_CursorAtEndSetting_xfld,
 			searchGroup);
-		addBooleanEditor(IPreferences.FOCUS_ON_SEARCH_TYPE, Messages.MainPreferencePage_FocusOnSearchType_xfld,
-			searchGroup);
+		addBooleanEditor(IPreferences.FOCUS_ON_SEARCH_TYPE, Messages.MainPreferencePage_FocusOnSearchType_xfld, searchGroup);
+		addBooleanEditor(IPreferences.TAKE_TEXT_SELECTION_INTO_SEARCH,
+			Messages.MainPreferencePage_UseCurrentTextSelectionForObjName_xfld, searchGroup);
 		addBooleanEditor(IPreferences.OVERWRITE_OPENED_SEARCH_QUERY, Messages.MainPreferencePage_OverwriteSearchQuerySetting_xfld,
 			searchGroup);
 

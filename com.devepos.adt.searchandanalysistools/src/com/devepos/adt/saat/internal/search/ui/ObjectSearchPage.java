@@ -11,8 +11,10 @@ import org.eclipse.jface.fieldassist.FieldDecorationRegistry;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.ComboViewer;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.osgi.util.NLS;
@@ -42,6 +44,7 @@ import com.devepos.adt.saat.internal.search.contentassist.SearchPatternProvider;
 import com.devepos.adt.saat.internal.util.AbapProjectProxy;
 import com.devepos.adt.saat.internal.util.AdtUtil;
 import com.devepos.adt.saat.internal.util.IAbapProjectProvider;
+import com.devepos.adt.saat.internal.util.SelectionUtil;
 import com.devepos.adt.saat.internal.util.StatusUtil;
 import com.devepos.adt.saat.internal.util.TextControlUtil;
 import com.sap.adt.tools.core.ui.AbapProjectProposalProvider;
@@ -230,6 +233,14 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 		// set initial max result values
 		updateMaxResultsScaleFromNumber(this.prefStore.getInt(IPreferences.MAX_SEARCH_RESULTS));
 		updateMaxResults();
+
+		if (this.prefStore.getBoolean(IPreferences.TAKE_TEXT_SELECTION_INTO_SEARCH)) {
+			final ISelection selection = SelectionUtil.getSelection();
+			if (selection != null && selection instanceof ITextSelection) {
+				final String selectedText = ((ITextSelection) selection).getText();
+				this.searchInput.setText(selectedText);
+			}
+		}
 	}
 
 	private void createSearchTypeInput(final Composite parent) {
