@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: com.devepos.adt.searchandanalysistools;singleton:=true
-Bundle-Version: 1.2.0.qualifier
+Bundle-Version: 1.2.1.qualifier
 Bundle-ClassPath: .
 Bundle-Activator: com.devepos.adt.saat.internal.SearchAndAnalysisPlugin
 Bundle-Vendor: %providerName
