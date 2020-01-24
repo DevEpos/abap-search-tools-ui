@@ -1,15 +1,10 @@
 package com.devepos.adt.saat.internal.ui;
 
-import org.eclipse.jface.resource.ColorRegistry;
-import org.eclipse.jface.resource.FontDescriptor;
-import org.eclipse.jface.resource.JFaceResources;
-import org.eclipse.jface.util.IPropertyChangeListener;
-import org.eclipse.jface.util.PropertyChangeEvent;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.jface.viewers.StyledString.Styler;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.TextStyle;
-import org.eclipse.swt.widgets.Display;
 
 /**
  * Factory for creating font stylers {@see Styler}
@@ -17,71 +12,62 @@ import org.eclipse.swt.widgets.Display;
  * @author stockbal
  */
 public class StylerFactory {
+	private static final String STYLE_KEY = "style:%s|foreground:%s|background:%s"; //$NON-NLS-1$
+	private static Map<String, CustomStyler> customStylerRegistry;
 
 	/**
 	 * {@link Styler} for bold text
 	 *
 	 * @return
 	 */
-	public static Styler BOLD_STYLER = new CustomStyler(SWT.BOLD);
+	public static Styler BOLD_STYLER = new CustomStyler(SWT.BOLD, true);
 
 	/**
 	 * {@link Styler} for italic text
 	 *
 	 * @return
 	 */
-	public static Styler ITALIC_STYLER = new CustomStyler(SWT.ITALIC);
+	public static Styler ITALIC_STYLER = createCustomStyler(SWT.ITALIC, null, null);
 
 	/**
-	 * Creates custom {@link Styler} with the given font style and foreground and
-	 * background colors
+	 * Creates/Retrieves a custom style with the given style, foreground color and
+	 * background color
 	 *
-	 * @param  fontStyle
-	 * @param  foregroundColorName
-	 * @param  backgroundColorName
-	 * @return
+	 * @param  style               the style for the font. Possible values are
+	 *                             {@link SWT#ITALIC}, {@link SWT#BOLD} or
+	 *                             {@link SWT#NORMAL}
+	 * @param  foregroundColorName the symbolic name of the foreground color
+	 * @param  backgroundColorName the symbolic name of the background color
+	 * @return                     the custom styler
 	 */
-	public static Styler createCustomStyler(final int fontStyle, final String foregroundColorName,
+	public static CustomStyler createCustomStyler(final int style, final String foregroundColorName,
 		final String backgroundColorName) {
-		return new CustomStyler(fontStyle, foregroundColorName, backgroundColorName);
+		final String stylerKey = String.format(STYLE_KEY, style, foregroundColorName, backgroundColorName);
+
+		return getStyler(stylerKey, style, foregroundColorName, backgroundColorName);
 	}
 
-	private static final class CustomStyler extends Styler implements IPropertyChangeListener {
-		private final int style;
-		private final String foregroundColorName;
-		private final String backgroundColorName;
-
-		public CustomStyler(final int style) {
-			this(style, null, null);
+	/**
+	 * Cleans the styler registry
+	 */
+	public static void cleanRegistry() {
+		if (customStylerRegistry != null) {
+			customStylerRegistry.values().stream().forEach(styler -> styler.dispose());
+			customStylerRegistry.clear();
+			customStylerRegistry = null;
 		}
+	}
 
-		public CustomStyler(final int style, final String foregroundColorName, final String backgroundColorName) {
-			this.style = style;
-			this.foregroundColorName = foregroundColorName;
-			this.backgroundColorName = backgroundColorName;
+	private static CustomStyler getStyler(final String stylerKey, final int style, final String foregroundColorName,
+		final String backgroundColorName) {
+		if (customStylerRegistry == null) {
+			customStylerRegistry = new HashMap<>();
 		}
-
-		@Override
-		public void applyStyles(final TextStyle textStyle) {
-			final FontDescriptor fontDescriptor = JFaceResources.getDefaultFontDescriptor().setStyle(this.style);
-			final Font font = fontDescriptor.createFont(Display.getCurrent());
-			textStyle.font = font;
-
-			final ColorRegistry colorRegistry = JFaceResources.getColorRegistry();
-			colorRegistry.addListener(this);
-
-			if (this.foregroundColorName != null) {
-				textStyle.foreground = colorRegistry.get(this.foregroundColorName);
-			}
-			if (this.backgroundColorName != null) {
-				textStyle.background = colorRegistry.get(this.backgroundColorName);
-			}
+		CustomStyler styler = customStylerRegistry.get(stylerKey);
+		if (styler == null) {
+			styler = new CustomStyler(style, foregroundColorName, backgroundColorName);
+			customStylerRegistry.put(stylerKey, styler);
 		}
-
-		@Override
-		public void propertyChange(final PropertyChangeEvent event) {
-
-		}
-
+		return styler;
 	}
 }
