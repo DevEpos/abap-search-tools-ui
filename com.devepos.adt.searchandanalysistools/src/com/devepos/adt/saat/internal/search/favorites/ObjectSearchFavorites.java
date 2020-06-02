@@ -3,11 +3,11 @@ package com.devepos.adt.saat.internal.search.favorites;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.devepos.adt.saat.internal.IModificationListener;
-import com.devepos.adt.saat.internal.IModificationListener.ModificationKind;
 import com.devepos.adt.saat.internal.search.ui.ObjectSearchRequest;
 import com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavorite;
 import com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavoritesFactory;
+import com.devepos.adt.tools.base.util.IModificationListener;
+import com.devepos.adt.tools.base.util.IModificationListener.ModificationKind;
 
 /**
  * Implementation of the {@link IObjectSearchFavorites} of the object search
@@ -16,7 +16,7 @@ import com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavoritesFa
  */
 public class ObjectSearchFavorites implements IObjectSearchFavorites {
 	private List<IObjectSearchFavorite> entries;
-	private final List<IModificationListener> listeners;
+	private final List<IModificationListener<IObjectSearchFavorite>> listeners;
 
 	public ObjectSearchFavorites() {
 		this.entries = new ArrayList<>();
@@ -72,18 +72,18 @@ public class ObjectSearchFavorites implements IObjectSearchFavorites {
 	}
 
 	@Override
-	public void addModificationListener(final IModificationListener listener) {
+	public void addModificationListener(final IModificationListener<IObjectSearchFavorite> listener) {
 		this.listeners.add(listener);
 	}
 
 	@Override
-	public void removeModificationListener(final IModificationListener listener) {
+	public void removeModificationListener(final IModificationListener<IObjectSearchFavorite> listener) {
 		this.listeners.remove(listener);
 	}
 
 	private void notifyModificationListeners(final ModificationKind kind) {
 		if (this.listeners != null) {
-			for (final IModificationListener listener : this.listeners) {
+			for (final IModificationListener<?> listener : this.listeners) {
 				listener.modified(kind);
 			}
 		}

@@ -2,16 +2,16 @@ package com.devepos.adt.saat.internal.search.favorites;
 
 import java.util.List;
 
-import com.devepos.adt.saat.internal.IModificationProvider;
 import com.devepos.adt.saat.internal.search.ui.ObjectSearchRequest;
 import com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavorite;
+import com.devepos.adt.tools.base.util.IModificationProvider;
 
 /**
  * Manages the favorites of the object search
  *
  * @author stockbal
  */
-public interface IObjectSearchFavorites extends IModificationProvider {
+public interface IObjectSearchFavorites extends IModificationProvider<IObjectSearchFavorite> {
 
 	/**
 	 * Adds the given entry to the search favorites

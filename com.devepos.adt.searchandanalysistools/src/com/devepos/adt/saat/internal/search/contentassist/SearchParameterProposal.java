@@ -4,15 +4,14 @@ import java.util.Locale;
 
 import org.eclipse.jface.fieldassist.IContentProposal;
 
-import com.devepos.adt.saat.internal.ObjectType;
 import com.devepos.adt.saat.internal.search.QueryParameterName;
+import com.devepos.adt.tools.base.ObjectType;
 
 /**
  * Search parameter for the DB object search <br>
  * A parameter is for a specific filter value i.e. <strong>owner:smith</strong>
  *
  * @author stockbal
- *
  */
 public class SearchParameterProposal implements IContentProposal {
 	private final String key;
@@ -25,54 +24,42 @@ public class SearchParameterProposal implements IContentProposal {
 	/**
 	 * Creates new search filter proposal with the given name and description
 	 *
-	 * @param key
-	 *          the key of the proposal
-	 * @param paramName
-	 *          the parameter name for the parameter proposal e.g.
-	 *          <strong>owner</strong>
-	 * @param description
-	 *          the description of the proposal
+	 * @param key         the key of the proposal
+	 * @param paramName   the parameter name for the parameter proposal e.g.
+	 *                    <strong>owner</strong>
+	 * @param description the description of the proposal
 	 */
 	public SearchParameterProposal(final String key, final QueryParameterName paramName, final String description,
-	    final String wordToComplete) {
+		final String wordToComplete) {
 		this(key, paramName, description, null, null, wordToComplete);
 	}
 
 	/**
 	 * Creates new search filter proposal with the given name and description
 	 *
-	 * @param key
-	 *          the key of the proposal
-	 * @param paramName
-	 *          the parameter name for the parameter proposal e.g.
-	 *          <strong>owner</strong>
-	 * @param description
-	 *          the description of the proposal
-	 * @param type
-	 *          the specific type of the parameter proposal
+	 * @param key         the key of the proposal
+	 * @param paramName   the parameter name for the parameter proposal e.g.
+	 *                    <strong>owner</strong>
+	 * @param description the description of the proposal
+	 * @param type        the specific type of the parameter proposal
 	 */
 	public SearchParameterProposal(final String key, final QueryParameterName paramName, final String description,
-	    final ObjectType type, final String wordToComplete) {
+		final ObjectType type, final String wordToComplete) {
 		this(key, paramName, description, null, type, wordToComplete);
 	}
 
 	/**
 	 * Creates new search filter proposal with the given name and description
 	 *
-	 * @param key
-	 *          the key of the proposal
-	 * @param paramName
-	 *          the parameter name for the parameter proposal e.g.
-	 *          <strong>owner</strong>
-	 * @param description
-	 *          the description of the proposal
-	 * @param longText
-	 *          the long text of the parameter proposal
-	 * @param type
-	 *          the specific type of the parameter proposal
+	 * @param key         the key of the proposal
+	 * @param paramName   the parameter name for the parameter proposal e.g.
+	 *                    <strong>owner</strong>
+	 * @param description the description of the proposal
+	 * @param longText    the long text of the parameter proposal
+	 * @param type        the specific type of the parameter proposal
 	 */
 	public SearchParameterProposal(final String key, final QueryParameterName paramName, final String description,
-	    final String longText, final ObjectType type, final String wordToComplete) {
+		final String longText, final ObjectType type, final String wordToComplete) {
 		this.key = key;
 		this.paramName = paramName;
 		this.longText = longText;
@@ -85,7 +72,7 @@ public class SearchParameterProposal implements IContentProposal {
 	public String getContent() {
 		String content = String.valueOf(this.key.toLowerCase(Locale.ENGLISH));
 		if (this.wordToComplete != null && !this.wordToComplete.isEmpty()
-		    && content.startsWith(this.wordToComplete.toLowerCase())) {
+			&& content.startsWith(this.wordToComplete.toLowerCase())) {
 			content = content.substring(this.wordToComplete.length());
 		}
 		return content;

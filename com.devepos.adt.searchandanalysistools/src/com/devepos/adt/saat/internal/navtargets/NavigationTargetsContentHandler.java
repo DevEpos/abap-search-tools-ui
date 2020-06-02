@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.devepos.adt.saat.internal.messages.Messages;
-import com.devepos.adt.saat.internal.util.AdtStaxContentHandlerUtility;
 import com.devepos.adt.saat.internal.util.IImages;
-import com.devepos.adt.saat.internal.util.IXmlElement;
-import com.devepos.adt.saat.internal.util.IXmlTags;
+import com.devepos.adt.tools.base.util.AdtStaxContentHandlerUtility;
+import com.devepos.adt.tools.base.util.IXmlElement;
+import com.devepos.adt.tools.base.util.IXmlTags;
 import com.sap.adt.communication.content.AdtMediaType;
 import com.sap.adt.communication.content.IContentHandler;
 import com.sap.adt.communication.message.IMessageBody;

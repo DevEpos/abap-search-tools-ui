@@ -2,11 +2,15 @@ package com.devepos.adt.saat.internal.elementinfo;
 
 import java.nio.charset.Charset;
 
+import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.messages.Messages;
-import com.devepos.adt.saat.internal.util.AdtStaxContentHandlerUtility;
 import com.devepos.adt.saat.internal.util.IImages;
-import com.devepos.adt.saat.internal.util.IXmlElement;
-import com.devepos.adt.saat.internal.util.IXmlTags;
+import com.devepos.adt.tools.base.elementinfo.ElementInfoCollection;
+import com.devepos.adt.tools.base.elementinfo.IAdtObjectReferenceElementInfo;
+import com.devepos.adt.tools.base.elementinfo.IElementInfoCollection;
+import com.devepos.adt.tools.base.util.AdtStaxContentHandlerUtility;
+import com.devepos.adt.tools.base.util.IXmlElement;
+import com.devepos.adt.tools.base.util.IXmlTags;
 import com.sap.adt.communication.content.AdtMediaType;
 import com.sap.adt.communication.content.IContentHandler;
 import com.sap.adt.communication.message.IMessageBody;
@@ -64,7 +68,8 @@ public class CdsSecondaryElementInfoContentHandler implements IContentHandler<IE
 	}
 
 	private void addAdtObjectCollection(final IXmlElement element, final String displayName) {
-		final IElementInfoCollection collection = new ElementInfoCollection(displayName, IImages.TYPE_GROUP);
+		final IElementInfoCollection collection = new ElementInfoCollection(displayName,
+			SearchAndAnalysisPlugin.getDefault().getImage(IImages.TYPE_GROUP));
 		for (final IXmlElement child : element.getChildren()) {
 			final IAdtObjectReferenceElementInfo elementInfo = ElementInfoXMLExtractor
 				.deserializeAdtObjectInfo(this.destinationId, child);
@@ -78,7 +83,8 @@ public class CdsSecondaryElementInfoContentHandler implements IContentHandler<IE
 
 	private void createCollection(final IXmlElement rootElement) {
 		final String displayName = rootElement.getAttributeValue(IXmlTags.AT_RAW_NAME);
-		this.collection = new ElementInfoCollection(displayName, IImages.VIRTUAL_FOLDER);
+		this.collection = new ElementInfoCollection(displayName,
+			SearchAndAnalysisPlugin.getDefault().getImage(IImages.VIRTUAL_FOLDER));
 	}
 
 	@Override

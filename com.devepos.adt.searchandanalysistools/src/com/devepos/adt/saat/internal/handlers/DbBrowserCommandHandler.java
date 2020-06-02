@@ -7,7 +7,8 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.PlatformUI;
 
 import com.devepos.adt.saat.internal.messages.Messages;
-import com.devepos.adt.saat.internal.util.AdtUtil;
+import com.devepos.adt.saat.internal.util.FeatureTester;
+import com.devepos.adt.tools.base.project.ProjectUtil;
 
 /**
  * Abstract Handler for Commands concerning the DB Browser Application (SAP GUI
@@ -19,7 +20,7 @@ public abstract class DbBrowserCommandHandler extends AbstractHandler {
 
 	/**
 	 * Returns <code>true</code> if the DB Browser feature is available
-	 * 
+	 *
 	 * @param  project an ABAP project
 	 * @return         <code>true</code> if the DB Browser feature is available
 	 */
@@ -27,7 +28,7 @@ public abstract class DbBrowserCommandHandler extends AbstractHandler {
 		if (project == null) {
 			return false;
 		}
-		return AdtUtil.isSapGuiDbBrowserAvailable(project);
+		return FeatureTester.isSapGuiDbBrowserAvailable(project);
 	}
 
 	/**
@@ -39,7 +40,7 @@ public abstract class DbBrowserCommandHandler extends AbstractHandler {
 	protected void showFeatureNotAvailableDialog(final IProject project) {
 		MessageDialog.openInformation(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
 			Messages.Dialog_InfoTitle_xmsg,
-			NLS.bind(Messages.DbBrowser_featureIsNotAvailable_xmsg, AdtUtil.getDestinationId(project)));
+			NLS.bind(Messages.DbBrowser_featureIsNotAvailable_xmsg, ProjectUtil.getDestinationId(project)));
 	}
 
 }

@@ -1,11 +1,13 @@
 package com.devepos.adt.saat.internal.elementinfo;
 
-import com.devepos.adt.saat.internal.ObjectType;
+import com.devepos.adt.tools.base.ObjectType;
+import com.devepos.adt.tools.base.elementinfo.IAdtObjectReferenceElementInfo;
+import com.devepos.adt.tools.base.elementinfo.IElementInfoCollection;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 
 /**
  * Service for reading element information
- * 
+ *
  * @author stockbal
  */
 public interface IElementInfoRetrievalService {

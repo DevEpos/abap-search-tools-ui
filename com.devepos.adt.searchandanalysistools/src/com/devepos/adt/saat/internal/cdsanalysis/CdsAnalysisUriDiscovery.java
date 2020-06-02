@@ -4,7 +4,8 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.devepos.adt.saat.internal.util.UriDiscoveryBase;
+import com.devepos.adt.saat.internal.util.IUriDiscoveryPaths;
+import com.devepos.adt.tools.base.util.UriDiscoveryBase;
 import com.sap.adt.compatibility.uritemplate.IAdtUriTemplate;
 
 /**
@@ -20,7 +21,7 @@ public class CdsAnalysisUriDiscovery extends UriDiscoveryBase {
 	private static final String DISCOVERY_TERM_CDS_ANALYSIS = "cdsanalysis"; //$NON-NLS-1$
 
 	public CdsAnalysisUriDiscovery(final String destination) {
-		super(destination, DISCOVERY_SCHEME);
+		super(destination, IUriDiscoveryPaths.OBJECT_SEARCH_DISOCOVERY_PATH, DISCOVERY_SCHEME);
 	}
 
 	/**

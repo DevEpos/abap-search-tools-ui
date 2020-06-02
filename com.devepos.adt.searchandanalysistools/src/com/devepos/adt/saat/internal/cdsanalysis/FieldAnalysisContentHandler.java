@@ -3,20 +3,21 @@ package com.devepos.adt.saat.internal.cdsanalysis;
 import java.util.Map;
 
 import com.devepos.adt.saat.internal.CdsSourceType;
+import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.elementinfo.AdtObjectElementInfoContentHandlerBase;
-import com.devepos.adt.saat.internal.elementinfo.AdtObjectReferenceElementInfo;
 import com.devepos.adt.saat.internal.elementinfo.ContentHandlerUtil;
 import com.devepos.adt.saat.internal.elementinfo.ExtendedAdtObjectInfo;
-import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
-import com.devepos.adt.saat.internal.elementinfo.IElementInfo;
-import com.devepos.adt.saat.internal.elementinfo.IElementInfoCollection;
-import com.devepos.adt.saat.internal.elementinfo.SimpleElementInfo;
 import com.devepos.adt.saat.internal.messages.Messages;
-import com.devepos.adt.saat.internal.util.AdtObjectReferenceModelFactory;
-import com.devepos.adt.saat.internal.util.AdtStaxContentHandlerUtility;
 import com.devepos.adt.saat.internal.util.IImages;
-import com.devepos.adt.saat.internal.util.IXmlElement;
-import com.devepos.adt.saat.internal.util.IXmlTags;
+import com.devepos.adt.tools.base.adtobject.AdtObjectReferenceModelFactory;
+import com.devepos.adt.tools.base.elementinfo.AdtObjectReferenceElementInfo;
+import com.devepos.adt.tools.base.elementinfo.IAdtObjectReferenceElementInfo;
+import com.devepos.adt.tools.base.elementinfo.IElementInfo;
+import com.devepos.adt.tools.base.elementinfo.IElementInfoCollection;
+import com.devepos.adt.tools.base.elementinfo.SimpleElementInfo;
+import com.devepos.adt.tools.base.util.AdtStaxContentHandlerUtility;
+import com.devepos.adt.tools.base.util.IXmlElement;
+import com.devepos.adt.tools.base.util.IXmlTags;
 import com.sap.adt.communication.content.AdtMediaType;
 import com.sap.adt.communication.message.IMessageBody;
 
@@ -107,7 +108,8 @@ public class FieldAnalysisContentHandler extends AdtObjectElementInfoContentHand
 					fieldName, false, properties);
 				if (properties.get(ICdsAnalysisConstants.IS_CALCULATED_PROP) != null && isRoot) {
 					final IElementInfo calculatedFieldInfo = new SimpleElementInfo(
-						Messages.FieldAnalysisContentHandler_CalculatedField_xmsg, IImages.FUNCTION);
+						Messages.FieldAnalysisContentHandler_CalculatedField_xmsg,
+						SearchAndAnalysisPlugin.getDefault().getImage(IImages.FUNCTION));
 					adtObjRefInfo.getChildren().add(calculatedFieldInfo);
 				}
 

@@ -18,13 +18,12 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Text;
 
 import com.devepos.adt.saat.internal.messages.Messages;
-import com.devepos.adt.saat.internal.util.Reflection;
+import com.devepos.adt.tools.base.util.Reflection;
 
 /**
  * Content Assist for ADT Repository Information System search pattern
  *
  * @author stockbal
- *
  */
 public class SearchPatternContentAssist extends ContentProposalProvider {
 	private static final int POPUP_DEFAULT_WIDTH = 300;
@@ -140,9 +139,8 @@ public class SearchPatternContentAssist extends ContentProposalProvider {
 	/**
 	 * Sets the label provider for the content proposal adapter
 	 *
-	 * @param labelProvider
-	 *          the ILabelProvider to be used to display the labels of the content
-	 *          proposals
+	 * @param labelProvider the ILabelProvider to be used to display the labels of
+	 *                      the content proposals
 	 */
 	public void setLabelProvider(final ILabelProvider labelProvider) {
 		getContentProposalAdapter().setLabelProvider(labelProvider);
@@ -163,7 +161,7 @@ public class SearchPatternContentAssist extends ContentProposalProvider {
 	private Point calculatePopupSize(final PopupDialog popup) {
 		int height = POPUP_DEFAULT_HEIGHT;
 		if (this.queryResults.get(0) instanceof SearchParameterProposal) {
-			return new Point(this.calculatePopupWidth(popup), height);
+			return new Point(calculatePopupWidth(popup), height);
 		}
 		if (this.queryResults.get(0) instanceof SearchFilterProposal) {
 			height = this.text.getSize().y * this.queryResults.size() * 3;
@@ -182,7 +180,7 @@ public class SearchPatternContentAssist extends ContentProposalProvider {
 		final GC gc = new GC(popup.getShell().getParent());
 		final Font font = popup.getShell().getChildren()[0].getFont();
 		gc.setFont(font);
-		final ILabelProvider labelProvider = this.getContentProposalAdapter().getLabelProvider();
+		final ILabelProvider labelProvider = getContentProposalAdapter().getLabelProvider();
 		for (final IContentProposal proposal : this.queryResults) {
 			int proposalWidth = gc.stringExtent(labelProvider.getText(proposal)).x + 26;
 			final Image image = labelProvider.getImage(proposal);
@@ -205,7 +203,7 @@ public class SearchPatternContentAssist extends ContentProposalProvider {
 	private PopupDialog getProposalsPopup() {
 		final ContentProposalAdapter proposalAdapter = getContentProposalAdapter();
 		return (PopupDialog) Reflection.forObject(proposalAdapter)
-		    .getFieldValue("popup", proposalAdapter.getClass().getSuperclass());
+			.getFieldValue("popup", proposalAdapter.getClass().getSuperclass());
 	}
 
 	private boolean isTextFieldEditable() {
@@ -225,21 +223,20 @@ public class SearchPatternContentAssist extends ContentProposalProvider {
 	}
 
 	private void resizePopupDeferred(final PopupDialog popup)
-	    throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+		throws NoSuchMethodException, IllegalAccessException, InvocationTargetException {
 		if (this.queryResults == null || this.queryResults.size() == 0) {
 			popup.close();
 			return;
 		}
-		final Point popupSize = this.calculatePopupSize(popup);
-		this.getContentProposalAdapter().setPopupSize(popupSize);
+		final Point popupSize = calculatePopupSize(popup);
+		getContentProposalAdapter().setPopupSize(popupSize);
 		Reflection.forObject(popup).invoke("adjustBounds");
 	}
 
 	/**
 	 * Shows the given list of content proposals in the proposal popup
 	 *
-	 * @param newProposals
-	 *          list of new content proposals to be displayed
+	 * @param newProposals list of new content proposals to be displayed
 	 */
 	private void showProposals(final List<IContentProposal> newProposals) {
 		this.queryResults.clear();
@@ -247,13 +244,13 @@ public class SearchPatternContentAssist extends ContentProposalProvider {
 
 		final IContentProposal[] proposals = newProposals.toArray(new IContentProposal[newProposals.size()]);
 
-		final PopupDialog popup = this.getProposalsPopup();
+		final PopupDialog popup = getProposalsPopup();
 		if (popup != null) {
 			if (proposals.length == 0) {
 				popup.close();
 			} else {
 				Reflection.forObject(popup)
-				    .invoke("setProposals", new Class[] { IContentProposal[].class }, new Object[] { proposals });
+					.invoke("setProposals", new Class[] { IContentProposal[].class }, new Object[] { proposals });
 				try {
 					resizePopupDeferred(popup);
 				} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {

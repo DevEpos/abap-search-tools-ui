@@ -6,6 +6,7 @@ import java.util.List;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.JFacePreferences;
 import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.jface.util.IPropertyChangeListener;
@@ -27,21 +28,21 @@ import com.devepos.adt.saat.internal.IContextMenuConstants;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.cdsanalysis.ICdsAnalysisPreferences;
 import com.devepos.adt.saat.internal.cdsanalysis.ISqlRelationInfo;
-import com.devepos.adt.saat.internal.elementinfo.LazyLoadingRefreshMode;
 import com.devepos.adt.saat.internal.menu.MenuItemFactory;
 import com.devepos.adt.saat.internal.messages.Messages;
-import com.devepos.adt.saat.internal.tree.IAdtObjectReferenceNode;
-import com.devepos.adt.saat.internal.tree.IStyledTreeNode;
-import com.devepos.adt.saat.internal.tree.ITreeNode;
-import com.devepos.adt.saat.internal.tree.LazyLoadingTreeContentProvider;
-import com.devepos.adt.saat.internal.tree.LazyLoadingTreeContentProvider.LoadingElement;
 import com.devepos.adt.saat.internal.ui.NativeColumnViewerToolTipSupport;
 import com.devepos.adt.saat.internal.ui.OpenColorPreferencePageAction;
-import com.devepos.adt.saat.internal.ui.PreferenceToggleAction;
-import com.devepos.adt.saat.internal.ui.StylerFactory;
 import com.devepos.adt.saat.internal.ui.TreeViewUiState;
 import com.devepos.adt.saat.internal.ui.ViewUiState;
 import com.devepos.adt.saat.internal.util.CommandPossibleChecker;
+import com.devepos.adt.tools.base.elementinfo.LazyLoadingRefreshMode;
+import com.devepos.adt.tools.base.ui.StylerFactory;
+import com.devepos.adt.tools.base.ui.action.PreferenceToggleAction;
+import com.devepos.adt.tools.base.ui.tree.IAdtObjectReferenceNode;
+import com.devepos.adt.tools.base.ui.tree.IStyledTreeNode;
+import com.devepos.adt.tools.base.ui.tree.ITreeNode;
+import com.devepos.adt.tools.base.ui.tree.LazyLoadingTreeContentProvider;
+import com.devepos.adt.tools.base.ui.tree.LoadingTreeItemsNode;
 
 /**
  * Top-Down Analysis of CDS Analysis page
@@ -188,12 +189,13 @@ public class CdsTopDownAnalysisView extends CdsAnalysisPage<CdsTopDownAnalysis> 
 	@Override
 	protected void createActions() {
 		super.createActions();
+		final IPreferenceStore prefStore = SearchAndAnalysisPlugin.getDefault().getPreferenceStore();
 		this.showDescriptions = new PreferenceToggleAction(Messages.CdsTopDownAnalysisView_ShowDescriptionsToggleAction_xmit,
-			null, SHOW_DESCRIPTIONS_PREF_KEY, true);
+			null, SHOW_DESCRIPTIONS_PREF_KEY, true, prefStore);
 		this.showAliasNames = new PreferenceToggleAction(Messages.CdsTopDownAnalysisView_ShowAliasNamesToggleAction_xmit, null,
-			SHOW_ALIAS_NAMES_PREF_KEY, true);
+			SHOW_ALIAS_NAMES_PREF_KEY, true, prefStore);
 		this.loadAssociations = new PreferenceToggleAction(Messages.CdsTopDownAnalysisView_LoadAssociationsToggleAction_xmit,
-			null, ICdsAnalysisPreferences.TOP_DOWN_LOAD_ASSOCIATIONS, false);
+			null, ICdsAnalysisPreferences.TOP_DOWN_LOAD_ASSOCIATIONS, false, prefStore);
 		this.showColorsAndFontsPrefs = new OpenColorPreferencePageAction(IColorConstants.CDS_ANALYSIS_ALIAS_NAME);
 	}
 
@@ -206,7 +208,7 @@ public class CdsTopDownAnalysisView extends CdsAnalysisPage<CdsTopDownAnalysis> 
 			text = ((IStyledTreeNode) element).getStyledText();
 		} else {
 			text = new StyledString();
-			if (element instanceof LoadingElement) {
+			if (element instanceof LoadingTreeItemsNode) {
 				text.append(node.getDisplayName(), StylerFactory.ITALIC_STYLER);
 			} else {
 				text.append(" "); // for broader image due to overlay //$NON-NLS-1$

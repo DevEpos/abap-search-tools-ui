@@ -1,6 +1,7 @@
 package com.devepos.adt.saat.internal.cdsanalysis.ui;
 
 import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.JFacePreferences;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider;
@@ -13,27 +14,27 @@ import org.eclipse.ui.PlatformUI;
 
 import com.devepos.adt.saat.internal.ICommandConstants;
 import com.devepos.adt.saat.internal.IContextMenuConstants;
-import com.devepos.adt.saat.internal.IDestinationProvider;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.cdsanalysis.ICdsAnalysisPreferences;
-import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
 import com.devepos.adt.saat.internal.menu.MenuItemFactory;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.search.ObjectSearchUriDiscovery;
 import com.devepos.adt.saat.internal.search.QueryParameterName;
 import com.devepos.adt.saat.internal.search.SearchType;
-import com.devepos.adt.saat.internal.tree.ICollectionTreeNode;
-import com.devepos.adt.saat.internal.tree.ILazyLoadingListener;
-import com.devepos.adt.saat.internal.tree.IStyledTreeNode;
-import com.devepos.adt.saat.internal.tree.ITreeNode;
-import com.devepos.adt.saat.internal.tree.LazyLoadingTreeContentProvider;
-import com.devepos.adt.saat.internal.tree.LazyLoadingTreeContentProvider.LoadingElement;
-import com.devepos.adt.saat.internal.ui.PreferenceToggleAction;
-import com.devepos.adt.saat.internal.ui.StylerFactory;
 import com.devepos.adt.saat.internal.ui.TreeViewUiState;
 import com.devepos.adt.saat.internal.ui.ViewUiState;
 import com.devepos.adt.saat.internal.util.CommandPossibleChecker;
 import com.devepos.adt.saat.internal.util.IImages;
+import com.devepos.adt.tools.base.destinations.IDestinationProvider;
+import com.devepos.adt.tools.base.elementinfo.IAdtObjectReferenceElementInfo;
+import com.devepos.adt.tools.base.ui.StylerFactory;
+import com.devepos.adt.tools.base.ui.action.PreferenceToggleAction;
+import com.devepos.adt.tools.base.ui.tree.ICollectionTreeNode;
+import com.devepos.adt.tools.base.ui.tree.ILazyLoadingListener;
+import com.devepos.adt.tools.base.ui.tree.IStyledTreeNode;
+import com.devepos.adt.tools.base.ui.tree.ITreeNode;
+import com.devepos.adt.tools.base.ui.tree.LazyLoadingTreeContentProvider;
+import com.devepos.adt.tools.base.ui.tree.LoadingTreeItemsNode;
 
 /**
  * Where-Used page of CDS Analysis page
@@ -95,16 +96,19 @@ public class WhereUsedInCdsAnalysisView extends CdsAnalysisPage<WhereUsedInCdsAn
 	@Override
 	protected void createActions() {
 		super.createActions();
+		final IPreferenceStore prefStore = SearchAndAnalysisPlugin.getDefault().getPreferenceStore();
 		this.showFromUses = new PreferenceToggleAction(Messages.WhereUsedInCdsAnalysisView_ShowUsesInSelectPartAction_xmit,
-			SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.DATA_SOURCE), USES_IN_SELECT_PREF_KEY, true);
+			SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.DATA_SOURCE), USES_IN_SELECT_PREF_KEY, true,
+			prefStore);
 		this.showAssocUses = new PreferenceToggleAction(Messages.WhereUsedInCdsAnalysisView_ShowUsesInAssociationsAction_xmit,
-			SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.ASSOCIATION), USES_IN_ASSOC_PREF_KEY, false);
+			SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.ASSOCIATION), USES_IN_ASSOC_PREF_KEY, false,
+			prefStore);
 		this.localAssociationsOnly = new PreferenceToggleAction(
-			Messages.WhereUsedInCdsAnalysisView_OnlyLocallyDefinedAssocUsages_xmit, null, LOCAL_ASSOCIATIONS_ONLY_PREF_KEY,
-			false);
+			Messages.WhereUsedInCdsAnalysisView_OnlyLocallyDefinedAssocUsages_xmit, null, LOCAL_ASSOCIATIONS_ONLY_PREF_KEY, false,
+			prefStore);
 		this.releasedUsagesOnly = new PreferenceToggleAction(
 			Messages.WhereUsedInCdsAnalysisView_OnlyUsagesInReleasedEntities_xmit, null,
-			ICdsAnalysisPreferences.WHERE_USED_ONLY_RELEASED_USAGES, false);
+			ICdsAnalysisPreferences.WHERE_USED_ONLY_RELEASED_USAGES, false, prefStore);
 		this.showAssocUses.addPropertyChangeListener((event) -> {
 			this.localAssociationsOnly.setEnabled(this.showAssocUses.isChecked() && this.isLocalAssocOnlyFeatureAvailable);
 			if (!this.showAssocUses.isChecked()) {
@@ -202,7 +206,7 @@ public class WhereUsedInCdsAnalysisView extends CdsAnalysisPage<WhereUsedInCdsAn
 			text = ((IStyledTreeNode) element).getStyledText();
 		} else {
 			text = new StyledString();
-			if (element instanceof LoadingElement) {
+			if (element instanceof LoadingTreeItemsNode) {
 				text.append(node.getDisplayName(), StylerFactory.ITALIC_STYLER);
 			} else {
 				text.append(" "); // for broader image due to overlay //$NON-NLS-1$

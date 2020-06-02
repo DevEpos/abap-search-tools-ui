@@ -5,6 +5,9 @@ import java.util.List;
 import org.eclipse.osgi.util.NLS;
 
 import com.devepos.adt.saat.internal.messages.Messages;
+import com.devepos.adt.tools.base.elementinfo.IElementInfo;
+import com.devepos.adt.tools.base.elementinfo.IElementInfoCollection;
+import com.devepos.adt.tools.base.elementinfo.IElementInfoProvider;
 
 /**
  * Provider for secondary objects of CDS view

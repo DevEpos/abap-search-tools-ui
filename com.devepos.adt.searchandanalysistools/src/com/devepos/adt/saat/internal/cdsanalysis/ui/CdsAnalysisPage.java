@@ -36,29 +36,32 @@ import org.eclipse.ui.part.Page;
 import com.devepos.adt.saat.internal.ICommandConstants;
 import com.devepos.adt.saat.internal.IContextMenuConstants;
 import com.devepos.adt.saat.internal.IDataSourceType;
-import com.devepos.adt.saat.internal.IDestinationProvider;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
-import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
 import com.devepos.adt.saat.internal.menu.MenuItemFactory;
 import com.devepos.adt.saat.internal.search.IExtendedAdtObjectInfo;
-import com.devepos.adt.saat.internal.tree.ActionTreeNode;
-import com.devepos.adt.saat.internal.tree.IAdtObjectReferenceNode;
-import com.devepos.adt.saat.internal.tree.ICollectionTreeNode;
-import com.devepos.adt.saat.internal.tree.IStyledTreeNode;
-import com.devepos.adt.saat.internal.tree.ITreeNode;
-import com.devepos.adt.saat.internal.tree.LazyLoadingTreeContentProvider.LoadingElement;
-import com.devepos.adt.saat.internal.ui.CollapseAllTreeNodesAction;
-import com.devepos.adt.saat.internal.ui.CopyToClipboardAction;
-import com.devepos.adt.saat.internal.ui.OpenAdtDataPreviewAction;
-import com.devepos.adt.saat.internal.ui.OpenAdtObjectAction;
 import com.devepos.adt.saat.internal.ui.SelectionProviderAdapter;
 import com.devepos.adt.saat.internal.ui.SelectionProviderProxy;
-import com.devepos.adt.saat.internal.ui.StylerFactory;
 import com.devepos.adt.saat.internal.ui.ViewUiState;
-import com.devepos.adt.saat.internal.util.AbapProjectProviderAccessor;
 import com.devepos.adt.saat.internal.util.CommandPossibleChecker;
-import com.devepos.adt.saat.internal.util.IAbapProjectProvider;
 import com.devepos.adt.saat.internal.util.IImages;
+import com.devepos.adt.tools.base.IAdtObjectTypeConstants;
+import com.devepos.adt.tools.base.ObjectType;
+import com.devepos.adt.tools.base.destinations.IDestinationProvider;
+import com.devepos.adt.tools.base.elementinfo.IAdtObjectReferenceElementInfo;
+import com.devepos.adt.tools.base.project.AbapProjectProviderAccessor;
+import com.devepos.adt.tools.base.project.IAbapProjectProvider;
+import com.devepos.adt.tools.base.ui.StylerFactory;
+import com.devepos.adt.tools.base.ui.action.CollapseAllTreeNodesAction;
+import com.devepos.adt.tools.base.ui.action.CopyToClipboardAction;
+import com.devepos.adt.tools.base.ui.action.ExecuteAdtObjectAction;
+import com.devepos.adt.tools.base.ui.action.OpenAdtObjectAction;
+import com.devepos.adt.tools.base.ui.tree.ActionTreeNode;
+import com.devepos.adt.tools.base.ui.tree.IAdtObjectReferenceNode;
+import com.devepos.adt.tools.base.ui.tree.ICollectionTreeNode;
+import com.devepos.adt.tools.base.ui.tree.IStyledTreeNode;
+import com.devepos.adt.tools.base.ui.tree.ITreeNode;
+import com.devepos.adt.tools.base.ui.tree.LoadingTreeItemsNode;
+import com.devepos.adt.tools.base.util.AdtTypeUtil;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 
 /**
@@ -322,11 +325,18 @@ public abstract class CdsAnalysisPage<T extends CdsAnalysis> extends Page {
 	protected Image getTreeNodeImage(final Object element) {
 		Image image = null;
 		final ITreeNode node = (ITreeNode) element;
-		final String imageId = node.getImageId();
-		if (imageId != null) {
-			image = SearchAndAnalysisPlugin.getDefault().getImage(imageId);
+		image = node.getImage();
+		if (image == null) {
 
-			if (imageId != IImages.WAITING && element instanceof IAdaptable) {
+			if (element instanceof IAdtObjectReferenceNode) {
+				final IAdtObjectReferenceNode adtObjRefNode = (IAdtObjectReferenceNode) element;
+				if (adtObjRefNode.getObjectType() == ObjectType.CDS_VIEW) {
+					image = AdtTypeUtil.getInstance().getTypeImage(IAdtObjectTypeConstants.CDS_VIEW_DEFINITION_TYPE);
+				} else {
+					image = AdtTypeUtil.getInstance().getTypeImage(adtObjRefNode.getAdtObjectType());
+				}
+			}
+			if (element instanceof IAdaptable) {
 				final IExtendedAdtObjectInfo extendedSearchResultInfo = ((IAdaptable) element)
 					.getAdapter(IExtendedAdtObjectInfo.class);
 				if (extendedSearchResultInfo != null) {
@@ -360,7 +370,7 @@ public abstract class CdsAnalysisPage<T extends CdsAnalysis> extends Page {
 			text = ((IStyledTreeNode) element).getStyledText();
 		} else {
 			text = new StyledString();
-			if (element instanceof LoadingElement) {
+			if (element instanceof LoadingTreeItemsNode) {
 				text.append(node.getDisplayName(), StylerFactory.ITALIC_STYLER);
 			} else {
 //				text.append(" "); // for broader image due to overlay
@@ -420,10 +430,11 @@ public abstract class CdsAnalysisPage<T extends CdsAnalysis> extends Page {
 		if (this.projectProvider != null) {
 			final List<IAdtObjectReference> selectedObjRefs = commandChecker.getSelectedAdtObjectRefs();
 
-			mgr.appendToGroup(IContextMenuConstants.GROUP_OPEN, new OpenAdtObjectAction(this.projectProvider, selectedObjRefs));
+			mgr.appendToGroup(IContextMenuConstants.GROUP_OPEN,
+				new OpenAdtObjectAction(this.projectProvider.getProject(), selectedObjRefs));
 			if (commandChecker.hasSelection(true)) {
 				mgr.appendToGroup(IContextMenuConstants.GROUP_OPEN,
-					new OpenAdtDataPreviewAction(this.projectProvider.getProject(), selectedObjRefs));
+					new ExecuteAdtObjectAction(this.projectProvider.getProject(), selectedObjRefs, true));
 			}
 		}
 

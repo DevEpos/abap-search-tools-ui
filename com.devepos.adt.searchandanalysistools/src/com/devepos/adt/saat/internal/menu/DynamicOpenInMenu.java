@@ -5,7 +5,7 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.actions.CompoundContributionItem;
 
-import com.devepos.adt.saat.internal.util.AdtUtil;
+import com.devepos.adt.tools.base.util.AdtUtil;
 
 public class DynamicOpenInMenu extends CompoundContributionItem {
 	private IMenuManager dynamicOpenInMenu;

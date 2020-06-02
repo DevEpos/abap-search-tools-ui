@@ -1,16 +1,26 @@
 package com.devepos.adt.saat.internal.elementinfo;
 
 import com.devepos.adt.saat.internal.CdsSourceType;
-import com.devepos.adt.saat.internal.IDestinationProvider;
+import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.analytics.OpenWithAnalysisForOfficeExecutable;
 import com.devepos.adt.saat.internal.analytics.OpenWithQueryMonitorExecutable;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.search.AdtObjectReferenceDeserializer;
 import com.devepos.adt.saat.internal.search.ObjectSearchElementInfoProvider;
-import com.devepos.adt.saat.internal.util.AdtObjectReferenceModelFactory;
 import com.devepos.adt.saat.internal.util.IImages;
-import com.devepos.adt.saat.internal.util.IXmlElement;
-import com.devepos.adt.saat.internal.util.IXmlTags;
+import com.devepos.adt.tools.base.adtobject.AdtObjectReferenceModelFactory;
+import com.devepos.adt.tools.base.destinations.IDestinationProvider;
+import com.devepos.adt.tools.base.elementinfo.ActionElementInfo;
+import com.devepos.adt.tools.base.elementinfo.AdtObjectReferenceElementInfo;
+import com.devepos.adt.tools.base.elementinfo.ElementInfoCollection;
+import com.devepos.adt.tools.base.elementinfo.IAdtObjectReferenceElementInfo;
+import com.devepos.adt.tools.base.elementinfo.IElementInfoCollection;
+import com.devepos.adt.tools.base.elementinfo.ILazyLoadingElementInfo;
+import com.devepos.adt.tools.base.elementinfo.LazyLoadingElementInfo;
+import com.devepos.adt.tools.base.elementinfo.LazyLoadingRefreshMode;
+import com.devepos.adt.tools.base.elementinfo.SimpleElementInfo;
+import com.devepos.adt.tools.base.util.IXmlElement;
+import com.devepos.adt.tools.base.util.IXmlTags;
 import com.sap.adt.communication.message.IMessageBody;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 
@@ -69,12 +79,15 @@ public class CdsViewElementInfoContentHandler extends AdtObjectElementInfoConten
 		 */
 		if (this.isQuery && this.hasAnalyticsService) {
 			final ElementInfoCollection openInTargets = new ElementInfoCollection(
-				Messages.ElementInformation_CustomNavigationTarget_xtit, IImages.EXTERNAL_TOOLS);
+				Messages.ElementInformation_CustomNavigationTarget_xtit,
+				SearchAndAnalysisPlugin.getDefault().getImage(IImages.EXTERNAL_TOOLS));
 			openInTargets.getChildren()
-				.add(new ActionElementInfo(Messages.ElementInformation_AnalysisForOfficeTarget_xtit, IImages.EXCEL_APPLICATION,
+				.add(new ActionElementInfo(Messages.ElementInformation_AnalysisForOfficeTarget_xtit,
+					SearchAndAnalysisPlugin.getDefault().getImage(IImages.EXCEL_APPLICATION),
 					new OpenWithAnalysisForOfficeExecutable(this.destinationId, this.elementInfo.getName())));
 			openInTargets.getChildren()
-				.add(new ActionElementInfo(Messages.ElementInformation_QueryMonitorTarget_xtit, IImages.ANALYTICAL_QUERY,
+				.add(new ActionElementInfo(Messages.ElementInformation_QueryMonitorTarget_xtit,
+					SearchAndAnalysisPlugin.getDefault().getImage(IImages.ANALYTICAL_QUERY),
 					new OpenWithQueryMonitorExecutable(this.destinationId, this.elementInfo.getName())));
 			this.elementInfo.getChildren().add(openInTargets);
 		}
@@ -82,7 +95,8 @@ public class CdsViewElementInfoContentHandler extends AdtObjectElementInfoConten
 		// add additional collection to lazy load additional information
 		if (this.createSecondaryElementsFolder) {
 			final ILazyLoadingElementInfo secondaryElementsFolder = new LazyLoadingElementInfo(
-				Messages.ElementInformation_SecondaryObjInfo_xtit, IImages.VIRTUAL_FOLDER,
+				Messages.ElementInformation_SecondaryObjInfo_xtit,
+				SearchAndAnalysisPlugin.getDefault().getImage(IImages.VIRTUAL_FOLDER),
 				new CdsSecondaryObjectsProvider(this.destinationId, this.elementInfo.getName()));
 			secondaryElementsFolder.setContentRefreshMode(LazyLoadingRefreshMode.ROOT_AND_NON_LAZY_CHILDREN);
 			this.elementInfo.getChildren().add(secondaryElementsFolder);
@@ -107,7 +121,7 @@ public class CdsViewElementInfoContentHandler extends AdtObjectElementInfoConten
 
 			propertiesCollection.getChildren()
 				.add(new SimpleElementInfo(Messages.ElementInformation_APIState_xtit, Messages.ElementInformation_APIState_xtit,
-					IImages.API_PARAM, apiState));
+					SearchAndAnalysisPlugin.getDefault().getImage(IImages.API_PARAM), apiState));
 		}
 		return propertiesCollection;
 	}
@@ -119,7 +133,8 @@ public class CdsViewElementInfoContentHandler extends AdtObjectElementInfoConten
 				((IDestinationProvider) objectRef).setDestinationId(this.destinationId);
 			}
 			final IElementInfoCollection classesColl = new ElementInfoCollection(
-				Messages.ElementInformation_ClassesCollection_xtit, IImages.TYPE_GROUP);
+				Messages.ElementInformation_ClassesCollection_xtit,
+				SearchAndAnalysisPlugin.getDefault().getImage(IImages.TYPE_GROUP));
 			final IAdtObjectReferenceElementInfo objectRefInfo = new AdtObjectReferenceElementInfo(objectRef.getName(),
 				objectRef.getName(), objectRef.getDescription());
 			objectRefInfo.setAdtObjectReference(objectRef);
@@ -131,7 +146,8 @@ public class CdsViewElementInfoContentHandler extends AdtObjectElementInfoConten
 
 	private void deserializeSelectFromEntities(final IXmlElement selectFromEl) {
 		final IElementInfoCollection selectFromCollection = new ElementInfoCollection(
-			Messages.ElementInformation_SelectFromCollection_xtit, IImages.SELECT_FROM_PARAM);
+			Messages.ElementInformation_SelectFromCollection_xtit,
+			SearchAndAnalysisPlugin.getDefault().getImage(IImages.SELECT_FROM_PARAM));
 
 		for (final IXmlElement child : selectFromEl.getChildren()) {
 			final IAdtObjectReferenceElementInfo selectFrom = ElementInfoXMLExtractor.deserializeAdtObjectInfo(this.destinationId,
@@ -149,7 +165,8 @@ public class CdsViewElementInfoContentHandler extends AdtObjectElementInfoConten
 
 	private void deserializeAssociations(final IXmlElement associationsEl) {
 		final IElementInfoCollection associationColl = new ElementInfoCollection(
-			Messages.ElementInformation_AssociationsCollection_xtit, IImages.ASSOCIATION);
+			Messages.ElementInformation_AssociationsCollection_xtit,
+			SearchAndAnalysisPlugin.getDefault().getImage(IImages.ASSOCIATION));
 		for (final IXmlElement child : associationsEl.getChildren()) {
 			final IAdtObjectReferenceElementInfo association = deserializeAssociation(child);
 			if (association != null) {
@@ -182,8 +199,8 @@ public class CdsViewElementInfoContentHandler extends AdtObjectElementInfoConten
 				adtObjRefElInfo = new AdtObjectReferenceElementInfo(name, rawName, description);
 			}
 			addExtendedInfo(adtObjectInfo, adtObjRefElInfo);
-			final IAdtObjectReference adtObjectRef = AdtObjectReferenceModelFactory.createReference(this.destinationId, name, adtType,
-				uri);
+			final IAdtObjectReference adtObjectRef = AdtObjectReferenceModelFactory.createReference(this.destinationId, name,
+				adtType, uri);
 			adtObjectRef.setPackageName(packageName);
 			adtObjRefElInfo.setAdtObjectReference(adtObjectRef);
 			adtObjRefElInfo.setElementInfoProvider(new ObjectSearchElementInfoProvider(this.destinationId, adtObjectRef));

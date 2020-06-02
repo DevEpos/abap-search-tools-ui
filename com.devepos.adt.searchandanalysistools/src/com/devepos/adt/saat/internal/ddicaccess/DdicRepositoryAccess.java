@@ -5,14 +5,15 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
+import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.elementinfo.ElementInfoCollectionContentHandler;
-import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
-import com.devepos.adt.saat.internal.elementinfo.IElementInfo;
-import com.devepos.adt.saat.internal.elementinfo.IElementInfoCollection;
-import com.devepos.adt.saat.internal.util.AbapProjectProviderAccessor;
-import com.devepos.adt.saat.internal.util.AdtUtil;
-import com.devepos.adt.saat.internal.util.IAbapProjectProvider;
 import com.devepos.adt.saat.internal.util.IImages;
+import com.devepos.adt.tools.base.elementinfo.IAdtObjectReferenceElementInfo;
+import com.devepos.adt.tools.base.elementinfo.IElementInfo;
+import com.devepos.adt.tools.base.elementinfo.IElementInfoCollection;
+import com.devepos.adt.tools.base.project.AbapProjectProviderAccessor;
+import com.devepos.adt.tools.base.project.IAbapProjectProvider;
+import com.devepos.adt.tools.base.util.AdtUtil;
 import com.sap.adt.communication.content.IContentHandler;
 import com.sap.adt.communication.resources.AdtRestResourceFactory;
 import com.sap.adt.communication.resources.IRestResource;
@@ -51,9 +52,9 @@ class DdicRepositoryAccess implements IDdicRepositoryAccess {
 			final IElementInfo columnInfo = columnIter.next();
 			final String isKeyProp = columnInfo.getPropertyValue(KEY_PROP);
 			if ("X".equalsIgnoreCase(isKeyProp)) { //$NON-NLS-1$
-				columnInfo.setImageId(IImages.KEY_COLUMN);
+				columnInfo.setImage(SearchAndAnalysisPlugin.getDefault().getImage(IImages.KEY_COLUMN));
 			} else {
-				columnInfo.setImageId(IImages.COLUMN);
+				columnInfo.setImage(SearchAndAnalysisPlugin.getDefault().getImage(IImages.COLUMN));
 			}
 		}
 		return columns;

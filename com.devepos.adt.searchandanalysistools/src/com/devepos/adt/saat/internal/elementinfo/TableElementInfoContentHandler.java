@@ -1,9 +1,13 @@
 package com.devepos.adt.saat.internal.elementinfo;
 
+import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.util.IImages;
-import com.devepos.adt.saat.internal.util.IXmlElement;
-import com.devepos.adt.saat.internal.util.IXmlTags;
+import com.devepos.adt.tools.base.elementinfo.ElementInfoCollection;
+import com.devepos.adt.tools.base.elementinfo.IAdtObjectReferenceElementInfo;
+import com.devepos.adt.tools.base.elementinfo.IElementInfoCollection;
+import com.devepos.adt.tools.base.util.IXmlElement;
+import com.devepos.adt.tools.base.util.IXmlTags;
 import com.sap.adt.communication.message.IMessageBody;
 
 /**
@@ -48,7 +52,7 @@ public class TableElementInfoContentHandler extends AdtObjectElementInfoContentH
 
 	private void deserializeTechSettings(final IXmlElement element) {
 		final IElementInfoCollection techSettingsColl = new ElementInfoCollection(Messages.ElementInformation_TechSettings_xtit,
-			IImages.FOLDER);
+			SearchAndAnalysisPlugin.getDefault().getImage(IImages.FOLDER));
 		final IAdtObjectReferenceElementInfo techSettings = ElementInfoXMLExtractor.deserializeAdtObjectInfo(this.destinationId,
 			element.getFirstChild());
 		techSettings.setLazyLoadingSupport(false);

@@ -172,7 +172,7 @@
                <with
                      variable="activeEditorInput">
                   <adapt
-                        type="com.devepos.adt.saat.internal.util.IAdtObject">
+                        type="com.devepos.adt.tools.base.adtobject.IAdtObject">
                   </adapt>
                </with>
             </visibleWhen>
@@ -191,7 +191,7 @@
                   <iterate
                         operator="and">
                      <adapt
-                           type="com.devepos.adt.saat.internal.util.IAdtObject">
+                           type="com.devepos.adt.tools.base.adtobject.IAdtObject">
                      </adapt>
                   </iterate>
                </with>
@@ -280,16 +280,6 @@
               name="%view.cdsanalysis.name"
               restorable="true">
         </view>
-     </extension>
-     <extension
-           point="org.eclipse.core.runtime.adapters">
-        <factory
-              adaptableType="java.lang.Object"
-              class="com.devepos.adt.saat.internal.util.DataPreviewAdtObjectAdapterFactory">
-           <adapter
-                 type="com.devepos.adt.saat.internal.util.IAdtObject">
-           </adapter>
-        </factory>
      </extension>
      <extension
            point="org.eclipse.search.searchPages">

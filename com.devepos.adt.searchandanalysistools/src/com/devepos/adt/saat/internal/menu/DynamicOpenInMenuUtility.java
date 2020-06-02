@@ -18,7 +18,6 @@ import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.PlatformUI;
 
 import com.devepos.adt.saat.internal.ICommandConstants;
-import com.devepos.adt.saat.internal.ObjectType;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.analytics.OpenWithAnalysisForOfficeExecutable;
 import com.devepos.adt.saat.internal.analytics.OpenWithQueryMonitorExecutable;
@@ -26,10 +25,12 @@ import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.navtargets.INavigationTarget;
 import com.devepos.adt.saat.internal.navtargets.INavigationTargetService;
 import com.devepos.adt.saat.internal.navtargets.NavigationTargetServiceFactory;
-import com.devepos.adt.saat.internal.util.AdtUtil;
-import com.devepos.adt.saat.internal.util.IAdtObject;
+import com.devepos.adt.saat.internal.util.FeatureTester;
 import com.devepos.adt.saat.internal.util.IImages;
-import com.devepos.adt.saat.internal.util.ObjectContainer;
+import com.devepos.adt.tools.base.ObjectType;
+import com.devepos.adt.tools.base.adtobject.IAdtObject;
+import com.devepos.adt.tools.base.project.ProjectUtil;
+import com.devepos.adt.tools.base.util.ObjectContainer;
 
 /**
  * Utility class to create a Menu for some DB Browser actions for a given object
@@ -53,7 +54,7 @@ public class DynamicOpenInMenuUtility {
 		if (project == null) {
 			return null;
 		}
-		if (!AdtUtil.isObjectSearchAvailable(project)) {
+		if (!FeatureTester.isObjectSearchAvailable(project)) {
 			return null;
 		}
 		return new DynamicOpenInMenuManager(adtObjects, project);
@@ -70,14 +71,14 @@ public class DynamicOpenInMenuUtility {
 				SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.CDS_ANALYZER), ID);
 			this.adtObjects = adtObjects;
 			this.project = project;
-			this.cdsAnalysisAvailable = this.adtObjects.size() == 1 && AdtUtil.isCdsAnalysisAvailable(project);
+			this.cdsAnalysisAvailable = this.adtObjects.size() == 1 && FeatureTester.isCdsAnalysisAvailable(project);
 			setRemoveAllWhenShown(true);
 			addMenuListener(this);
 		}
 
 		@Override
 		public void menuAboutToShow(final IMenuManager manager) {
-			final boolean isDbBrowserAvailable = AdtUtil.isSapGuiDbBrowserAvailable(this.adtObjects);
+			final boolean isDbBrowserAvailable = FeatureTester.isSapGuiDbBrowserAvailable(this.adtObjects);
 			// Add command "Open In DB Browser"
 			if (isDbBrowserAvailable) {
 				MenuItemFactory.addOpenInDbBrowserCommand(this, false);
@@ -89,16 +90,16 @@ public class DynamicOpenInMenuUtility {
 					add(new Separator());
 				}
 				final boolean isCdsView = this.adtObjects.get(0).getObjectType() == ObjectType.CDS_VIEW;
-				if (isCdsView && AdtUtil.isCdsTopDownAnalysisAvailable(this.project)) {
+				if (isCdsView && FeatureTester.isCdsTopDownAnalysisAvailable(this.project)) {
 					MenuItemFactory.addCdsAnalyzerCommandItem(this, null, ICommandConstants.CDS_TOP_DOWN_ANALYSIS);
 				}
 				MenuItemFactory.addCdsAnalyzerCommandItem(this, null, ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS);
-				if (isCdsView && AdtUtil.isCdsUsedEntitiesAnalysisAvailable(this.project)) {
+				if (isCdsView && FeatureTester.isCdsUsedEntitiesAnalysisAvailable(this.project)) {
 					MenuItemFactory.addCdsAnalyzerCommandItem(this, null, ICommandConstants.USED_ENTITIES_ANALYSIS);
 				}
 				MenuItemFactory.addCdsAnalyzerCommandItem(this, null, ICommandConstants.FIELD_ANALYSIS);
 				// Additional actions only exist for CDS view at the moment
-				if (isCdsView && AdtUtil.isNavigationTargetsFeatureAvailable(this.project)) {
+				if (isCdsView && FeatureTester.isNavigationTargetsFeatureAvailable(this.project)) {
 					add(new Separator());
 					add(new ExternalNavigationTargetsMenu(this.adtObjects.get(0), this.project));
 				}
@@ -166,12 +167,14 @@ public class DynamicOpenInMenuUtility {
 			for (final INavigationTarget target : targets) {
 				switch (target.getName()) {
 				case "EXCEL": //$NON-NLS-1$
-					add(new OpenWithAnalysisForOfficeExecutable(AdtUtil.getDestinationId(this.project), this.adtObject.getName())
-						.createAction(target.getDisplayName(), target.getImageId()));
+					add(new OpenWithAnalysisForOfficeExecutable(ProjectUtil.getDestinationId(this.project),
+						this.adtObject.getName()).createAction(target.getDisplayName(),
+							SearchAndAnalysisPlugin.getDefault().getImageDescriptor(target.getImageId())));
 					break;
 				case "QUERY_MONITOR": //$NON-NLS-1$
-					add(new OpenWithQueryMonitorExecutable(AdtUtil.getDestinationId(this.project), this.adtObject.getName())
-						.createAction(target.getDisplayName(), target.getImageId()));
+					add(new OpenWithQueryMonitorExecutable(ProjectUtil.getDestinationId(this.project), this.adtObject.getName())
+						.createAction(target.getDisplayName(),
+							SearchAndAnalysisPlugin.getDefault().getImageDescriptor(target.getImageId())));
 					break;
 				}
 			}

@@ -4,8 +4,8 @@ import java.text.MessageFormat;
 
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.messages.Messages;
-import com.devepos.adt.saat.internal.util.IAbapProjectProvider;
 import com.devepos.adt.saat.internal.util.IImages;
+import com.devepos.adt.tools.base.project.IAbapProjectProvider;
 
 /**
  * Factory for creating parameters for the Object Search

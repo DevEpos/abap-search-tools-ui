@@ -2,7 +2,8 @@ package com.devepos.adt.saat.internal.analytics;
 
 import java.net.URI;
 
-import com.devepos.adt.saat.internal.util.UriDiscoveryBase;
+import com.devepos.adt.saat.internal.util.IUriDiscoveryPaths;
+import com.devepos.adt.tools.base.util.UriDiscoveryBase;
 import com.sap.adt.compatibility.uritemplate.IAdtUriTemplate;
 
 /**
@@ -16,7 +17,7 @@ public class AnalysisForOfficeUriDiscovery extends UriDiscoveryBase {
 	private static final String DISCOVERY_RELATION_AOX_LAUNCHER = "http://www.devepos.com/adt/relations/saat/sapaox"; //$NON-NLS-1$
 
 	public AnalysisForOfficeUriDiscovery(final String destination) {
-		super(destination, DISCOVERY_SCHEME);
+		super(destination, IUriDiscoveryPaths.OBJECT_SEARCH_DISOCOVERY_PATH, DISCOVERY_SCHEME);
 	}
 
 	/**

@@ -12,18 +12,20 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.PlatformUI;
 
-import com.devepos.adt.saat.internal.ObjectType;
 import com.devepos.adt.saat.internal.cdsanalysis.CdsAnalysisType;
 import com.devepos.adt.saat.internal.cdsanalysis.ui.CdsAnalysis;
 import com.devepos.adt.saat.internal.cdsanalysis.ui.CdsAnalysisKey;
 import com.devepos.adt.saat.internal.cdsanalysis.ui.CdsAnalysisManager;
 import com.devepos.adt.saat.internal.elementinfo.ElementInfoRetrievalServiceFactory;
-import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
 import com.devepos.adt.saat.internal.messages.Messages;
-import com.devepos.adt.saat.internal.util.AbapProjectProviderAccessor;
-import com.devepos.adt.saat.internal.util.AbapProjectProxy;
-import com.devepos.adt.saat.internal.util.AdtUtil;
-import com.devepos.adt.saat.internal.util.IAdtObject;
+import com.devepos.adt.saat.internal.util.FeatureTester;
+import com.devepos.adt.tools.base.ObjectType;
+import com.devepos.adt.tools.base.adtobject.IAdtObject;
+import com.devepos.adt.tools.base.elementinfo.IAdtObjectReferenceElementInfo;
+import com.devepos.adt.tools.base.project.AbapProjectProviderAccessor;
+import com.devepos.adt.tools.base.project.AbapProjectProxy;
+import com.devepos.adt.tools.base.project.ProjectUtil;
+import com.devepos.adt.tools.base.util.AdtUtil;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 import com.sap.adt.tools.core.project.IAbapProject;
 
@@ -52,7 +54,7 @@ public abstract class OpenInCdsAnalyzerHandler extends AbstractHandler {
 		}
 		if (!isFeatureAvailable(project)) {
 			MessageDialog.openInformation(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-				Messages.Dialog_InfoTitle_xmsg, NLS.bind(getFeatureUnavailableMessage(), AdtUtil.getDestinationId(project)));
+				Messages.Dialog_InfoTitle_xmsg, NLS.bind(getFeatureUnavailableMessage(), ProjectUtil.getDestinationId(project)));
 			return null;
 		}
 		final IAbapProject abapProject = selectedObject.getProject().getAdapter(IAbapProject.class);
@@ -113,7 +115,7 @@ public abstract class OpenInCdsAnalyzerHandler extends AbstractHandler {
 		if (project == null) {
 			return false;
 		}
-		return AdtUtil.isCdsAnalysisAvailable(project);
+		return FeatureTester.isCdsAnalysisAvailable(project);
 	}
 
 	protected boolean canExecute(final IAdtObject selectedObject) {

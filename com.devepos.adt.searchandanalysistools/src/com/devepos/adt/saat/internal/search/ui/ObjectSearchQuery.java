@@ -13,14 +13,14 @@ import org.eclipse.search.ui.ISearchQuery;
 import org.eclipse.search.ui.ISearchResult;
 
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
-import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.search.ObjectSearchContentHandler;
 import com.devepos.adt.saat.internal.search.ObjectSearchUriDiscovery;
 import com.devepos.adt.saat.internal.search.QueryParameterName;
-import com.devepos.adt.saat.internal.util.AbapProjectProviderAccessor;
-import com.devepos.adt.saat.internal.util.AdtUtil;
-import com.devepos.adt.saat.internal.util.IAbapProjectProvider;
+import com.devepos.adt.tools.base.elementinfo.IAdtObjectReferenceElementInfo;
+import com.devepos.adt.tools.base.project.AbapProjectProviderAccessor;
+import com.devepos.adt.tools.base.project.IAbapProjectProvider;
+import com.devepos.adt.tools.base.util.AdtUtil;
 import com.sap.adt.communication.resources.AdtRestResourceFactory;
 import com.sap.adt.communication.resources.IRestResource;
 import com.sap.adt.communication.resources.ResourceException;

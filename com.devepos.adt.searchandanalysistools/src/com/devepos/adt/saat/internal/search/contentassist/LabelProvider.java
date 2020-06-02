@@ -3,9 +3,9 @@ package com.devepos.adt.saat.internal.search.contentassist;
 import org.eclipse.jface.fieldassist.IContentProposal;
 import org.eclipse.swt.graphics.Image;
 
-import com.devepos.adt.saat.internal.ObjectType;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.util.IImages;
+import com.devepos.adt.tools.base.ObjectType;
 
 /**
  * Label provider for the DB Object Search content assist
@@ -20,25 +20,25 @@ public class LabelProvider extends org.eclipse.jface.viewers.LabelProvider {
 			final SearchParameterProposal parameter = (SearchParameterProposal) element;
 			switch (parameter.getParameterName()) {
 			case OWNER:
-				return SearchAndAnalysisPlugin.getDefault().getImage(IImages.USER);
+				return getImage(IImages.USER);
 			case PACKAGE_NAME:
-				return SearchAndAnalysisPlugin.getDefault().getImage(IImages.PACKAGE_PARAM);
+				return getImage(IImages.PACKAGE_PARAM);
 			case RELEASE_STATE:
-				return SearchAndAnalysisPlugin.getDefault().getImage(IImages.API_PARAM);
+				return getImage(IImages.API_PARAM);
 			case ASSOCIATED_IN:
 			case SELECT_SOURCE_IN:
 				return getImageForType(parameter.getType());
 			case EXTENDED_BY:
-				return SearchAndAnalysisPlugin.getDefault().getImage(IImages.EXTENSION_VIEW);
+				return getImage(IImages.EXTENSION_VIEW);
 			case FIELD_NAME:
-				return SearchAndAnalysisPlugin.getDefault().getImage(IImages.FIELD_PARAM);
+				return getImage(IImages.FIELD_PARAM);
 			case ANNOTATION:
-				return SearchAndAnalysisPlugin.getDefault().getImage(IImages.ANNOTATION_PARAM);
+				return getImage(IImages.ANNOTATION_PARAM);
 			case TYPE:
 			case CATEGORY:
-				return SearchAndAnalysisPlugin.getDefault().getImage(IImages.ABAP_TYPE);
+				return getImage(IImages.ABAP_TYPE);
 			case ABAP_LANGUAGE:
-				return SearchAndAnalysisPlugin.getDefault().getImage(IImages.ABAP_VERSION);
+				return getImage(IImages.ABAP_VERSION);
 			default:
 				return null;
 			}
@@ -82,15 +82,18 @@ public class LabelProvider extends org.eclipse.jface.viewers.LabelProvider {
 		} else {
 			switch (objectType) {
 			case CDS_VIEW:
-				return SearchAndAnalysisPlugin.getDefault().getImage(IImages.CDS_VIEW);
+				return getImage(IImages.CDS_VIEW);
 			case TABLE:
-				return SearchAndAnalysisPlugin.getDefault().getImage(IImages.TABLE_DEFINITION);
+				return getImage(IImages.TABLE_DEFINITION);
 			case VIEW:
-				return SearchAndAnalysisPlugin.getDefault().getImage(IImages.VIEW_DEFINITION);
+				return getImage(IImages.VIEW_DEFINITION);
 			default:
 				return null;
 			}
 		}
 	}
 
+	private Image getImage(final String imageId) {
+		return SearchAndAnalysisPlugin.getDefault().getImage(imageId);
+	}
 }

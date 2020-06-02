@@ -16,9 +16,9 @@ import com.devepos.adt.saat.internal.search.ui.ObjectSearchPage;
 import com.devepos.adt.saat.internal.search.ui.ObjectSearchQuery;
 import com.devepos.adt.saat.internal.search.ui.ObjectSearchRequest;
 import com.devepos.adt.saat.internal.search.ui.ObjectSearchResultPage;
-import com.devepos.adt.saat.internal.util.AbapProjectProviderAccessor;
-import com.devepos.adt.saat.internal.util.IAbapProjectProvider;
 import com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavorite;
+import com.devepos.adt.tools.base.project.AbapProjectProviderAccessor;
+import com.devepos.adt.tools.base.project.IAbapProjectProvider;
 
 /**
  * Engine for the extended ABAP Object search

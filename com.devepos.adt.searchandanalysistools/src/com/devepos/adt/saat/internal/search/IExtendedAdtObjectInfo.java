@@ -1,7 +1,7 @@
 package com.devepos.adt.saat.internal.search;
 
 import com.devepos.adt.saat.internal.IDataSourceType;
-import com.devepos.adt.saat.internal.ObjectType;
+import com.devepos.adt.tools.base.ObjectType;
 
 /**
  * Additional information about a result object from an object search
@@ -30,7 +30,7 @@ public interface IExtendedAdtObjectInfo {
 
 	/**
 	 * Returns the name of responsible person of this ADT object
-	 * 
+	 *
 	 * @return the name of responsible person of this ADT object
 	 */
 	String getOwner();

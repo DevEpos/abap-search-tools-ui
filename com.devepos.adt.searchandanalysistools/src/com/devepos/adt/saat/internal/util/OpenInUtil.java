@@ -20,6 +20,9 @@ import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.analytics.AnalysisForOfficeLauncherContentHandler;
 import com.devepos.adt.saat.internal.analytics.AnalysisForOfficeUriDiscovery;
 import com.devepos.adt.saat.internal.messages.Messages;
+import com.devepos.adt.tools.base.project.AbapProjectProxy;
+import com.devepos.adt.tools.base.project.IAbapProjectProvider;
+import com.devepos.adt.tools.base.util.AdtUtil;
 import com.sap.adt.communication.resources.AdtRestResourceFactory;
 import com.sap.adt.communication.resources.IRestResource;
 import com.sap.adt.sapgui.ui.editors.AdtSapGuiEditorUtilityFactory;
@@ -49,7 +52,7 @@ public class OpenInUtil {
 						{ "ENTITY_MODE", entityMode }, { "SKIP_SELSCREEN", String.valueOf(skipSelectionScreen) } }) //$NON-NLS-1$ //$NON-NLS-2$
 					.collect(Collectors.toMap(data -> data[0], data -> data[1])));
 		AdtUtil.overrideSapGuiPartTitle(part, project, entityId, String.format("DB Browser - %s", entityId), //$NON-NLS-1$
-			IImages.DB_BROWSER_DATA_PREVIEW);
+			SearchAndAnalysisPlugin.getDefault().getImage(IImages.DB_BROWSER_DATA_PREVIEW));
 	}
 
 	/**
@@ -64,7 +67,7 @@ public class OpenInUtil {
 				Stream.of(new String[][] { { "ENTITY_ID", cdsViewName.toUpperCase() } }) //$NON-NLS-1$
 					.collect(Collectors.toMap(data -> data[0], data -> data[1])));
 		AdtUtil.overrideSapGuiPartTitle(sapGuipart, project, cdsViewName, String.format("%s (Query Monitor)", cdsViewName), //$NON-NLS-1$
-			IImages.ANALYTICAL_QUERY);
+			SearchAndAnalysisPlugin.getDefault().getImage(IImages.ANALYTICAL_QUERY));
 	}
 
 	/**

@@ -19,15 +19,18 @@ import org.eclipse.ui.IWorkbenchPartSite;
 import com.devepos.adt.saat.internal.IDataSourceType;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.cdsanalysis.ICdsAnalysisConstants;
-import com.devepos.adt.saat.internal.elementinfo.LazyLoadingRefreshMode;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.search.IExtendedAdtObjectInfo;
-import com.devepos.adt.saat.internal.tree.IAdtObjectReferenceNode;
-import com.devepos.adt.saat.internal.tree.ITreeNode;
-import com.devepos.adt.saat.internal.tree.LazyLoadingTreeContentProvider;
-import com.devepos.adt.saat.internal.tree.LazyLoadingTreeContentProvider.LoadingElement;
-import com.devepos.adt.saat.internal.ui.StylerFactory;
 import com.devepos.adt.saat.internal.util.IImages;
+import com.devepos.adt.tools.base.IAdtObjectTypeConstants;
+import com.devepos.adt.tools.base.ObjectType;
+import com.devepos.adt.tools.base.elementinfo.LazyLoadingRefreshMode;
+import com.devepos.adt.tools.base.ui.StylerFactory;
+import com.devepos.adt.tools.base.ui.tree.IAdtObjectReferenceNode;
+import com.devepos.adt.tools.base.ui.tree.ITreeNode;
+import com.devepos.adt.tools.base.ui.tree.LazyLoadingTreeContentProvider;
+import com.devepos.adt.tools.base.ui.tree.LoadingTreeItemsNode;
+import com.devepos.adt.tools.base.util.AdtTypeUtil;
 
 /**
  * Tree Viewer for displaying Top-Down hierarchy of a database field or the
@@ -143,7 +146,7 @@ public class FieldHierarchyViewer extends TreeViewer {
 			final ITreeNode node = (ITreeNode) element;
 			switch (this.columnIndex) {
 			case 0:
-				if (node instanceof LoadingElement) {
+				if (node instanceof LoadingTreeItemsNode) {
 					styledString.append(node.getDisplayName(), StylerFactory.ITALIC_STYLER);
 				} else {
 					final String name = node.getDisplayName() != null ? node.getDisplayName() : node.getName();
@@ -151,7 +154,7 @@ public class FieldHierarchyViewer extends TreeViewer {
 				}
 				break;
 			case 1:
-				if (!(node instanceof LoadingElement)) {
+				if (!(node instanceof LoadingTreeItemsNode)) {
 					final String cellText = node.getPropertyValue(ICdsAnalysisConstants.FIELD_PROP);
 					if (cellText != null) {
 						final String calculated = node.getPropertyValue(ICdsAnalysisConstants.IS_CALCULATED_PROP);
@@ -169,9 +172,12 @@ public class FieldHierarchyViewer extends TreeViewer {
 
 		@Override
 		public Image getImage(final Object element) {
+			IAdtObjectReferenceNode adtObjectRefNode = null;
+			if (element instanceof IAdtObjectReferenceNode) {
+				adtObjectRefNode = (IAdtObjectReferenceNode) element;
+			}
 			if (this.columnIndex != 0) {
-				if (element instanceof IAdtObjectReferenceNode) {
-					final IAdtObjectReferenceNode adtObjectRefNode = (IAdtObjectReferenceNode) element;
+				if (adtObjectRefNode != null) {
 					final String calculated = adtObjectRefNode.getPropertyValue(ICdsAnalysisConstants.IS_CALCULATED_PROP);
 					if (calculated != null && "X".equals(calculated)) {
 						return SearchAndAnalysisPlugin.getDefault().getImage(IImages.FUNCTION);
@@ -181,7 +187,15 @@ public class FieldHierarchyViewer extends TreeViewer {
 				return null;
 			}
 			final ITreeNode node = (ITreeNode) element;
-			Image image = SearchAndAnalysisPlugin.getDefault().getImage(node.getImageId());
+			Image image = node.getImage();
+			if (image == null) {
+				if (adtObjectRefNode != null) {
+					image = AdtTypeUtil.getInstance()
+						.getTypeImage(adtObjectRefNode.getObjectType() == ObjectType.CDS_VIEW
+							? IAdtObjectTypeConstants.CDS_VIEW_DEFINITION_TYPE
+							: adtObjectRefNode.getAdtObjectType());
+				}
+			}
 			if (image == null) {
 				return null;
 			}

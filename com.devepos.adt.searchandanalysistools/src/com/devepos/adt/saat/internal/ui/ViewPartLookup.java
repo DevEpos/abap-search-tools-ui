@@ -6,7 +6,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 import com.devepos.adt.saat.internal.cdsanalysis.ui.CdsAnalysisView;
-import com.devepos.adt.saat.internal.util.Logging;
+import com.devepos.adt.tools.base.util.Logging;
 
 /**
  * Looks up View parts

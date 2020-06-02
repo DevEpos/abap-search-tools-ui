@@ -14,18 +14,16 @@ import org.eclipse.search.ui.NewSearchUI;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
-import com.devepos.adt.saat.internal.IAdtObjectTypeConstants;
-import com.devepos.adt.saat.internal.ObjectType;
 import com.devepos.adt.saat.internal.elementinfo.ElementInfoRetrievalServiceFactory;
-import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
 import com.devepos.adt.saat.internal.messages.Messages;
-import com.devepos.adt.saat.internal.util.AdtUtil;
-import com.sap.adt.ris.search.ui.AdtRepositorySearchServiceUIFactory;
-import com.sap.adt.ris.search.ui.IAdtRepositorySearchServiceUIParameters;
-import com.sap.adt.ris.search.ui.IAdtRepositorySearchServiceUIResult;
+import com.devepos.adt.tools.base.IAdtObjectTypeConstants;
+import com.devepos.adt.tools.base.ObjectType;
+import com.devepos.adt.tools.base.elementinfo.IAdtObjectReferenceElementInfo;
+import com.devepos.adt.tools.base.project.ProjectUtil;
+import com.devepos.adt.tools.base.ui.search.AdtRisSearchUtil;
+import com.devepos.adt.tools.base.ui.search.IAdtRisSearchResultProxy;
 import com.sap.adt.ris.search.ui.usagereferences.AdtRisUsageReferencesSearchQuery;
 import com.sap.adt.ris.search.ui.usagereferences.AdtRisUsageReferencesSearchQueryParameters;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
@@ -42,18 +40,14 @@ public class RunWhereUsedQueryHandler extends AbstractHandler {
 	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
 		// open search dialog to choose ABAP Development object
-		final IAdtRepositorySearchServiceUIParameters parameters = AdtRepositorySearchServiceUIFactory
-			.createAdtRepositorySearchServiceUIParameters();
-		parameters.setTitle(Messages.RunWhereUsedQueryHandler_openObjectDialog_xtit);
-		final IAdtRepositorySearchServiceUIResult result = AdtRepositorySearchServiceUIFactory
-			.createAdtRepositorySearchServiceUI()
-			.openDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), parameters);
+		final IAdtRisSearchResultProxy result = AdtRisSearchUtil
+			.searchAdtObjectViaDialog(Messages.RunWhereUsedQueryHandler_openObjectDialog_xtit, false, null);
 
 		if (result == null) {
 			return null;
 		}
 
-		final IAdtObjectReference selectedAdtObjRef = result.getFirstSelectedObjectReference();
+		final IAdtObjectReference selectedAdtObjRef = result.getFirstResult();
 		final IProject project = result.getSelectedProject();
 
 		final String adtObjectUri = selectedAdtObjRef.getUri();
@@ -77,7 +71,8 @@ public class RunWhereUsedQueryHandler extends AbstractHandler {
 
 		final Job readDdlsUriJob = Job.create(Messages.ElementInfoProvider_RetrievingElementInfoDescription_xmsg, (monitor) -> {
 			final IAdtObjectReferenceElementInfo ddlsObjectInfo = ElementInfoRetrievalServiceFactory.createService()
-				.retrieveBasicElementInformation(AdtUtil.getDestinationId(project), adtObjectRef.getName(), ObjectType.CDS_VIEW);
+				.retrieveBasicElementInformation(ProjectUtil.getDestinationId(project), adtObjectRef.getName(),
+					ObjectType.CDS_VIEW);
 			if (ddlsObjectInfo != null) {
 				this.ddlsUri = ddlsObjectInfo.getUri();
 			}

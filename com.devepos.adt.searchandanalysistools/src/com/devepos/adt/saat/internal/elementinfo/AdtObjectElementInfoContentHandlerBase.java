@@ -2,10 +2,13 @@ package com.devepos.adt.saat.internal.elementinfo;
 
 import java.nio.charset.Charset;
 
-import com.devepos.adt.saat.internal.util.AdtObjectReferenceModelFactory;
-import com.devepos.adt.saat.internal.util.AdtStaxContentHandlerUtility;
-import com.devepos.adt.saat.internal.util.IXmlElement;
-import com.devepos.adt.saat.internal.util.IXmlTags;
+import com.devepos.adt.tools.base.adtobject.AdtObjectReferenceModelFactory;
+import com.devepos.adt.tools.base.elementinfo.AdtObjectReferenceElementInfo;
+import com.devepos.adt.tools.base.elementinfo.IAdtObjectReferenceElementInfo;
+import com.devepos.adt.tools.base.elementinfo.IElementInfoCollection;
+import com.devepos.adt.tools.base.util.AdtStaxContentHandlerUtility;
+import com.devepos.adt.tools.base.util.IXmlElement;
+import com.devepos.adt.tools.base.util.IXmlTags;
 import com.sap.adt.communication.content.AdtMediaType;
 import com.sap.adt.communication.content.IContentHandler;
 import com.sap.adt.communication.message.IMessageBody;
@@ -53,8 +56,8 @@ public abstract class AdtObjectElementInfoContentHandlerBase implements IContent
 		this.elementInfo = new AdtObjectReferenceElementInfo(name, rawName, description);
 
 		if (name != null && !name.isEmpty() && uri != null && !uri.isEmpty() && type != null && !type.isEmpty()) {
-			final IAdtObjectReference adtObjectRef = AdtObjectReferenceModelFactory.createReference(this.destinationId, name, type,
-				uri);
+			final IAdtObjectReference adtObjectRef = AdtObjectReferenceModelFactory.createReference(this.destinationId, name,
+				type, uri);
 			adtObjectRef.setPackageName(packageName);
 			this.elementInfo.setAdtObjectReference(adtObjectRef);
 		}

@@ -7,7 +7,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.devepos.adt.saat.internal.util.UriDiscoveryBase;
+import com.devepos.adt.saat.internal.util.IUriDiscoveryPaths;
+import com.devepos.adt.tools.base.util.UriDiscoveryBase;
 import com.sap.adt.compatibility.uritemplate.AdtUriTemplateFactory;
 import com.sap.adt.compatibility.uritemplate.IAdtUriTemplate;
 
@@ -28,7 +29,7 @@ public class ObjectSearchUriDiscovery extends UriDiscoveryBase {
 	 * @param destination
 	 */
 	public ObjectSearchUriDiscovery(final String destination) {
-		super(destination, DISCOVERY_SCHEME);
+		super(destination, IUriDiscoveryPaths.OBJECT_SEARCH_DISOCOVERY_PATH, DISCOVERY_SCHEME);
 	}
 
 	/**

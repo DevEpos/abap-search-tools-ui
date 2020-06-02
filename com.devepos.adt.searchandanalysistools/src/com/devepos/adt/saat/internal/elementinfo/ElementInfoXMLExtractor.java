@@ -1,10 +1,16 @@
 package com.devepos.adt.saat.internal.elementinfo;
 
+import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.messages.Messages;
-import com.devepos.adt.saat.internal.util.AdtObjectReferenceModelFactory;
 import com.devepos.adt.saat.internal.util.IImages;
-import com.devepos.adt.saat.internal.util.IXmlElement;
-import com.devepos.adt.saat.internal.util.IXmlTags;
+import com.devepos.adt.tools.base.adtobject.AdtObjectReferenceModelFactory;
+import com.devepos.adt.tools.base.elementinfo.AdtObjectReferenceElementInfo;
+import com.devepos.adt.tools.base.elementinfo.ElementInfoCollection;
+import com.devepos.adt.tools.base.elementinfo.IAdtObjectReferenceElementInfo;
+import com.devepos.adt.tools.base.elementinfo.IElementInfoCollection;
+import com.devepos.adt.tools.base.elementinfo.SimpleElementInfo;
+import com.devepos.adt.tools.base.util.IXmlElement;
+import com.devepos.adt.tools.base.util.IXmlTags;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 
 /**
@@ -22,32 +28,35 @@ public class ElementInfoXMLExtractor {
 	public static IElementInfoCollection deserializeProperties(final IXmlElement propertiesEl) {
 
 		final IElementInfoCollection properties = new ElementInfoCollection(Messages.ElementInformation_PropertiesCollection_xtit,
-			IImages.PROPERTIES);
+			SearchAndAnalysisPlugin.getDefault().getImage(IImages.PROPERTIES));
 
 		final String owner = propertiesEl.getAttributeValue(IXmlTags.AT_OWNER);
 		if (owner != null && !owner.isEmpty()) {
 
 			properties.getChildren()
 				.add(new SimpleElementInfo(Messages.ElementInformation_OwnerProp_xtit, Messages.ElementInformation_OwnerProp_xtit,
-					IImages.USER, owner));
+					SearchAndAnalysisPlugin.getDefault().getImage(IImages.USER), owner));
 		}
 		final String packageName = propertiesEl.getAttributeValue(IXmlTags.AT_PACKAGE_NAME);
 		if (packageName != null && !packageName.isEmpty()) {
 			properties.getChildren()
 				.add(new SimpleElementInfo(Messages.ElementInformation_PackageProp_xtit,
-					Messages.ElementInformation_PackageProp_xtit, IImages.PACKAGE_PARAM, packageName));
+					Messages.ElementInformation_PackageProp_xtit,
+					SearchAndAnalysisPlugin.getDefault().getImage(IImages.PACKAGE_PARAM), packageName));
 		}
 		final String createdDate = propertiesEl.getAttributeValue(IXmlTags.AT_CREATED_DATE);
 		if (createdDate != null && !createdDate.isEmpty()) {
 			properties.getChildren()
 				.add(new SimpleElementInfo(Messages.ElementInformation_CreatedDateProp_xtit,
-					Messages.ElementInformation_CreatedDateProp_xtit, IImages.DATE, createdDate));
+					Messages.ElementInformation_CreatedDateProp_xtit, SearchAndAnalysisPlugin.getDefault().getImage(IImages.DATE),
+					createdDate));
 		}
 		final String changedDate = propertiesEl.getAttributeValue(IXmlTags.AT_CHANGED_DATE);
 		if (changedDate != null && !changedDate.isEmpty()) {
 			properties.getChildren()
 				.add(new SimpleElementInfo(Messages.ElementInformation_ChangedDateProp_xtit,
-					Messages.ElementInformation_ChangedDateProp_xtit, IImages.DATE, changedDate));
+					Messages.ElementInformation_ChangedDateProp_xtit, SearchAndAnalysisPlugin.getDefault().getImage(IImages.DATE),
+					changedDate));
 		}
 
 		return properties;
@@ -70,7 +79,8 @@ public class ElementInfoXMLExtractor {
 		final String adtType = adtObjectInfoEl.getAttributeValue(IXmlTags.AT_ADT_TYPE);
 		final String packageName = adtObjectInfoEl.getAttributeValue(IXmlTags.AT_PACKAGE_NAME);
 
-		final IAdtObjectReference objectReference = AdtObjectReferenceModelFactory.createReference(destinationId, name, adtType, uri);
+		final IAdtObjectReference objectReference = AdtObjectReferenceModelFactory.createReference(destinationId, name, adtType,
+			uri);
 		objectReference.setPackageName(packageName);
 
 		adtObjRefElInfo = new AdtObjectReferenceElementInfo(name, rawName, description);

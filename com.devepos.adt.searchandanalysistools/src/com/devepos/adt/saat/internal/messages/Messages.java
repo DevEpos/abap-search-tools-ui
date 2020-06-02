@@ -248,10 +248,6 @@ public class Messages extends NLS {
 	public static String SearchPatternAnalyzer_DescriptionClassCategoryParameter_xmsg;
 	public static String SearchPatternAnalyzer_DescriptionFriendParameter_xmsg;
 	public static String SearchPatternAnalyzer_NoValuePartPossibleIfKeyIsNegated_xmsg;
-	public static String ToggleViewLayoutAction_AutomaticOrientation_xmit;
-	public static String ToggleViewLayoutAction_HorizontalOrientation_xmit;
-	public static String ToggleViewLayoutAction_TopLevelMenu_xmit;
-	public static String ToggleViewLayoutAction_VerticalOrientation_xmit;
 	public static String TreeContentProvider_FallbackNodeLoadingJobText_xmsg;
 	public static String TreeContentProvider_LoadingText_xtit;
 	public static String TreeContentProvider_TreeUpdateJobName_xmsg;

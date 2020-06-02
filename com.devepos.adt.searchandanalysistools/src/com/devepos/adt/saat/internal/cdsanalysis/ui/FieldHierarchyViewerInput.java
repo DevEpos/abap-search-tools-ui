@@ -2,11 +2,11 @@ package com.devepos.adt.saat.internal.cdsanalysis.ui;
 
 import org.eclipse.jface.viewers.TreeViewer;
 
-import com.devepos.adt.saat.internal.IDestinationProvider;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.cdsanalysis.FieldWhereUsedInCdsElementInfoProvider;
-import com.devepos.adt.saat.internal.tree.ILazyLoadingNode;
-import com.devepos.adt.saat.internal.tree.LazyLoadingFolderNode;
+import com.devepos.adt.tools.base.destinations.IDestinationProvider;
+import com.devepos.adt.tools.base.ui.tree.ILazyLoadingNode;
+import com.devepos.adt.tools.base.ui.tree.LazyLoadingFolderNode;
 
 /**
  * Input for the Field Hierarchy Tree Viewer
@@ -100,7 +100,9 @@ public class FieldHierarchyViewerInput {
 	public void createWhereUsedNode() {
 		this.whereUsedProvider = new FieldWhereUsedInCdsElementInfoProvider(this.destinationProvider.getDestinationId(),
 			this.baseEntityName, this.baseFieldName, false,
-			SearchAndAnalysisPlugin.getDefault().getPreferenceStore().getBoolean(FieldAnalysisView.SEARCH_DB_VIEWS_WHERE_USED_PREF_KEY));
+			SearchAndAnalysisPlugin.getDefault()
+				.getPreferenceStore()
+				.getBoolean(FieldAnalysisView.SEARCH_DB_VIEWS_WHERE_USED_PREF_KEY));
 		this.whereUsedNode = new FieldHierarchyViewerNode(
 			new LazyLoadingFolderNode(this.baseFieldName, this.whereUsedProvider, null, null));
 	}

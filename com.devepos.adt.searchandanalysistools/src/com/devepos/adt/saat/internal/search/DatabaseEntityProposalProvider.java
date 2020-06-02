@@ -2,9 +2,9 @@ package com.devepos.adt.saat.internal.search;
 
 import org.eclipse.jface.fieldassist.IContentProposal;
 
-import com.devepos.adt.saat.internal.ObjectType;
 import com.devepos.adt.saat.internal.search.contentassist.SearchParameterProposal;
-import com.devepos.adt.saat.internal.util.IAbapProjectProvider;
+import com.devepos.adt.tools.base.ObjectType;
+import com.devepos.adt.tools.base.project.IAbapProjectProvider;
 
 /**
  * Proposal Provider which provides database entities like database tables,
@@ -12,8 +12,7 @@ import com.devepos.adt.saat.internal.util.IAbapProjectProvider;
  */
 public class DatabaseEntityProposalProvider extends NamedItemProposalProvider {
 
-	public DatabaseEntityProposalProvider(final IAbapProjectProvider projectProvider,
-	    final QueryParameterName parameterName) {
+	public DatabaseEntityProposalProvider(final IAbapProjectProvider projectProvider, final QueryParameterName parameterName) {
 		super(projectProvider, parameterName, NamedItemType.DB_ENTITY);
 	}
 

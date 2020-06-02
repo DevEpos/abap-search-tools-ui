@@ -6,16 +6,16 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
 
-import com.devepos.adt.saat.internal.IDestinationProvider;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.cdsanalysis.CdsAnalysisType;
 import com.devepos.adt.saat.internal.cdsanalysis.WhereUsedInCdsElementInfoProvider;
-import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
 import com.devepos.adt.saat.internal.messages.Messages;
-import com.devepos.adt.saat.internal.tree.ILazyLoadingListener;
-import com.devepos.adt.saat.internal.tree.ILazyLoadingNode;
-import com.devepos.adt.saat.internal.tree.LazyLoadingAdtObjectReferenceNode;
 import com.devepos.adt.saat.internal.util.IImages;
+import com.devepos.adt.tools.base.destinations.IDestinationProvider;
+import com.devepos.adt.tools.base.elementinfo.IAdtObjectReferenceElementInfo;
+import com.devepos.adt.tools.base.ui.tree.ILazyLoadingListener;
+import com.devepos.adt.tools.base.ui.tree.ILazyLoadingNode;
+import com.devepos.adt.tools.base.ui.tree.LazyLoadingAdtObjectReferenceNode;
 
 public class WhereUsedInCdsAnalysis extends CdsAnalysis {
 	private static final String INDETERMINATE_COUNT = "?"; //$NON-NLS-1$

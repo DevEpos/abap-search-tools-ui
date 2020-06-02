@@ -24,19 +24,19 @@ import org.eclipse.ui.part.PageBook;
 
 import com.devepos.adt.saat.internal.ICommandConstants;
 import com.devepos.adt.saat.internal.IContextMenuConstants;
-import com.devepos.adt.saat.internal.IDestinationProvider;
-import com.devepos.adt.saat.internal.ObjectType;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.cdsanalysis.CdsFieldTopDownElementInfoProvider;
 import com.devepos.adt.saat.internal.cdsanalysis.ICdsAnalysisConstants;
 import com.devepos.adt.saat.internal.menu.MenuItemFactory;
 import com.devepos.adt.saat.internal.messages.Messages;
-import com.devepos.adt.saat.internal.tree.IAdtObjectReferenceNode;
-import com.devepos.adt.saat.internal.tree.ITreeNode;
-import com.devepos.adt.saat.internal.tree.LazyLoadingFolderNode;
-import com.devepos.adt.saat.internal.ui.RadioActionGroup;
-import com.devepos.adt.saat.internal.util.AdtUtil;
 import com.devepos.adt.saat.internal.util.IImages;
+import com.devepos.adt.saat.internal.util.NavigationUtil;
+import com.devepos.adt.tools.base.ObjectType;
+import com.devepos.adt.tools.base.destinations.IDestinationProvider;
+import com.devepos.adt.tools.base.ui.action.RadioActionGroup;
+import com.devepos.adt.tools.base.ui.tree.IAdtObjectReferenceNode;
+import com.devepos.adt.tools.base.ui.tree.ITreeNode;
+import com.devepos.adt.tools.base.ui.tree.LazyLoadingFolderNode;
 
 /**
  * View which consists of a {@link ViewForm} for the lower section of the
@@ -112,7 +112,7 @@ public class FieldHierarchyView implements IDestinationProvider {
 
 	/**
 	 * Updates the field to hierarchy viewer input cache
-	 * 
+	 *
 	 * @param inputCache the field hierarchy viewer cache
 	 */
 	public void setInputCache(final Map<String, FieldHierarchyViewerInput> inputCache) {
@@ -176,7 +176,7 @@ public class FieldHierarchyView implements IDestinationProvider {
 				&& this.currentInputObjectType == ObjectType.CDS_VIEW) {
 				topDownNode = new LazyLoadingFolderNode(this.currentEntityName, this.currentEntityName,
 					new CdsFieldTopDownElementInfoProvider(getDestinationId(), this.currentEntityName, fieldName),
-					node.getParent().getImageId(), null, null);
+					node.getParent().getImage(), null, null);
 				topDownNode.getProperties().put(ICdsAnalysisConstants.FIELD_PROP, node.getDisplayName());
 			}
 			input = new FieldHierarchyViewerInput(this.hierarchyTreeViewer, topDownNode, this.currentEntityName, fieldName, this);
@@ -277,7 +277,7 @@ public class FieldHierarchyView implements IDestinationProvider {
 	 * Updates the Tool Bar label
 	 */
 	private void updateToolbarLabel(final boolean topDown) {
-		this.hierarchyViewerPaneLabel.setImage(SearchAndAnalysisPlugin.getDefault().getImage(this.fieldNode.getImageId()));
+		this.hierarchyViewerPaneLabel.setImage(this.fieldNode.getImage());
 		final StringBuilder infoLabelText = new StringBuilder(
 			this.currentInputObjectType != ObjectType.CDS_VIEW ? this.fieldNode.getDisplayName().toUpperCase()
 				: this.fieldNode.getDisplayName());
@@ -314,7 +314,8 @@ public class FieldHierarchyView implements IDestinationProvider {
 			if (entityName == null || fieldName == null) {
 				return;
 			}
-			AdtUtil.navigateToEntityColumn(entityName, fieldName, getDestinationId());
+			NavigationUtil.navigateToEntityColumn(entityName, fieldName, getDestinationId());
+
 		});
 	}
 
@@ -335,7 +336,7 @@ public class FieldHierarchyView implements IDestinationProvider {
 		menu.appendToGroup(IContextMenuConstants.GROUP_OPEN, new Action(Messages.FieldHierarchyView_NavigateToFieldAction_xmit) {
 			@Override
 			public void run() {
-				AdtUtil.navigateToEntityColumn(entityName, fieldName, getDestinationId());
+				NavigationUtil.navigateToEntityColumn(entityName, fieldName, getDestinationId());
 			}
 		});
 

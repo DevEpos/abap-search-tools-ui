@@ -3,9 +3,9 @@ package com.devepos.adt.saat.internal.cdsanalysis.ui;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
 
-import com.devepos.adt.saat.internal.IDestinationProvider;
 import com.devepos.adt.saat.internal.cdsanalysis.CdsAnalysisType;
-import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
+import com.devepos.adt.tools.base.destinations.IDestinationProvider;
+import com.devepos.adt.tools.base.elementinfo.IAdtObjectReferenceElementInfo;
 
 /**
  * Result of CDS Analysis

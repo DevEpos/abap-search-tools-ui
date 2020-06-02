@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.devepos.adt.saat.internal.ICommandConstants;
-import com.devepos.adt.saat.internal.ObjectType;
+import com.devepos.adt.tools.base.ObjectType;
+import com.devepos.adt.tools.base.adtobject.IAdtObject;
+import com.devepos.adt.tools.base.util.AdtUtil;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 
 public class CommandPossibleChecker {
@@ -78,16 +80,17 @@ public class CommandPossibleChecker {
 	public boolean canCommandBeEnabled(final String commandId) {
 		switch (commandId) {
 		case ICommandConstants.CDS_TOP_DOWN_ANALYSIS:
-			return isSingleCdsSelection() && AdtUtil.isCdsTopDownAnalysisAvailable(this.selectedAdtObjects.get(0).getProject());
+			return isSingleCdsSelection()
+				&& FeatureTester.isCdsTopDownAnalysisAvailable(this.selectedAdtObjects.get(0).getProject());
 		case ICommandConstants.USED_ENTITIES_ANALYSIS:
 			return isSingleCdsSelection()
-				&& AdtUtil.isCdsUsedEntitiesAnalysisAvailable(this.selectedAdtObjects.get(0).getProject());
+				&& FeatureTester.isCdsUsedEntitiesAnalysisAvailable(this.selectedAdtObjects.get(0).getProject());
 		case ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS:
 			return hasSingleSelection(true);
 		case ICommandConstants.FIELD_ANALYSIS:
 			return hasSingleSelection(true);
 		case ICommandConstants.OPEN_IN_DB_BROWSER:
-			return hasSelection(true) && AdtUtil.isSapGuiDbBrowserAvailable(this.selectedAdtObjects);
+			return hasSelection(true) && FeatureTester.isSapGuiDbBrowserAvailable(this.selectedAdtObjects);
 		}
 		return false;
 	}

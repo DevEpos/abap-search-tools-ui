@@ -10,8 +10,8 @@ import org.eclipse.swt.graphics.Image;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.search.contentassist.SearchParameterProposal;
-import com.devepos.adt.saat.internal.util.IAbapProjectProvider;
 import com.devepos.adt.saat.internal.util.IImages;
+import com.devepos.adt.tools.base.project.IAbapProjectProvider;
 
 /**
  * Implementation for search parameter {@link QueryParameterName#EXTENDED_BY}

@@ -2,12 +2,12 @@ package com.devepos.adt.saat.internal.ddicaccess;
 
 import java.util.List;
 
-import com.devepos.adt.saat.internal.elementinfo.IElementInfo;
+import com.devepos.adt.tools.base.elementinfo.IElementInfo;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 
 /**
  * Repository Access for DDIC Objects
- * 
+ *
  * @author stockbal
  */
 public interface IDdicRepositoryAccess {

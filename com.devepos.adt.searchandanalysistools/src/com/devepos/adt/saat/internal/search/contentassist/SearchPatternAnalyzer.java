@@ -19,7 +19,7 @@ import com.devepos.adt.saat.internal.search.ISearchParameter;
 import com.devepos.adt.saat.internal.search.ISearchParameterHandler;
 import com.devepos.adt.saat.internal.search.ISearchProposalProvider;
 import com.devepos.adt.saat.internal.search.IValidatable;
-import com.devepos.adt.saat.internal.util.StringUtil;
+import com.devepos.adt.tools.base.util.StringUtil;
 
 /**
  * Analyzer for search pattern which retrieves

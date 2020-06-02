@@ -41,12 +41,12 @@ import com.devepos.adt.saat.internal.preferences.IPreferences;
 import com.devepos.adt.saat.internal.search.ObjectSearchUriDiscovery;
 import com.devepos.adt.saat.internal.search.SearchType;
 import com.devepos.adt.saat.internal.search.contentassist.SearchPatternProvider;
-import com.devepos.adt.saat.internal.util.AbapProjectProxy;
-import com.devepos.adt.saat.internal.util.AdtUtil;
-import com.devepos.adt.saat.internal.util.IAbapProjectProvider;
-import com.devepos.adt.saat.internal.util.SelectionUtil;
-import com.devepos.adt.saat.internal.util.StatusUtil;
-import com.devepos.adt.saat.internal.util.TextControlUtil;
+import com.devepos.adt.tools.base.project.AbapProjectProxy;
+import com.devepos.adt.tools.base.project.IAbapProjectProvider;
+import com.devepos.adt.tools.base.project.ProjectUtil;
+import com.devepos.adt.tools.base.util.SelectionUtil;
+import com.devepos.adt.tools.base.util.StatusUtil;
+import com.devepos.adt.tools.base.util.TextControlUtil;
 import com.sap.adt.tools.core.ui.AbapProjectProposalProvider;
 import com.sap.adt.tools.core.ui.dialogs.AbapProjectSelectionDialog;
 import com.sap.adt.util.ui.SWTUtil;
@@ -453,7 +453,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 			this.projectProvider.setProject(null);
 		} else {
 			// check if there is an ABAP project which matches the entered name
-			final IProject[] abapProjects = AdtUtil.getAbapProjects();
+			final IProject[] abapProjects = ProjectUtil.getAbapProjects();
 			String availableProjectName = null;
 			for (final IProject project : abapProjects) {
 				if (project.getName().equalsIgnoreCase(projectName)) {
@@ -473,7 +473,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 	private void setInitialProject() {
 		String projectName = null;
 
-		final IProject currentAbapProject = AdtUtil.getCurrentAbapProject();
+		final IProject currentAbapProject = ProjectUtil.getCurrentAbapProject();
 		if (currentAbapProject != null) {
 			projectName = currentAbapProject.getName();
 		}

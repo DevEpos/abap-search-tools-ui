@@ -11,9 +11,9 @@ import org.eclipse.swt.graphics.Image;
 
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.messages.Messages;
-import com.devepos.adt.saat.internal.util.IAbapProjectProvider;
 import com.devepos.adt.saat.internal.util.IImages;
-import com.devepos.adt.saat.internal.util.StringUtil;
+import com.devepos.adt.tools.base.project.IAbapProjectProvider;
+import com.devepos.adt.tools.base.util.StringUtil;
 
 public class AnnotationSearchParameter extends NamedItemProposalProvider
 	implements ISearchParameter, ISearchProposalProvider, IValidatable {

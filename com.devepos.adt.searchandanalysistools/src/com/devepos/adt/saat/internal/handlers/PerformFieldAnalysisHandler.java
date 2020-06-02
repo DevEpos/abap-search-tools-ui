@@ -3,8 +3,8 @@ package com.devepos.adt.saat.internal.handlers;
 import com.devepos.adt.saat.internal.cdsanalysis.CdsAnalysisType;
 import com.devepos.adt.saat.internal.cdsanalysis.ui.CdsAnalysis;
 import com.devepos.adt.saat.internal.cdsanalysis.ui.FieldAnalysis;
-import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
-import com.devepos.adt.saat.internal.util.IAdtObject;
+import com.devepos.adt.tools.base.adtobject.IAdtObject;
+import com.devepos.adt.tools.base.elementinfo.IAdtObjectReferenceElementInfo;
 
 /**
  * Handler for performing a field analy

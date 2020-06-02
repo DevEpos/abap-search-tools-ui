@@ -36,9 +36,9 @@ import com.devepos.adt.saat.internal.help.HelpContexts;
 import com.devepos.adt.saat.internal.help.HelpUtil;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.preferences.IPreferences;
-import com.devepos.adt.saat.internal.ui.DummyPart;
 import com.devepos.adt.saat.internal.ui.ViewUiState;
 import com.devepos.adt.saat.internal.util.IImages;
+import com.devepos.adt.tools.base.ui.DummyPart;
 
 /**
  * A view which is to be used to analyse a selected CDS view (either from the

@@ -2,8 +2,9 @@ package com.devepos.adt.saat.internal.navtargets;
 
 import java.net.URI;
 
-import com.devepos.adt.saat.internal.ObjectType;
-import com.devepos.adt.saat.internal.util.UriDiscoveryBase;
+import com.devepos.adt.saat.internal.util.IUriDiscoveryPaths;
+import com.devepos.adt.tools.base.ObjectType;
+import com.devepos.adt.tools.base.util.UriDiscoveryBase;
 import com.sap.adt.compatibility.uritemplate.IAdtUriTemplate;
 
 /**
@@ -17,7 +18,7 @@ public class NavigationTargetsUriDiscovery extends UriDiscoveryBase {
 	private static final String DISCOVERY_TERM_NAV_TARGETS = "navigationtargets";
 
 	public NavigationTargetsUriDiscovery(final String destination) {
-		super(destination, DISCOVERY_SCHEME);
+		super(destination, IUriDiscoveryPaths.OBJECT_SEARCH_DISOCOVERY_PATH, DISCOVERY_SCHEME);
 	}
 
 	/**

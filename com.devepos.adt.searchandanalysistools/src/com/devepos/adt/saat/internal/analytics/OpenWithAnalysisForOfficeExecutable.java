@@ -1,9 +1,9 @@
 package com.devepos.adt.saat.internal.analytics;
 
-import com.devepos.adt.saat.internal.Executable;
-import com.devepos.adt.saat.internal.util.AbapProjectProviderAccessor;
-import com.devepos.adt.saat.internal.util.IAbapProjectProvider;
 import com.devepos.adt.saat.internal.util.OpenInUtil;
+import com.devepos.adt.tools.base.project.AbapProjectProviderAccessor;
+import com.devepos.adt.tools.base.project.IAbapProjectProvider;
+import com.devepos.adt.tools.base.ui.action.Executable;
 
 /**
  * An action that opens a CDS View with the Analysis for Office plugin

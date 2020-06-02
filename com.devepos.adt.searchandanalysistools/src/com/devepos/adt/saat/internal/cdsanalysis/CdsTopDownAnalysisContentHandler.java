@@ -3,25 +3,26 @@ package com.devepos.adt.saat.internal.cdsanalysis;
 import java.util.List;
 
 import com.devepos.adt.saat.internal.CdsSourceType;
-import com.devepos.adt.saat.internal.ObjectType;
+import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.elementinfo.AdtObjectElementInfoContentHandlerBase;
-import com.devepos.adt.saat.internal.elementinfo.AdtObjectReferenceElementInfo;
-import com.devepos.adt.saat.internal.elementinfo.ElementInfoCollection;
 import com.devepos.adt.saat.internal.elementinfo.ExtendedAdtObjectInfo;
-import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
-import com.devepos.adt.saat.internal.elementinfo.IElementInfo;
-import com.devepos.adt.saat.internal.elementinfo.IElementInfoCollection;
 import com.devepos.adt.saat.internal.messages.Messages;
-import com.devepos.adt.saat.internal.util.AdtObjectReferenceModelFactory;
 import com.devepos.adt.saat.internal.util.IImages;
-import com.devepos.adt.saat.internal.util.IXmlElement;
-import com.devepos.adt.saat.internal.util.IXmlTags;
+import com.devepos.adt.tools.base.ObjectType;
+import com.devepos.adt.tools.base.adtobject.AdtObjectReferenceModelFactory;
+import com.devepos.adt.tools.base.elementinfo.AdtObjectReferenceElementInfo;
+import com.devepos.adt.tools.base.elementinfo.ElementInfoCollection;
+import com.devepos.adt.tools.base.elementinfo.IAdtObjectReferenceElementInfo;
+import com.devepos.adt.tools.base.elementinfo.IElementInfo;
+import com.devepos.adt.tools.base.elementinfo.IElementInfoCollection;
+import com.devepos.adt.tools.base.util.IXmlElement;
+import com.devepos.adt.tools.base.util.IXmlTags;
 import com.sap.adt.communication.message.IMessageBody;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 
 /**
  * Content Handler for CDS Top Down Analysis
- * 
+ *
  * @author stockbal
  */
 public class CdsTopDownAnalysisContentHandler extends AdtObjectElementInfoContentHandlerBase {
@@ -128,7 +129,7 @@ public class CdsTopDownAnalysisContentHandler extends AdtObjectElementInfoConten
 //				rawName = "Select From";
 //				imageId = IImages.DATA_SOURCE;
 			}
-			return new ElementInfoCollection(name, rawName, imageId, null);
+			return new ElementInfoCollection(name, rawName, SearchAndAnalysisPlugin.getDefault().getImage(imageId), null);
 		}
 		return null;
 	}

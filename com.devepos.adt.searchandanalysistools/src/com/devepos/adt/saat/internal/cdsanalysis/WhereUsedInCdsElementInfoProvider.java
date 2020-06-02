@@ -13,18 +13,18 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.osgi.util.NLS;
 
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
-import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
-import com.devepos.adt.saat.internal.elementinfo.IElementInfo;
-import com.devepos.adt.saat.internal.elementinfo.IElementInfoProvider;
-import com.devepos.adt.saat.internal.elementinfo.LazyLoadingElementInfo;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.search.QueryParameterName;
 import com.devepos.adt.saat.internal.search.ui.ObjectSearchQuery;
 import com.devepos.adt.saat.internal.search.ui.ObjectSearchRequest;
 import com.devepos.adt.saat.internal.search.ui.ObjectSearchResult;
-import com.devepos.adt.saat.internal.util.AbapProjectProviderAccessor;
 import com.devepos.adt.saat.internal.util.IImages;
-import com.devepos.adt.saat.internal.util.ObjectContainer;
+import com.devepos.adt.tools.base.elementinfo.IAdtObjectReferenceElementInfo;
+import com.devepos.adt.tools.base.elementinfo.IElementInfo;
+import com.devepos.adt.tools.base.elementinfo.IElementInfoProvider;
+import com.devepos.adt.tools.base.elementinfo.LazyLoadingElementInfo;
+import com.devepos.adt.tools.base.project.AbapProjectProviderAccessor;
+import com.devepos.adt.tools.base.util.ObjectContainer;
 
 /**
  * Provider for reading usages of a given ADT object in Select/Association
@@ -190,7 +190,7 @@ public class WhereUsedInCdsElementInfoProvider implements IElementInfoProvider {
 		if (!searchFrom) {
 			provider.setLocalAssociationsOnly(this.localAssociationsOnly);
 		}
-		return new LazyLoadingElementInfo(name, name, imageId, provider);
+		return new LazyLoadingElementInfo(name, name, SearchAndAnalysisPlugin.getDefault().getImage(imageId), provider);
 	}
 
 }

@@ -3,7 +3,7 @@ package com.devepos.adt.saat.internal.cdsanalysis.ui;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeViewer;
 
-import com.devepos.adt.saat.internal.tree.ILazyLoadingNode;
+import com.devepos.adt.tools.base.ui.tree.ILazyLoadingNode;
 
 /**
  * Root node for the Field Hierarchy {@link TreeViewer}
@@ -43,7 +43,7 @@ public class FieldHierarchyViewerNode {
 	}
 
 	public TreePath[] getExpandedState() {
-		return this.expandedTreePaths;
+		return this.expandedTreePaths == null ? new TreePath[0] : this.expandedTreePaths;
 	}
 
 	public void refreshInput() {

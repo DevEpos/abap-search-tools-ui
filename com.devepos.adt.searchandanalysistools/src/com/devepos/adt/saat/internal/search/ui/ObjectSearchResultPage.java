@@ -49,29 +49,30 @@ import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.Page;
 
 import com.devepos.adt.saat.internal.ICommandConstants;
-import com.devepos.adt.saat.internal.ObjectType;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.cdsanalysis.CdsAnalysisUriDiscovery;
 import com.devepos.adt.saat.internal.menu.MenuItemFactory;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.search.IExtendedAdtObjectInfo;
-import com.devepos.adt.saat.internal.tree.ActionTreeNode;
-import com.devepos.adt.saat.internal.tree.IAdtObjectReferenceNode;
-import com.devepos.adt.saat.internal.tree.ICollectionTreeNode;
-import com.devepos.adt.saat.internal.tree.IStyledTreeNode;
-import com.devepos.adt.saat.internal.tree.ITreeNode;
-import com.devepos.adt.saat.internal.tree.LazyLoadingTreeContentProvider;
-import com.devepos.adt.saat.internal.tree.LazyLoadingTreeContentProvider.LoadingElement;
-import com.devepos.adt.saat.internal.tree.PackageNode;
-import com.devepos.adt.saat.internal.ui.CollapseAllTreeNodesAction;
-import com.devepos.adt.saat.internal.ui.CollapseTreeNodesAction;
-import com.devepos.adt.saat.internal.ui.CopyToClipboardAction;
-import com.devepos.adt.saat.internal.ui.OpenAdtDataPreviewAction;
-import com.devepos.adt.saat.internal.ui.OpenAdtObjectAction;
-import com.devepos.adt.saat.internal.ui.StylerFactory;
-import com.devepos.adt.saat.internal.util.AdtUtil;
-import com.devepos.adt.saat.internal.util.IAbapProjectProvider;
+import com.devepos.adt.saat.internal.util.FeatureTester;
 import com.devepos.adt.saat.internal.util.IImages;
+import com.devepos.adt.tools.base.ObjectType;
+import com.devepos.adt.tools.base.project.IAbapProjectProvider;
+import com.devepos.adt.tools.base.ui.StylerFactory;
+import com.devepos.adt.tools.base.ui.action.CollapseAllTreeNodesAction;
+import com.devepos.adt.tools.base.ui.action.CollapseTreeNodesAction;
+import com.devepos.adt.tools.base.ui.action.CopyToClipboardAction;
+import com.devepos.adt.tools.base.ui.action.ExecuteAdtObjectAction;
+import com.devepos.adt.tools.base.ui.action.OpenAdtObjectAction;
+import com.devepos.adt.tools.base.ui.tree.ActionTreeNode;
+import com.devepos.adt.tools.base.ui.tree.IAdtObjectReferenceNode;
+import com.devepos.adt.tools.base.ui.tree.ICollectionTreeNode;
+import com.devepos.adt.tools.base.ui.tree.IStyledTreeNode;
+import com.devepos.adt.tools.base.ui.tree.ITreeNode;
+import com.devepos.adt.tools.base.ui.tree.LazyLoadingTreeContentProvider;
+import com.devepos.adt.tools.base.ui.tree.LoadingTreeItemsNode;
+import com.devepos.adt.tools.base.ui.tree.PackageNode;
+import com.devepos.adt.tools.base.util.AdtTypeUtil;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 
 /**
@@ -80,7 +81,6 @@ import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
  * @author stockbal
  */
 public class ObjectSearchResultPage extends Page implements ISearchResultPage, ISearchResultListener {
-	private static final String GROUP_WHERE_USED = "group.whereUsed"; //$NON-NLS-1$
 	public static final String GROUPED_BY_PACKAGE_PREF = "com.devepos.adt.saat.objectsearch.groupByPackage"; //$NON-NLS-1$
 	public static final String DIALOG_ID = "com.devepos.adt.saat.ObjectSearchPage"; //$NON-NLS-1$ ;
 	private String id;
@@ -286,9 +286,9 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 		this.isCdsTopDownAnalysisAvailable = false;
 		this.isCdsUsedEntitiesAnalysisAvailable = false;
 		if (this.projectProvider != null && this.projectProvider.ensureLoggedOn()) {
-			this.isDbBrowserIntegrationAvailable = AdtUtil.isSapGuiDbBrowserAvailable(this.projectProvider.getProject());
-			this.isCdsTopDownAnalysisAvailable = AdtUtil.isCdsTopDownAnalysisAvailable(this.projectProvider.getProject());
-			this.isCdsUsedEntitiesAnalysisAvailable = AdtUtil
+			this.isDbBrowserIntegrationAvailable = FeatureTester.isSapGuiDbBrowserAvailable(this.projectProvider.getProject());
+			this.isCdsTopDownAnalysisAvailable = FeatureTester.isCdsTopDownAnalysisAvailable(this.projectProvider.getProject());
+			this.isCdsUsedEntitiesAnalysisAvailable = FeatureTester
 				.isCdsUsedEntitiesAnalysisAvailable(this.projectProvider.getProject());
 		}
 
@@ -362,6 +362,9 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 	}
 
 	private void fillContextMenu(final IMenuManager menu) {
+		menu.add(new Separator(IContextMenuConstants.GROUP_NEW));
+		menu.add(new Separator(IContextMenuConstants.GROUP_OPEN));
+
 		final IStructuredSelection selection = this.searchResultTree.getStructuredSelection();
 		if (selection == null || selection.isEmpty()) {
 			return;
@@ -400,10 +403,13 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 		}
 
 		if (!adtObjRefs.isEmpty()) {
-			menu.add(new OpenAdtObjectAction(this.projectProvider, adtObjRefs));
+			menu.appendToGroup(IContextMenuConstants.GROUP_OPEN,
+				new OpenAdtObjectAction(this.projectProvider.getProject(), adtObjRefs));
 		}
 		if (!previewAdtObjRefs.isEmpty()) {
-			menu.add(new OpenAdtDataPreviewAction(this.projectProvider.getProject(), previewAdtObjRefs));
+			menu.appendToGroup(IContextMenuConstants.GROUP_OPEN,
+				new ExecuteAdtObjectAction(this.projectProvider.getProject(), previewAdtObjRefs, true));
+
 			if (this.isDbBrowserIntegrationAvailable) {
 				menu.add(new Separator(com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_DB_BROWSER));
 				MenuItemFactory.addOpenInDbBrowserCommand(menu, false);
@@ -412,8 +418,9 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 		}
 
 		if (!adtObjRefs.isEmpty()) {
-			menu.add(new Separator(GROUP_WHERE_USED));
-			MenuItemFactory.addCommandItem(menu, GROUP_WHERE_USED, "com.sap.adt.ris.whereused.ui.callWhereUsed", //$NON-NLS-1$
+			menu.add(new Separator(IContextMenuConstants.GROUP_ADDITIONS));
+			MenuItemFactory.addCommandItem(menu, IContextMenuConstants.GROUP_ADDITIONS,
+				"com.sap.adt.ris.whereused.ui.callWhereUsed", //$NON-NLS-1$
 				IImages.WHERE_USED_LIST, Messages.ObjectSearch_WhereUsedListAction_xmit, null);
 		}
 
@@ -526,13 +533,17 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 		public Image getImage(final Object element) {
 			Image image = null;
 			final ITreeNode searchResult = (ITreeNode) element;
-			final String imageId = searchResult.getImageId();
-			if (imageId != null) {
-				image = SearchAndAnalysisPlugin.getDefault().getImage(imageId);
+			image = searchResult.getImage();
+			if (image == null) {
 
 				if (element instanceof IAdtObjectReferenceNode) {
-					final IExtendedAdtObjectInfo extendedResult = ((IAdtObjectReferenceNode) element)
-						.getAdapter(IExtendedAdtObjectInfo.class);
+					final IAdtObjectReferenceNode adtObjRefNode = (IAdtObjectReferenceNode) element;
+					if (adtObjRefNode.getObjectType() == ObjectType.CDS_VIEW) {
+						image = SearchAndAnalysisPlugin.getDefault().getImage(IImages.CDS_VIEW);
+					} else {
+						image = AdtTypeUtil.getInstance().getTypeImage(adtObjRefNode.getAdtObjectType());
+					}
+					final IExtendedAdtObjectInfo extendedResult = adtObjRefNode.getAdapter(IExtendedAdtObjectInfo.class);
 					if (extendedResult != null) {
 						final String[] overlayImages = new String[4];
 						if (extendedResult.getSourceType() != null) {
@@ -554,20 +565,25 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 			StyledString text = new StyledString();
 			final ITreeNode searchResult = (ITreeNode) element;
 
+			boolean isAdtObjRefNode = false;
+			if (element instanceof IAdtObjectReferenceNode) {
+				isAdtObjRefNode = true;
+			}
+
 			if (element instanceof IStyledTreeNode) {
 				text = ((IStyledTreeNode) element).getStyledText();
 				if (text == null) {
 					text = new StyledString();
 				}
 			} else {
-				if (element instanceof LoadingElement) {
+				if (element instanceof LoadingTreeItemsNode) {
 					text.append(searchResult.getDisplayName(), StylerFactory.ITALIC_STYLER);
 					return text;
 				} else {
 					text.append(searchResult.getDisplayName());
 				}
 
-				if (element instanceof ICollectionTreeNode) {
+				if (element instanceof ICollectionTreeNode && !isAdtObjRefNode) {
 					final ICollectionTreeNode collectionNode = (ICollectionTreeNode) element;
 					if (collectionNode.hasChildren()) {
 						final String size = ((ICollectionTreeNode) element).getSizeAsString();

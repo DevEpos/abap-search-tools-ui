@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
@@ -19,25 +20,25 @@ import org.eclipse.ui.dialogs.PatternFilter;
 
 import com.devepos.adt.saat.internal.ICommandConstants;
 import com.devepos.adt.saat.internal.IContextMenuConstants;
-import com.devepos.adt.saat.internal.IDestinationProvider;
-import com.devepos.adt.saat.internal.ObjectType;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.cdsanalysis.FieldAnalysisUriDiscovery;
-import com.devepos.adt.saat.internal.elementinfo.IAdtObjectReferenceElementInfo;
 import com.devepos.adt.saat.internal.menu.MenuItemFactory;
 import com.devepos.adt.saat.internal.messages.Messages;
-import com.devepos.adt.saat.internal.tree.IAdtObjectReferenceNode;
-import com.devepos.adt.saat.internal.tree.ITreeNode;
-import com.devepos.adt.saat.internal.tree.LazyLoadingTreeContentProvider;
-import com.devepos.adt.saat.internal.tree.SimpleInfoTreeNode;
-import com.devepos.adt.saat.internal.ui.PreferenceToggleAction;
 import com.devepos.adt.saat.internal.ui.PrefixedAsteriskFilteredTree;
-import com.devepos.adt.saat.internal.ui.ToggleViewLayoutAction;
 import com.devepos.adt.saat.internal.ui.TreeViewUiState;
-import com.devepos.adt.saat.internal.ui.ViewLayoutOrientation;
 import com.devepos.adt.saat.internal.ui.ViewUiState;
-import com.devepos.adt.saat.internal.util.AdtUtil;
 import com.devepos.adt.saat.internal.util.CommandPossibleChecker;
+import com.devepos.adt.saat.internal.util.NavigationUtil;
+import com.devepos.adt.tools.base.ObjectType;
+import com.devepos.adt.tools.base.destinations.IDestinationProvider;
+import com.devepos.adt.tools.base.elementinfo.IAdtObjectReferenceElementInfo;
+import com.devepos.adt.tools.base.ui.action.PreferenceToggleAction;
+import com.devepos.adt.tools.base.ui.action.ToggleViewLayoutAction;
+import com.devepos.adt.tools.base.ui.action.ViewLayoutOrientation;
+import com.devepos.adt.tools.base.ui.tree.IAdtObjectReferenceNode;
+import com.devepos.adt.tools.base.ui.tree.ITreeNode;
+import com.devepos.adt.tools.base.ui.tree.LazyLoadingTreeContentProvider;
+import com.devepos.adt.tools.base.ui.tree.SimpleInfoTreeNode;
 
 /**
  * Analysis page for analyzing the fields of a database entity like (Table, View
@@ -101,10 +102,11 @@ public class FieldAnalysisView extends CdsAnalysisPage<FieldAnalysis> {
 	@Override
 	protected void createActions() {
 		super.createActions();
+		final IPreferenceStore prefStore = SearchAndAnalysisPlugin.getDefault().getPreferenceStore();
 		this.searchDbViewUsages = new PreferenceToggleAction(Messages.FieldAnalysisView_SearchDbViewsInWhereUsed_xmit, null,
-			SEARCH_DB_VIEWS_WHERE_USED_PREF_KEY, false);
-		this.viewLayoutToggleAction = new ToggleViewLayoutAction(this.fieldsHierarchySplitter, getControl(), VIEW_LAYOUT_PREF_KEY,
-			true, true, true);
+			SEARCH_DB_VIEWS_WHERE_USED_PREF_KEY, false, prefStore);
+		this.viewLayoutToggleAction = new ToggleViewLayoutAction(this.fieldsHierarchySplitter, getControl(), prefStore,
+			VIEW_LAYOUT_PREF_KEY, true, true, true);
 	}
 
 	@Override
@@ -209,7 +211,7 @@ public class FieldAnalysisView extends CdsAnalysisPage<FieldAnalysis> {
 			}
 			final Object selectedObj = selection.getFirstElement();
 			if (selectedObj instanceof SimpleInfoTreeNode) {
-				AdtUtil.navigateToEntityColumn(this.currentEntity, ((SimpleInfoTreeNode) selectedObj).getDisplayName(),
+				NavigationUtil.navigateToEntityColumn(this.currentEntity, ((SimpleInfoTreeNode) selectedObj).getDisplayName(),
 					this.destProvider.getDestinationId());
 			}
 		});

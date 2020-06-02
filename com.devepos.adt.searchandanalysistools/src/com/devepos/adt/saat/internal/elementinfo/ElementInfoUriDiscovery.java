@@ -3,8 +3,9 @@ package com.devepos.adt.saat.internal.elementinfo;
 import java.net.URI;
 import java.util.Map;
 
-import com.devepos.adt.saat.internal.ObjectType;
-import com.devepos.adt.saat.internal.util.UriDiscoveryBase;
+import com.devepos.adt.saat.internal.util.IUriDiscoveryPaths;
+import com.devepos.adt.tools.base.ObjectType;
+import com.devepos.adt.tools.base.util.UriDiscoveryBase;
 import com.sap.adt.compatibility.uritemplate.IAdtUriTemplate;
 
 /**
@@ -25,7 +26,7 @@ public class ElementInfoUriDiscovery extends UriDiscoveryBase {
 	 * @param destination
 	 */
 	public ElementInfoUriDiscovery(final String destination) {
-		super(destination, DISCOVERY_SCHEME);
+		super(destination, IUriDiscoveryPaths.OBJECT_SEARCH_DISOCOVERY_PATH, DISCOVERY_SCHEME);
 	}
 
 	/**
