@@ -62,5 +62,16 @@ public interface IContextMenuConstants {
 	 * </ul>
 	 */
 	String GROUP_GOTO = "group.goto"; //$NON-NLS-1$
+	/**
+	 * Pop-up menu: name of group for new actions (value <code>"group.new"</code>).
+	 * <p>
+	 * Examples for new actions are:
+	 * </p>
+	 * <ul>
+	 * <li>Create new class</li>
+	 * <li>Create new interface</li>
+	 * </ul>
+	 */
+	String GROUP_NEW = "group.new";
 
 }

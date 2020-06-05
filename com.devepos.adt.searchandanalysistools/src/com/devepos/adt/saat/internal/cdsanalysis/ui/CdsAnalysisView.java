@@ -26,9 +26,11 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.IPage;
 import org.eclipse.ui.part.IPageBookViewPage;
+import org.eclipse.ui.part.IShowInSource;
 import org.eclipse.ui.part.PageBook;
 import org.eclipse.ui.part.PageBookView;
 import org.eclipse.ui.part.PageSwitcher;
+import org.eclipse.ui.part.ShowInContext;
 
 import com.devepos.adt.saat.internal.IContextMenuConstants;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
@@ -107,6 +109,19 @@ public class CdsAnalysisView extends PageBookView implements ICdsAnalysisListene
 		showLatestAnalysis();
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public <T> T getAdapter(final Class<T> adapter) {
+		final Object superAdapter = super.getAdapter(adapter);
+		if (superAdapter != null) {
+			return (T) superAdapter;
+		}
+		if (adapter == IShowInSource.class) {
+			return (T) (IShowInSource) () -> new ShowInContext(null, getSelectionProvider().getSelection());
+		}
+		return null;
+	}
+
 	@Override
 	public void dispose() {
 		CdsAnalysisManager.getInstance().removeCdsAnalysisListener(this);
@@ -128,6 +143,7 @@ public class CdsAnalysisView extends PageBookView implements ICdsAnalysisListene
 	}
 
 	public static void createContextMenuGroups(final IMenuManager mgr) {
+		mgr.add(new Separator(IContextMenuConstants.GROUP_NEW));
 		mgr.add(new Separator(IContextMenuConstants.GROUP_OPEN));
 		mgr.add(new Separator(IContextMenuConstants.GROUP_DB_BROWSER));
 		mgr.add(new Separator(IContextMenuConstants.GROUP_CDS_ANALYSIS));
