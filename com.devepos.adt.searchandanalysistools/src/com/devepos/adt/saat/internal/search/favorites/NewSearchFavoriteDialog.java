@@ -89,12 +89,14 @@ public class NewSearchFavoriteDialog extends StatusDialog {
 		group.setText(Messages.NewSearchFavoriteDialog_SearchParameters_xgrp);
 		GridLayoutFactory.swtDefaults().numColumns(2).applyTo(group);
 
-		createReadOnlyTextWithLabel(Messages.NewSearchFavoriteDialog_Project_xfld, this.searchRequest.getDestinationId(), group);
+		createReadOnlyTextWithLabel(Messages.NewSearchFavoriteDialog_Project_xfld,
+				this.searchRequest.getDestinationId(), group);
 		createReadOnlyTextWithLabel(Messages.NewSearchFavoriteDialog_SearchType_xfld,
-			this.searchRequest.getSearchType().toString(), group);
-		createReadOnlyTextWithLabel(Messages.NewSearchFavoriteDialog_ObjectName_xlfd, this.searchRequest.getSearchTerm(), group);
-		createReadOnlyTextWithLabel(Messages.NewSearchFavoriteDialog_SearchFilter_xlfd, this.searchRequest.getParametersString(),
-			group);
+				this.searchRequest.getSearchType().toString(), group);
+		createReadOnlyTextWithLabel(Messages.NewSearchFavoriteDialog_ObjectName_xlfd,
+				this.searchRequest.getSearchTerm(), group);
+		createReadOnlyTextWithLabel(Messages.NewSearchFavoriteDialog_SearchFilter_xlfd,
+				this.searchRequest.getParametersString(), group);
 
 		final Button isAndSearchActiveCheckBox = new Button(group, SWT.CHECK);
 		isAndSearchActiveCheckBox.setText(Messages.ObjectSearch_UseAndFilter_xtol);
@@ -106,7 +108,8 @@ public class NewSearchFavoriteDialog extends StatusDialog {
 	private void createReadOnlyTextWithLabel(final String label, final String content, final Composite parent) {
 		final Label labelControl = new Label(parent, SWT.NONE);
 		labelControl.setText(label);
-		GridDataFactory.fillDefaults().hint(convertWidthInCharsToPixels(LABEL_WIDTH), SWT.DEFAULT).applyTo(labelControl);
+		GridDataFactory.fillDefaults().hint(convertWidthInCharsToPixels(LABEL_WIDTH), SWT.DEFAULT)
+				.applyTo(labelControl);
 
 		final Text textControl = new Text(parent, SWT.READ_ONLY | SWT.BORDER | SWT.NO_FOCUS);
 		textControl.setText(content);
@@ -127,9 +130,8 @@ public class NewSearchFavoriteDialog extends StatusDialog {
 		// description for the favorite
 		final Label favoriteDescriptionLabel = new Label(group, SWT.NONE);
 		favoriteDescriptionLabel.setText(Messages.NewSearchFavoriteDialog_Description_xfld);
-		GridDataFactory.fillDefaults()
-			.hint(convertWidthInCharsToPixels(LABEL_WIDTH), SWT.DEFAULT)
-			.applyTo(favoriteDescriptionLabel);
+		GridDataFactory.fillDefaults().hint(convertWidthInCharsToPixels(LABEL_WIDTH), SWT.DEFAULT)
+				.applyTo(favoriteDescriptionLabel);
 
 		final Text favoriteDescription = new Text(group, SWT.BORDER);
 		favoriteDescription.addModifyListener(e -> {
@@ -147,25 +149,23 @@ public class NewSearchFavoriteDialog extends StatusDialog {
 				NewSearchFavoriteDialog.this.isProjectIndependent = isProjectIndependentCheckBox.getSelection();
 			}
 		});
-		GridDataFactory.fillDefaults()
-			.span(2, 1)
-			.hint(convertWidthInCharsToPixels(60), SWT.DEFAULT)
-			.applyTo(isProjectIndependentCheckBox);
+		GridDataFactory.fillDefaults().span(2, 1).hint(convertWidthInCharsToPixels(60), SWT.DEFAULT)
+				.applyTo(isProjectIndependentCheckBox);
 
 		favoriteDescription.setFocus();
 	}
 
 	@Override
 	protected void createButtonsForButtonBar(final Composite parent) {
-		this.createButton = createButton(parent, IDialogConstants.OK_ID, Messages.NewSearchFavoriteDialog_CreateFavorite_xbut,
-			true);
+		this.createButton = createButton(parent, IDialogConstants.OK_ID,
+				Messages.NewSearchFavoriteDialog_CreateFavorite_xbut, true);
 		createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
 	}
 
 	@Override
 	protected void updateButtonsEnableState(final IStatus status) {
 		if (this.createButton != null && !this.createButton.isDisposed()) {
-			this.createButton.setEnabled(!status.matches(IStatus.ERROR));
+			this.createButton.setEnabled(status == null || !status.matches(IStatus.ERROR));
 		}
 	}
 
@@ -181,27 +181,24 @@ public class NewSearchFavoriteDialog extends StatusDialog {
 		IStatus status = null;
 		if (this.favoriteDescription == null || this.favoriteDescription.isEmpty()) {
 			status = new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, IStatus.ERROR,
-				Messages.NewSearchFavoriteDialog_NoDescriptionError_xmsg, null);
+					Messages.NewSearchFavoriteDialog_NoDescriptionError_xmsg, null);
 		} else {
 			// check if there already is a favorite with this description
 			if (this.favoriteManager.contains(this.isProjectIndependent ? null : this.searchRequest.getDestinationId(),
-				this.searchRequest.getSearchType().name(), this.favoriteDescription)) {
-				status = new Status(IStatus.WARNING, SearchAndAnalysisPlugin.PLUGIN_ID, IStatus.WARNING,
-					NLS.bind(Messages.NewSearchFavoriteDialog_DuplicateFavoriteError_xmsg, this.favoriteDescription), null);
+					this.searchRequest.getSearchType().name(), this.favoriteDescription)) {
+				status = new Status(IStatus.WARNING, SearchAndAnalysisPlugin.PLUGIN_ID, IStatus.WARNING, NLS.bind(
+						Messages.NewSearchFavoriteDialog_DuplicateFavoriteError_xmsg, this.favoriteDescription), null);
 			}
 		}
-		if (status == null) {
-			status = Status.OK_STATUS;
-		}
 		updateStatus(status);
-		return !status.matches(IStatus.ERROR);
+		return status == null || !status.matches(IStatus.ERROR);
 	}
 
 	@Override
 	protected void updateStatus(final IStatus status) {
 		super.updateStatus(status);
 		final IStatus currentStatus = getStatus();
-		if (currentStatus.matches(IStatus.ERROR | IStatus.WARNING)) {
+		if (currentStatus != null && currentStatus.matches(IStatus.ERROR | IStatus.WARNING)) {
 			final Shell shell = getShell();
 			if (shell == null) {
 				return;
