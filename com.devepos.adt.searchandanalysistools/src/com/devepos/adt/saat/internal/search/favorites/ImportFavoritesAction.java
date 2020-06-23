@@ -49,8 +49,11 @@ public class ImportFavoritesAction extends Action {
 						importedFavoritesCount++;
 					}
 				}
-				MessageDialog.openInformation(shell, Messages.ImportFavoritesAction_ImportSuccess_xtit,
-					NLS.bind(Messages.ImportFavoritesAction_ImportSuccess_xmsg, importedFavoritesCount, favoritesInImportFile));
+				if (importedFavoritesCount > 0) {
+					ObjectSearchFavoriteStorage.serialize();
+				}
+				MessageDialog.openInformation(shell, Messages.ImportFavoritesAction_ImportSuccess_xtit, NLS.bind(
+					Messages.ImportFavoritesAction_ImportSuccess_xmsg, importedFavoritesCount, favoritesInImportFile));
 			} else {
 				MessageDialog.openInformation(shell, Messages.ImportFavoritesAction_ImportSuccess_xtit,
 					Messages.ImportFavoritesAction_NoFavoritesImported_xmsg);
