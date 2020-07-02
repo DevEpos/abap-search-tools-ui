@@ -29,7 +29,7 @@ import com.devepos.adt.saat.internal.util.FeatureTester;
 import com.devepos.adt.saat.internal.util.IImages;
 import com.devepos.adt.tools.base.ObjectType;
 import com.devepos.adt.tools.base.adtobject.IAdtObject;
-import com.devepos.adt.tools.base.project.ProjectUtil;
+import com.devepos.adt.tools.base.destinations.DestinationUtil;
 import com.devepos.adt.tools.base.util.ObjectContainer;
 
 /**
@@ -167,13 +167,13 @@ public class DynamicOpenInMenuUtility {
 			for (final INavigationTarget target : targets) {
 				switch (target.getName()) {
 				case "EXCEL": //$NON-NLS-1$
-					add(new OpenWithAnalysisForOfficeExecutable(ProjectUtil.getDestinationId(this.project),
+					add(new OpenWithAnalysisForOfficeExecutable(DestinationUtil.getDestinationId(this.project),
 						this.adtObject.getName()).createAction(target.getDisplayName(),
 							SearchAndAnalysisPlugin.getDefault().getImageDescriptor(target.getImageId())));
 					break;
 				case "QUERY_MONITOR": //$NON-NLS-1$
-					add(new OpenWithQueryMonitorExecutable(ProjectUtil.getDestinationId(this.project), this.adtObject.getName())
-						.createAction(target.getDisplayName(),
+					add(new OpenWithQueryMonitorExecutable(DestinationUtil.getDestinationId(this.project),
+						this.adtObject.getName()).createAction(target.getDisplayName(),
 							SearchAndAnalysisPlugin.getDefault().getImageDescriptor(target.getImageId())));
 					break;
 				}

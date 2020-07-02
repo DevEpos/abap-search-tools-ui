@@ -21,10 +21,10 @@ import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.util.FeatureTester;
 import com.devepos.adt.tools.base.ObjectType;
 import com.devepos.adt.tools.base.adtobject.IAdtObject;
+import com.devepos.adt.tools.base.destinations.DestinationUtil;
 import com.devepos.adt.tools.base.elementinfo.IAdtObjectReferenceElementInfo;
 import com.devepos.adt.tools.base.project.AbapProjectProviderAccessor;
 import com.devepos.adt.tools.base.project.AbapProjectProxy;
-import com.devepos.adt.tools.base.project.ProjectUtil;
 import com.devepos.adt.tools.base.util.AdtUtil;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 import com.sap.adt.tools.core.project.IAbapProject;
@@ -54,7 +54,8 @@ public abstract class OpenInCdsAnalyzerHandler extends AbstractHandler {
 		}
 		if (!isFeatureAvailable(project)) {
 			MessageDialog.openInformation(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-				Messages.Dialog_InfoTitle_xmsg, NLS.bind(getFeatureUnavailableMessage(), ProjectUtil.getDestinationId(project)));
+				Messages.Dialog_InfoTitle_xmsg,
+				NLS.bind(getFeatureUnavailableMessage(), DestinationUtil.getDestinationId(project)));
 			return null;
 		}
 		final IAbapProject abapProject = selectedObject.getProject().getAdapter(IAbapProject.class);
@@ -77,7 +78,8 @@ public abstract class OpenInCdsAnalyzerHandler extends AbstractHandler {
 			final Job adtObjectRetrievalJob = Job.create(Messages.CdsAnalysis_LoadAdtObjectJobName_xmsg,
 				(ICoreRunnable) monitor -> {
 					// check if search is possible in selected project
-					final IAdtObjectReferenceElementInfo adtObjectRefElemInfo = ElementInfoRetrievalServiceFactory.createService()
+					final IAdtObjectReferenceElementInfo adtObjectRefElemInfo = ElementInfoRetrievalServiceFactory
+						.createService()
 						.retrieveBasicElementInformation(destinationId, objectRef.getUri());
 					if (adtObjectRefElemInfo != null) {
 						final CdsAnalysis newAnalysis = createTypedAnalysis(adtObjectRefElemInfo);

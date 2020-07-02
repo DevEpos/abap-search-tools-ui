@@ -20,8 +20,8 @@ import com.devepos.adt.saat.internal.elementinfo.ElementInfoRetrievalServiceFact
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.tools.base.IAdtObjectTypeConstants;
 import com.devepos.adt.tools.base.ObjectType;
+import com.devepos.adt.tools.base.destinations.DestinationUtil;
 import com.devepos.adt.tools.base.elementinfo.IAdtObjectReferenceElementInfo;
-import com.devepos.adt.tools.base.project.ProjectUtil;
 import com.devepos.adt.tools.base.ui.search.AdtRisSearchUtil;
 import com.devepos.adt.tools.base.ui.search.IAdtRisSearchResultProxy;
 import com.sap.adt.ris.search.ui.usagereferences.AdtRisUsageReferencesSearchQuery;
@@ -66,24 +66,27 @@ public class RunWhereUsedQueryHandler extends AbstractHandler {
 	/*
 	 * Runs where used query for a CDS View
 	 */
-	private void runWhereUsedForDdls(final ExecutionEvent event, final IProject project, final IAdtObjectReference adtObjectRef) {
+	private void runWhereUsedForDdls(final ExecutionEvent event, final IProject project,
+		final IAdtObjectReference adtObjectRef) {
 		final Display display = HandlerUtil.getActiveShell(event).getDisplay();
 
-		final Job readDdlsUriJob = Job.create(Messages.ElementInfoProvider_RetrievingElementInfoDescription_xmsg, (monitor) -> {
-			final IAdtObjectReferenceElementInfo ddlsObjectInfo = ElementInfoRetrievalServiceFactory.createService()
-				.retrieveBasicElementInformation(ProjectUtil.getDestinationId(project), adtObjectRef.getName(),
-					ObjectType.CDS_VIEW);
-			if (ddlsObjectInfo != null) {
-				this.ddlsUri = ddlsObjectInfo.getUri();
-			}
-			monitor.done();
-		});
+		final Job readDdlsUriJob = Job.create(Messages.ElementInfoProvider_RetrievingElementInfoDescription_xmsg,
+			monitor -> {
+				final IAdtObjectReferenceElementInfo ddlsObjectInfo = ElementInfoRetrievalServiceFactory.createService()
+					.retrieveBasicElementInformation(DestinationUtil.getDestinationId(project), adtObjectRef.getName(),
+						ObjectType.CDS_VIEW);
+				if (ddlsObjectInfo != null) {
+					this.ddlsUri = ddlsObjectInfo.getUri();
+				}
+				monitor.done();
+			});
 		readDdlsUriJob.addJobChangeListener(new JobChangeAdapter() {
 			@Override
 			public void done(final IJobChangeEvent event) {
 				display.asyncExec(() -> {
-					runWhereUsed(project, RunWhereUsedQueryHandler.this.ddlsUri != null ? RunWhereUsedQueryHandler.this.ddlsUri
-						: adtObjectRef.getUri());
+					runWhereUsed(project,
+						RunWhereUsedQueryHandler.this.ddlsUri != null ? RunWhereUsedQueryHandler.this.ddlsUri
+							: adtObjectRef.getUri());
 				});
 			}
 		});
@@ -96,7 +99,8 @@ public class RunWhereUsedQueryHandler extends AbstractHandler {
 	private void runWhereUsed(final IProject project, final String uri) {
 		final AdtRisUsageReferencesSearchQueryParameters usageSearchParameters = new AdtRisUsageReferencesSearchQueryParameters(
 			project, URI.create(uri));
-		final AdtRisUsageReferencesSearchQuery searchQuery = new AdtRisUsageReferencesSearchQuery(usageSearchParameters);
+		final AdtRisUsageReferencesSearchQuery searchQuery = new AdtRisUsageReferencesSearchQuery(
+			usageSearchParameters);
 		NewSearchUI.runQueryInBackground(searchQuery);
 
 		/*
