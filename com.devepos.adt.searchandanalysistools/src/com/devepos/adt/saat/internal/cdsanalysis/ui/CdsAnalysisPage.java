@@ -50,6 +50,7 @@ import com.devepos.adt.tools.base.destinations.IDestinationProvider;
 import com.devepos.adt.tools.base.elementinfo.IAdtObjectReferenceElementInfo;
 import com.devepos.adt.tools.base.project.AbapProjectProviderAccessor;
 import com.devepos.adt.tools.base.project.IAbapProjectProvider;
+import com.devepos.adt.tools.base.ui.IGeneralContextMenuConstants;
 import com.devepos.adt.tools.base.ui.StylerFactory;
 import com.devepos.adt.tools.base.ui.action.CollapseAllTreeNodesAction;
 import com.devepos.adt.tools.base.ui.action.CopyToClipboardAction;
@@ -149,9 +150,11 @@ public abstract class CdsAnalysisPage<T extends CdsAnalysis> extends Page {
 		this.analysisResult = (T) analysis;
 		if (analysis != null) {
 			final IAdtObjectReferenceElementInfo adtObjectInfo = analysis.getAdtObjectInfo();
-			final IDestinationProvider destProvider = ((IAdaptable) adtObjectInfo).getAdapter(IDestinationProvider.class);
+			final IDestinationProvider destProvider = ((IAdaptable) adtObjectInfo)
+				.getAdapter(IDestinationProvider.class);
 			if (destProvider != null) {
-				this.projectProvider = AbapProjectProviderAccessor.getProviderForDestination(destProvider.getDestinationId());
+				this.projectProvider = AbapProjectProviderAccessor
+					.getProviderForDestination(destProvider.getDestinationId());
 			}
 			loadInput(uiState);
 		}
@@ -406,7 +409,8 @@ public abstract class CdsAnalysisPage<T extends CdsAnalysis> extends Page {
 	 */
 	protected void fillToolbar(final IToolBarManager tbm) {
 		if (this.viewer instanceof TreeViewer) {
-			tbm.appendToGroup(IContextMenuConstants.GROUP_NODE_ACTIONS, new CollapseAllTreeNodesAction((TreeViewer) this.viewer));
+			tbm.appendToGroup(IGeneralContextMenuConstants.GROUP_NODE_ACTIONS,
+				new CollapseAllTreeNodesAction((TreeViewer) this.viewer));
 		}
 	}
 
@@ -419,7 +423,7 @@ public abstract class CdsAnalysisPage<T extends CdsAnalysis> extends Page {
 	 */
 	protected void fillContextMenu(final IMenuManager mgr, final CommandPossibleChecker commandChecker) {
 		if (!commandChecker.hasSelection()) {
-			mgr.appendToGroup(IContextMenuConstants.GROUP_EDIT, this.copyToClipBoardAction);
+			mgr.appendToGroup(IGeneralContextMenuConstants.GROUP_EDIT, this.copyToClipBoardAction);
 			return;
 		}
 		if (commandChecker.canCommandBeEnabled(ICommandConstants.OPEN_IN_DB_BROWSER)) {
@@ -430,15 +434,15 @@ public abstract class CdsAnalysisPage<T extends CdsAnalysis> extends Page {
 		if (this.projectProvider != null) {
 			final List<IAdtObjectReference> selectedObjRefs = commandChecker.getSelectedAdtObjectRefs();
 
-			mgr.appendToGroup(IContextMenuConstants.GROUP_OPEN,
+			mgr.appendToGroup(IGeneralContextMenuConstants.GROUP_OPEN,
 				new OpenAdtObjectAction(this.projectProvider.getProject(), selectedObjRefs));
 			if (commandChecker.hasSelection(true)) {
-				mgr.appendToGroup(IContextMenuConstants.GROUP_OPEN,
+				mgr.appendToGroup(IGeneralContextMenuConstants.GROUP_OPEN,
 					new ExecuteAdtObjectAction(this.projectProvider.getProject(), selectedObjRefs, true));
 			}
 		}
 
-		mgr.appendToGroup(IContextMenuConstants.GROUP_EDIT, this.copyToClipBoardAction);
+		mgr.appendToGroup(IGeneralContextMenuConstants.GROUP_EDIT, this.copyToClipBoardAction);
 	}
 
 	/**

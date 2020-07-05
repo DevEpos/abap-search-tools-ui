@@ -41,6 +41,7 @@ import com.devepos.adt.saat.internal.preferences.IPreferences;
 import com.devepos.adt.saat.internal.ui.ViewUiState;
 import com.devepos.adt.saat.internal.util.IImages;
 import com.devepos.adt.tools.base.ui.DummyPart;
+import com.devepos.adt.tools.base.ui.IGeneralContextMenuConstants;
 
 /**
  * A view which is to be used to analyse a selected CDS view (either from the
@@ -135,27 +136,27 @@ public class CdsAnalysisView extends PageBookView implements ICdsAnalysisListene
 	 * @param toolbar the toolbar
 	 */
 	public static void createToolBarGroups(final IToolBarManager toolbar) {
-		toolbar.add(new Separator(IContextMenuConstants.GROUP_EDIT));
-		toolbar.add(new Separator(IContextMenuConstants.GROUP_NODE_ACTIONS));
-		toolbar.add(new Separator(IContextMenuConstants.GROUP_SEARCH));
-		toolbar.add(new Separator(IContextMenuConstants.GROUP_GOTO));
-		toolbar.add(new Separator(IContextMenuConstants.GROUP_ADDITIONS));
+		toolbar.add(new Separator(IGeneralContextMenuConstants.GROUP_EDIT));
+		toolbar.add(new Separator(IGeneralContextMenuConstants.GROUP_NODE_ACTIONS));
+		toolbar.add(new Separator(IGeneralContextMenuConstants.GROUP_SEARCH));
+		toolbar.add(new Separator(IGeneralContextMenuConstants.GROUP_GOTO));
+		toolbar.add(new Separator(IGeneralContextMenuConstants.GROUP_ADDITIONS));
 	}
 
 	public static void createContextMenuGroups(final IMenuManager mgr) {
-		mgr.add(new Separator(IContextMenuConstants.GROUP_NEW));
-		mgr.add(new Separator(IContextMenuConstants.GROUP_OPEN));
+		mgr.add(new Separator(IGeneralContextMenuConstants.GROUP_NEW));
+		mgr.add(new Separator(IGeneralContextMenuConstants.GROUP_OPEN));
 		mgr.add(new Separator(IContextMenuConstants.GROUP_DB_BROWSER));
 		mgr.add(new Separator(IContextMenuConstants.GROUP_CDS_ANALYSIS));
-		mgr.add(new Separator(IContextMenuConstants.GROUP_NODE_ACTIONS));
-		mgr.add(new Separator(IContextMenuConstants.GROUP_ADDITIONS));
-		mgr.add(new Separator(IContextMenuConstants.GROUP_EDIT));
+		mgr.add(new Separator(IGeneralContextMenuConstants.GROUP_NODE_ACTIONS));
+		mgr.add(new Separator(IGeneralContextMenuConstants.GROUP_ADDITIONS));
+		mgr.add(new Separator(IGeneralContextMenuConstants.GROUP_EDIT));
 	}
 
 	public static void createViewMenuGroups(final IMenuManager mgr) {
-		mgr.add(new Separator(IContextMenuConstants.GROUP_PROPERTIES));
-		mgr.add(new Separator(IContextMenuConstants.GROUP_FILTERING));
-		mgr.add(new Separator(IContextMenuConstants.GROUP_ADDITIONS));
+		mgr.add(new Separator(IGeneralContextMenuConstants.GROUP_PROPERTIES));
+		mgr.add(new Separator(IGeneralContextMenuConstants.GROUP_FILTERING));
+		mgr.add(new Separator(IGeneralContextMenuConstants.GROUP_ADDITIONS));
 	}
 
 	@Override
@@ -367,8 +368,8 @@ public class CdsAnalysisView extends PageBookView implements ICdsAnalysisListene
 		final IActionBars actionBars = getViewSite().getActionBars();
 		final IToolBarManager tbm = actionBars.getToolBarManager();
 		createToolBarGroups(tbm);
-		tbm.appendToGroup(IContextMenuConstants.GROUP_SEARCH, this.refreshAnalysisAction);
-		tbm.appendToGroup(IContextMenuConstants.GROUP_GOTO, this.analysesHistoryAction);
+		tbm.appendToGroup(IGeneralContextMenuConstants.GROUP_SEARCH, this.refreshAnalysisAction);
+		tbm.appendToGroup(IGeneralContextMenuConstants.GROUP_GOTO, this.analysesHistoryAction);
 	}
 
 	private void createActions() {

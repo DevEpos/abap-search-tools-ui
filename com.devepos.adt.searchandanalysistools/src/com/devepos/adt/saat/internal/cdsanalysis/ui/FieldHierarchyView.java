@@ -33,6 +33,7 @@ import com.devepos.adt.saat.internal.util.IImages;
 import com.devepos.adt.saat.internal.util.NavigationUtil;
 import com.devepos.adt.tools.base.ObjectType;
 import com.devepos.adt.tools.base.destinations.IDestinationProvider;
+import com.devepos.adt.tools.base.ui.IGeneralContextMenuConstants;
 import com.devepos.adt.tools.base.ui.action.RadioActionGroup;
 import com.devepos.adt.tools.base.ui.tree.IAdtObjectReferenceNode;
 import com.devepos.adt.tools.base.ui.tree.ITreeNode;
@@ -179,7 +180,8 @@ public class FieldHierarchyView implements IDestinationProvider {
 					node.getParent().getImage(), null, null);
 				topDownNode.getProperties().put(ICdsAnalysisConstants.FIELD_PROP, node.getDisplayName());
 			}
-			input = new FieldHierarchyViewerInput(this.hierarchyTreeViewer, topDownNode, this.currentEntityName, fieldName, this);
+			input = new FieldHierarchyViewerInput(this.hierarchyTreeViewer, topDownNode, this.currentEntityName,
+				fieldName, this);
 			input.createWhereUsedNode();
 
 			this.fieldInputMap.put(fieldName, input);
@@ -220,7 +222,8 @@ public class FieldHierarchyView implements IDestinationProvider {
 		this.actionToggleGroup = new RadioActionGroup();
 		this.actionToggleGroup.addAction(TOP_DOWN_ACTION, Messages.FieldHierarchyViewer_FieldOriginModeButton_xtol,
 			SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.FIELD_TOP_DOWN), true);
-		this.actionToggleGroup.addAction(WHERE_USED_ACTION, Messages.FieldHierarchyViewer_FieldReferencesModeButton_xtol,
+		this.actionToggleGroup.addAction(WHERE_USED_ACTION,
+			Messages.FieldHierarchyViewer_FieldReferencesModeButton_xtol,
 			SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.FIELD_WHERE_USED), false);
 		this.actionToggleGroup.addActionToggledListener(actionId -> {
 			final boolean isTopDown = TOP_DOWN_ACTION.equals(actionId);
@@ -228,7 +231,8 @@ public class FieldHierarchyView implements IDestinationProvider {
 			updateToolbarLabel(isTopDown);
 			this.searchCalcFieldsAction.setEnabled(!isTopDown);
 		});
-		this.searchCalcFieldsAction = new Action(Messages.FieldHierarchyView_CalculatedFieldsSearch_xtol, Action.AS_CHECK_BOX) {
+		this.searchCalcFieldsAction = new Action(Messages.FieldHierarchyView_CalculatedFieldsSearch_xtol,
+			Action.AS_CHECK_BOX) {
 			@Override
 			public void run() {
 				if (FieldHierarchyView.this.currentFieldInput == null) {
@@ -238,7 +242,8 @@ public class FieldHierarchyView implements IDestinationProvider {
 				reloadFieldInput();
 			}
 		};
-		this.searchCalcFieldsAction.setImageDescriptor(SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.FUNCTION));
+		this.searchCalcFieldsAction
+			.setImageDescriptor(SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.FUNCTION));
 	}
 
 	private void fillToolbar(final ToolBarManager fieldTbm) {
@@ -257,7 +262,11 @@ public class FieldHierarchyView implements IDestinationProvider {
 		final Label label = new Label(composite, SWT.LEAD | SWT.TOP | SWT.WRAP);
 		label.setText(Messages.FieldHierarchyView_NoFieldSelected_xfld);
 
-		GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).grab(true, false).indent(5, SWT.DEFAULT).applyTo(label);
+		GridDataFactory.fillDefaults()
+			.align(SWT.FILL, SWT.CENTER)
+			.grab(true, false)
+			.indent(5, SWT.DEFAULT)
+			.applyTo(label);
 		return composite;
 	}
 
@@ -333,12 +342,13 @@ public class FieldHierarchyView implements IDestinationProvider {
 			return;
 		}
 
-		menu.appendToGroup(IContextMenuConstants.GROUP_OPEN, new Action(Messages.FieldHierarchyView_NavigateToFieldAction_xmit) {
-			@Override
-			public void run() {
-				NavigationUtil.navigateToEntityColumn(entityName, fieldName, getDestinationId());
-			}
-		});
+		menu.appendToGroup(IGeneralContextMenuConstants.GROUP_OPEN,
+			new Action(Messages.FieldHierarchyView_NavigateToFieldAction_xmit) {
+				@Override
+				public void run() {
+					NavigationUtil.navigateToEntityColumn(entityName, fieldName, getDestinationId());
+				}
+			});
 
 	}
 

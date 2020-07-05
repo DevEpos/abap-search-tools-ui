@@ -27,6 +27,7 @@ import com.devepos.adt.saat.internal.util.CommandPossibleChecker;
 import com.devepos.adt.saat.internal.util.IImages;
 import com.devepos.adt.tools.base.destinations.IDestinationProvider;
 import com.devepos.adt.tools.base.elementinfo.IAdtObjectReferenceElementInfo;
+import com.devepos.adt.tools.base.ui.IGeneralContextMenuConstants;
 import com.devepos.adt.tools.base.ui.StylerFactory;
 import com.devepos.adt.tools.base.ui.action.PreferenceToggleAction;
 import com.devepos.adt.tools.base.ui.tree.ICollectionTreeNode;
@@ -56,7 +57,7 @@ public class WhereUsedInCdsAnalysisView extends CdsAnalysisPage<WhereUsedInCdsAn
 
 	public WhereUsedInCdsAnalysisView(final CdsAnalysisView parentView) {
 		super(parentView);
-		this.lazyLoadingListener = (count) -> {
+		this.lazyLoadingListener = count -> {
 			PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
 				parentView.updateLabel();
 			});
@@ -70,7 +71,8 @@ public class WhereUsedInCdsAnalysisView extends CdsAnalysisPage<WhereUsedInCdsAn
 			final boolean releasedUsagesOnlyChanged = ICdsAnalysisPreferences.WHERE_USED_ONLY_RELEASED_USAGES
 				.equals(propertyName);
 
-			if (!showFromUsesChanged && !showAssocUsesChanged && !releasedUsagesOnlyChanged && !localAssocsOnlyChanged) {
+			if (!showFromUsesChanged && !showAssocUsesChanged && !releasedUsagesOnlyChanged
+				&& !localAssocsOnlyChanged) {
 				return;
 			}
 			// trigger refresh of where used analysis
@@ -84,38 +86,45 @@ public class WhereUsedInCdsAnalysisView extends CdsAnalysisPage<WhereUsedInCdsAn
 				refreshAnalysis();
 			}
 		};
-		SearchAndAnalysisPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(this.propertyChangeListener);
+		SearchAndAnalysisPlugin.getDefault()
+			.getPreferenceStore()
+			.addPropertyChangeListener(this.propertyChangeListener);
 	}
 
 	@Override
 	public void dispose() {
 		super.dispose();
-		SearchAndAnalysisPlugin.getDefault().getPreferenceStore().removePropertyChangeListener(this.propertyChangeListener);
+		SearchAndAnalysisPlugin.getDefault()
+			.getPreferenceStore()
+			.removePropertyChangeListener(this.propertyChangeListener);
 	}
 
 	@Override
 	protected void createActions() {
 		super.createActions();
 		final IPreferenceStore prefStore = SearchAndAnalysisPlugin.getDefault().getPreferenceStore();
-		this.showFromUses = new PreferenceToggleAction(Messages.WhereUsedInCdsAnalysisView_ShowUsesInSelectPartAction_xmit,
+		this.showFromUses = new PreferenceToggleAction(
+			Messages.WhereUsedInCdsAnalysisView_ShowUsesInSelectPartAction_xmit,
 			SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.DATA_SOURCE), USES_IN_SELECT_PREF_KEY, true,
 			prefStore);
-		this.showAssocUses = new PreferenceToggleAction(Messages.WhereUsedInCdsAnalysisView_ShowUsesInAssociationsAction_xmit,
+		this.showAssocUses = new PreferenceToggleAction(
+			Messages.WhereUsedInCdsAnalysisView_ShowUsesInAssociationsAction_xmit,
 			SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.ASSOCIATION), USES_IN_ASSOC_PREF_KEY, false,
 			prefStore);
 		this.localAssociationsOnly = new PreferenceToggleAction(
-			Messages.WhereUsedInCdsAnalysisView_OnlyLocallyDefinedAssocUsages_xmit, null, LOCAL_ASSOCIATIONS_ONLY_PREF_KEY, false,
-			prefStore);
+			Messages.WhereUsedInCdsAnalysisView_OnlyLocallyDefinedAssocUsages_xmit, null,
+			LOCAL_ASSOCIATIONS_ONLY_PREF_KEY, false, prefStore);
 		this.releasedUsagesOnly = new PreferenceToggleAction(
 			Messages.WhereUsedInCdsAnalysisView_OnlyUsagesInReleasedEntities_xmit, null,
 			ICdsAnalysisPreferences.WHERE_USED_ONLY_RELEASED_USAGES, false, prefStore);
-		this.showAssocUses.addPropertyChangeListener((event) -> {
-			this.localAssociationsOnly.setEnabled(this.showAssocUses.isChecked() && this.isLocalAssocOnlyFeatureAvailable);
+		this.showAssocUses.addPropertyChangeListener(event -> {
+			this.localAssociationsOnly
+				.setEnabled(this.showAssocUses.isChecked() && this.isLocalAssocOnlyFeatureAvailable);
 			if (!this.showAssocUses.isChecked()) {
 				this.showFromUses.setChecked(true);
 			}
 		});
-		this.showFromUses.addPropertyChangeListener((event) -> {
+		this.showFromUses.addPropertyChangeListener(event -> {
 			if (!this.showFromUses.isChecked()) {
 				this.showAssocUses.setChecked(true);
 			}
@@ -184,10 +193,10 @@ public class WhereUsedInCdsAnalysisView extends CdsAnalysisPage<WhereUsedInCdsAn
 	public void setActionBars(final IActionBars actionBars) {
 		super.setActionBars(actionBars);
 		final IMenuManager menu = actionBars.getMenuManager();
-		menu.appendToGroup(IContextMenuConstants.GROUP_FILTERING, this.showFromUses);
-		menu.appendToGroup(IContextMenuConstants.GROUP_FILTERING, this.showAssocUses);
-		menu.appendToGroup(IContextMenuConstants.GROUP_ADDITIONS, this.releasedUsagesOnly);
-		menu.appendToGroup(IContextMenuConstants.GROUP_ADDITIONS, this.localAssociationsOnly);
+		menu.appendToGroup(IGeneralContextMenuConstants.GROUP_FILTERING, this.showFromUses);
+		menu.appendToGroup(IGeneralContextMenuConstants.GROUP_FILTERING, this.showAssocUses);
+		menu.appendToGroup(IGeneralContextMenuConstants.GROUP_ADDITIONS, this.releasedUsagesOnly);
+		menu.appendToGroup(IGeneralContextMenuConstants.GROUP_ADDITIONS, this.localAssociationsOnly);
 	}
 
 	@Override
@@ -233,8 +242,8 @@ public class WhereUsedInCdsAnalysisView extends CdsAnalysisPage<WhereUsedInCdsAn
 		final IAdtObjectReferenceElementInfo adtObjElemInfo = this.analysisResult.getAdtObjectInfo();
 		final IDestinationProvider destProvider = adtObjElemInfo.getAdapter(IDestinationProvider.class);
 		final ObjectSearchUriDiscovery uriDiscovery = new ObjectSearchUriDiscovery(destProvider.getDestinationId());
-		this.isLocalAssocOnlyFeatureAvailable = uriDiscovery.isParameterSupported(QueryParameterName.LOCAL_DECLARED_ASSOC_ONLY,
-			SearchType.CDS_VIEW);
+		this.isLocalAssocOnlyFeatureAvailable = uriDiscovery
+			.isParameterSupported(QueryParameterName.LOCAL_DECLARED_ASSOC_ONLY, SearchType.CDS_VIEW);
 		this.localAssociationsOnly.setEnabled(this.isLocalAssocOnlyFeatureAvailable && this.showAssocUses.isChecked());
 		this.releasedUsagesOnly
 			.setEnabled(uriDiscovery.isParameterSupported(QueryParameterName.RELEASE_STATE, SearchType.CDS_VIEW));
