@@ -1,13 +1,12 @@
 package com.devepos.adt.saat.internal.cdsanalysis;
 
-import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.runtime.Assert;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.osgi.util.NLS;
@@ -100,10 +99,12 @@ public class WhereUsedInCdsElementInfoProvider implements IElementInfoProvider {
 
 	@Override
 	public List<IElementInfo> getElements() {
-		final ObjectContainer<List<IElementInfo>> elementInfoWrapper = new ObjectContainer<>(new ArrayList<IElementInfo>());
+		final ObjectContainer<List<IElementInfo>> elementInfoWrapper = new ObjectContainer<>(
+			new ArrayList<IElementInfo>());
 		if (this.searchAssocications && this.searchSelectFrom) {
 			if (this.searchParameter == null) {
-				return Arrays.asList(createLazyWhereUsedProviderElement(true), createLazyWhereUsedProviderElement(false));
+				return Arrays.asList(createLazyWhereUsedProviderElement(true),
+					createLazyWhereUsedProviderElement(false));
 			}
 		}
 		final ObjectSearchRequest searchRequest = new ObjectSearchRequest();
@@ -124,7 +125,8 @@ public class WhereUsedInCdsElementInfoProvider implements IElementInfoProvider {
 		final ObjectSearchQuery searchQuery = new ObjectSearchQuery(searchRequest);
 		final IStatus queryRunStatus = searchQuery.run(new NullProgressMonitor());
 		if (queryRunStatus.isOK()) {
-			final List<IAdtObjectReferenceElementInfo> result = ((ObjectSearchResult) searchQuery.getSearchResult()).getResult();
+			final List<IAdtObjectReferenceElementInfo> result = ((ObjectSearchResult) searchQuery.getSearchResult())
+				.getResult();
 			for (final IAdtObjectReferenceElementInfo elementInfo : result) {
 				final WhereUsedInCdsElementInfoProvider elemInfoProvider = new WhereUsedInCdsElementInfoProvider(
 					this.destinationId, elementInfo.getName(), this.searchSelectFrom, this.searchAssocications);
@@ -156,7 +158,7 @@ public class WhereUsedInCdsElementInfoProvider implements IElementInfoProvider {
 	 */
 	private void updateSearchParameters(final boolean searchSelectFrom, final boolean searchAssociations,
 		final QueryParameterName searchParameter) {
-		assertTrue(searchSelectFrom || searchAssociations);
+		Assert.isTrue(searchSelectFrom || searchAssociations);
 		this.searchSelectFrom = searchSelectFrom;
 		this.searchAssocications = searchAssociations;
 		if (searchParameter == null) {
