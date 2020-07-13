@@ -5,8 +5,8 @@ This repository contains code for ABAP Search and Analyis Tools Plugin
 
 ## Update Sites
 
-- [Stable Releases](https://raw.githubusercontent.com/stockbal/EclipseReleaseUpdateSite/master)  
-- [Beta Releases](https://raw.githubusercontent.com/stockbal/EclipseDevUpdateSite/master)
+- [Stable Releases](https://stockbal.github.io/eclipse/rel)  
+- [Beta Releases](https://stockbal.github.io/eclipse/dev)
 
 > **Note**: The _Beta Releases_ Update site should only be used if the _dev_ branch of the ADT Backend _abap-search-tools_ is installed
 
