@@ -73,6 +73,7 @@ public class Messages extends NLS {
 	public static String SearchHistorySelectionDialog_DeleteHistoryEntry_xbut;
 	public static String SearchHistorySelectionDialog_InfoMessage_xmsg;
 	public static String SearchHistorySelectionDialog_PreviousSearches_xtit;
+	public static String SearchPatternAnalyzer_DescriptionDeliveryClassParameter_xmsg;
 	public static String SearchPatternProvider_loading_xmsg;
 	public static String SearchPatternContentProvider_loadingJob_xmsg;
 	public static String CdsAnalysis_ClearHistoryAction_xmit;

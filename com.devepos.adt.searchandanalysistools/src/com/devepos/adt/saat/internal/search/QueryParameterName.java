@@ -118,7 +118,11 @@ public enum QueryParameterName {
 	/**
 	 * Search classes for a set of properties
 	 */
-	FLAG("FLAG", "flag");
+	FLAG("FLAG", "flag"),
+	/**
+	 * Search tables by delivery class
+	 */
+	DELIVERY_CLASS("DCLASS", "deliveryClass");
 
 	private String stringForm;
 	private String key;

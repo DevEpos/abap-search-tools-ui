@@ -107,6 +107,7 @@ public class SearchPatternProvider implements ISearchParameterHandler {
 			} else if (this.searchType == SearchType.DB_TABLE_VIEW) {
 				parameters.add(new FieldSearchParameter(this.projectProvider, NamedItemType.TABLE_FIELD));
 				parameters.add(SearchParameterFactory.createTableTypeParameter(this.projectProvider));
+				parameters.add(SearchParameterFactory.createDeliveryClassParameter(this.projectProvider));
 			} else if (this.searchType == SearchType.CLASS_INTERFACE) {
 				parameters.add(new ReleaseStateSearchParameter(this.projectProvider));
 				parameters.add(SearchParameterFactory.createClassTypeParameter(this.projectProvider));
@@ -126,8 +127,8 @@ public class SearchPatternProvider implements ISearchParameterHandler {
 		if (!this.projectProvider.ensureLoggedOn()) {
 			return new ArrayList<>();
 		}
-		final List<QueryParameterName> supportedParameters = new ObjectSearchUriDiscovery(this.projectProvider.getDestinationId())
-			.getSupportedSearchParameters(this.searchType);
+		final List<QueryParameterName> supportedParameters = new ObjectSearchUriDiscovery(
+			this.projectProvider.getDestinationId()).getSupportedSearchParameters(this.searchType);
 
 		return parameters.stream()
 			.filter(param -> supportedParameters.contains(param.getParameterName()))
@@ -185,7 +186,9 @@ public class SearchPatternProvider implements ISearchParameterHandler {
 	}
 
 	private int getMaxRows(final String searchPattern, final List<ISearchParameter> parameters) {
-		final int maxRows = SearchAndAnalysisPlugin.getDefault().getPreferenceStore().getInt(IPreferences.MAX_SEARCH_RESULTS);
+		final int maxRows = SearchAndAnalysisPlugin.getDefault()
+			.getPreferenceStore()
+			.getInt(IPreferences.MAX_SEARCH_RESULTS);
 		final List<String> values = getParameterValues(searchPattern, QueryParameterName.MAX_ROWS.toString());
 		if (values == null || values.isEmpty()) {
 			return maxRows;

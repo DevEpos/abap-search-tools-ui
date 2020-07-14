@@ -18,7 +18,8 @@ public enum NamedItemType {
 	CLASS_TYPE("classtype"),
 	ABAP_CLASS_LANGUAGE("abaplanguage"),
 	CLASS_CATEGORY("classcategory"),
-	CLASS_FLAG("classflag");
+	CLASS_FLAG("classflag"),
+	TABLE_DELIVERY_CLASS("tabledeliveryclass");
 
 	private String discoveryTerm;
 
