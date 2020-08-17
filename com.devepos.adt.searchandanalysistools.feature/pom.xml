@@ -1,0 +1,18 @@
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://maven.apache.org/POM/4.0.0">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>com.devepos.adt.searchandanalysistools</artifactId>
+	<groupId>com.devepos.adt</groupId>
+	<version>1.3.2-SNAPSHOT</version>
+	<packaging>eclipse-feature</packaging>
+
+	<parent>
+		<artifactId>com.devepos.adt.searchandanalysistools.parent</artifactId>
+		<groupId>com.devepos.adt</groupId>
+		<version>1.3.2-SNAPSHOT</version>
+		<relativePath>../</relativePath>
+	</parent>
+
+</project>
