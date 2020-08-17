@@ -75,13 +75,6 @@ END OF TERMS AND CONDITIONS
    </license>
 
    <plugin
-         id="com.devepos.adt.searchandanalysistools"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="com.devepos.adt.searchandanalysistools.model"
          download-size="0"
          install-size="0"
@@ -90,6 +83,13 @@ END OF TERMS AND CONDITIONS
 
    <plugin
          id="com.devepos.adt.tools.base"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.devepos.adt.searchandanalysistools.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"
