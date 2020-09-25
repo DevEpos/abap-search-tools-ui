@@ -48,21 +48,21 @@ import com.devepos.adt.tools.base.IAdtObjectTypeConstants;
 import com.devepos.adt.tools.base.ObjectType;
 import com.devepos.adt.tools.base.destinations.IDestinationProvider;
 import com.devepos.adt.tools.base.elementinfo.IAdtObjectReferenceElementInfo;
-import com.devepos.adt.tools.base.project.AbapProjectProviderAccessor;
-import com.devepos.adt.tools.base.project.IAbapProjectProvider;
 import com.devepos.adt.tools.base.ui.IGeneralContextMenuConstants;
 import com.devepos.adt.tools.base.ui.StylerFactory;
 import com.devepos.adt.tools.base.ui.action.CollapseAllTreeNodesAction;
 import com.devepos.adt.tools.base.ui.action.CopyToClipboardAction;
 import com.devepos.adt.tools.base.ui.action.ExecuteAdtObjectAction;
 import com.devepos.adt.tools.base.ui.action.OpenAdtObjectAction;
+import com.devepos.adt.tools.base.ui.project.AbapProjectProviderAccessor;
+import com.devepos.adt.tools.base.ui.project.IAbapProjectProvider;
 import com.devepos.adt.tools.base.ui.tree.ActionTreeNode;
 import com.devepos.adt.tools.base.ui.tree.IAdtObjectReferenceNode;
 import com.devepos.adt.tools.base.ui.tree.ICollectionTreeNode;
 import com.devepos.adt.tools.base.ui.tree.IStyledTreeNode;
 import com.devepos.adt.tools.base.ui.tree.ITreeNode;
 import com.devepos.adt.tools.base.ui.tree.LoadingTreeItemsNode;
-import com.devepos.adt.tools.base.util.AdtTypeUtil;
+import com.devepos.adt.tools.base.ui.util.AdtTypeUtil;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 
 /**
@@ -150,11 +150,9 @@ public abstract class CdsAnalysisPage<T extends CdsAnalysis> extends Page {
 		this.analysisResult = (T) analysis;
 		if (analysis != null) {
 			final IAdtObjectReferenceElementInfo adtObjectInfo = analysis.getAdtObjectInfo();
-			final IDestinationProvider destProvider = ((IAdaptable) adtObjectInfo)
-				.getAdapter(IDestinationProvider.class);
+			final IDestinationProvider destProvider = ((IAdaptable) adtObjectInfo).getAdapter(IDestinationProvider.class);
 			if (destProvider != null) {
-				this.projectProvider = AbapProjectProviderAccessor
-					.getProviderForDestination(destProvider.getDestinationId());
+				this.projectProvider = AbapProjectProviderAccessor.getProviderForDestination(destProvider.getDestinationId());
 			}
 			loadInput(uiState);
 		}

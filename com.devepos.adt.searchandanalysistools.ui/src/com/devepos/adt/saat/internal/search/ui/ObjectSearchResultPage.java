@@ -57,7 +57,6 @@ import com.devepos.adt.saat.internal.search.IExtendedAdtObjectInfo;
 import com.devepos.adt.saat.internal.util.FeatureTester;
 import com.devepos.adt.saat.internal.util.IImages;
 import com.devepos.adt.tools.base.ObjectType;
-import com.devepos.adt.tools.base.project.IAbapProjectProvider;
 import com.devepos.adt.tools.base.ui.IGeneralContextMenuConstants;
 import com.devepos.adt.tools.base.ui.StylerFactory;
 import com.devepos.adt.tools.base.ui.action.CollapseAllTreeNodesAction;
@@ -65,6 +64,7 @@ import com.devepos.adt.tools.base.ui.action.CollapseTreeNodesAction;
 import com.devepos.adt.tools.base.ui.action.CopyToClipboardAction;
 import com.devepos.adt.tools.base.ui.action.ExecuteAdtObjectAction;
 import com.devepos.adt.tools.base.ui.action.OpenAdtObjectAction;
+import com.devepos.adt.tools.base.ui.project.IAbapProjectProvider;
 import com.devepos.adt.tools.base.ui.tree.ActionTreeNode;
 import com.devepos.adt.tools.base.ui.tree.IAdtObjectReferenceNode;
 import com.devepos.adt.tools.base.ui.tree.ICollectionTreeNode;
@@ -73,7 +73,7 @@ import com.devepos.adt.tools.base.ui.tree.ITreeNode;
 import com.devepos.adt.tools.base.ui.tree.LazyLoadingTreeContentProvider;
 import com.devepos.adt.tools.base.ui.tree.LoadingTreeItemsNode;
 import com.devepos.adt.tools.base.ui.tree.PackageNode;
-import com.devepos.adt.tools.base.util.AdtTypeUtil;
+import com.devepos.adt.tools.base.ui.util.AdtTypeUtil;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 
 /**
@@ -131,9 +131,8 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 	@Override
 	public void setActionBars(final IActionBars actionBars) {
 		final IToolBarManager tbm = actionBars.getToolBarManager();
-		MenuItemFactory.addCommandItem(tbm, IContextMenuConstants.GROUP_NEW,
-			ICommandConstants.OBJECT_SEARCH_OPEN_IN_DIALOG, IImages.SEARCH,
-			Messages.ObjectSearchResultPage_OpenInSearchDialog_xtol, false, null);
+		MenuItemFactory.addCommandItem(tbm, IContextMenuConstants.GROUP_NEW, ICommandConstants.OBJECT_SEARCH_OPEN_IN_DIALOG,
+			IImages.SEARCH, Messages.ObjectSearchResultPage_OpenInSearchDialog_xtol, false, null);
 		tbm.appendToGroup(IContextMenuConstants.GROUP_NEW, this.favoritesAction);
 		tbm.appendToGroup(IContextMenuConstants.GROUP_EDIT, this.collapseAllNodesAction);
 		tbm.appendToGroup(IContextMenuConstants.GROUP_EDIT, this.expandAllAction);
@@ -241,8 +240,7 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 			 * be brought to the front so it has to be done manually
 			 */
 			final IWorkbenchPage activeSearchPage = SearchPlugin.getActivePage();
-			if (activeSearchPage != null && this.searchViewPart != null
-				&& activeSearchPage.isPartVisible(this.searchViewPart)) {
+			if (activeSearchPage != null && this.searchViewPart != null && activeSearchPage.isPartVisible(this.searchViewPart)) {
 				activeSearchPage.bringToTop(this.searchViewPart);
 			}
 			this.searchViewPart.updateLabel();
@@ -289,10 +287,8 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 		this.isCdsTopDownAnalysisAvailable = false;
 		this.isCdsUsedEntitiesAnalysisAvailable = false;
 		if (this.projectProvider != null && this.projectProvider.ensureLoggedOn()) {
-			this.isDbBrowserIntegrationAvailable = FeatureTester
-				.isSapGuiDbBrowserAvailable(this.projectProvider.getProject());
-			this.isCdsTopDownAnalysisAvailable = FeatureTester
-				.isCdsTopDownAnalysisAvailable(this.projectProvider.getProject());
+			this.isDbBrowserIntegrationAvailable = FeatureTester.isSapGuiDbBrowserAvailable(this.projectProvider.getProject());
+			this.isCdsTopDownAnalysisAvailable = FeatureTester.isCdsTopDownAnalysisAvailable(this.projectProvider.getProject());
 			this.isCdsUsedEntitiesAnalysisAvailable = FeatureTester
 				.isCdsUsedEntitiesAnalysisAvailable(this.projectProvider.getProject());
 		}
@@ -450,8 +446,7 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 				}
 				if (!previewAdtObjRefs.isEmpty()) {
 					MenuItemFactory.addCdsAnalyzerCommandItem(menu,
-						com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_CDS_ANALYSIS,
-						ICommandConstants.FIELD_ANALYSIS);
+						com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_CDS_ANALYSIS, ICommandConstants.FIELD_ANALYSIS);
 				}
 
 			}
@@ -484,8 +479,7 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 				}
 			}
 			this.searchResultTree.getControl().setFocus();
-			final IAdtObjectReferenceNode[] result = this.result
-				.getResultForTree(this.groupByPackageAction.isChecked());
+			final IAdtObjectReferenceNode[] result = this.result.getResultForTree(this.groupByPackageAction.isChecked());
 			if (result != null && result.length > 0) {
 				if (this.state != null && this.state.hasSelection()) {
 					this.searchResultTree.setSelection(this.state.getSelection());
@@ -550,8 +544,7 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 					} else {
 						image = AdtTypeUtil.getInstance().getTypeImage(adtObjRefNode.getAdtObjectType());
 					}
-					final IExtendedAdtObjectInfo extendedResult = adtObjRefNode
-						.getAdapter(IExtendedAdtObjectInfo.class);
+					final IExtendedAdtObjectInfo extendedResult = adtObjRefNode.getAdapter(IExtendedAdtObjectInfo.class);
 					if (extendedResult != null) {
 						final String[] overlayImages = new String[4];
 						if (extendedResult.getSourceType() != null) {

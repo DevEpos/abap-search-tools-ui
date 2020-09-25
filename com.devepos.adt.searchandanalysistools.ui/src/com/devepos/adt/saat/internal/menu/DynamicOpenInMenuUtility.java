@@ -28,8 +28,8 @@ import com.devepos.adt.saat.internal.navtargets.NavigationTargetServiceFactory;
 import com.devepos.adt.saat.internal.util.FeatureTester;
 import com.devepos.adt.saat.internal.util.IImages;
 import com.devepos.adt.tools.base.ObjectType;
-import com.devepos.adt.tools.base.adtobject.IAdtObject;
 import com.devepos.adt.tools.base.destinations.DestinationUtil;
+import com.devepos.adt.tools.base.ui.adtobject.IAdtObject;
 import com.devepos.adt.tools.base.util.ObjectContainer;
 
 /**

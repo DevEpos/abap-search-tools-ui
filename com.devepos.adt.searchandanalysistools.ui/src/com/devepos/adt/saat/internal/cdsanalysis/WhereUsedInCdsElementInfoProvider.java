@@ -22,7 +22,7 @@ import com.devepos.adt.tools.base.elementinfo.IAdtObjectReferenceElementInfo;
 import com.devepos.adt.tools.base.elementinfo.IElementInfo;
 import com.devepos.adt.tools.base.elementinfo.IElementInfoProvider;
 import com.devepos.adt.tools.base.elementinfo.LazyLoadingElementInfo;
-import com.devepos.adt.tools.base.project.AbapProjectProviderAccessor;
+import com.devepos.adt.tools.base.ui.project.AbapProjectProviderAccessor;
 import com.devepos.adt.tools.base.util.ObjectContainer;
 
 /**

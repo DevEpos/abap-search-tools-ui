@@ -16,7 +16,7 @@ import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.search.contentassist.SearchParameterProposal;
 import com.devepos.adt.saat.internal.util.IImages;
-import com.devepos.adt.tools.base.project.IAbapProjectProvider;
+import com.devepos.adt.tools.base.ui.project.IAbapProjectProvider;
 import com.sap.adt.ris.search.AdtRisQuickSearchFactory;
 import com.sap.adt.ris.search.IAdtRisQuickSearch;
 import com.sap.adt.ris.search.RisQuickSearchNotSupportedException;

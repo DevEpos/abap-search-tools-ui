@@ -9,15 +9,15 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
 
 import com.devepos.adt.saat.internal.util.OpenInUtil;
-import com.devepos.adt.tools.base.adtobject.IAdtObject;
-import com.devepos.adt.tools.base.util.AdtUtil;
+import com.devepos.adt.tools.base.ui.adtobject.IAdtObject;
+import com.devepos.adt.tools.base.ui.util.AdtUIUtil;
 
 public class OpenInDbBrowserHandler extends DbBrowserCommandHandler {
 	public static final String PARAM_SKIP_SELSCREEN = "com.devepos.adt.saat.openindbbrowser.skipSelscreenParam";
 
 	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
-		final List<IAdtObject> selectedAdtObjects = AdtUtil.getAdtObjectsFromSelection(true);
+		final List<IAdtObject> selectedAdtObjects = AdtUIUtil.getAdtObjectsFromSelection(true);
 		if (selectedAdtObjects == null || selectedAdtObjects.isEmpty()) {
 			return null;
 		}

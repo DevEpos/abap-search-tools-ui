@@ -6,8 +6,8 @@ import org.eclipse.ui.PlatformUI;
 
 import com.devepos.adt.saat.internal.ddicaccess.DdicRepositoryAccessFactory;
 import com.devepos.adt.saat.internal.ddicaccess.IDdicRepositoryAccess;
-import com.devepos.adt.tools.base.project.AbapProjectProviderAccessor;
-import com.devepos.adt.tools.base.util.AdtUtil;
+import com.devepos.adt.tools.base.ui.project.AbapProjectProviderAccessor;
+import com.devepos.adt.tools.base.ui.util.AdtUIUtil;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 
 public class NavigationUtil {
@@ -20,12 +20,12 @@ public class NavigationUtil {
 	 * @param destinationId the destination id of the ABAP project
 	 */
 	public static void navigateToEntityColumn(final String entityName, final String fieldName, final String destinationId) {
-		final Job loadFieldUriJob = Job.create(NLS.bind("Load Field URI for ''{0}.{1}''", entityName, fieldName), (monitor) -> {
+		final Job loadFieldUriJob = Job.create(NLS.bind("Load Field URI for ''{0}.{1}''", entityName, fieldName), monitor -> {
 			final IDdicRepositoryAccess ddicRepoAccess = DdicRepositoryAccessFactory.createDdicAccess();
 			final IAdtObjectReference adtObjectRef = ddicRepoAccess.getColumnUri(destinationId, entityName, fieldName);
 			if (adtObjectRef != null) {
 				PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
-					AdtUtil.navigateWithObjectReference(adtObjectRef,
+					AdtUIUtil.navigateWithObjectReference(adtObjectRef,
 						AbapProjectProviderAccessor.getProviderForDestination(destinationId).getProject());
 				});
 			}

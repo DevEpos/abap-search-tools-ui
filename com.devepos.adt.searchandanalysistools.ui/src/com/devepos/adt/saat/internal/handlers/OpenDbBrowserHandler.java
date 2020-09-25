@@ -14,8 +14,8 @@ import org.eclipse.ui.part.WorkbenchPart;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.util.IImages;
-import com.devepos.adt.tools.base.project.ProjectUtil;
-import com.devepos.adt.tools.base.util.AdtUtil;
+import com.devepos.adt.tools.base.ui.project.ProjectUtil;
+import com.devepos.adt.tools.base.ui.util.AdtUIUtil;
 import com.sap.adt.sapgui.ui.editors.AdtSapGuiEditorUtilityFactory;
 import com.sap.adt.tools.core.ui.dialogs.AbapProjectSelectionDialog;
 
@@ -59,7 +59,7 @@ public class OpenDbBrowserHandler extends DbBrowserCommandHandler {
 				Stream.of(new String[][] { { "ADT", String.valueOf(true) } }) //$NON-NLS-1$
 					.collect(Collectors.toMap(data -> data[0], data -> data[1])));
 
-		AdtUtil.overrideSapGuiPartTitle(part, this.currentProject, Messages.DbBrowser_xtit, Messages.DbBrowser_xtit,
+		AdtUIUtil.overrideSapGuiPartTitle(part, this.currentProject, Messages.DbBrowser_xtit, Messages.DbBrowser_xtit,
 			SearchAndAnalysisPlugin.getDefault().getImage(IImages.DB_BROWSER_DATA_PREVIEW));
 		return null;
 	}

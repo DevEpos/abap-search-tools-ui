@@ -14,7 +14,7 @@ import org.eclipse.jface.fieldassist.IContentProposal;
 
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.search.contentassist.SearchParameterProposal;
-import com.devepos.adt.tools.base.project.IAbapProjectProvider;
+import com.devepos.adt.tools.base.ui.project.IAbapProjectProvider;
 import com.devepos.adt.tools.base.util.StringUtil;
 
 /**

@@ -6,7 +6,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.fieldassist.IContentProposal;
 import org.eclipse.swt.graphics.Image;
 
-import com.devepos.adt.tools.base.project.IAbapProjectProvider;
+import com.devepos.adt.tools.base.ui.project.IAbapProjectProvider;
 
 /**
  * Simple implementation of a Search Parameter which retrieves its proposals via

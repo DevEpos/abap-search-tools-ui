@@ -3,8 +3,8 @@ package com.devepos.adt.saat.internal.navtargets;
 import java.net.URI;
 
 import com.devepos.adt.tools.base.ObjectType;
-import com.devepos.adt.tools.base.project.AbapProjectProviderAccessor;
-import com.devepos.adt.tools.base.project.IAbapProjectProvider;
+import com.devepos.adt.tools.base.ui.project.AbapProjectProviderAccessor;
+import com.devepos.adt.tools.base.ui.project.IAbapProjectProvider;
 import com.devepos.adt.tools.base.util.AdtUtil;
 import com.sap.adt.communication.content.IContentHandler;
 import com.sap.adt.communication.resources.AdtRestResourceFactory;

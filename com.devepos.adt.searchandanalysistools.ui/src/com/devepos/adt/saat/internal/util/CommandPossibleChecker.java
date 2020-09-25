@@ -5,8 +5,8 @@ import java.util.stream.Collectors;
 
 import com.devepos.adt.saat.internal.ICommandConstants;
 import com.devepos.adt.tools.base.ObjectType;
-import com.devepos.adt.tools.base.adtobject.IAdtObject;
-import com.devepos.adt.tools.base.util.AdtUtil;
+import com.devepos.adt.tools.base.ui.adtobject.IAdtObject;
+import com.devepos.adt.tools.base.ui.util.AdtUIUtil;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 
 public class CommandPossibleChecker {
@@ -106,11 +106,11 @@ public class CommandPossibleChecker {
 		if (!hasSelection()) {
 			return null;
 		}
-		return this.selectedAdtObjects.stream().map(object -> object.getReference()).collect(Collectors.toList());
+		return this.selectedAdtObjects.stream().map(IAdtObject::getReference).collect(Collectors.toList());
 	}
 
 	protected void evaluateSelection(final boolean supportsDataPreviewOnly) {
-		this.selectedAdtObjects = AdtUtil.getAdtObjectsFromSelection(supportsDataPreviewOnly);
+		this.selectedAdtObjects = AdtUIUtil.getAdtObjectsFromSelection(supportsDataPreviewOnly);
 		this.hasSelection = this.selectedAdtObjects != null && !this.selectedAdtObjects.isEmpty();
 		if (!this.hasSelection) {
 			return;

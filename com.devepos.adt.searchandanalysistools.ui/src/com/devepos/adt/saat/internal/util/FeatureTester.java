@@ -10,7 +10,7 @@ import com.devepos.adt.saat.internal.cdsanalysis.CdsAnalysisUriDiscovery;
 import com.devepos.adt.saat.internal.dbbrowserintegration.DbBrowserIntegrationUriDiscovery;
 import com.devepos.adt.saat.internal.navtargets.NavigationTargetsUriDiscovery;
 import com.devepos.adt.saat.internal.search.ObjectSearchUriDiscovery;
-import com.devepos.adt.tools.base.adtobject.IAdtObject;
+import com.devepos.adt.tools.base.ui.adtobject.IAdtObject;
 import com.devepos.adt.tools.base.util.IUriDiscovery;
 import com.sap.adt.tools.core.project.IAbapProject;
 

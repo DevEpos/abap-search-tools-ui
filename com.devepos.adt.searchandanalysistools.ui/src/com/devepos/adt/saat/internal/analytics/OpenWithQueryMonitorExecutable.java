@@ -1,9 +1,9 @@
 package com.devepos.adt.saat.internal.analytics;
 
 import com.devepos.adt.saat.internal.util.OpenInUtil;
-import com.devepos.adt.tools.base.project.AbapProjectProviderAccessor;
-import com.devepos.adt.tools.base.project.IAbapProjectProvider;
 import com.devepos.adt.tools.base.ui.action.Executable;
+import com.devepos.adt.tools.base.ui.project.AbapProjectProviderAccessor;
+import com.devepos.adt.tools.base.ui.project.IAbapProjectProvider;
 
 /**
  * An Action which opens a CDS view with Query Monitor SAP GUI Transaction

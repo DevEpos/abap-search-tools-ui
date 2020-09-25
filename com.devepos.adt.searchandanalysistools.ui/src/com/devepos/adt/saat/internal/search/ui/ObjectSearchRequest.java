@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.devepos.adt.saat.internal.search.SearchType;
-import com.devepos.adt.tools.base.project.IAbapProjectProvider;
+import com.devepos.adt.tools.base.ui.project.IAbapProjectProvider;
 import com.sap.adt.destinations.model.IDestinationData;
 
 /**

@@ -6,8 +6,8 @@ import java.util.Map;
 
 import com.devepos.adt.tools.base.elementinfo.IAdtObjectReferenceElementInfo;
 import com.devepos.adt.tools.base.elementinfo.IElementInfo;
-import com.devepos.adt.tools.base.project.AbapProjectProviderAccessor;
-import com.devepos.adt.tools.base.project.IAbapProjectProvider;
+import com.devepos.adt.tools.base.ui.project.AbapProjectProviderAccessor;
+import com.devepos.adt.tools.base.ui.project.IAbapProjectProvider;
 import com.devepos.adt.tools.base.util.AdtUtil;
 import com.sap.adt.communication.content.IContentHandler;
 import com.sap.adt.communication.resources.AdtRestResourceFactory;

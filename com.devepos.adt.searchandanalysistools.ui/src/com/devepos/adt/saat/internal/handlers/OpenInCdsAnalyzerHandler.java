@@ -20,12 +20,12 @@ import com.devepos.adt.saat.internal.elementinfo.ElementInfoRetrievalServiceFact
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.util.FeatureTester;
 import com.devepos.adt.tools.base.ObjectType;
-import com.devepos.adt.tools.base.adtobject.IAdtObject;
 import com.devepos.adt.tools.base.destinations.DestinationUtil;
 import com.devepos.adt.tools.base.elementinfo.IAdtObjectReferenceElementInfo;
-import com.devepos.adt.tools.base.project.AbapProjectProviderAccessor;
-import com.devepos.adt.tools.base.project.AbapProjectProxy;
-import com.devepos.adt.tools.base.util.AdtUtil;
+import com.devepos.adt.tools.base.ui.adtobject.IAdtObject;
+import com.devepos.adt.tools.base.ui.project.AbapProjectProviderAccessor;
+import com.devepos.adt.tools.base.ui.project.AbapProjectProxy;
+import com.devepos.adt.tools.base.ui.util.AdtUIUtil;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 import com.sap.adt.tools.core.project.IAbapProject;
 
@@ -43,7 +43,7 @@ public abstract class OpenInCdsAnalyzerHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(final ExecutionEvent event) throws ExecutionException {
-		final List<IAdtObject> selectedObjects = AdtUtil.getAdtObjectsFromSelection(true);
+		final List<IAdtObject> selectedObjects = AdtUIUtil.getAdtObjectsFromSelection(true);
 		if (selectedObjects == null || selectedObjects.isEmpty() || selectedObjects.size() > 1) {
 			return null;
 		}
@@ -78,8 +78,7 @@ public abstract class OpenInCdsAnalyzerHandler extends AbstractHandler {
 			final Job adtObjectRetrievalJob = Job.create(Messages.CdsAnalysis_LoadAdtObjectJobName_xmsg,
 				(ICoreRunnable) monitor -> {
 					// check if search is possible in selected project
-					final IAdtObjectReferenceElementInfo adtObjectRefElemInfo = ElementInfoRetrievalServiceFactory
-						.createService()
+					final IAdtObjectReferenceElementInfo adtObjectRefElemInfo = ElementInfoRetrievalServiceFactory.createService()
 						.retrieveBasicElementInformation(destinationId, objectRef.getUri());
 					if (adtObjectRefElemInfo != null) {
 						final CdsAnalysis newAnalysis = createTypedAnalysis(adtObjectRefElemInfo);

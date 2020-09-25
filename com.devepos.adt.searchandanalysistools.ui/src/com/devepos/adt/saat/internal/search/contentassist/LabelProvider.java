@@ -5,9 +5,9 @@ import org.eclipse.swt.graphics.Image;
 
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.util.IImages;
-import com.devepos.adt.tools.base.AdtToolsBaseResources;
-import com.devepos.adt.tools.base.IAdtToolsBaseImages;
 import com.devepos.adt.tools.base.ObjectType;
+import com.devepos.adt.tools.base.ui.AdtToolsBaseUIResources;
+import com.devepos.adt.tools.base.ui.IAdtToolsBaseImages;
 
 /**
  * Label provider for the DB Object Search content assist
@@ -40,7 +40,7 @@ public class LabelProvider extends org.eclipse.jface.viewers.LabelProvider {
 			case CATEGORY:
 				return getImage(IImages.ABAP_TYPE);
 			case DELIVERY_CLASS:
-				return AdtToolsBaseResources.getImage(IAdtToolsBaseImages.TRANSPORT);
+				return AdtToolsBaseUIResources.getImage(IAdtToolsBaseImages.TRANSPORT);
 			case ABAP_LANGUAGE:
 				return getImage(IImages.ABAP_VERSION);
 			default:

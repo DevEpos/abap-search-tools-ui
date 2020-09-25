@@ -3,8 +3,8 @@ package com.devepos.adt.saat.internal.handlers;
 import com.devepos.adt.saat.internal.cdsanalysis.CdsAnalysisType;
 import com.devepos.adt.saat.internal.cdsanalysis.ui.CdsAnalysis;
 import com.devepos.adt.saat.internal.cdsanalysis.ui.WhereUsedInCdsAnalysis;
-import com.devepos.adt.tools.base.adtobject.IAdtObject;
 import com.devepos.adt.tools.base.elementinfo.IAdtObjectReferenceElementInfo;
+import com.devepos.adt.tools.base.ui.adtobject.IAdtObject;
 
 public class PerformWhereUsedInCdsAnalysisHandler extends OpenInCdsAnalyzerHandler {
 

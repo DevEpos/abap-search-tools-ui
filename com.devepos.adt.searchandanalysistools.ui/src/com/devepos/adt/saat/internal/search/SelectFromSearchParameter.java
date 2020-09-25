@@ -10,7 +10,7 @@ import org.eclipse.swt.graphics.Image;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.util.IImages;
-import com.devepos.adt.tools.base.project.IAbapProjectProvider;
+import com.devepos.adt.tools.base.ui.project.IAbapProjectProvider;
 
 /**
  * Search parameter to restrict query results to CDS views which select data

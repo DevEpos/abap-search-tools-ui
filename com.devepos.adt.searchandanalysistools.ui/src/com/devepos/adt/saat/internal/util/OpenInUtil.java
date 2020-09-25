@@ -20,8 +20,9 @@ import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.analytics.AnalysisForOfficeLauncherContentHandler;
 import com.devepos.adt.saat.internal.analytics.AnalysisForOfficeUriDiscovery;
 import com.devepos.adt.saat.internal.messages.Messages;
-import com.devepos.adt.tools.base.project.AbapProjectProxy;
-import com.devepos.adt.tools.base.project.IAbapProjectProvider;
+import com.devepos.adt.tools.base.ui.project.AbapProjectProxy;
+import com.devepos.adt.tools.base.ui.project.IAbapProjectProvider;
+import com.devepos.adt.tools.base.ui.util.AdtUIUtil;
 import com.devepos.adt.tools.base.util.AdtUtil;
 import com.sap.adt.communication.resources.AdtRestResourceFactory;
 import com.sap.adt.communication.resources.IRestResource;
@@ -51,7 +52,7 @@ public class OpenInUtil {
 				Stream.of(new String[][] { { "ADT", String.valueOf(true) }, { "ENTITY_ID", entityId }, //$NON-NLS-1$ //$NON-NLS-2$
 						{ "ENTITY_MODE", entityMode }, { "SKIP_SELSCREEN", String.valueOf(skipSelectionScreen) } }) //$NON-NLS-1$ //$NON-NLS-2$
 					.collect(Collectors.toMap(data -> data[0], data -> data[1])));
-		AdtUtil.overrideSapGuiPartTitle(part, project, entityId, String.format("DB Browser - %s", entityId), //$NON-NLS-1$
+		AdtUIUtil.overrideSapGuiPartTitle(part, project, entityId, String.format("DB Browser - %s", entityId), //$NON-NLS-1$
 			SearchAndAnalysisPlugin.getDefault().getImage(IImages.DB_BROWSER_DATA_PREVIEW));
 	}
 
@@ -66,7 +67,7 @@ public class OpenInUtil {
 			.openEditorAndStartTransaction(project, "ZSAT_ADT_QRYMONOPEN", true, //$NON-NLS-1$
 				Stream.of(new String[][] { { "ENTITY_ID", cdsViewName.toUpperCase() } }) //$NON-NLS-1$
 					.collect(Collectors.toMap(data -> data[0], data -> data[1])));
-		AdtUtil.overrideSapGuiPartTitle(sapGuipart, project, cdsViewName, String.format("%s (Query Monitor)", cdsViewName), //$NON-NLS-1$
+		AdtUIUtil.overrideSapGuiPartTitle(sapGuipart, project, cdsViewName, String.format("%s (Query Monitor)", cdsViewName), //$NON-NLS-1$
 			SearchAndAnalysisPlugin.getDefault().getImage(IImages.ANALYTICAL_QUERY));
 	}
 
@@ -77,7 +78,7 @@ public class OpenInUtil {
 	 * @param cdsViewName the name of the CDS view
 	 */
 	public static void openCDSInAnalysisForOffice(final IProject project, final String cdsViewName) {
-		final Job openInAnalysisForOfficeJob = Job.create("Open In Analysis for Office", (monitor) -> { //$NON-NLS-1$
+		final Job openInAnalysisForOfficeJob = Job.create("Open In Analysis for Office", monitor -> { //$NON-NLS-1$
 			final IAbapProjectProvider projectProvider = new AbapProjectProxy(project);
 
 			final AnalysisForOfficeUriDiscovery aoxUriDiscovery = new AnalysisForOfficeUriDiscovery(

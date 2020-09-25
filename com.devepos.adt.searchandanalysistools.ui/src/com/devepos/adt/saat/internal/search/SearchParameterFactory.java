@@ -5,9 +5,9 @@ import java.text.MessageFormat;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.util.IImages;
-import com.devepos.adt.tools.base.AdtToolsBaseResources;
-import com.devepos.adt.tools.base.IAdtToolsBaseImages;
-import com.devepos.adt.tools.base.project.IAbapProjectProvider;
+import com.devepos.adt.tools.base.ui.AdtToolsBaseUIResources;
+import com.devepos.adt.tools.base.ui.IAdtToolsBaseImages;
+import com.devepos.adt.tools.base.ui.project.IAbapProjectProvider;
 
 /**
  * Factory for creating parameters for the Object Search
@@ -95,9 +95,8 @@ public class SearchParameterFactory {
 	public static ISearchParameter createClassCategoryParameter(final IAbapProjectProvider projectProvider) {
 		final NamedItemParameter parameter = new NamedItemParameter(projectProvider, QueryParameterName.CATEGORY,
 			NamedItemType.CLASS_CATEGORY, true, ""); //$NON-NLS-1$
-		parameter
-			.setDescription(MessageFormat.format(Messages.SearchPatternAnalyzer_DescriptionClassCategoryParameter_xmsg,
-				QueryParameterName.CATEGORY.getLowerCaseKey()));
+		parameter.setDescription(MessageFormat.format(Messages.SearchPatternAnalyzer_DescriptionClassCategoryParameter_xmsg,
+			QueryParameterName.CATEGORY.getLowerCaseKey()));
 		parameter.setImage(SearchAndAnalysisPlugin.getDefault().getImage(IImages.FOLDER));
 		parameter.setSupportsNegatedValues(true);
 		return parameter;
@@ -219,10 +218,9 @@ public class SearchParameterFactory {
 	public static ISearchParameter createDeliveryClassParameter(final IAbapProjectProvider projectProvider) {
 		final NamedItemParameter parameter = new NamedItemParameter(projectProvider, QueryParameterName.DELIVERY_CLASS,
 			NamedItemType.TABLE_DELIVERY_CLASS, true, ""); //$NON-NLS-1$
-		parameter.setDescription(
-			MessageFormat.format(Messages.SearchPatternAnalyzer_DescriptionDeliveryClassParameter_xmsg,
-				QueryParameterName.DELIVERY_CLASS.getLowerCaseKey()));
-		parameter.setImage(AdtToolsBaseResources.getImage(IAdtToolsBaseImages.TRANSPORT));
+		parameter.setDescription(MessageFormat.format(Messages.SearchPatternAnalyzer_DescriptionDeliveryClassParameter_xmsg,
+			QueryParameterName.DELIVERY_CLASS.getLowerCaseKey()));
+		parameter.setImage(AdtToolsBaseUIResources.getImage(IAdtToolsBaseImages.TRANSPORT));
 		parameter.setSupportsNegatedValues(true);
 		return parameter;
 	}

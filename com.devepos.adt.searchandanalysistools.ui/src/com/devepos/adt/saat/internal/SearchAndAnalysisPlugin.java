@@ -1,34 +1,20 @@
 package com.devepos.adt.saat.internal;
 
-import java.net.URL;
-import java.util.stream.Stream;
-
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.jface.dialogs.IDialogSettings;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.resource.ImageRegistry;
-import org.eclipse.jface.viewers.DecorationOverlayIcon;
-import org.eclipse.jface.viewers.IDecoration;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 
 import com.devepos.adt.saat.internal.search.favorites.IObjectSearchFavorites;
 import com.devepos.adt.saat.internal.search.favorites.ObjectSearchFavoriteStorage;
 import com.devepos.adt.saat.internal.search.favorites.ObjectSearchFavorites;
 import com.devepos.adt.saat.internal.util.IImages;
+import com.devepos.adt.tools.base.plugin.AbstractAdtUIPlugin;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class SearchAndAnalysisPlugin extends AbstractUIPlugin {
+public class SearchAndAnalysisPlugin extends AbstractAdtUIPlugin {
 
-	public static final String PLUGIN_ID = "com.devepos.adt.searchandanalysistools"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "com.devepos.adt.searchandanalysistools.ui"; //$NON-NLS-1$
 
 	// The shared instance
 	private static SearchAndAnalysisPlugin plugin;
@@ -39,6 +25,7 @@ public class SearchAndAnalysisPlugin extends AbstractUIPlugin {
 	 * The constructor
 	 */
 	public SearchAndAnalysisPlugin() {
+		super(PLUGIN_ID);
 	}
 
 	@Override
@@ -76,130 +63,6 @@ public class SearchAndAnalysisPlugin extends AbstractUIPlugin {
 		return plugin;
 	}
 
-	/**
-	 * Gets the image descriptor for the given key from the image registry
-	 *
-	 * @param  key the identifier of the image to get
-	 * @return     the found image descriptor or <code>null</code>
-	 */
-	public ImageDescriptor getImageDescriptor(final String key) {
-		return getImageRegistry().getDescriptor(key);
-	}
-
-	/**
-	 * Retrieves Image from registry
-	 *
-	 * @param  key the identifier of the image to retrieve
-	 * @return     the found image
-	 */
-	public Image getImage(final String key) {
-		return getImageRegistry().get(key);
-	}
-
-	/**
-	 * Retrieves the dialog settings for the given name
-	 *
-	 * @param  name the name of the dialog settings to retrieve
-	 * @return      the found dialog settings
-	 */
-	public IDialogSettings getDialogSettingsSection(final String name) {
-		final IDialogSettings dialogSettings = getDialogSettings();
-		IDialogSettings section = dialogSettings.getSection(name);
-		if (section == null) {
-			section = dialogSettings.addNewSection(name);
-		}
-		return section;
-	}
-
-	/**
-	 * Returns a decorated {@link Image} with the <code>image</code> as the source
-	 * image, the <code>decoratorKey</code> as the key for the overlay image and the
-	 * <code>decorationPosition</code> as the
-	 *
-	 * @param  image           the image to be decorated with overlays
-	 * @param  overlayImageIds an array of exactly 5 id of Images
-	 * @see                    IImages
-	 * @return
-	 */
-	public Image overlayImage(final Image image, final String[] overlayImageIds) {
-		if (overlayImageIds == null || overlayImageIds.length > IDecoration.UNDERLAY) {
-			return image;
-		}
-		if (!Stream.of(overlayImageIds).anyMatch(id -> id != null)) {
-			return image;
-		}
-		final StringBuffer overlayImageKeyBuffer = new StringBuffer(image.toString());
-		for (int i = 0; i < overlayImageIds.length; i++) {
-			final String imageId = overlayImageIds[i];
-			if (imageId == null) {
-				continue;
-			}
-			overlayImageKeyBuffer.append(String.valueOf(i)).append("_").append(imageId);
-		}
-		final String overlayImageKey = overlayImageKeyBuffer.toString();
-
-		Image decoratedImage = getImageRegistry().get(overlayImageKey.toString());
-		if (decoratedImage == null) {
-			final ImageDescriptor[] overlays = new ImageDescriptor[overlayImageIds.length];
-			for (int i = 0; i < overlays.length; i++) {
-				final String imageId = overlayImageIds[i];
-				if (imageId != null) {
-					overlays[i] = getImageDescriptor(imageId);
-				} else {
-					overlays[i] = null;
-				}
-			}
-			final DecorationOverlayIcon doi = new DecorationOverlayIcon(image, overlays); // , new Point(18, 16));
-			decoratedImage = doi.createImage();
-			getImageRegistry().put(overlayImageKey, decoratedImage);
-		}
-		return decoratedImage;
-	}
-
-	/**
-	 * Returns a decorated {@link Image} with the <code>image</code> as the source
-	 * image, the <code>decoratorKey</code> as the key for the overlay image and the
-	 * <code>decorationPosition</code> as the
-	 *
-	 * @param  image              the image to be decorated
-	 * @param  overlayImageKey    the id for the overlay image
-	 * @param  decorationPosition the position where the overlay image should be
-	 *                            placed
-	 * @return
-	 */
-	public Image overlayImage(final Image image, final String overlayImageKey, final int decorationPosition) {
-		if (overlayImageKey == null) {
-			return image;
-		}
-		final String decoratedImageKey = String.valueOf(image.toString()) + overlayImageKey;
-		Image decoratedImage = getImageRegistry().get(decoratedImageKey);
-		if (decoratedImage == null) {
-			final ImageDescriptor[] overlays = new ImageDescriptor[4];
-			final ImageDescriptor overlay = getImageDescriptor(overlayImageKey);
-			if (overlay == null) {
-				return image;
-			}
-			switch (decorationPosition) {
-			case IDecoration.TOP_LEFT:
-				overlays[0] = overlay;
-				break;
-			case IDecoration.TOP_RIGHT:
-				overlays[1] = overlay;
-				break;
-			case IDecoration.BOTTOM_LEFT:
-				overlays[2] = overlay;
-				break;
-			case IDecoration.BOTTOM_RIGHT:
-				overlays[3] = overlay;
-				break;
-			}
-			final DecorationOverlayIcon doi = new DecorationOverlayIcon(image, overlays, new Point(21, 16));
-			decoratedImage = doi.createImage();
-			getImageRegistry().put(decoratedImageKey, decoratedImage);
-		}
-		return decoratedImage;
-	}
-
 	@Override
 	protected void initializeImageRegistry(final ImageRegistry imageRegistry) {
 		// register all kinds of images
@@ -209,7 +72,8 @@ public class SearchAndAnalysisPlugin extends AbstractUIPlugin {
 		registerImage(imageRegistry, IImages.CDS_VIEW, "icons/CDSEntity.png");
 		registerImage(imageRegistry, IImages.TABLE_DEFINITION, "icons/Table.png");
 		registerImage(imageRegistry, IImages.VIEW_DEFINITION, "icons/ViewDefinition.png");
-		registerImage(imageRegistry, IImages.SEARCH_HISTORY, "icons/full/elcl16/search_history.png", "org.eclipse.search");
+		registerImage(imageRegistry, IImages.SEARCH_HISTORY, "icons/full/elcl16/search_history.png",
+			"org.eclipse.search");
 		registerImage(imageRegistry, IImages.HISTORY_LIST, "icons/HistoryList.png");
 		registerImage(imageRegistry, IImages.USER, "icons/UserEdit.png");
 		registerImage(imageRegistry, IImages.WAITING, "icons/WaitingIndicator.png");
@@ -242,7 +106,8 @@ public class SearchAndAnalysisPlugin extends AbstractUIPlugin {
 		registerImage(imageRegistry, IImages.TOP_DOWN, "icons/TopDown.png");
 		registerImage(imageRegistry, IImages.FIELD_ANALYSIS, "icons/CdsFieldAnalysis.png");
 		registerImage(imageRegistry, IImages.WHERE_USED_IN, "icons/WhereUsedInCds.png");
-		registerImage(imageRegistry, IImages.WHERE_USED_LIST, "icons/etool/where_used.png", "com.sap.adt.ris.whereused.ui");
+		registerImage(imageRegistry, IImages.WHERE_USED_LIST, "icons/etool/where_used.png",
+			"com.sap.adt.ris.whereused.ui");
 		registerImage(imageRegistry, IImages.USAGE_ANALYZER, "icons/CdsUsageAnalyzer.png");
 		registerImage(imageRegistry, IImages.UNION, "icons/Union.png");
 		registerImage(imageRegistry, IImages.JOIN_RESULT_SOURCE, "icons/JoinedDataSource.png");
@@ -261,7 +126,8 @@ public class SearchAndAnalysisPlugin extends AbstractUIPlugin {
 		registerImage(imageRegistry, IImages.ENABLED_CHECKBOX, "icons/EnabledCheckbox.png");
 
 		// images for layout
-		registerImage(imageRegistry, IImages.VERTICAL_LAYOUT, "icons/full/elcl16/verticalOrientation.png", "org.eclipse.search");
+		registerImage(imageRegistry, IImages.VERTICAL_LAYOUT, "icons/full/elcl16/verticalOrientation.png",
+			"org.eclipse.search");
 		registerImage(imageRegistry, IImages.AUTOMATIC_LAYOUT, "icons/full/elcl16/automaticOrientation.png",
 			"org.eclipse.search");
 		registerImage(imageRegistry, IImages.HORIZONTAL_LAYOUT, "icons/full/elcl16/horizontalOrientation.png",
@@ -288,33 +154,4 @@ public class SearchAndAnalysisPlugin extends AbstractUIPlugin {
 		registerImage(imageRegistry, IImages.ABAP_TYPE, "icons/TypeGroup.png");
 		registerImage(imageRegistry, IImages.EXTENSION, "icons/ExtensionPoint.png");
 	}
-
-	/**
-	 * Registers the image with the given image
-	 *
-	 * @param imageId
-	 * @param fileName
-	 * @param bundleId
-	 */
-	private void registerImage(final ImageRegistry registry, final String imageId, final String fileName, final String bundleId) {
-		final Bundle bundle = Platform.getBundle(bundleId);
-		if (bundle == null) {
-			return;
-		}
-		final IPath path = new Path(fileName);
-		final URL url = FileLocator.find(bundle, path, null);
-		if (url == null) {
-			return;
-		}
-		final ImageDescriptor desc = ImageDescriptor.createFromURL(url);
-		if (registry.get(imageId) != null) {
-			throw new IllegalStateException("duplicate imageId in image registry.");
-		}
-		registry.put(imageId, desc);
-	}
-
-	private void registerImage(final ImageRegistry registry, final String imageId, final String fileName) {
-		registerImage(registry, imageId, fileName, PLUGIN_ID);
-	}
-
 }

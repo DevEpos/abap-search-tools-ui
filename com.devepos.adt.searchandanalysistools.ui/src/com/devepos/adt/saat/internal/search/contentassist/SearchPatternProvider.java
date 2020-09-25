@@ -26,7 +26,7 @@ import com.devepos.adt.saat.internal.search.SearchParameterFactory;
 import com.devepos.adt.saat.internal.search.SearchType;
 import com.devepos.adt.saat.internal.search.SelectFromSearchParameter;
 import com.devepos.adt.saat.internal.search.UserSearchParameter;
-import com.devepos.adt.tools.base.project.IAbapProjectProvider;
+import com.devepos.adt.tools.base.ui.project.IAbapProjectProvider;
 
 /**
  * Provider for Object Search pattern

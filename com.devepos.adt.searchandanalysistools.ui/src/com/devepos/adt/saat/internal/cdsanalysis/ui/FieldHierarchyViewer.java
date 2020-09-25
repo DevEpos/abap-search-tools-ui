@@ -30,7 +30,7 @@ import com.devepos.adt.tools.base.ui.tree.IAdtObjectReferenceNode;
 import com.devepos.adt.tools.base.ui.tree.ITreeNode;
 import com.devepos.adt.tools.base.ui.tree.LazyLoadingTreeContentProvider;
 import com.devepos.adt.tools.base.ui.tree.LoadingTreeItemsNode;
-import com.devepos.adt.tools.base.util.AdtTypeUtil;
+import com.devepos.adt.tools.base.ui.util.AdtTypeUtil;
 
 /**
  * Tree Viewer for displaying Top-Down hierarchy of a database field or the

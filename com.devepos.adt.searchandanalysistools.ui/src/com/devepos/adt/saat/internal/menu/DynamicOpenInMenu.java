@@ -5,13 +5,13 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.actions.CompoundContributionItem;
 
-import com.devepos.adt.tools.base.util.AdtUtil;
+import com.devepos.adt.tools.base.ui.util.AdtUIUtil;
 
 public class DynamicOpenInMenu extends CompoundContributionItem {
 	private IMenuManager dynamicOpenInMenu;
 
 	public DynamicOpenInMenu() {
-		this.dynamicOpenInMenu = DynamicOpenInMenuUtility.buildAnalysisToolsSubMenu(AdtUtil.getAdtObjectsFromSelection(true));
+		this.dynamicOpenInMenu = DynamicOpenInMenuUtility.buildAnalysisToolsSubMenu(AdtUIUtil.getAdtObjectsFromSelection(true));
 	}
 
 	public DynamicOpenInMenu(final String id) {
