@@ -172,7 +172,7 @@
                <with
                      variable="activeEditorInput">
                   <adapt
-                        type="com.devepos.adt.tools.base.adtobject.IAdtObject">
+                        type="com.devepos.adt.tools.base.ui.adtobject.IAdtObject">
                   </adapt>
                </with>
             </visibleWhen>
@@ -191,7 +191,7 @@
                   <iterate
                         operator="and">
                      <adapt
-                           type="com.devepos.adt.tools.base.adtobject.IAdtObject">
+                           type="com.devepos.adt.tools.base.ui.adtobject.IAdtObject">
                      </adapt>
                   </iterate>
                </with>
