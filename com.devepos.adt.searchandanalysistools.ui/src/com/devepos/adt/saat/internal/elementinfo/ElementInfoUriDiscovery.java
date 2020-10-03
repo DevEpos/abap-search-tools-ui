@@ -3,9 +3,9 @@ package com.devepos.adt.saat.internal.elementinfo;
 import java.net.URI;
 import java.util.Map;
 
+import com.devepos.adt.base.ObjectType;
+import com.devepos.adt.base.util.UriDiscoveryBase;
 import com.devepos.adt.saat.internal.util.IUriDiscoveryPaths;
-import com.devepos.adt.tools.base.ObjectType;
-import com.devepos.adt.tools.base.util.UriDiscoveryBase;
 import com.sap.adt.compatibility.uritemplate.IAdtUriTemplate;
 
 /**

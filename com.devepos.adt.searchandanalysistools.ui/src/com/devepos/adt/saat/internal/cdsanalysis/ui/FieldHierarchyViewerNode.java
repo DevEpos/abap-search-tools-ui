@@ -3,7 +3,7 @@ package com.devepos.adt.saat.internal.cdsanalysis.ui;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeViewer;
 
-import com.devepos.adt.tools.base.ui.tree.ILazyLoadingNode;
+import com.devepos.adt.base.ui.tree.ILazyLoadingNode;
 
 /**
  * Root node for the Field Hierarchy {@link TreeViewer}

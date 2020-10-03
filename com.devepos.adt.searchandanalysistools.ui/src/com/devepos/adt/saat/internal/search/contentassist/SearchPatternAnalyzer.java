@@ -13,13 +13,13 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.fieldassist.IContentProposal;
 import org.eclipse.osgi.util.NLS;
 
+import com.devepos.adt.base.util.StringUtil;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.search.ISearchParameter;
 import com.devepos.adt.saat.internal.search.ISearchParameterHandler;
 import com.devepos.adt.saat.internal.search.ISearchProposalProvider;
 import com.devepos.adt.saat.internal.search.IValidatable;
-import com.devepos.adt.tools.base.util.StringUtil;
 
 /**
  * Analyzer for search pattern which retrieves

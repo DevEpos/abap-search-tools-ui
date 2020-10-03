@@ -16,14 +16,14 @@ import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.part.WorkbenchPart;
 
+import com.devepos.adt.base.ui.project.AbapProjectProxy;
+import com.devepos.adt.base.ui.project.IAbapProjectProvider;
+import com.devepos.adt.base.ui.util.AdtUIUtil;
+import com.devepos.adt.base.util.AdtUtil;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.analytics.AnalysisForOfficeLauncherContentHandler;
 import com.devepos.adt.saat.internal.analytics.AnalysisForOfficeUriDiscovery;
 import com.devepos.adt.saat.internal.messages.Messages;
-import com.devepos.adt.tools.base.ui.project.AbapProjectProxy;
-import com.devepos.adt.tools.base.ui.project.IAbapProjectProvider;
-import com.devepos.adt.tools.base.ui.util.AdtUIUtil;
-import com.devepos.adt.tools.base.util.AdtUtil;
 import com.sap.adt.communication.resources.AdtRestResourceFactory;
 import com.sap.adt.communication.resources.IRestResource;
 import com.sap.adt.sapgui.ui.editors.AdtSapGuiEditorUtilityFactory;

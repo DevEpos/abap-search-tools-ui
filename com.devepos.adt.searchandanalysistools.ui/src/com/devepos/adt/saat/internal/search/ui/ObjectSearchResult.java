@@ -15,16 +15,16 @@ import org.eclipse.search.ui.ISearchQuery;
 import org.eclipse.search.ui.ISearchResult;
 import org.eclipse.search.ui.ISearchResultListener;
 
+import com.devepos.adt.base.IAdtObjectTypeConstants;
+import com.devepos.adt.base.elementinfo.IAdtObjectReferenceElementInfo;
+import com.devepos.adt.base.ui.tree.AdtObjectReferenceNode;
+import com.devepos.adt.base.ui.tree.IAdtObjectReferenceNode;
+import com.devepos.adt.base.ui.tree.LazyLoadingAdtObjectReferenceNode;
+import com.devepos.adt.base.ui.tree.PackageNode;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.search.IExtendedAdtObjectInfo;
 import com.devepos.adt.saat.internal.util.IImages;
-import com.devepos.adt.tools.base.IAdtObjectTypeConstants;
-import com.devepos.adt.tools.base.elementinfo.IAdtObjectReferenceElementInfo;
-import com.devepos.adt.tools.base.ui.tree.AdtObjectReferenceNode;
-import com.devepos.adt.tools.base.ui.tree.IAdtObjectReferenceNode;
-import com.devepos.adt.tools.base.ui.tree.LazyLoadingAdtObjectReferenceNode;
-import com.devepos.adt.tools.base.ui.tree.PackageNode;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 
 public class ObjectSearchResult implements ISearchResult {

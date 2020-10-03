@@ -3,8 +3,8 @@ package com.devepos.adt.saat.internal.search;
 import javax.management.modelmbean.XMLParseException;
 import javax.xml.stream.XMLStreamReader;
 
-import com.devepos.adt.tools.base.adtobject.AdtObjectReferenceModelFactory;
-import com.devepos.adt.tools.base.util.IXmlElement;
+import com.devepos.adt.base.adtobject.AdtObjectReferenceModelFactory;
+import com.devepos.adt.base.util.IXmlElement;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 
 public class AdtObjectReferenceDeserializer {

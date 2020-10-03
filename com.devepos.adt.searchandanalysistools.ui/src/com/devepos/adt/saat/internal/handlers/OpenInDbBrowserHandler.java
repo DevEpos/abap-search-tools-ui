@@ -8,9 +8,9 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IProject;
 
+import com.devepos.adt.base.ui.adtobject.IAdtObject;
+import com.devepos.adt.base.ui.util.AdtUIUtil;
 import com.devepos.adt.saat.internal.util.OpenInUtil;
-import com.devepos.adt.tools.base.ui.adtobject.IAdtObject;
-import com.devepos.adt.tools.base.ui.util.AdtUIUtil;
 
 public class OpenInDbBrowserHandler extends DbBrowserCommandHandler {
 	public static final String PARAM_SKIP_SELSCREEN = "com.devepos.adt.saat.openindbbrowser.skipSelscreenParam";

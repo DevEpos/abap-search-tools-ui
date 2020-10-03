@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swt.widgets.Text;
 
+import com.devepos.adt.base.ui.project.IAbapProjectProvider;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.preferences.IPreferences;
 import com.devepos.adt.saat.internal.search.AnnotationSearchParameter;
@@ -26,7 +27,6 @@ import com.devepos.adt.saat.internal.search.SearchParameterFactory;
 import com.devepos.adt.saat.internal.search.SearchType;
 import com.devepos.adt.saat.internal.search.SelectFromSearchParameter;
 import com.devepos.adt.saat.internal.search.UserSearchParameter;
-import com.devepos.adt.tools.base.ui.project.IAbapProjectProvider;
 
 /**
  * Provider for Object Search pattern

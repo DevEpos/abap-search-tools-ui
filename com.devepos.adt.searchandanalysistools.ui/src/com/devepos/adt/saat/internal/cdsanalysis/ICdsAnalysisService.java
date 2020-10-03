@@ -1,7 +1,7 @@
 package com.devepos.adt.saat.internal.cdsanalysis;
 
-import com.devepos.adt.tools.base.elementinfo.IAdtObjectReferenceElementInfo;
-import com.devepos.adt.tools.base.elementinfo.IElementInfo;
+import com.devepos.adt.base.elementinfo.IAdtObjectReferenceElementInfo;
+import com.devepos.adt.base.elementinfo.IElementInfo;
 
 /**
  * Service for analyzing CDS Views

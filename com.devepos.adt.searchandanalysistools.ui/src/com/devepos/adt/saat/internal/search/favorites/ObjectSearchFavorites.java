@@ -3,11 +3,11 @@ package com.devepos.adt.saat.internal.search.favorites;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.devepos.adt.base.util.IModificationListener;
+import com.devepos.adt.base.util.IModificationListener.ModificationKind;
 import com.devepos.adt.saat.internal.search.ui.ObjectSearchRequest;
 import com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavorite;
 import com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavoritesFactory;
-import com.devepos.adt.tools.base.util.IModificationListener;
-import com.devepos.adt.tools.base.util.IModificationListener.ModificationKind;
 
 /**
  * Implementation of the {@link IObjectSearchFavorites} of the object search

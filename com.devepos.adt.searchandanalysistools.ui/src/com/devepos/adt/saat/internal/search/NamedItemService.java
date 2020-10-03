@@ -2,7 +2,7 @@ package com.devepos.adt.saat.internal.search;
 
 import java.net.URI;
 
-import com.devepos.adt.tools.base.util.AdtUtil;
+import com.devepos.adt.base.util.AdtUtil;
 import com.sap.adt.communication.resources.AdtRestResourceFactory;
 import com.sap.adt.communication.resources.IRestResource;
 import com.sap.adt.communication.session.AdtSystemSessionFactory;

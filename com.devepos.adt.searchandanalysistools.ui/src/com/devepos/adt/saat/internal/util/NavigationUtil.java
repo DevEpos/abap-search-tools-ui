@@ -4,10 +4,10 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.PlatformUI;
 
+import com.devepos.adt.base.ui.project.AbapProjectProviderAccessor;
+import com.devepos.adt.base.ui.util.AdtUIUtil;
 import com.devepos.adt.saat.internal.ddicaccess.DdicRepositoryAccessFactory;
 import com.devepos.adt.saat.internal.ddicaccess.IDdicRepositoryAccess;
-import com.devepos.adt.tools.base.ui.project.AbapProjectProviderAccessor;
-import com.devepos.adt.tools.base.ui.util.AdtUIUtil;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 
 public class NavigationUtil {

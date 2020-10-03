@@ -1,6 +1,6 @@
 package com.devepos.adt.saat.internal.dbbrowserintegration;
 
-import com.devepos.adt.tools.base.util.UriDiscoveryBase;;
+import com.devepos.adt.base.util.UriDiscoveryBase;;
 
 /**
  * URI Discovery for the DB Browser integration (SAP GUI Transaction)

@@ -4,8 +4,8 @@ import java.util.Locale;
 
 import org.eclipse.jface.fieldassist.IContentProposal;
 
+import com.devepos.adt.base.ObjectType;
 import com.devepos.adt.saat.internal.search.QueryParameterName;
-import com.devepos.adt.tools.base.ObjectType;
 
 /**
  * Search parameter for the DB object search <br>

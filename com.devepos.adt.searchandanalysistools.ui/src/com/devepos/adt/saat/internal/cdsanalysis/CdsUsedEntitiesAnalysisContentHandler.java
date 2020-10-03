@@ -2,16 +2,16 @@ package com.devepos.adt.saat.internal.cdsanalysis;
 
 import java.util.List;
 
+import com.devepos.adt.base.adtobject.AdtObjectReferenceModelFactory;
+import com.devepos.adt.base.elementinfo.AdtObjectReferenceElementInfo;
+import com.devepos.adt.base.elementinfo.IAdtObjectReferenceElementInfo;
+import com.devepos.adt.base.elementinfo.IElementInfo;
+import com.devepos.adt.base.elementinfo.IElementInfoCollection;
+import com.devepos.adt.base.util.IXmlElement;
+import com.devepos.adt.base.util.IXmlTags;
 import com.devepos.adt.saat.internal.CdsSourceType;
 import com.devepos.adt.saat.internal.elementinfo.AdtObjectElementInfoContentHandlerBase;
 import com.devepos.adt.saat.internal.elementinfo.ExtendedAdtObjectInfo;
-import com.devepos.adt.tools.base.adtobject.AdtObjectReferenceModelFactory;
-import com.devepos.adt.tools.base.elementinfo.AdtObjectReferenceElementInfo;
-import com.devepos.adt.tools.base.elementinfo.IAdtObjectReferenceElementInfo;
-import com.devepos.adt.tools.base.elementinfo.IElementInfo;
-import com.devepos.adt.tools.base.elementinfo.IElementInfoCollection;
-import com.devepos.adt.tools.base.util.IXmlElement;
-import com.devepos.adt.tools.base.util.IXmlTags;
 import com.sap.adt.communication.message.IMessageBody;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 

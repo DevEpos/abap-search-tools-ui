@@ -2,12 +2,12 @@ package com.devepos.adt.saat.internal.handlers;
 
 import org.eclipse.core.resources.IProject;
 
+import com.devepos.adt.base.elementinfo.IAdtObjectReferenceElementInfo;
 import com.devepos.adt.saat.internal.cdsanalysis.CdsAnalysisType;
 import com.devepos.adt.saat.internal.cdsanalysis.CdsAnalysisUriDiscovery;
 import com.devepos.adt.saat.internal.cdsanalysis.ui.CdsAnalysis;
 import com.devepos.adt.saat.internal.cdsanalysis.ui.CdsTopDownAnalysis;
 import com.devepos.adt.saat.internal.messages.Messages;
-import com.devepos.adt.tools.base.elementinfo.IAdtObjectReferenceElementInfo;
 import com.sap.adt.tools.core.project.IAbapProject;
 
 public class PerformCdsTopDownAnalysisHandler extends OpenInCdsAnalyzerHandler {

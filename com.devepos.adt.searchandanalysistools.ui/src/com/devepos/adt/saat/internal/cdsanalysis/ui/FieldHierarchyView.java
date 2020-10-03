@@ -22,6 +22,13 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.ui.part.PageBook;
 
+import com.devepos.adt.base.ObjectType;
+import com.devepos.adt.base.destinations.IDestinationProvider;
+import com.devepos.adt.base.ui.IGeneralContextMenuConstants;
+import com.devepos.adt.base.ui.action.RadioActionGroup;
+import com.devepos.adt.base.ui.tree.IAdtObjectReferenceNode;
+import com.devepos.adt.base.ui.tree.ITreeNode;
+import com.devepos.adt.base.ui.tree.LazyLoadingFolderNode;
 import com.devepos.adt.saat.internal.ICommandConstants;
 import com.devepos.adt.saat.internal.IContextMenuConstants;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
@@ -31,13 +38,6 @@ import com.devepos.adt.saat.internal.menu.MenuItemFactory;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.util.IImages;
 import com.devepos.adt.saat.internal.util.NavigationUtil;
-import com.devepos.adt.tools.base.ObjectType;
-import com.devepos.adt.tools.base.destinations.IDestinationProvider;
-import com.devepos.adt.tools.base.ui.IGeneralContextMenuConstants;
-import com.devepos.adt.tools.base.ui.action.RadioActionGroup;
-import com.devepos.adt.tools.base.ui.tree.IAdtObjectReferenceNode;
-import com.devepos.adt.tools.base.ui.tree.ITreeNode;
-import com.devepos.adt.tools.base.ui.tree.LazyLoadingFolderNode;
 
 /**
  * View which consists of a {@link ViewForm} for the lower section of the

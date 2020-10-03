@@ -12,10 +12,10 @@ import org.eclipse.core.runtime.OperationCanceledException;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.fieldassist.IContentProposal;
 
+import com.devepos.adt.base.ui.project.IAbapProjectProvider;
+import com.devepos.adt.base.util.StringUtil;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.search.contentassist.SearchParameterProposal;
-import com.devepos.adt.tools.base.ui.project.IAbapProjectProvider;
-import com.devepos.adt.tools.base.util.StringUtil;
 
 /**
  * Proposal provider which used the Named item service for data retrieval. The

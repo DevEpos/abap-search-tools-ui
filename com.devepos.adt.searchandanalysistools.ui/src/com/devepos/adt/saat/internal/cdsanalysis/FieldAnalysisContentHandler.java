@@ -2,6 +2,15 @@ package com.devepos.adt.saat.internal.cdsanalysis;
 
 import java.util.Map;
 
+import com.devepos.adt.base.adtobject.AdtObjectReferenceModelFactory;
+import com.devepos.adt.base.elementinfo.AdtObjectReferenceElementInfo;
+import com.devepos.adt.base.elementinfo.IAdtObjectReferenceElementInfo;
+import com.devepos.adt.base.elementinfo.IElementInfo;
+import com.devepos.adt.base.elementinfo.IElementInfoCollection;
+import com.devepos.adt.base.elementinfo.SimpleElementInfo;
+import com.devepos.adt.base.util.AdtStaxContentHandlerUtility;
+import com.devepos.adt.base.util.IXmlElement;
+import com.devepos.adt.base.util.IXmlTags;
 import com.devepos.adt.saat.internal.CdsSourceType;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.elementinfo.AdtObjectElementInfoContentHandlerBase;
@@ -9,15 +18,6 @@ import com.devepos.adt.saat.internal.elementinfo.ContentHandlerUtil;
 import com.devepos.adt.saat.internal.elementinfo.ExtendedAdtObjectInfo;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.util.IImages;
-import com.devepos.adt.tools.base.adtobject.AdtObjectReferenceModelFactory;
-import com.devepos.adt.tools.base.elementinfo.AdtObjectReferenceElementInfo;
-import com.devepos.adt.tools.base.elementinfo.IAdtObjectReferenceElementInfo;
-import com.devepos.adt.tools.base.elementinfo.IElementInfo;
-import com.devepos.adt.tools.base.elementinfo.IElementInfoCollection;
-import com.devepos.adt.tools.base.elementinfo.SimpleElementInfo;
-import com.devepos.adt.tools.base.util.AdtStaxContentHandlerUtility;
-import com.devepos.adt.tools.base.util.IXmlElement;
-import com.devepos.adt.tools.base.util.IXmlTags;
 import com.sap.adt.communication.content.AdtMediaType;
 import com.sap.adt.communication.message.IMessageBody;
 

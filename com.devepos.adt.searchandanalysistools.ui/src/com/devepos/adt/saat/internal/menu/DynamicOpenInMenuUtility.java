@@ -17,6 +17,10 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.PlatformUI;
 
+import com.devepos.adt.base.ObjectType;
+import com.devepos.adt.base.destinations.DestinationUtil;
+import com.devepos.adt.base.ui.adtobject.IAdtObject;
+import com.devepos.adt.base.util.ObjectContainer;
 import com.devepos.adt.saat.internal.ICommandConstants;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.analytics.OpenWithAnalysisForOfficeExecutable;
@@ -27,10 +31,6 @@ import com.devepos.adt.saat.internal.navtargets.INavigationTargetService;
 import com.devepos.adt.saat.internal.navtargets.NavigationTargetServiceFactory;
 import com.devepos.adt.saat.internal.util.FeatureTester;
 import com.devepos.adt.saat.internal.util.IImages;
-import com.devepos.adt.tools.base.ObjectType;
-import com.devepos.adt.tools.base.destinations.DestinationUtil;
-import com.devepos.adt.tools.base.ui.adtobject.IAdtObject;
-import com.devepos.adt.tools.base.util.ObjectContainer;
 
 /**
  * Utility class to create a Menu for some DB Browser actions for a given object

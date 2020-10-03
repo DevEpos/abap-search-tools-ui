@@ -1,7 +1,7 @@
 package com.devepos.adt.saat.internal.search.favorites;
 
+import com.devepos.adt.base.destinations.DestinationUtil;
 import com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavorite;
-import com.devepos.adt.tools.base.destinations.DestinationUtil;
 
 /**
  * Utility class for {@link IObjectSearchFavorite}

@@ -6,9 +6,9 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.PlatformUI;
 
+import com.devepos.adt.base.destinations.DestinationUtil;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.util.FeatureTester;
-import com.devepos.adt.tools.base.destinations.DestinationUtil;
 
 /**
  * Abstract Handler for Commands concerning the DB Browser Application (SAP GUI

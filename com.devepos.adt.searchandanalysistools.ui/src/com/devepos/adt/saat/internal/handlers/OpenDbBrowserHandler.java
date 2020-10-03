@@ -11,11 +11,11 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.handlers.HandlerUtil;
 import org.eclipse.ui.part.WorkbenchPart;
 
+import com.devepos.adt.base.ui.project.ProjectUtil;
+import com.devepos.adt.base.ui.util.AdtUIUtil;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.util.IImages;
-import com.devepos.adt.tools.base.ui.project.ProjectUtil;
-import com.devepos.adt.tools.base.ui.util.AdtUIUtil;
 import com.sap.adt.sapgui.ui.editors.AdtSapGuiEditorUtilityFactory;
 import com.sap.adt.tools.core.ui.dialogs.AbapProjectSelectionDialog;
 

@@ -2,11 +2,11 @@ package com.devepos.adt.saat.internal.cdsanalysis.ui;
 
 import org.eclipse.jface.viewers.TreeViewer;
 
+import com.devepos.adt.base.destinations.IDestinationProvider;
+import com.devepos.adt.base.ui.tree.ILazyLoadingNode;
+import com.devepos.adt.base.ui.tree.LazyLoadingFolderNode;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.cdsanalysis.FieldWhereUsedInCdsElementInfoProvider;
-import com.devepos.adt.tools.base.destinations.IDestinationProvider;
-import com.devepos.adt.tools.base.ui.tree.ILazyLoadingNode;
-import com.devepos.adt.tools.base.ui.tree.LazyLoadingFolderNode;
 
 /**
  * Input for the Field Hierarchy Tree Viewer

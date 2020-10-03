@@ -3,8 +3,8 @@ package com.devepos.adt.saat.internal.elementinfo;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.devepos.adt.tools.base.util.IXmlElement;
-import com.devepos.adt.tools.base.util.IXmlTags;
+import com.devepos.adt.base.util.IXmlElement;
+import com.devepos.adt.base.util.IXmlTags;
 
 /**
  * Utility for ADT Content Handlers

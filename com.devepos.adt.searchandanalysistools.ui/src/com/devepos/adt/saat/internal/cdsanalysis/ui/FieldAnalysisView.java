@@ -18,6 +18,16 @@ import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.dialogs.FilteredTree;
 import org.eclipse.ui.dialogs.PatternFilter;
 
+import com.devepos.adt.base.ObjectType;
+import com.devepos.adt.base.destinations.IDestinationProvider;
+import com.devepos.adt.base.elementinfo.IAdtObjectReferenceElementInfo;
+import com.devepos.adt.base.ui.action.PreferenceToggleAction;
+import com.devepos.adt.base.ui.action.ToggleViewLayoutAction;
+import com.devepos.adt.base.ui.action.ViewLayoutOrientation;
+import com.devepos.adt.base.ui.tree.IAdtObjectReferenceNode;
+import com.devepos.adt.base.ui.tree.ITreeNode;
+import com.devepos.adt.base.ui.tree.LazyLoadingTreeContentProvider;
+import com.devepos.adt.base.ui.tree.SimpleInfoTreeNode;
 import com.devepos.adt.saat.internal.ICommandConstants;
 import com.devepos.adt.saat.internal.IContextMenuConstants;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
@@ -29,16 +39,6 @@ import com.devepos.adt.saat.internal.ui.TreeViewUiState;
 import com.devepos.adt.saat.internal.ui.ViewUiState;
 import com.devepos.adt.saat.internal.util.CommandPossibleChecker;
 import com.devepos.adt.saat.internal.util.NavigationUtil;
-import com.devepos.adt.tools.base.ObjectType;
-import com.devepos.adt.tools.base.destinations.IDestinationProvider;
-import com.devepos.adt.tools.base.elementinfo.IAdtObjectReferenceElementInfo;
-import com.devepos.adt.tools.base.ui.action.PreferenceToggleAction;
-import com.devepos.adt.tools.base.ui.action.ToggleViewLayoutAction;
-import com.devepos.adt.tools.base.ui.action.ViewLayoutOrientation;
-import com.devepos.adt.tools.base.ui.tree.IAdtObjectReferenceNode;
-import com.devepos.adt.tools.base.ui.tree.ITreeNode;
-import com.devepos.adt.tools.base.ui.tree.LazyLoadingTreeContentProvider;
-import com.devepos.adt.tools.base.ui.tree.SimpleInfoTreeNode;
 
 /**
  * Analysis page for analyzing the fields of a database entity like (Table, View

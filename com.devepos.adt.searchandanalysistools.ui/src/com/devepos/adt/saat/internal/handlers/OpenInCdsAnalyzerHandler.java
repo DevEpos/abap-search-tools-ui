@@ -12,6 +12,13 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.PlatformUI;
 
+import com.devepos.adt.base.ObjectType;
+import com.devepos.adt.base.destinations.DestinationUtil;
+import com.devepos.adt.base.elementinfo.IAdtObjectReferenceElementInfo;
+import com.devepos.adt.base.ui.adtobject.IAdtObject;
+import com.devepos.adt.base.ui.project.AbapProjectProviderAccessor;
+import com.devepos.adt.base.ui.project.AbapProjectProxy;
+import com.devepos.adt.base.ui.util.AdtUIUtil;
 import com.devepos.adt.saat.internal.cdsanalysis.CdsAnalysisType;
 import com.devepos.adt.saat.internal.cdsanalysis.ui.CdsAnalysis;
 import com.devepos.adt.saat.internal.cdsanalysis.ui.CdsAnalysisKey;
@@ -19,13 +26,6 @@ import com.devepos.adt.saat.internal.cdsanalysis.ui.CdsAnalysisManager;
 import com.devepos.adt.saat.internal.elementinfo.ElementInfoRetrievalServiceFactory;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.util.FeatureTester;
-import com.devepos.adt.tools.base.ObjectType;
-import com.devepos.adt.tools.base.destinations.DestinationUtil;
-import com.devepos.adt.tools.base.elementinfo.IAdtObjectReferenceElementInfo;
-import com.devepos.adt.tools.base.ui.adtobject.IAdtObject;
-import com.devepos.adt.tools.base.ui.project.AbapProjectProviderAccessor;
-import com.devepos.adt.tools.base.ui.project.AbapProjectProxy;
-import com.devepos.adt.tools.base.ui.util.AdtUIUtil;
 import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
 import com.sap.adt.tools.core.project.IAbapProject;
 

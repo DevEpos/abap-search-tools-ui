@@ -10,10 +10,10 @@ import org.eclipse.jface.fieldassist.IContentProposal;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.graphics.Image;
 
+import com.devepos.adt.base.ui.project.IAbapProjectProvider;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.util.IImages;
-import com.devepos.adt.tools.base.ui.project.IAbapProjectProvider;
 
 /**
  * Search parameter for restricting search to result which have a specific

@@ -17,8 +17,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Text;
 
+import com.devepos.adt.base.util.Reflection;
 import com.devepos.adt.saat.internal.messages.Messages;
-import com.devepos.adt.tools.base.util.Reflection;
 
 /**
  * Content Assist for ADT Repository Information System search pattern

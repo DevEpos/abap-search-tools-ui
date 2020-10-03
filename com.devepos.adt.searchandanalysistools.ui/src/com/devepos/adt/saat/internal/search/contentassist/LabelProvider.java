@@ -3,11 +3,11 @@ package com.devepos.adt.saat.internal.search.contentassist;
 import org.eclipse.jface.fieldassist.IContentProposal;
 import org.eclipse.swt.graphics.Image;
 
+import com.devepos.adt.base.ObjectType;
+import com.devepos.adt.base.ui.AdtBaseUIResources;
+import com.devepos.adt.base.ui.IAdtBaseImages;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.util.IImages;
-import com.devepos.adt.tools.base.ObjectType;
-import com.devepos.adt.tools.base.ui.AdtToolsBaseUIResources;
-import com.devepos.adt.tools.base.ui.IAdtToolsBaseImages;
 
 /**
  * Label provider for the DB Object Search content assist
@@ -40,7 +40,7 @@ public class LabelProvider extends org.eclipse.jface.viewers.LabelProvider {
 			case CATEGORY:
 				return getImage(IImages.ABAP_TYPE);
 			case DELIVERY_CLASS:
-				return AdtToolsBaseUIResources.getImage(IAdtToolsBaseImages.TRANSPORT);
+				return AdtBaseUIResources.getImage(IAdtBaseImages.TRANSPORT);
 			case ABAP_LANGUAGE:
 				return getImage(IImages.ABAP_VERSION);
 			default:

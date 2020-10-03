@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.devepos.adt.base.util.UriDiscoveryBase;
 import com.devepos.adt.saat.internal.util.IUriDiscoveryPaths;
-import com.devepos.adt.tools.base.util.UriDiscoveryBase;
 import com.sap.adt.compatibility.uritemplate.AdtUriTemplateFactory;
 import com.sap.adt.compatibility.uritemplate.IAdtUriTemplate;
 

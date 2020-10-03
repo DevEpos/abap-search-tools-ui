@@ -2,12 +2,12 @@ package com.devepos.adt.saat.internal.search;
 
 import java.text.MessageFormat;
 
+import com.devepos.adt.base.ui.AdtBaseUIResources;
+import com.devepos.adt.base.ui.IAdtBaseImages;
+import com.devepos.adt.base.ui.project.IAbapProjectProvider;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.util.IImages;
-import com.devepos.adt.tools.base.ui.AdtToolsBaseUIResources;
-import com.devepos.adt.tools.base.ui.IAdtToolsBaseImages;
-import com.devepos.adt.tools.base.ui.project.IAbapProjectProvider;
 
 /**
  * Factory for creating parameters for the Object Search
@@ -220,7 +220,7 @@ public class SearchParameterFactory {
 			NamedItemType.TABLE_DELIVERY_CLASS, true, ""); //$NON-NLS-1$
 		parameter.setDescription(MessageFormat.format(Messages.SearchPatternAnalyzer_DescriptionDeliveryClassParameter_xmsg,
 			QueryParameterName.DELIVERY_CLASS.getLowerCaseKey()));
-		parameter.setImage(AdtToolsBaseUIResources.getImage(IAdtToolsBaseImages.TRANSPORT));
+		parameter.setImage(AdtBaseUIResources.getImage(IAdtBaseImages.TRANSPORT));
 		parameter.setSupportsNegatedValues(true);
 		return parameter;
 	}

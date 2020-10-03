@@ -1,7 +1,7 @@
 package com.devepos.adt.saat.internal.search;
 
+import com.devepos.adt.base.ObjectType;
 import com.devepos.adt.saat.internal.IDataSourceType;
-import com.devepos.adt.tools.base.ObjectType;
 
 /**
  * Additional information about a result object from an object search

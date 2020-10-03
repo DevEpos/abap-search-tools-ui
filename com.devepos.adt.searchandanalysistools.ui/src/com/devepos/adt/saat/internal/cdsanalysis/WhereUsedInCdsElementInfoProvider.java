@@ -11,6 +11,12 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.osgi.util.NLS;
 
+import com.devepos.adt.base.elementinfo.IAdtObjectReferenceElementInfo;
+import com.devepos.adt.base.elementinfo.IElementInfo;
+import com.devepos.adt.base.elementinfo.IElementInfoProvider;
+import com.devepos.adt.base.elementinfo.LazyLoadingElementInfo;
+import com.devepos.adt.base.ui.project.AbapProjectProviderAccessor;
+import com.devepos.adt.base.util.ObjectContainer;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.search.QueryParameterName;
@@ -18,12 +24,6 @@ import com.devepos.adt.saat.internal.search.ui.ObjectSearchQuery;
 import com.devepos.adt.saat.internal.search.ui.ObjectSearchRequest;
 import com.devepos.adt.saat.internal.search.ui.ObjectSearchResult;
 import com.devepos.adt.saat.internal.util.IImages;
-import com.devepos.adt.tools.base.elementinfo.IAdtObjectReferenceElementInfo;
-import com.devepos.adt.tools.base.elementinfo.IElementInfo;
-import com.devepos.adt.tools.base.elementinfo.IElementInfoProvider;
-import com.devepos.adt.tools.base.elementinfo.LazyLoadingElementInfo;
-import com.devepos.adt.tools.base.ui.project.AbapProjectProviderAccessor;
-import com.devepos.adt.tools.base.util.ObjectContainer;
 
 /**
  * Provider for reading usages of a given ADT object in Select/Association

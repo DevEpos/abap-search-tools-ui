@@ -2,7 +2,7 @@ package com.devepos.adt.saat.internal.search;
 
 import java.util.List;
 
-import com.devepos.adt.tools.base.elementinfo.IAdtObjectReferenceElementInfo;
+import com.devepos.adt.base.elementinfo.IAdtObjectReferenceElementInfo;
 
 /**
  * Wrapper for Object search result

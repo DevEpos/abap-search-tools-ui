@@ -10,7 +10,7 @@ import java.util.List;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamReader;
 
-import com.devepos.adt.tools.base.util.AdtStaxContentHandlerUtility;
+import com.devepos.adt.base.util.AdtStaxContentHandlerUtility;
 import com.sap.adt.communication.content.AdtMediaType;
 import com.sap.adt.communication.content.IContentHandler;
 import com.sap.adt.communication.message.IMessageBody;

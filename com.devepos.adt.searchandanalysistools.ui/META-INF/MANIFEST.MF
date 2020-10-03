@@ -22,7 +22,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.search,
  org.eclipse.text,
  com.devepos.adt.searchandanalysistools.model,
- com.devepos.adt.tools.base,
+ com.devepos.adt.base,
+ com.devepos.adt.base.ui,
  com.sap.adt.tools.abapsource,
  com.sap.adt.cds.ddl.ui,
  com.sap.adt.tools.core.base,
@@ -40,8 +41,7 @@ Require-Bundle: org.eclipse.ui,
  com.sap.adt.ris.search,
  com.sap.adt.ris.model,
  com.sap.adt.util.ui,
- com.sap.adt.ris.search.ui,
- com.devepos.adt.tools.base.ui
+ com.sap.adt.ris.search.ui
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: com.devepos.adt.searchandanalysistools
 Bundle-ActivationPolicy: lazy
