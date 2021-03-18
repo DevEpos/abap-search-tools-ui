@@ -31,7 +31,7 @@ public abstract class ContentProposalProvider implements IContentProposalProvide
 	private final Control control;
 	private final KeyStroke triggeringKeyStroke;
 	private static final KeyStroke DEFAULT_ACTIVATION_KEYSTROKE = KeyStroke.getInstance(isMacOS() ? SWT.MOD4 : SWT.MOD1,
-		SWT.SPACE);
+			SWT.SPACE);
 	private final ContentProposalAdapter contentProposalAdapter;
 
 	public ContentProposalProvider(final Control control) {
@@ -94,10 +94,11 @@ public abstract class ContentProposalProvider implements IContentProposalProvide
 			public void keyReleased(final KeyEvent e) {
 				final KeyStroke pressedKeyStroke = getSWTKeyStroke(e);
 				if (ContentProposalProvider.this.triggeringKeyStroke.compareTo(pressedKeyStroke) == 0
-					&& ContentProposalProvider.this.contentProposalAdapter != null
-					&& !ContentProposalProvider.this.contentProposalAdapter.isProposalPopupOpen()) {
+						&& ContentProposalProvider.this.contentProposalAdapter != null
+						&& !ContentProposalProvider.this.contentProposalAdapter.isProposalPopupOpen()) {
 					e.doit = false;
-					((DbtContentProposalAdapter) ContentProposalProvider.this.contentProposalAdapter).openProposalPopup();
+					((DbtContentProposalAdapter) ContentProposalProvider.this.contentProposalAdapter)
+							.showProposalPopup();
 				}
 			}
 		});
@@ -144,7 +145,7 @@ public abstract class ContentProposalProvider implements IContentProposalProvide
 				final IBindingService service = PlatformUI.getWorkbench().getService(IBindingService.class);
 				if (service != null) {
 					final TriggerSequence binding = service
-						.getBestActiveBindingFor("org.eclipse.ui.edit.text.contentAssist.proposals");
+							.getBestActiveBindingFor("org.eclipse.ui.edit.text.contentAssist.proposals");
 					if (binding instanceof KeySequence) {
 						final KeyStroke[] keyStrokes = ((KeySequence) binding).getKeyStrokes();
 						if (keyStrokes.length == 1) {
@@ -160,14 +161,14 @@ public abstract class ContentProposalProvider implements IContentProposalProvide
 	}
 
 	private static class DbtContentProposalAdapter extends ContentProposalAdapter {
-		@Override
-		protected void openProposalPopup() {
+		
+		public void showProposalPopup() {
 			super.openProposalPopup();
 		}
 
 		public DbtContentProposalAdapter(final Control control, final IControlContentAdapter contentAdapter,
-			final ContentProposalProvider adtContentProposalProvider, final KeyStroke keyStroke,
-			final char[] autoActivationCharacters) {
+				final ContentProposalProvider adtContentProposalProvider, final KeyStroke keyStroke,
+				final char[] autoActivationCharacters) {
 			super(control, contentAdapter, adtContentProposalProvider, keyStroke, autoActivationCharacters);
 		}
 	}
