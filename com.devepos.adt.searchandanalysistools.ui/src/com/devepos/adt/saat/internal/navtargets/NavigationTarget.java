@@ -7,33 +7,33 @@ package com.devepos.adt.saat.internal.navtargets;
  */
 public class NavigationTarget implements INavigationTarget {
 
-	private final String name;
-	private final String displayName;
-	private final String imageId;
+    private final String name;
+    private final String displayName;
+    private final String imageId;
 
-	public NavigationTarget(final String name, final String imageId) {
-		this(name, name, imageId);
-	}
+    public NavigationTarget(final String name, final String imageId) {
+        this(name, name, imageId);
+    }
 
-	public NavigationTarget(final String name, final String displayName, final String imageId) {
-		this.name = name;
-		this.displayName = displayName;
-		this.imageId = imageId;
-	}
+    public NavigationTarget(final String name, final String displayName, final String imageId) {
+        this.name = name;
+        this.displayName = displayName;
+        this.imageId = imageId;
+    }
 
-	@Override
-	public String getName() {
-		return this.name;
-	}
+    @Override
+    public String getName() {
+        return name;
+    }
 
-	@Override
-	public String getImageId() {
-		return this.imageId;
-	}
+    @Override
+    public String getImageId() {
+        return imageId;
+    }
 
-	@Override
-	public String getDisplayName() {
-		return this.displayName;
-	}
+    @Override
+    public String getDisplayName() {
+        return displayName;
+    }
 
 }

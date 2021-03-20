@@ -18,102 +18,100 @@ import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.util.IImages;
 
 public class WhereUsedInCdsAnalysis extends CdsAnalysis {
-	private static final String INDETERMINATE_COUNT = "?"; //$NON-NLS-1$
-	private String rootWhereUsedCount = INDETERMINATE_COUNT;
-	private WhereUsedInCdsElementInfoProvider rootWhereUsedProvider;
-	private ILazyLoadingNode cdsWhereUsedNode;
-	private boolean showSelectFromUses = true;
-	private boolean showAssocUses;
-	private LazyLoadingAdtObjectReferenceNode node;
-	private boolean localAssociationsOnly;
+    private static final String INDETERMINATE_COUNT = "?"; //$NON-NLS-1$
+    private String rootWhereUsedCount = INDETERMINATE_COUNT;
+    private WhereUsedInCdsElementInfoProvider rootWhereUsedProvider;
+    private ILazyLoadingNode cdsWhereUsedNode;
+    private boolean showSelectFromUses = true;
+    private boolean showAssocUses;
+    private LazyLoadingAdtObjectReferenceNode node;
+    private boolean localAssociationsOnly;
 
-	public WhereUsedInCdsAnalysis(final IAdtObjectReferenceElementInfo adtObjectInfo) {
-		super(adtObjectInfo);
-	}
+    public WhereUsedInCdsAnalysis(final IAdtObjectReferenceElementInfo adtObjectInfo) {
+        super(adtObjectInfo);
+    }
 
-	@Override
-	public Object getResult() {
-		return new Object[] { this.node };
-	}
+    @Override
+    public Object getResult() {
+        return new Object[] { node };
+    }
 
-	public void updateWhereUsedProvider(final boolean showSelectUses, final boolean showAssocUses) {
-		this.showAssocUses = showAssocUses;
-		this.showSelectFromUses = showSelectUses;
-		this.rootWhereUsedProvider.updateSearchParameters(showSelectUses, showAssocUses);
-	}
+    public void updateWhereUsedProvider(final boolean showSelectUses, final boolean showAssocUses) {
+        this.showAssocUses = showAssocUses;
+        showSelectFromUses = showSelectUses;
+        rootWhereUsedProvider.updateSearchParameters(showSelectUses, showAssocUses);
+    }
 
-	public void setLocalAssociationsOnly(final boolean localAssociationsOnly) {
-		this.localAssociationsOnly = localAssociationsOnly;
-		this.rootWhereUsedProvider.setLocalAssociationsOnly(localAssociationsOnly);
-	}
+    public void setLocalAssociationsOnly(final boolean localAssociationsOnly) {
+        this.localAssociationsOnly = localAssociationsOnly;
+        rootWhereUsedProvider.setLocalAssociationsOnly(localAssociationsOnly);
+    }
 
-	@Override
-	public Image getImage() {
-		return SearchAndAnalysisPlugin.getDefault().getImage(IImages.WHERE_USED_IN);
-	}
+    @Override
+    public Image getImage() {
+        return SearchAndAnalysisPlugin.getDefault().getImage(IImages.WHERE_USED_IN);
+    }
 
-	@Override
-	public String getLabel() {
-		if (this.rootWhereUsedCount.equals(INDETERMINATE_COUNT)) {
-			return super.getLabel();
-		} else {
-			return String.format("%s  -  %s", super.getLabel(), this.rootWhereUsedCount); //$NON-NLS-1$
-		}
-	}
+    @Override
+    public String getLabel() {
+        if (rootWhereUsedCount.equals(INDETERMINATE_COUNT)) {
+            return super.getLabel();
+        }
+        return String.format("%s  -  %s", super.getLabel(), rootWhereUsedCount); //$NON-NLS-1$
+    }
 
-	@Override
-	protected String getLabelPrefix() {
-		if (this.showAssocUses && this.showSelectFromUses) {
-			return Messages.WhereUsedInCdsAnalysisView_ViewLabel_xfld;
-		} else if (this.showAssocUses) {
-			return Messages.WhereUsedInCdsAnalysisView_ViewLabelAssocSearch_xfld;
-		} else {
-			return Messages.WhereUsedInCdsAnalysisView_ViewLabelSelectFromSearch_xlfd;
-		}
-	}
+    @Override
+    protected String getLabelPrefix() {
+        if (showAssocUses && showSelectFromUses) {
+            return Messages.WhereUsedInCdsAnalysisView_ViewLabel_xfld;
+        }
+        if (showAssocUses) {
+            return Messages.WhereUsedInCdsAnalysisView_ViewLabelAssocSearch_xfld;
+        }
+        return Messages.WhereUsedInCdsAnalysisView_ViewLabelSelectFromSearch_xlfd;
+    }
 
-	@Override
-	public CdsAnalysisType getType() {
-		return CdsAnalysisType.WHERE_USED;
-	}
+    @Override
+    public CdsAnalysisType getType() {
+        return CdsAnalysisType.WHERE_USED;
+    }
 
-	@Override
-	public ImageDescriptor getImageDescriptor() {
-		return SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.WHERE_USED_IN);
-	}
+    @Override
+    public ImageDescriptor getImageDescriptor() {
+        return SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.WHERE_USED_IN);
+    }
 
-	@Override
-	public void refreshAnalysis() {
-		if (this.cdsWhereUsedNode == null) {
-			return;
-		}
-		this.cdsWhereUsedNode.resetLoadedState();
-		this.rootWhereUsedCount = INDETERMINATE_COUNT;
-	}
+    @Override
+    public void refreshAnalysis() {
+        if (cdsWhereUsedNode == null) {
+            return;
+        }
+        cdsWhereUsedNode.resetLoadedState();
+        rootWhereUsedCount = INDETERMINATE_COUNT;
+    }
 
-	/**
-	 * Creates the result of the where used analysis
-	 *
-	 * @param l the listener to be notified after the result of the root node has
-	 *          been determined
-	 */
-	public void createResult(final ILazyLoadingListener l) {
-		final ILazyLoadingListener lazyLoadingListener = (count) -> {
-			this.rootWhereUsedCount = NLS.bind(
-				count == 1 ? Messages.WhereUsedInCdsAnalysisView_SingleReferenceLabelSuffix_xfld
-					: Messages.WhereUsedInCdsAnalysisView_MultipleReferencesLabelSuffix_xfld,
-				new DecimalFormat("###,###").format(count)); //$NON-NLS-1$
-		};
-		this.node = new LazyLoadingAdtObjectReferenceNode(this.adtObjectInfo.getName(), this.adtObjectInfo.getDisplayName(),
-			this.adtObjectInfo.getDescription(), this.adtObjectInfo.getAdtObjectReference(), null);
-		final IDestinationProvider destProvider = this.adtObjectInfo.getAdapter(IDestinationProvider.class);
-		this.rootWhereUsedProvider = new WhereUsedInCdsElementInfoProvider(
-			destProvider != null ? destProvider.getDestinationId() : null, this.adtObjectInfo.getName(), this.showSelectFromUses,
-			this.showAssocUses);
-		this.cdsWhereUsedNode = this.node;
-		this.rootWhereUsedProvider.setLocalAssociationsOnly(this.localAssociationsOnly);
-		this.node.setElementInfoProvider(this.rootWhereUsedProvider);
-		this.node.addLazyLoadingListener(lazyLoadingListener);
-		this.node.addLazyLoadingListener(l);
-	}
+    /**
+     * Creates the result of the where used analysis
+     *
+     * @param l the listener to be notified after the result of the root node has
+     *          been determined
+     */
+    public void createResult(final ILazyLoadingListener l) {
+        final ILazyLoadingListener lazyLoadingListener = count -> {
+            rootWhereUsedCount = NLS.bind(count == 1
+                    ? Messages.WhereUsedInCdsAnalysisView_SingleReferenceLabelSuffix_xfld
+                    : Messages.WhereUsedInCdsAnalysisView_MultipleReferencesLabelSuffix_xfld, new DecimalFormat(
+                            "###,###").format(count)); //$NON-NLS-1$
+        };
+        node = new LazyLoadingAdtObjectReferenceNode(adtObjectInfo.getName(), adtObjectInfo.getDisplayName(),
+                adtObjectInfo.getDescription(), adtObjectInfo.getAdtObjectReference(), null);
+        final IDestinationProvider destProvider = adtObjectInfo.getAdapter(IDestinationProvider.class);
+        rootWhereUsedProvider = new WhereUsedInCdsElementInfoProvider(destProvider != null ? destProvider
+                .getDestinationId() : null, adtObjectInfo.getName(), showSelectFromUses, showAssocUses);
+        cdsWhereUsedNode = node;
+        rootWhereUsedProvider.setLocalAssociationsOnly(localAssociationsOnly);
+        node.setElementInfoProvider(rootWhereUsedProvider);
+        node.addLazyLoadingListener(lazyLoadingListener);
+        node.addLazyLoadingListener(l);
+    }
 }

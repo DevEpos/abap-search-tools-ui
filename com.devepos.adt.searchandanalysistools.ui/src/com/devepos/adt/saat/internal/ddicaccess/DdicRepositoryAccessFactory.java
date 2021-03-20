@@ -7,12 +7,12 @@ package com.devepos.adt.saat.internal.ddicaccess;
  */
 public class DdicRepositoryAccessFactory {
 
-	/**
-	 * Creates new instance for DDIC repository access
-	 *
-	 * @return
-	 */
-	public static IDdicRepositoryAccess createDdicAccess() {
-		return new DdicRepositoryAccess();
-	}
+    /**
+     * Creates new instance for DDIC repository access
+     *
+     * @return
+     */
+    public static IDdicRepositoryAccess createDdicAccess() {
+        return new DdicRepositoryAccess();
+    }
 }

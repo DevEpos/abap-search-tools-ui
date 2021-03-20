@@ -8,29 +8,30 @@ import org.eclipse.ui.actions.CompoundContributionItem;
 import com.devepos.adt.base.ui.util.AdtUIUtil;
 
 public class DynamicOpenInMenu extends CompoundContributionItem {
-	private IMenuManager dynamicOpenInMenu;
+    private IMenuManager dynamicOpenInMenu;
 
-	public DynamicOpenInMenu() {
-		this.dynamicOpenInMenu = DynamicOpenInMenuUtility.buildAnalysisToolsSubMenu(AdtUIUtil.getAdtObjectsFromSelection(true));
-	}
+    public DynamicOpenInMenu() {
+        dynamicOpenInMenu = DynamicOpenInMenuUtility.buildAnalysisToolsSubMenu(AdtUIUtil.getAdtObjectsFromSelection(
+                true));
+    }
 
-	public DynamicOpenInMenu(final String id) {
-		super(id);
-	}
+    public DynamicOpenInMenu(final String id) {
+        super(id);
+    }
 
-	@Override
-	public void fill(final Menu menu, final int index) {
-		if (this.dynamicOpenInMenu != null) {
-			super.fill(menu, index);
-		}
-	}
+    @Override
+    public void fill(final Menu menu, final int index) {
+        if (dynamicOpenInMenu != null) {
+            super.fill(menu, index);
+        }
+    }
 
-	@Override
-	protected IContributionItem[] getContributionItems() {
-		if (this.dynamicOpenInMenu != null) {
-			return new IContributionItem[] { this.dynamicOpenInMenu };
-		}
-		return new IContributionItem[] {};
-	}
+    @Override
+    protected IContributionItem[] getContributionItems() {
+        if (dynamicOpenInMenu != null) {
+            return new IContributionItem[] { dynamicOpenInMenu };
+        }
+        return new IContributionItem[] {};
+    }
 
 }

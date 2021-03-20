@@ -35,84 +35,83 @@ import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
  * @author stockbal
  */
 public class RunWhereUsedQueryHandler extends AbstractHandler {
-	private String ddlsUri;
+    private String ddlsUri;
 
-	@Override
-	public Object execute(final ExecutionEvent event) throws ExecutionException {
-		// open search dialog to choose ABAP Development object
-		final IAdtRisSearchResultProxy result = AdtRisSearchUtil
-			.searchAdtObjectViaDialog(Messages.RunWhereUsedQueryHandler_openObjectDialog_xtit, false, null);
+    @Override
+    public Object execute(final ExecutionEvent event) throws ExecutionException {
+        // open search dialog to choose ABAP Development object
+        final IAdtRisSearchResultProxy result = AdtRisSearchUtil.searchAdtObjectViaDialog(
+                Messages.RunWhereUsedQueryHandler_openObjectDialog_xtit, false, null);
 
-		if (result == null) {
-			return null;
-		}
+        if (result == null) {
+            return null;
+        }
 
-		final IAdtObjectReference selectedAdtObjRef = result.getFirstResult();
-		final IProject project = result.getSelectedProject();
+        final IAdtObjectReference selectedAdtObjRef = result.getFirstResult();
+        final IProject project = result.getSelectedProject();
 
-		final String adtObjectUri = selectedAdtObjRef.getUri();
-		final String adtObjectType = selectedAdtObjRef.getType();
+        final String adtObjectUri = selectedAdtObjRef.getUri();
+        final String adtObjectType = selectedAdtObjRef.getType();
 
-		if (IAdtObjectTypeConstants.DDLS_DEFINITION_TYPE.equals(adtObjectType)
-			|| IAdtObjectTypeConstants.CDS_VIEW_DEFINITION_TYPE.equals(adtObjectType)) {
-			runWhereUsedForDdls(event, project, selectedAdtObjRef);
-		} else {
-			runWhereUsed(project, adtObjectUri);
-		}
+        if (IAdtObjectTypeConstants.DDLS_DEFINITION_TYPE.equals(adtObjectType)
+                || IAdtObjectTypeConstants.CDS_VIEW_DEFINITION_TYPE.equals(adtObjectType)) {
+            runWhereUsedForDdls(event, project, selectedAdtObjRef);
+        } else {
+            runWhereUsed(project, adtObjectUri);
+        }
 
-		return null;
-	}
+        return null;
+    }
 
-	/*
-	 * Runs where used query for a CDS View
-	 */
-	private void runWhereUsedForDdls(final ExecutionEvent event, final IProject project,
-		final IAdtObjectReference adtObjectRef) {
-		final Display display = HandlerUtil.getActiveShell(event).getDisplay();
+    /*
+     * Runs where used query for a CDS View
+     */
+    private void runWhereUsedForDdls(final ExecutionEvent event, final IProject project,
+            final IAdtObjectReference adtObjectRef) {
+        final Display display = HandlerUtil.getActiveShell(event).getDisplay();
 
-		final Job readDdlsUriJob = Job.create(Messages.ElementInfoProvider_RetrievingElementInfoDescription_xmsg,
-			monitor -> {
-				final IAdtObjectReferenceElementInfo ddlsObjectInfo = ElementInfoRetrievalServiceFactory.createService()
-					.retrieveBasicElementInformation(DestinationUtil.getDestinationId(project), adtObjectRef.getName(),
-						ObjectType.CDS_VIEW);
-				if (ddlsObjectInfo != null) {
-					this.ddlsUri = ddlsObjectInfo.getUri();
-				}
-				monitor.done();
-			});
-		readDdlsUriJob.addJobChangeListener(new JobChangeAdapter() {
-			@Override
-			public void done(final IJobChangeEvent event) {
-				display.asyncExec(() -> {
-					runWhereUsed(project,
-						RunWhereUsedQueryHandler.this.ddlsUri != null ? RunWhereUsedQueryHandler.this.ddlsUri
-							: adtObjectRef.getUri());
-				});
-			}
-		});
-		readDdlsUriJob.schedule();
-	}
+        final Job readDdlsUriJob = Job.create(Messages.ElementInfoProvider_RetrievingElementInfoDescription_xmsg,
+                monitor -> {
+                    final IAdtObjectReferenceElementInfo ddlsObjectInfo = ElementInfoRetrievalServiceFactory
+                            .createService()
+                            .retrieveBasicElementInformation(DestinationUtil.getDestinationId(project), adtObjectRef
+                                    .getName(), ObjectType.CDS_VIEW);
+                    if (ddlsObjectInfo != null) {
+                        ddlsUri = ddlsObjectInfo.getUri();
+                    }
+                    monitor.done();
+                });
+        readDdlsUriJob.addJobChangeListener(new JobChangeAdapter() {
+            @Override
+            public void done(final IJobChangeEvent event) {
+                display.asyncExec(() -> {
+                    runWhereUsed(project, ddlsUri != null ? ddlsUri : adtObjectRef.getUri());
+                });
+            }
+        });
+        readDdlsUriJob.schedule();
+    }
 
-	/*
-	 * Runs Where-used query for the given URI
-	 */
-	private void runWhereUsed(final IProject project, final String uri) {
-		final AdtRisUsageReferencesSearchQueryParameters usageSearchParameters = new AdtRisUsageReferencesSearchQueryParameters(
-			project, URI.create(uri));
-		final AdtRisUsageReferencesSearchQuery searchQuery = new AdtRisUsageReferencesSearchQuery(
-			usageSearchParameters);
-		NewSearchUI.runQueryInBackground(searchQuery);
+    /*
+     * Runs Where-used query for the given URI
+     */
+    private void runWhereUsed(final IProject project, final String uri) {
+        final AdtRisUsageReferencesSearchQueryParameters usageSearchParameters = new AdtRisUsageReferencesSearchQueryParameters(
+                project, URI.create(uri));
+        final AdtRisUsageReferencesSearchQuery searchQuery = new AdtRisUsageReferencesSearchQuery(
+                usageSearchParameters);
+        NewSearchUI.runQueryInBackground(searchQuery);
 
-		/*
-		 * If there is no active page in the workbench window the search view will not
-		 * be brought to the front so it has to be done manually
-		 */
-		final IWorkbenchPage activeSearchPage = SearchPlugin.getActivePage();
-		final IWorkbenchPart activeSearchView = activeSearchPage.getActivePart();
-		if (activeSearchPage != null && activeSearchView != null && activeSearchPage.isPartVisible(activeSearchView)) {
-			activeSearchPage.bringToTop(activeSearchView);
-		}
+        /*
+         * If there is no active page in the workbench window the search view will not
+         * be brought to the front so it has to be done manually
+         */
+        final IWorkbenchPage activeSearchPage = SearchPlugin.getActivePage();
+        final IWorkbenchPart activeSearchView = activeSearchPage.getActivePart();
+        if (activeSearchPage != null && activeSearchView != null && activeSearchPage.isPartVisible(activeSearchView)) {
+            activeSearchPage.bringToTop(activeSearchView);
+        }
 
-	}
+    }
 
 }

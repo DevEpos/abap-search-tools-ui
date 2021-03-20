@@ -35,258 +35,258 @@ import com.devepos.adt.saat.internal.util.CommandPossibleChecker;
 /**
  * Dependency usage analysis page of CDS Analysis page
  *
- * @see    {@link CdsAnalyzerPage}
+ * @see {@link CdsAnalyzerPage}
  * @author stockbal
  */
 public class CdsUsageAnalysisView extends CdsAnalysisPage<CdsUsedEntitiesAnalysis> {
-	private enum Column {
-		OBJECT_NAME(400, Messages.CdsUsageAnalysisView_ObjectNameColumn_xfld),
-		OCCURRENCES(80, Messages.CdsUsageAnalysisView_OccurrencesColumn_xfld),
-		USED_ENTITY_COUNT(60, Messages.CdsUsageAnalysisView_EntitiesColumn_xfld,
-			Messages.CdsUsageAnalysisView_EntitiesColumn_xtol),
-		USED_JOIN_COUNT(60, Messages.CdsUsageAnalysisView_JoinsColumn_xfld, Messages.CdsUsageAnalysisView_JoinsColumn_xtol),
-		USED_UNION_COUNT(60, Messages.CdsUsageAnalysisView_UnionsColumn_xfld, Messages.CdsUsageAnalysisView_UnionsColumn_xtol);
+    private enum Column {
+        OBJECT_NAME(400, Messages.CdsUsageAnalysisView_ObjectNameColumn_xfld), OCCURRENCES(80,
+                Messages.CdsUsageAnalysisView_OccurrencesColumn_xfld), USED_ENTITY_COUNT(60,
+                        Messages.CdsUsageAnalysisView_EntitiesColumn_xfld,
+                        Messages.CdsUsageAnalysisView_EntitiesColumn_xtol), USED_JOIN_COUNT(60,
+                                Messages.CdsUsageAnalysisView_JoinsColumn_xfld,
+                                Messages.CdsUsageAnalysisView_JoinsColumn_xtol), USED_UNION_COUNT(60,
+                                        Messages.CdsUsageAnalysisView_UnionsColumn_xfld,
+                                        Messages.CdsUsageAnalysisView_UnionsColumn_xtol);
 
-		private static final Map<Integer, Column> COLUMNS;
+        private static final Map<Integer, Column> COLUMNS;
 
-		static {
-			COLUMNS = new HashMap<>();
-			for (final Column col : Column.values()) {
-				COLUMNS.put(col.ordinal(), col);
-			}
-		}
+        static {
+            COLUMNS = new HashMap<>();
+            for (final Column col : Column.values()) {
+                COLUMNS.put(col.ordinal(), col);
+            }
+        }
 
-		private Column(final int width, final String headerText) {
-			this(width, headerText, headerText);
-		}
+        Column(final int width, final String headerText) {
+            this(width, headerText, headerText);
+        }
 
-		private Column(final int width, final String headerText, final String tooltip) {
-			this.defaultWidth = width;
-			this.headerText = headerText;
-			this.tooltip = tooltip;
-		}
+        Column(final int width, final String headerText, final String tooltip) {
+            defaultWidth = width;
+            this.headerText = headerText;
+            this.tooltip = tooltip;
+        }
 
-		public static Column valueOf(final int ordinal) {
-			return COLUMNS.get(ordinal);
-		}
+        public static Column valueOf(final int ordinal) {
+            return COLUMNS.get(ordinal);
+        }
 
-		public final int defaultWidth;
-		public final String tooltip;
-		public final String headerText;
+        public final int defaultWidth;
+        public final String tooltip;
+        public final String headerText;
 
-	}
+    }
 
-	private final List<Column> columns;
-	private SortListener sortListener;
+    private final List<Column> columns;
+    private SortListener sortListener;
 
-	public CdsUsageAnalysisView(final CdsAnalysisView parentView) {
-		super(parentView);
-		this.columns = Arrays.asList(Column.values());
-	}
+    public CdsUsageAnalysisView(final CdsAnalysisView parentView) {
+        super(parentView);
+        columns = Arrays.asList(Column.values());
+    }
 
-	@Override
-	protected void fillContextMenu(final IMenuManager mgr, final CommandPossibleChecker commandPossibleChecker) {
-		super.fillContextMenu(mgr, commandPossibleChecker);
-		if (commandPossibleChecker.canCommandBeEnabled(ICommandConstants.CDS_TOP_DOWN_ANALYSIS)) {
-			MenuItemFactory.addCdsAnalyzerCommandItem(mgr, IContextMenuConstants.GROUP_CDS_ANALYSIS,
-				ICommandConstants.CDS_TOP_DOWN_ANALYSIS);
-		}
-		if (commandPossibleChecker.canCommandBeEnabled(ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS)) {
-			MenuItemFactory.addCdsAnalyzerCommandItem(mgr, IContextMenuConstants.GROUP_CDS_ANALYSIS,
-				ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS);
-		}
-		if (commandPossibleChecker.canCommandBeEnabled(ICommandConstants.FIELD_ANALYSIS)) {
-			MenuItemFactory.addCdsAnalyzerCommandItem(mgr, IContextMenuConstants.GROUP_CDS_ANALYSIS,
-				ICommandConstants.FIELD_ANALYSIS);
-		}
-	}
+    @Override
+    protected void fillContextMenu(final IMenuManager mgr, final CommandPossibleChecker commandPossibleChecker) {
+        super.fillContextMenu(mgr, commandPossibleChecker);
+        if (commandPossibleChecker.canCommandBeEnabled(ICommandConstants.CDS_TOP_DOWN_ANALYSIS)) {
+            MenuItemFactory.addCdsAnalyzerCommandItem(mgr, IContextMenuConstants.GROUP_CDS_ANALYSIS,
+                    ICommandConstants.CDS_TOP_DOWN_ANALYSIS);
+        }
+        if (commandPossibleChecker.canCommandBeEnabled(ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS)) {
+            MenuItemFactory.addCdsAnalyzerCommandItem(mgr, IContextMenuConstants.GROUP_CDS_ANALYSIS,
+                    ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS);
+        }
+        if (commandPossibleChecker.canCommandBeEnabled(ICommandConstants.FIELD_ANALYSIS)) {
+            MenuItemFactory.addCdsAnalyzerCommandItem(mgr, IContextMenuConstants.GROUP_CDS_ANALYSIS,
+                    ICommandConstants.FIELD_ANALYSIS);
+        }
+    }
 
-	@Override
-	protected ViewUiState getUiState() {
-		final TreeViewUiState uiState = new TreeViewUiState();
-		uiState.setFromTreeViewer((TreeViewer) getViewer());
-		return uiState;
-	}
+    @Override
+    protected ViewUiState getUiState() {
+        final TreeViewUiState uiState = new TreeViewUiState();
+        uiState.setFromTreeViewer((TreeViewer) getViewer());
+        return uiState;
+    }
 
-	@Override
-	protected void loadInput(final ViewUiState uiState) {
-		final TreeViewer viewer = (TreeViewer) getViewer();
-		viewer.setInput(this.analysisResult.getResult());
+    @Override
+    protected void loadInput(final ViewUiState uiState) {
+        final TreeViewer viewer = (TreeViewer) getViewer();
+        viewer.setInput(analysisResult.getResult());
 
-		if (this.analysisResult.isResultLoaded()) {
-			// update ui state
-			if (uiState != null && uiState instanceof TreeViewUiState) {
-				((TreeViewUiState) uiState).applyToTreeViewer(viewer);
-			}
-		} else {
-			this.analysisResult.setResultLoaded(true);
-		}
-	}
+        if (analysisResult.isResultLoaded()) {
+            // update ui state
+            if (uiState instanceof TreeViewUiState) {
+                ((TreeViewUiState) uiState).applyToTreeViewer(viewer);
+            }
+        } else {
+            analysisResult.setResultLoaded(true);
+        }
+    }
 
-	@Override
-	protected void refreshAnalysis() {
-		((ILazyLoadingNode) getViewer().getInput()).resetLoadedState();
-		getViewer().refresh();
-	}
+    @Override
+    protected void refreshAnalysis() {
+        ((ILazyLoadingNode) getViewer().getInput()).resetLoadedState();
+        getViewer().refresh();
+    }
 
-	@Override
-	protected void configureTreeViewer(final TreeViewer treeViewer) {
-		this.sortListener = new SortListener(treeViewer, SWT.DOWN);
-		final Tree tree = treeViewer.getTree();
-		treeViewer.setComparator(new TreeSorter());
-		treeViewer.setContentProvider(new ContentProvider());
-		treeViewer.getTree().setHeaderVisible(true);
-		treeViewer.setUseHashlookup(true);
-		createColumns(treeViewer);
+    @Override
+    protected void configureTreeViewer(final TreeViewer treeViewer) {
+        sortListener = new SortListener(treeViewer, SWT.DOWN);
+        final Tree tree = treeViewer.getTree();
+        treeViewer.setComparator(new TreeSorter());
+        treeViewer.setContentProvider(new ContentProvider());
+        treeViewer.getTree().setHeaderVisible(true);
+        treeViewer.setUseHashlookup(true);
+        createColumns(treeViewer);
 
-		tree.setSortColumn(tree.getColumn(Column.USED_ENTITY_COUNT.ordinal()));
-		tree.setSortDirection(SWT.DOWN);
-	}
+        tree.setSortColumn(tree.getColumn(Column.USED_ENTITY_COUNT.ordinal()));
+        tree.setSortDirection(SWT.DOWN);
+    }
 
-	private void createColumns(final TreeViewer treeViewer) {
-		for (final Column column : this.columns) {
-			createColumn(treeViewer, column);
-		}
-	}
+    private void createColumns(final TreeViewer treeViewer) {
+        for (final Column column : columns) {
+            createColumn(treeViewer, column);
+        }
+    }
 
-	private void createColumn(final TreeViewer treeViewer, final Column column) {
-		final TreeViewerColumn viewerColumn = new TreeViewerColumn(treeViewer, SWT.NONE);
-		viewerColumn.getColumn().setText(column.headerText);
-		viewerColumn.getColumn().setToolTipText(column.tooltip);
-		viewerColumn.setLabelProvider(new DelegatingStyledCellLabelProvider(new ColumnLabelProvider(column)));
-		viewerColumn.getColumn().setWidth(column.defaultWidth);
-		viewerColumn.getColumn().setMoveable(true);
-		viewerColumn.getColumn().addListener(SWT.Selection, this.sortListener);
-	}
+    private void createColumn(final TreeViewer treeViewer, final Column column) {
+        final TreeViewerColumn viewerColumn = new TreeViewerColumn(treeViewer, SWT.NONE);
+        viewerColumn.getColumn().setText(column.headerText);
+        viewerColumn.getColumn().setToolTipText(column.tooltip);
+        viewerColumn.setLabelProvider(new DelegatingStyledCellLabelProvider(new ColumnLabelProvider(column)));
+        viewerColumn.getColumn().setWidth(column.defaultWidth);
+        viewerColumn.getColumn().setMoveable(true);
+        viewerColumn.getColumn().addListener(SWT.Selection, sortListener);
+    }
 
-	private class ContentProvider extends LazyLoadingTreeContentProvider {
+    private class ContentProvider extends LazyLoadingTreeContentProvider {
 
-		@Override
-		public Object[] getElements(final Object inputElement) {
-			final Object[] nodes = getChildren(inputElement);
-			if (nodes != null) {
-				return nodes;
-			} else {
-				return new Object[0];
-			}
-		}
+        @Override
+        public Object[] getElements(final Object inputElement) {
+            final Object[] nodes = getChildren(inputElement);
+            if (nodes != null) {
+                return nodes;
+            }
+            return new Object[0];
+        }
 
-	}
+    }
 
-	/**
-	 * Label provider for a single column in this TreeViewer
-	 *
-	 * @author stockbal
-	 */
-	class ColumnLabelProvider extends CellLabelProvider implements DelegatingStyledCellLabelProvider.IStyledLabelProvider {
+    /**
+     * Label provider for a single column in this TreeViewer
+     *
+     * @author stockbal
+     */
+    class ColumnLabelProvider extends CellLabelProvider implements
+            DelegatingStyledCellLabelProvider.IStyledLabelProvider {
 
-		private final Column column;
+        private final Column column;
 
-		public ColumnLabelProvider(final Column column) {
-			this.column = column;
-		}
+        public ColumnLabelProvider(final Column column) {
+            this.column = column;
+        }
 
-		@Override
-		public StyledString getStyledText(final Object element) {
-			StyledString text = new StyledString();
+        @Override
+        public StyledString getStyledText(final Object element) {
+            StyledString text = new StyledString();
 
-			if (this.column == Column.OBJECT_NAME) {
-				text = getTreeNodeLabel(element);
-			} else {
-				ICdsEntityUsageInfo usageInfo = null;
-				if (element instanceof IAdaptable) {
-					usageInfo = ((IAdaptable) element).getAdapter(ICdsEntityUsageInfo.class);
-				}
-				if (usageInfo != null) {
-					switch (this.column) {
-					case OCCURRENCES:
-						text.append(String.valueOf(usageInfo.getOccurrence()));
-						break;
-					case USED_ENTITY_COUNT:
-						text.append(String.valueOf(usageInfo.getUsedEntitiesCount()));
-						break;
-					case USED_JOIN_COUNT:
-						text.append(String.valueOf(usageInfo.getUsedJoinCount()));
-						break;
-					case USED_UNION_COUNT:
-						text.append(String.valueOf(usageInfo.getUsedUnionCount()));
-						break;
-					default:
-						break;
-					}
-				}
+            if (column == Column.OBJECT_NAME) {
+                text = getTreeNodeLabel(element);
+            } else {
+                ICdsEntityUsageInfo usageInfo = null;
+                if (element instanceof IAdaptable) {
+                    usageInfo = ((IAdaptable) element).getAdapter(ICdsEntityUsageInfo.class);
+                }
+                if (usageInfo != null) {
+                    switch (column) {
+                    case OCCURRENCES:
+                        text.append(String.valueOf(usageInfo.getOccurrence()));
+                        break;
+                    case USED_ENTITY_COUNT:
+                        text.append(String.valueOf(usageInfo.getUsedEntitiesCount()));
+                        break;
+                    case USED_JOIN_COUNT:
+                        text.append(String.valueOf(usageInfo.getUsedJoinCount()));
+                        break;
+                    case USED_UNION_COUNT:
+                        text.append(String.valueOf(usageInfo.getUsedUnionCount()));
+                        break;
+                    default:
+                        break;
+                    }
+                }
 
-			}
-			return text;
-		}
+            }
+            return text;
+        }
 
-		@Override
-		public Image getImage(final Object element) {
-			Image image = null;
-			if (this.column == Column.OBJECT_NAME) {
-				image = getTreeNodeImage(element);
-			}
-			return image;
-		}
+        @Override
+        public Image getImage(final Object element) {
+            Image image = null;
+            if (column == Column.OBJECT_NAME) {
+                image = getTreeNodeImage(element);
+            }
+            return image;
+        }
 
-		@Override
-		public void update(final ViewerCell cell) {
-		}
-	}
+        @Override
+        public void update(final ViewerCell cell) {
+        }
+    }
 
-	private class TreeSorter extends ViewerComparator {
+    private class TreeSorter extends ViewerComparator {
 
-		@Override
-		public int compare(final Viewer viewer, final Object e1, final Object e2) {
-			final Tree tree = (Tree) viewer.getControl();
-			final TreeColumn sortedColumn = tree.getSortColumn();
-			final int direction = tree.getSortDirection();
-			final int sortedColIdx = tree.indexOf(sortedColumn);
+        @Override
+        public int compare(final Viewer viewer, final Object e1, final Object e2) {
+            final Tree tree = (Tree) viewer.getControl();
+            final TreeColumn sortedColumn = tree.getSortColumn();
+            final int direction = tree.getSortDirection();
+            final int sortedColIdx = tree.indexOf(sortedColumn);
 
-			final Column column = Column.valueOf(sortedColIdx);
-			if (column == Column.OBJECT_NAME) {
-				return compare(((ITreeNode) e1).getName(), ((ITreeNode) e2).getName(), direction);
-			} else {
-				final ICdsEntityUsageInfo info1 = ((IAdaptable) e1).getAdapter(ICdsEntityUsageInfo.class);
-				final ICdsEntityUsageInfo info2 = ((IAdaptable) e2).getAdapter(ICdsEntityUsageInfo.class);
-				if (info1 == null || info2 == null) {
-					return 0;
-				}
-				switch (column) {
-				case OCCURRENCES:
-					return compare(info1.getOccurrence(), info2.getOccurrence(), direction);
-				case USED_ENTITY_COUNT:
-					return compare(info1.getUsedEntitiesCount(), info2.getUsedEntitiesCount(), direction);
-				case USED_JOIN_COUNT:
-					return compare(info1.getUsedJoinCount(), info2.getUsedJoinCount(), direction);
-				case USED_UNION_COUNT:
-					return compare(info1.getUsedUnionCount(), info2.getUsedUnionCount(), direction);
-				default:
-					break;
-				}
-			}
-			return 0;
-		}
+            final Column column = Column.valueOf(sortedColIdx);
+            if (column == Column.OBJECT_NAME) {
+                return compare(((ITreeNode) e1).getName(), ((ITreeNode) e2).getName(), direction);
+            }
+            final ICdsEntityUsageInfo info1 = ((IAdaptable) e1).getAdapter(ICdsEntityUsageInfo.class);
+            final ICdsEntityUsageInfo info2 = ((IAdaptable) e2).getAdapter(ICdsEntityUsageInfo.class);
+            if (info1 == null || info2 == null) {
+                return 0;
+            }
+            switch (column) {
+            case OCCURRENCES:
+                return compare(info1.getOccurrence(), info2.getOccurrence(), direction);
+            case USED_ENTITY_COUNT:
+                return compare(info1.getUsedEntitiesCount(), info2.getUsedEntitiesCount(), direction);
+            case USED_JOIN_COUNT:
+                return compare(info1.getUsedJoinCount(), info2.getUsedJoinCount(), direction);
+            case USED_UNION_COUNT:
+                return compare(info1.getUsedUnionCount(), info2.getUsedUnionCount(), direction);
+            default:
+                break;
+            }
+            return 0;
+        }
 
-		private <T extends Comparable<T>> int compare(final T c1, final T c2, final int dir) {
-			if (SWT.UP == dir) {
-				if (c1 == null) {
-					return 1;
-				}
-				if (c2 == null) {
-					return -1;
-				}
-				return c1.compareTo(c2);
-			} else {
-				if (c2 == null) {
-					return 1;
-				}
-				if (c1 == null) {
-					return -1;
-				}
-				return c2.compareTo(c1);
-			}
-		}
+        private <T extends Comparable<T>> int compare(final T c1, final T c2, final int dir) {
+            if (SWT.UP == dir) {
+                if (c1 == null) {
+                    return 1;
+                }
+                if (c2 == null) {
+                    return -1;
+                }
+                return c1.compareTo(c2);
+            }
+            if (c2 == null) {
+                return 1;
+            }
+            if (c1 == null) {
+                return -1;
+            }
+            return c2.compareTo(c1);
+        }
 
-	}
+    }
 }

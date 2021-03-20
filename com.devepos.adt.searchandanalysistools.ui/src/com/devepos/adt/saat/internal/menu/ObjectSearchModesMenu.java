@@ -23,54 +23,54 @@ import com.devepos.adt.saat.internal.search.ui.ObjectSearchResultPage;
  */
 public class ObjectSearchModesMenu extends CompoundContributionItem {
 
-	public ObjectSearchModesMenu() {
-	}
+    public ObjectSearchModesMenu() {
+    }
 
-	public ObjectSearchModesMenu(final String id) {
-		super(id);
-	}
+    public ObjectSearchModesMenu(final String id) {
+        super(id);
+    }
 
-	@Override
-	protected IContributionItem[] getContributionItems() {
-		final IContributionItem[] items = createMenuItems();
-		return items;
-	}
+    @Override
+    protected IContributionItem[] getContributionItems() {
+        final IContributionItem[] items = createMenuItems();
+        return items;
+    }
 
-	private IContributionItem[] createMenuItems() {
-		final List<IContributionItem> items = new ArrayList<>();
+    private IContributionItem[] createMenuItems() {
+        final List<IContributionItem> items = new ArrayList<>();
 
-		int i = 1;
-		for (final SearchType type : SearchType.values()) {
-			final String label = i < 10 ? String.format("&%d %s", i++, type.toString()) : type.toString();
-			items.add(new ActionContributionItem(new OpenSearchDialogWithType(type, label)));
-		}
-		return items.toArray(new IContributionItem[items.size()]);
-	}
+        int i = 1;
+        for (final SearchType type : SearchType.values()) {
+            final String label = i < 10 ? String.format("&%d %s", i++, type.toString()) : type.toString();
+            items.add(new ActionContributionItem(new OpenSearchDialogWithType(type, label)));
+        }
+        return items.toArray(new IContributionItem[items.size()]);
+    }
 
-	private void openSearchDialog(final SearchType searchType) {
-		final IWorkbenchWindow activeWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-		final SearchDialog dialog = new SearchDialog(activeWindow, ObjectSearchResultPage.DIALOG_ID);
-		dialog.setBlockOnOpen(false);
-		dialog.open();
-		if (dialog.getSelectedPage() instanceof ObjectSearchPage) {
-			final ObjectSearchPage searchDialog = (ObjectSearchPage) dialog.getSelectedPage();
-			searchDialog.setSearchType(searchType);
-			searchDialog.setFocusToFirstInput();
-		}
-		dialog.setBlockOnOpen(true);
-	}
+    private void openSearchDialog(final SearchType searchType) {
+        final IWorkbenchWindow activeWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+        final SearchDialog dialog = new SearchDialog(activeWindow, ObjectSearchResultPage.DIALOG_ID);
+        dialog.setBlockOnOpen(false);
+        dialog.open();
+        if (dialog.getSelectedPage() instanceof ObjectSearchPage) {
+            final ObjectSearchPage searchDialog = (ObjectSearchPage) dialog.getSelectedPage();
+            searchDialog.setSearchType(searchType);
+            searchDialog.setFocusToFirstInput();
+        }
+        dialog.setBlockOnOpen(true);
+    }
 
-	private class OpenSearchDialogWithType extends Action {
-		private final SearchType type;
+    private class OpenSearchDialogWithType extends Action {
+        private final SearchType type;
 
-		public OpenSearchDialogWithType(final SearchType type, final String label) {
-			super(label, type.getImageDescriptor());
-			this.type = type;
-		}
+        public OpenSearchDialogWithType(final SearchType type, final String label) {
+            super(label, type.getImageDescriptor());
+            this.type = type;
+        }
 
-		@Override
-		public void run() {
-			openSearchDialog(this.type);
-		}
-	}
+        @Override
+        public void run() {
+            openSearchDialog(type);
+        }
+    }
 }

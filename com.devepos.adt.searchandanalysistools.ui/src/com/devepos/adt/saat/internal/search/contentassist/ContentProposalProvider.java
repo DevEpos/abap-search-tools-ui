@@ -28,148 +28,145 @@ import com.devepos.adt.saat.internal.messages.Messages;
  * @author stockbal
  */
 public abstract class ContentProposalProvider implements IContentProposalProvider {
-	private final Control control;
-	private final KeyStroke triggeringKeyStroke;
-	private static final KeyStroke DEFAULT_ACTIVATION_KEYSTROKE = KeyStroke.getInstance(isMacOS() ? SWT.MOD4 : SWT.MOD1,
-			SWT.SPACE);
-	private final ContentProposalAdapter contentProposalAdapter;
+    private final Control control;
+    private final KeyStroke triggeringKeyStroke;
+    private static final KeyStroke DEFAULT_ACTIVATION_KEYSTROKE = KeyStroke.getInstance(isMacOS() ? SWT.MOD4 : SWT.MOD1,
+            SWT.SPACE);
+    private final ContentProposalAdapter contentProposalAdapter;
 
-	public ContentProposalProvider(final Control control) {
-		this.control = control;
-		this.triggeringKeyStroke = calculateActivationKeyStroke();
-		this.contentProposalAdapter = addToControl(control);
-		this.contentProposalAdapter.setProposalAcceptanceStyle(2);
-		addControlListener();
-	}
+    public ContentProposalProvider(final Control control) {
+        this.control = control;
+        triggeringKeyStroke = calculateActivationKeyStroke();
+        contentProposalAdapter = addToControl(control);
+        contentProposalAdapter.setProposalAcceptanceStyle(2);
+        addControlListener();
+    }
 
-	private static boolean isMacOS() {
-		return Platform.isRunning() && Platform.getOS().equals("macosx");
-	}
+    private static boolean isMacOS() {
+        return Platform.isRunning() && Platform.getOS().equals("macosx");
+    }
 
-	protected ContentProposalAdapter addToControl(final Control control) {
-		final ControlDecoration dec = new ControlDecoration(control, SWT.TOP | SWT.LEFT);
+    protected ContentProposalAdapter addToControl(final Control control) {
+        final ControlDecoration dec = new ControlDecoration(control, SWT.TOP | SWT.LEFT);
 
-		final String text = getContentAssistDecoratorText(this.triggeringKeyStroke);
-		dec.setDescriptionText(text);
-		if (Platform.isRunning()) {
-			dec.setImage(FieldDecorationRegistry.getDefault().getFieldDecoration("DEC_CONTENT_PROPOSAL").getImage());
-		}
-		dec.setShowOnlyOnFocus(true);
-		dec.setShowHover(true);
-		IControlContentAdapter contentAdapter;
+        final String text = getContentAssistDecoratorText(triggeringKeyStroke);
+        dec.setDescriptionText(text);
+        if (Platform.isRunning()) {
+            dec.setImage(FieldDecorationRegistry.getDefault().getFieldDecoration("DEC_CONTENT_PROPOSAL").getImage());
+        }
+        dec.setShowOnlyOnFocus(true);
+        dec.setShowHover(true);
+        IControlContentAdapter contentAdapter;
 
-		if (control instanceof Text) {
-			contentAdapter = new TextContentAdapter();
-		} else {
-			throw new IllegalArgumentException("Can only attach to Text controls, not to " + control);
-		}
-		return new DbtContentProposalAdapter(control, contentAdapter, this, this.triggeringKeyStroke, new char[0]);
-	}
+        if (!(control instanceof Text)) {
+            throw new IllegalArgumentException("Can only attach to Text controls, not to " + control);
+        }
+        contentAdapter = new TextContentAdapter();
+        return new DbtContentProposalAdapter(control, contentAdapter, this, triggeringKeyStroke, new char[0]);
+    }
 
-	/**
-	 * Retrieve the content proposal adapter
-	 *
-	 * @return
-	 */
-	protected ContentProposalAdapter getContentProposalAdapter() {
-		return this.contentProposalAdapter;
-	}
+    /**
+     * Retrieve the content proposal adapter
+     *
+     * @return
+     */
+    protected ContentProposalAdapter getContentProposalAdapter() {
+        return contentProposalAdapter;
+    }
 
-	private void addControlListener() {
+    private void addControlListener() {
 
-		this.control.addKeyListener(new KeyListener() {
-			private KeyStroke getSWTKeyStroke(final KeyEvent e) {
-				if (e.stateMask == 0 && e.keyCode == 0 && e.character == 0) {
-					return null;
-				}
-				final int accelerator = SWTKeySupport.convertEventToUnmodifiedAccelerator(e);
-				return SWTKeySupport.convertAcceleratorToKeyStroke(accelerator);
-			}
+        control.addKeyListener(new KeyListener() {
+            private KeyStroke getSWTKeyStroke(final KeyEvent e) {
+                if (e.stateMask == 0 && e.keyCode == 0 && e.character == 0) {
+                    return null;
+                }
+                final int accelerator = SWTKeySupport.convertEventToUnmodifiedAccelerator(e);
+                return SWTKeySupport.convertAcceleratorToKeyStroke(accelerator);
+            }
 
-			@Override
-			public void keyPressed(final KeyEvent e) {
-			}
+            @Override
+            public void keyPressed(final KeyEvent e) {
+            }
 
-			@Override
-			public void keyReleased(final KeyEvent e) {
-				final KeyStroke pressedKeyStroke = getSWTKeyStroke(e);
-				if (ContentProposalProvider.this.triggeringKeyStroke.compareTo(pressedKeyStroke) == 0
-						&& ContentProposalProvider.this.contentProposalAdapter != null
-						&& !ContentProposalProvider.this.contentProposalAdapter.isProposalPopupOpen()) {
-					e.doit = false;
-					((DbtContentProposalAdapter) ContentProposalProvider.this.contentProposalAdapter)
-							.showProposalPopup();
-				}
-			}
-		});
-	}
+            @Override
+            public void keyReleased(final KeyEvent e) {
+                final KeyStroke pressedKeyStroke = getSWTKeyStroke(e);
+                if (triggeringKeyStroke.compareTo(pressedKeyStroke) == 0 && contentProposalAdapter != null
+                        && !contentProposalAdapter.isProposalPopupOpen()) {
+                    e.doit = false;
+                    ((DbtContentProposalAdapter) contentProposalAdapter).showProposalPopup();
+                }
+            }
+        });
+    }
 
-	/**
-	 * Retrieve the keystroke for content assist activation
-	 *
-	 * @return
-	 */
-	public static KeyStroke getActivationKeyStroke() {
-		return calculateActivationKeyStroke();
-	}
+    /**
+     * Retrieve the keystroke for content assist activation
+     *
+     * @return
+     */
+    public static KeyStroke getActivationKeyStroke() {
+        return calculateActivationKeyStroke();
+    }
 
-	/**
-	 * Calculates the default key stroke for content assist activation
-	 *
-	 * @return
-	 */
-	private static KeyStroke calculateActivationKeyStroke() {
-		final KeyStroke stroke = getActivationKeyStrokeFromPreferences();
-		if (stroke != null) {
-			return stroke;
-		}
-		return DEFAULT_ACTIVATION_KEYSTROKE;
-	}
+    /**
+     * Calculates the default key stroke for content assist activation
+     *
+     * @return
+     */
+    private static KeyStroke calculateActivationKeyStroke() {
+        final KeyStroke stroke = getActivationKeyStrokeFromPreferences();
+        if (stroke != null) {
+            return stroke;
+        }
+        return DEFAULT_ACTIVATION_KEYSTROKE;
+    }
 
-	protected String getContentAssistDecoratorText(final KeyStroke keyStroke) {
-		return getContentAssistDescription(keyStroke);
-	}
+    protected String getContentAssistDecoratorText(final KeyStroke keyStroke) {
+        return getContentAssistDescription(keyStroke);
+    }
 
-	public static String getContentAssistDescription(final KeyStroke keyStroke) {
-		return NLS.bind(Messages.ContentProposalProvider_contentAssistTooltip_xtol, keyStroke.format());
-	}
+    public static String getContentAssistDescription(final KeyStroke keyStroke) {
+        return NLS.bind(Messages.ContentProposalProvider_contentAssistTooltip_xtol, keyStroke.format());
+    }
 
-	/**
-	 * Retrieve and return activation key stroke for content assist from preferences
-	 *
-	 * @return
-	 */
-	private static KeyStroke getActivationKeyStrokeFromPreferences() {
-		try {
-			if (Platform.isRunning()) {
-				final IBindingService service = PlatformUI.getWorkbench().getService(IBindingService.class);
-				if (service != null) {
-					final TriggerSequence binding = service
-							.getBestActiveBindingFor("org.eclipse.ui.edit.text.contentAssist.proposals");
-					if (binding instanceof KeySequence) {
-						final KeyStroke[] keyStrokes = ((KeySequence) binding).getKeyStrokes();
-						if (keyStrokes.length == 1) {
-							return keyStrokes[0];
-						}
-					}
-				}
-			}
-		} catch (final Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+    /**
+     * Retrieve and return activation key stroke for content assist from preferences
+     *
+     * @return
+     */
+    private static KeyStroke getActivationKeyStrokeFromPreferences() {
+        try {
+            if (Platform.isRunning()) {
+                final IBindingService service = PlatformUI.getWorkbench().getService(IBindingService.class);
+                if (service != null) {
+                    final TriggerSequence binding = service.getBestActiveBindingFor(
+                            "org.eclipse.ui.edit.text.contentAssist.proposals");
+                    if (binding instanceof KeySequence) {
+                        final KeyStroke[] keyStrokes = ((KeySequence) binding).getKeyStrokes();
+                        if (keyStrokes.length == 1) {
+                            return keyStrokes[0];
+                        }
+                    }
+                }
+            }
+        } catch (final Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
-	private static class DbtContentProposalAdapter extends ContentProposalAdapter {
-		
-		public void showProposalPopup() {
-			super.openProposalPopup();
-		}
+    private static class DbtContentProposalAdapter extends ContentProposalAdapter {
 
-		public DbtContentProposalAdapter(final Control control, final IControlContentAdapter contentAdapter,
-				final ContentProposalProvider adtContentProposalProvider, final KeyStroke keyStroke,
-				final char[] autoActivationCharacters) {
-			super(control, contentAdapter, adtContentProposalProvider, keyStroke, autoActivationCharacters);
-		}
-	}
+        public void showProposalPopup() {
+            super.openProposalPopup();
+        }
+
+        public DbtContentProposalAdapter(final Control control, final IControlContentAdapter contentAdapter,
+                final ContentProposalProvider adtContentProposalProvider, final KeyStroke keyStroke,
+                final char[] autoActivationCharacters) {
+            super(control, contentAdapter, adtContentProposalProvider, keyStroke, autoActivationCharacters);
+        }
+    }
 }

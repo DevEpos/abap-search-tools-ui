@@ -58,423 +58,423 @@ import com.devepos.adt.saat.internal.util.IImages;
  */
 public class CdsAnalysisView extends PageBookView implements ICdsAnalysisListener, ICdsAnalysisResultListener {
 
-	public static final String VIEW_ID = "com.devepos.adt.saat.views.cdsanalyzer"; //$NON-NLS-1$
+    public static final String VIEW_ID = "com.devepos.adt.saat.views.cdsanalyzer"; //$NON-NLS-1$
 
-	private Composite pageContent;
-	private Composite descriptionComposite;
-	private final Map<DummyPart, CdsAnalysisPage<?>> partsToPages;
-	final Map<CdsAnalysisPage<?>, DummyPart> pagesToParts;
-	private final Map<CdsAnalysis, ViewUiState> viewStates;
-	private CdsAnalysis currentAnalysis;
+    private Composite pageContent;
+    private Composite descriptionComposite;
+    private final Map<DummyPart, CdsAnalysisPage<?>> partsToPages;
+    final Map<CdsAnalysisPage<?>, DummyPart> pagesToParts;
+    private final Map<CdsAnalysis, ViewUiState> viewStates;
+    private CdsAnalysis currentAnalysis;
 
-	private Label description;
-	private RefreshCurrentAnalysisAction refreshAnalysisAction;
-	private CdsAnalysisHistoryDropDownAction analysesHistoryAction;
+    private Label description;
+    private RefreshCurrentAnalysisAction refreshAnalysisAction;
+    private CdsAnalysisHistoryDropDownAction analysesHistoryAction;
 
-	private DummyPart defaultPart;
+    private DummyPart defaultPart;
 
-	private final CdsAnalysisConfigRegistry configRegistry;
+    private final CdsAnalysisConfigRegistry configRegistry;
 
-	public CdsAnalysisView() {
-		super();
-		this.partsToPages = new HashMap<>();
-		this.pagesToParts = new HashMap<>();
-		this.viewStates = new HashMap<>();
-		this.configRegistry = new CdsAnalysisConfigRegistry(this);
-		SearchAndAnalysisPlugin.getDefault().getPreferenceStore().setDefault(IPreferences.MAX_CDS_ANALYZER_HISTORY, 10);
-	}
+    public CdsAnalysisView() {
+        super();
+        partsToPages = new HashMap<>();
+        pagesToParts = new HashMap<>();
+        viewStates = new HashMap<>();
+        configRegistry = new CdsAnalysisConfigRegistry(this);
+        SearchAndAnalysisPlugin.getDefault().getPreferenceStore().setDefault(IPreferences.MAX_CDS_ANALYZER_HISTORY, 10);
+    }
 
-	@Override
-	public void createPartControl(final Composite parent) {
-		createActions();
+    @Override
+    public void createPartControl(final Composite parent) {
+        createActions();
 
-		this.pageContent = new Composite(parent, SWT.NONE);
-		final GridLayout layout = new GridLayout();
-		layout.marginHeight = 0;
-		layout.marginWidth = 0;
-		layout.horizontalSpacing = 0;
-		layout.verticalSpacing = 0;
-		this.pageContent.setLayout(layout);
+        pageContent = new Composite(parent, SWT.NONE);
+        final GridLayout layout = new GridLayout();
+        layout.marginHeight = 0;
+        layout.marginWidth = 0;
+        layout.horizontalSpacing = 0;
+        layout.verticalSpacing = 0;
+        pageContent.setLayout(layout);
 
-		this.descriptionComposite = null;
+        descriptionComposite = null;
 
-		super.createPartControl(this.pageContent);
-		getPageBook().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		CdsAnalysisManager.getInstance().addCdsAnalysisListener(this);
+        super.createPartControl(pageContent);
+        getPageBook().setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        CdsAnalysisManager.getInstance().addCdsAnalysisListener(this);
 
-		HelpUtil.setHelp(this.pageContent, HelpContexts.CDS_ANALYZER);
+        HelpUtil.setHelp(pageContent, HelpContexts.CDS_ANALYZER);
 
-		initializeToolBar();
-		initializePageSwitcher();
+        initializeToolBar();
+        initializePageSwitcher();
 
-		showLatestAnalysis();
-	}
+        showLatestAnalysis();
+    }
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public <T> T getAdapter(final Class<T> adapter) {
-		final Object superAdapter = super.getAdapter(adapter);
-		if (superAdapter != null) {
-			return (T) superAdapter;
-		}
-		if (adapter == IShowInSource.class) {
-			return (T) (IShowInSource) () -> new ShowInContext(null, getSelectionProvider().getSelection());
-		}
-		return null;
-	}
+    @SuppressWarnings("unchecked")
+    @Override
+    public <T> T getAdapter(final Class<T> adapter) {
+        final Object superAdapter = super.getAdapter(adapter);
+        if (superAdapter != null) {
+            return (T) superAdapter;
+        }
+        if (adapter == IShowInSource.class) {
+            return (T) (IShowInSource) () -> new ShowInContext(null, getSelectionProvider().getSelection());
+        }
+        return null;
+    }
 
-	@Override
-	public void dispose() {
-		CdsAnalysisManager.getInstance().removeCdsAnalysisListener(this);
-		CdsAnalysisViewManager.getInstance().cdsAnalysisViewClosed(this);
-		super.dispose();
-	}
+    @Override
+    public void dispose() {
+        CdsAnalysisManager.getInstance().removeCdsAnalysisListener(this);
+        CdsAnalysisViewManager.getInstance().cdsAnalysisViewClosed(this);
+        super.dispose();
+    }
 
-	/**
-	 * Creates the groups and separators for the search view's tool bar
-	 *
-	 * @param toolbar the toolbar
-	 */
-	public static void createToolBarGroups(final IToolBarManager toolbar) {
-		toolbar.add(new Separator(IGeneralContextMenuConstants.GROUP_EDIT));
-		toolbar.add(new Separator(IGeneralContextMenuConstants.GROUP_NODE_ACTIONS));
-		toolbar.add(new Separator(IGeneralContextMenuConstants.GROUP_SEARCH));
-		toolbar.add(new Separator(IGeneralContextMenuConstants.GROUP_GOTO));
-		toolbar.add(new Separator(IGeneralContextMenuConstants.GROUP_ADDITIONS));
-	}
+    /**
+     * Creates the groups and separators for the search view's tool bar
+     *
+     * @param toolbar the toolbar
+     */
+    public static void createToolBarGroups(final IToolBarManager toolbar) {
+        toolbar.add(new Separator(IGeneralContextMenuConstants.GROUP_EDIT));
+        toolbar.add(new Separator(IGeneralContextMenuConstants.GROUP_NODE_ACTIONS));
+        toolbar.add(new Separator(IGeneralContextMenuConstants.GROUP_SEARCH));
+        toolbar.add(new Separator(IGeneralContextMenuConstants.GROUP_GOTO));
+        toolbar.add(new Separator(IGeneralContextMenuConstants.GROUP_ADDITIONS));
+    }
 
-	public static void createContextMenuGroups(final IMenuManager mgr) {
-		mgr.add(new Separator(IGeneralContextMenuConstants.GROUP_NEW));
-		mgr.add(new Separator(IGeneralContextMenuConstants.GROUP_OPEN));
-		mgr.add(new Separator(IContextMenuConstants.GROUP_DB_BROWSER));
-		mgr.add(new Separator(IContextMenuConstants.GROUP_CDS_ANALYSIS));
-		mgr.add(new Separator(IGeneralContextMenuConstants.GROUP_NODE_ACTIONS));
-		mgr.add(new Separator(IGeneralContextMenuConstants.GROUP_ADDITIONS));
-		mgr.add(new Separator(IGeneralContextMenuConstants.GROUP_EDIT));
-	}
+    public static void createContextMenuGroups(final IMenuManager mgr) {
+        mgr.add(new Separator(IGeneralContextMenuConstants.GROUP_NEW));
+        mgr.add(new Separator(IGeneralContextMenuConstants.GROUP_OPEN));
+        mgr.add(new Separator(IContextMenuConstants.GROUP_DB_BROWSER));
+        mgr.add(new Separator(IContextMenuConstants.GROUP_CDS_ANALYSIS));
+        mgr.add(new Separator(IGeneralContextMenuConstants.GROUP_NODE_ACTIONS));
+        mgr.add(new Separator(IGeneralContextMenuConstants.GROUP_ADDITIONS));
+        mgr.add(new Separator(IGeneralContextMenuConstants.GROUP_EDIT));
+    }
 
-	public static void createViewMenuGroups(final IMenuManager mgr) {
-		mgr.add(new Separator(IGeneralContextMenuConstants.GROUP_PROPERTIES));
-		mgr.add(new Separator(IGeneralContextMenuConstants.GROUP_FILTERING));
-		mgr.add(new Separator(IGeneralContextMenuConstants.GROUP_ADDITIONS));
-	}
+    public static void createViewMenuGroups(final IMenuManager mgr) {
+        mgr.add(new Separator(IGeneralContextMenuConstants.GROUP_PROPERTIES));
+        mgr.add(new Separator(IGeneralContextMenuConstants.GROUP_FILTERING));
+        mgr.add(new Separator(IGeneralContextMenuConstants.GROUP_ADDITIONS));
+    }
 
-	@Override
-	public void setFocus() {
-		final IPage page = getCurrentPage();
-		if (page != null) {
-			page.setFocus();
-		} else {
-			super.setFocus();
-		}
-	}
+    @Override
+    public void setFocus() {
+        final IPage page = getCurrentPage();
+        if (page != null) {
+            page.setFocus();
+        } else {
+            super.setFocus();
+        }
+    }
 
-	/**
-	 * Returns the active {@link CdsAnalysisPage}
-	 *
-	 * @return the active {@link CdsAnalysisPage}
-	 */
-	public CdsAnalysisPage<?> getActivePage() {
-		final IPage page = getCurrentPage();
-		return page instanceof CdsAnalysisPage ? (CdsAnalysisPage<?>) page : null;
-	}
+    /**
+     * Returns the active {@link CdsAnalysisPage}
+     *
+     * @return the active {@link CdsAnalysisPage}
+     */
+    public CdsAnalysisPage<?> getActivePage() {
+        final IPage page = getCurrentPage();
+        return page instanceof CdsAnalysisPage ? (CdsAnalysisPage<?>) page : null;
+    }
 
-	/**
-	 * Returns the active analysis of the view
-	 *
-	 * @return
-	 */
-	public CdsAnalysis getCurrentAnalysis() {
-		return this.currentAnalysis;
-	}
+    /**
+     * Returns the active analysis of the view
+     *
+     * @return
+     */
+    public CdsAnalysis getCurrentAnalysis() {
+        return currentAnalysis;
+    }
 
-	/**
-	 * Updates the label of the current page
-	 */
-	@Override
-	public void updateLabel() {
-		final CdsAnalysis analysis = getCurrentAnalysis();
-		String label = ""; //$NON-NLS-1$
-		if (analysis != null) {
-			label = LegacyActionTools.escapeMnemonics(analysis.getLabel());
-		}
-		if (this.pageContent.isDisposed()) {
-			return;
-		}
-		if (label.length() == 0) {
-			if (this.descriptionComposite != null) {
-				this.descriptionComposite.dispose();
-				this.descriptionComposite = null;
-				this.pageContent.layout();
-			}
-		} else {
-			if (this.descriptionComposite == null) {
-				this.descriptionComposite = new Composite(this.pageContent, SWT.NONE);
-				this.descriptionComposite.moveAbove(null);
+    /**
+     * Updates the label of the current page
+     */
+    @Override
+    public void updateLabel() {
+        final CdsAnalysis analysis = getCurrentAnalysis();
+        String label = ""; //$NON-NLS-1$
+        if (analysis != null) {
+            label = LegacyActionTools.escapeMnemonics(analysis.getLabel());
+        }
+        if (pageContent.isDisposed()) {
+            return;
+        }
+        if (label.length() == 0) {
+            if (descriptionComposite != null) {
+                descriptionComposite.dispose();
+                descriptionComposite = null;
+                pageContent.layout();
+            }
+        } else {
+            if (descriptionComposite == null) {
+                descriptionComposite = new Composite(pageContent, SWT.NONE);
+                descriptionComposite.moveAbove(null);
 
-				GridLayoutFactory.fillDefaults().spacing(0, 0).applyTo(this.descriptionComposite);
-				GridDataFactory.fillDefaults().grab(true, false).applyTo(this.descriptionComposite);
+                GridLayoutFactory.fillDefaults().spacing(0, 0).applyTo(descriptionComposite);
+                GridDataFactory.fillDefaults().grab(true, false).applyTo(descriptionComposite);
 
-				this.description = new Label(this.descriptionComposite, SWT.LEAD | SWT.TOP | SWT.WRAP);
-				GridDataFactory.fillDefaults()
-					.align(SWT.FILL, SWT.CENTER)
-					.grab(true, false)
-					.indent(5, SWT.DEFAULT)
-					.applyTo(this.description);
-				this.description.setText(label);
+                description = new Label(descriptionComposite, SWT.LEAD | SWT.TOP | SWT.WRAP);
+                GridDataFactory.fillDefaults()
+                        .align(SWT.FILL, SWT.CENTER)
+                        .grab(true, false)
+                        .indent(5, SWT.DEFAULT)
+                        .applyTo(description);
+                description.setText(label);
 
-				final Label separator = new Label(this.descriptionComposite, SWT.SEPARATOR | SWT.HORIZONTAL);
-				GridDataFactory.fillDefaults().grab(true, false).applyTo(separator);
-				this.pageContent.layout();
-			} else {
-				this.description.setText(label);
-				this.pageContent.layout();
-			}
-		}
-	}
+                final Label separator = new Label(descriptionComposite, SWT.SEPARATOR | SWT.HORIZONTAL);
+                GridDataFactory.fillDefaults().grab(true, false).applyTo(separator);
+                pageContent.layout();
+            } else {
+                description.setText(label);
+                pageContent.layout();
+            }
+        }
+    }
 
-	public void showCdsAnalysis(final CdsAnalysis analysis) {
-		CdsAnalysisPage<?> newPage = null;
-		if (analysis != null) {
-			newPage = this.configRegistry.findPageForType(analysis.getType());
-			if (newPage == null) {
-				// TODO: log error message that page could not be created
-				return;
-			}
-		}
-		internalShowSearchPage(newPage, analysis);
-	}
+    public void showCdsAnalysis(final CdsAnalysis analysis) {
+        CdsAnalysisPage<?> newPage = null;
+        if (analysis != null) {
+            newPage = configRegistry.findPageForType(analysis.getType());
+            if (newPage == null) {
+                // TODO: log error message that page could not be created
+                return;
+            }
+        }
+        internalShowSearchPage(newPage, analysis);
+    }
 
-	@Override
-	public void analysisRemoved(final CdsAnalysis analysis) {
-		if (analysis.equals(this.currentAnalysis)) {
-			showCdsAnalysis(null);
-			partActivated(this.defaultPart);
-		}
-		this.viewStates.remove(analysis);
+    @Override
+    public void analysisRemoved(final CdsAnalysis analysis) {
+        if (analysis.equals(currentAnalysis)) {
+            showCdsAnalysis(null);
+            partActivated(defaultPart);
+        }
+        viewStates.remove(analysis);
 
-		this.analysesHistoryAction.disposeMenu();
-		updateViewActions();
-	}
+        analysesHistoryAction.disposeMenu();
+        updateViewActions();
+    }
 
-	@Override
-	protected IPage createDefaultPage(final PageBook book) {
-		final CdsAnalysisPage<?> page = new WelcomePage();
-		initPage(page);
-		page.createControl(book);
-		final DummyPart part = new DummyPart(getSite());
-		this.partsToPages.put(part, page);
-		this.pagesToParts.put(page, part);
-		this.defaultPart = part;
+    @Override
+    protected IPage createDefaultPage(final PageBook book) {
+        final CdsAnalysisPage<?> page = new WelcomePage();
+        initPage(page);
+        page.createControl(book);
+        final DummyPart part = new DummyPart(getSite());
+        partsToPages.put(part, page);
+        pagesToParts.put(page, part);
+        defaultPart = part;
 
-		return page;
-	}
+        return page;
+    }
 
-	@Override
-	protected PageRec doCreatePage(final IWorkbenchPart part) {
-		final IPageBookViewPage page = this.partsToPages.get(part);
-		initPage(page);
-		page.createControl(getPageBook());
-		final PageRec rec = new PageRec(part, page);
-		return rec;
-	}
+    @Override
+    protected PageRec doCreatePage(final IWorkbenchPart part) {
+        final IPageBookViewPage page = partsToPages.get(part);
+        initPage(page);
+        page.createControl(getPageBook());
+        final PageRec rec = new PageRec(part, page);
+        return rec;
+    }
 
-	@Override
-	protected void doDestroyPage(final IWorkbenchPart part, final PageRec pageRecord) {
-		final IPage page = pageRecord.page;
-		page.dispose();
-		pageRecord.dispose();
-		// empty cross-reference cache
-		this.partsToPages.remove(part);
-	}
+    @Override
+    protected void doDestroyPage(final IWorkbenchPart part, final PageRec pageRecord) {
+        final IPage page = pageRecord.page;
+        page.dispose();
+        pageRecord.dispose();
+        // empty cross-reference cache
+        partsToPages.remove(part);
+    }
 
-	@Override
-	protected IWorkbenchPart getBootstrapPart() {
-		return null;
-	}
+    @Override
+    protected IWorkbenchPart getBootstrapPart() {
+        return null;
+    }
 
-	@Override
-	protected boolean isImportant(final IWorkbenchPart part) {
-		return part instanceof DummyPart;
-	}
+    @Override
+    protected boolean isImportant(final IWorkbenchPart part) {
+        return part instanceof DummyPart;
+    }
 
-	@Override
-	public void init(final IViewSite site) throws PartInitException {
-		super.init(site);
+    @Override
+    public void init(final IViewSite site) throws PartInitException {
+        super.init(site);
 
-		final IMenuManager menuManager = site.getActionBars().getMenuManager();
-		createViewMenuGroups(menuManager);
-	}
+        final IMenuManager menuManager = site.getActionBars().getMenuManager();
+        createViewMenuGroups(menuManager);
+    }
 
-	@Override
-	protected void initPage(final IPageBookViewPage page) {
-		super.initPage(page);
-		final IActionBars actionBars = page.getSite().getActionBars();
-		actionBars.setGlobalActionHandler(ActionFactory.REFRESH.getId(), this.refreshAnalysisAction);
-		updateViewActions();
-		actionBars.updateActionBars();
+    @Override
+    protected void initPage(final IPageBookViewPage page) {
+        super.initPage(page);
+        final IActionBars actionBars = page.getSite().getActionBars();
+        actionBars.setGlobalActionHandler(ActionFactory.REFRESH.getId(), refreshAnalysisAction);
+        updateViewActions();
+        actionBars.updateActionBars();
 
-	}
+    }
 
-	@Override
-	public void partActivated(final IWorkbenchPart part) {
-		super.partActivated(part);
-		if (part == this) {
-			CdsAnalysisViewManager.getInstance().cdsAnalysisViewActivated(this);
-		}
-	}
+    @Override
+    public void partActivated(final IWorkbenchPart part) {
+        super.partActivated(part);
+        if (part == this) {
+            CdsAnalysisViewManager.getInstance().cdsAnalysisViewActivated(this);
+        }
+    }
 
-	private void internalShowSearchPage(final CdsAnalysisPage<?> page, final CdsAnalysis analysisInput) {
-		// detach the previous page.
-		final CdsAnalysisPage<?> currentPage = getActivePage();
-		if (this.currentAnalysis != null && currentPage != null) {
-			this.viewStates.put(this.currentAnalysis, currentPage.getUiState());
-			currentPage.setInput(null, null);
-		}
+    private void internalShowSearchPage(final CdsAnalysisPage<?> page, final CdsAnalysis analysisInput) {
+        // detach the previous page.
+        final CdsAnalysisPage<?> currentPage = getActivePage();
+        if (currentAnalysis != null && currentPage != null) {
+            viewStates.put(currentAnalysis, currentPage.getUiState());
+            currentPage.setInput(null, null);
+        }
 
-		this.currentAnalysis = analysisInput;
+        currentAnalysis = analysisInput;
 
-		if (page != null) {
-			if (page != currentPage) {
-				DummyPart part = this.pagesToParts.get(page);
-				if (part == null) {
-					part = new DummyPart(getSite());
-					this.pagesToParts.put(page, part);
-					this.partsToPages.put(part, page);
-				}
+        if (page != null) {
+            if (page != currentPage) {
+                DummyPart part = pagesToParts.get(page);
+                if (part == null) {
+                    part = new DummyPart(getSite());
+                    pagesToParts.put(page, part);
+                    partsToPages.put(part, page);
+                }
 //				part.setLastActivation(++fActivationCount);
-				partActivated(part);
-				page.setFocus();
-			}
+                partActivated(part);
+                page.setFocus();
+            }
 
-			// connect to the new pages
-			final ViewUiState uiState = analysisInput != null ? this.viewStates.get(analysisInput) : null;
-			page.setInput(analysisInput, uiState);
-		}
-		updateViewActions();
-		updateLabel();
-	}
+            // connect to the new pages
+            final ViewUiState uiState = analysisInput != null ? viewStates.get(analysisInput) : null;
+            page.setInput(analysisInput, uiState);
+        }
+        updateViewActions();
+        updateLabel();
+    }
 
-	void updateViewActions() {
-		final boolean historyHasAnalyses = CdsAnalysisManager.getInstance().hasAnalyses();
-		this.analysesHistoryAction.setEnabled(historyHasAnalyses);
-		this.refreshAnalysisAction.setEnabled(historyHasAnalyses);
-	}
+    void updateViewActions() {
+        final boolean historyHasAnalyses = CdsAnalysisManager.getInstance().hasAnalyses();
+        analysesHistoryAction.setEnabled(historyHasAnalyses);
+        refreshAnalysisAction.setEnabled(historyHasAnalyses);
+    }
 
-	/*
-	 * initializes the Part toolbar
-	 */
-	private void initializeToolBar() {
-		final IActionBars actionBars = getViewSite().getActionBars();
-		final IToolBarManager tbm = actionBars.getToolBarManager();
-		createToolBarGroups(tbm);
-		tbm.appendToGroup(IGeneralContextMenuConstants.GROUP_SEARCH, this.refreshAnalysisAction);
-		tbm.appendToGroup(IGeneralContextMenuConstants.GROUP_GOTO, this.analysesHistoryAction);
-	}
+    /*
+     * initializes the Part toolbar
+     */
+    private void initializeToolBar() {
+        final IActionBars actionBars = getViewSite().getActionBars();
+        final IToolBarManager tbm = actionBars.getToolBarManager();
+        createToolBarGroups(tbm);
+        tbm.appendToGroup(IGeneralContextMenuConstants.GROUP_SEARCH, refreshAnalysisAction);
+        tbm.appendToGroup(IGeneralContextMenuConstants.GROUP_GOTO, analysesHistoryAction);
+    }
 
-	private void createActions() {
-		// create search functions like refresh, history dropdown, etc.
-		this.refreshAnalysisAction = new RefreshCurrentAnalysisAction();
-		this.refreshAnalysisAction.setEnabled(false);
-		this.refreshAnalysisAction.setActionDefinitionId(IWorkbenchCommandConstants.FILE_REFRESH);
+    private void createActions() {
+        // create search functions like refresh, history dropdown, etc.
+        refreshAnalysisAction = new RefreshCurrentAnalysisAction();
+        refreshAnalysisAction.setEnabled(false);
+        refreshAnalysisAction.setActionDefinitionId(IWorkbenchCommandConstants.FILE_REFRESH);
 
-		this.analysesHistoryAction = new CdsAnalysisHistoryDropDownAction(this);
-		this.refreshAnalysisAction.setEnabled(false);
-	}
+        analysesHistoryAction = new CdsAnalysisHistoryDropDownAction(this);
+        refreshAnalysisAction.setEnabled(false);
+    }
 
-	private void initializePageSwitcher() {
-		new PageSwitcher(this) {
-			@Override
-			public void activatePage(final Object page) {
-				final CdsAnalysis analysis = (CdsAnalysis) page;
-				CdsAnalysisManager.getInstance().activated(analysis);
-				showCdsAnalysis(analysis);
-			}
+    private void initializePageSwitcher() {
+        new PageSwitcher(this) {
+            @Override
+            public void activatePage(final Object page) {
+                final CdsAnalysis analysis = (CdsAnalysis) page;
+                CdsAnalysisManager.getInstance().activated(analysis);
+                showCdsAnalysis(analysis);
+            }
 
-			@Override
-			public ImageDescriptor getImageDescriptor(final Object page) {
-				final CdsAnalysis analysis = (CdsAnalysis) page;
-				return analysis.getImageDescriptor();
-			}
+            @Override
+            public ImageDescriptor getImageDescriptor(final Object page) {
+                final CdsAnalysis analysis = (CdsAnalysis) page;
+                return analysis.getImageDescriptor();
+            }
 
-			@Override
-			public String getName(final Object page) {
-				final CdsAnalysis analysis = (CdsAnalysis) page;
-				return analysis.getLabel();
-			}
+            @Override
+            public String getName(final Object page) {
+                final CdsAnalysis analysis = (CdsAnalysis) page;
+                return analysis.getLabel();
+            }
 
-			@Override
-			public Object[] getPages() {
-				return CdsAnalysisManager.getInstance().getAnalyses();
-			}
-		};
+            @Override
+            public Object[] getPages() {
+                return CdsAnalysisManager.getInstance().getAnalyses();
+            }
+        };
 
-	}
+    }
 
-	private void showLatestAnalysis() {
-		if (!CdsAnalysisManager.getInstance().hasAnalyses()) {
-			return;
-		}
-		final CdsAnalysis[] analyses = CdsAnalysisManager.getInstance().getAnalyses();
-		showCdsAnalysis(analyses[0]);
-	}
+    private void showLatestAnalysis() {
+        if (!CdsAnalysisManager.getInstance().hasAnalyses()) {
+            return;
+        }
+        final CdsAnalysis[] analyses = CdsAnalysisManager.getInstance().getAnalyses();
+        showCdsAnalysis(analyses[0]);
+    }
 
-	/**
-	 * Action to run the currently entered search again
-	 *
-	 * @author stockbal
-	 */
-	private class RefreshCurrentAnalysisAction extends Action {
-		public RefreshCurrentAnalysisAction() {
-			super(Messages.CdsAnalysis_RefreshAction_xtol,
-				SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.REFRESH));
-		}
+    /**
+     * Action to run the currently entered search again
+     *
+     * @author stockbal
+     */
+    private class RefreshCurrentAnalysisAction extends Action {
+        public RefreshCurrentAnalysisAction() {
+            super(Messages.CdsAnalysis_RefreshAction_xtol, SearchAndAnalysisPlugin.getDefault()
+                    .getImageDescriptor(IImages.REFRESH));
+        }
 
-		@Override
-		public void run() {
-			getActivePage().refreshAnalysis();
-		}
+        @Override
+        public void run() {
+            getActivePage().refreshAnalysis();
+        }
 
-	}
+    }
 
-	private class WelcomePage extends CdsAnalysisPage<CdsAnalysis> {
-		public WelcomePage() {
-			super(null);
-		}
+    private class WelcomePage extends CdsAnalysisPage<CdsAnalysis> {
+        public WelcomePage() {
+            super(null);
+        }
 
-		private CdsAnalysisWelcomeText infoText;
+        private CdsAnalysisWelcomeText infoText;
 
-		@Override
-		public void createControl(final Composite parent) {
-			this.infoText = new CdsAnalysisWelcomeText(parent);
-		}
+        @Override
+        public void createControl(final Composite parent) {
+            infoText = new CdsAnalysisWelcomeText(parent);
+        }
 
-		@Override
-		public Control getControl() {
-			return this.infoText;
-		}
+        @Override
+        public Control getControl() {
+            return infoText;
+        }
 
-		@Override
-		public void setFocus() {
-			this.infoText.setFocus();
-		}
+        @Override
+        public void setFocus() {
+            infoText.setFocus();
+        }
 
-		@Override
-		protected void loadInput(final ViewUiState uiState) {
-		}
+        @Override
+        protected void loadInput(final ViewUiState uiState) {
+        }
 
-		@Override
-		protected ViewUiState getUiState() {
-			return null;
-		}
+        @Override
+        protected ViewUiState getUiState() {
+            return null;
+        }
 
-		@Override
-		protected void refreshAnalysis() {
-		}
+        @Override
+        protected void refreshAnalysis() {
+        }
 
-		@Override
-		protected void configureTreeViewer(final TreeViewer treeViewer) {
-		}
-	}
+        @Override
+        protected void configureTreeViewer(final TreeViewer treeViewer) {
+        }
+    }
 
 }

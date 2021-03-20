@@ -19,83 +19,84 @@ import com.devepos.adt.saat.internal.util.IImages;
  *
  * @author stockbal
  */
-public class ReleaseStateSearchParameter extends NamedItemProposalProvider implements ISearchParameter, ISearchProposalProvider {
-	private final Image image;
+public class ReleaseStateSearchParameter extends NamedItemProposalProvider implements ISearchParameter,
+        ISearchProposalProvider {
+    private final Image image;
 
-	public ReleaseStateSearchParameter(final IAbapProjectProvider projectProvider) {
-		super(projectProvider, QueryParameterName.RELEASE_STATE, NamedItemType.API_STATE, true);
-		this.image = SearchAndAnalysisPlugin.getDefault().getImage(IImages.API_PARAM);
-	}
+    public ReleaseStateSearchParameter(final IAbapProjectProvider projectProvider) {
+        super(projectProvider, QueryParameterName.RELEASE_STATE, NamedItemType.API_STATE, true);
+        image = SearchAndAnalysisPlugin.getDefault().getImage(IImages.API_PARAM);
+    }
 
-	@Override
-	public List<IContentProposal> getProposalList(final String query) throws CoreException {
-		return getProposals("*", query);
-	}
+    @Override
+    public List<IContentProposal> getProposalList(final String query) throws CoreException {
+        return getProposals("*", query);
+    }
 
-	@Override
-	public QueryParameterName getParameterName() {
-		return this.parameterName;
-	}
+    @Override
+    public QueryParameterName getParameterName() {
+        return parameterName;
+    }
 
-	@Override
-	protected IContentProposal createProposalFromNamedItem(final INamedItem item, final String query) {
-		return new SearchParameterProposal(item.getName(), this.parameterName, item.getDescription(),
-			getDescriptionFromItem(item.getData()), null, query);
-	}
+    @Override
+    protected IContentProposal createProposalFromNamedItem(final INamedItem item, final String query) {
+        return new SearchParameterProposal(item.getName(), parameterName, item.getDescription(), getDescriptionFromItem(
+                item.getData()), null, query);
+    }
 
-	/*
-	 * Retrieve long text information from description
-	 */
-	private String getDescriptionFromItem(final String description) {
-		if (description == null || description.isEmpty()) {
-			return null;
-		}
-		final String[] itemDescrComponents = description.split("@@##@@"); //$NON-NLS-1$
-		if (itemDescrComponents.length < 2) {
-			return null;
-		}
+    /*
+     * Retrieve long text information from description
+     */
+    private String getDescriptionFromItem(final String description) {
+        if (description == null || description.isEmpty()) {
+            return null;
+        }
+        final String[] itemDescrComponents = description.split("@@##@@"); //$NON-NLS-1$
+        if (itemDescrComponents.length < 2) {
+            return null;
+        }
 
-		final String longText = itemDescrComponents[1];
-		final String[] longTextParts = longText.split("="); //$NON-NLS-1$
-		if (longTextParts == null || longTextParts.length < 2) {
-			return null;
-		}
-		return longTextParts[1];
-	}
+        final String longText = itemDescrComponents[1];
+        final String[] longTextParts = longText.split("="); //$NON-NLS-1$
+        if (longTextParts == null || longTextParts.length < 2) {
+            return null;
+        }
+        return longTextParts[1];
+    }
 
-	@Override
-	public Image getImage() {
-		return this.image;
-	}
+    @Override
+    public Image getImage() {
+        return image;
+    }
 
-	@Override
-	public String getLabel() {
-		return this.parameterName.getLowerCaseKey();
-	}
+    @Override
+    public String getLabel() {
+        return parameterName.getLowerCaseKey();
+    }
 
-	@Override
-	public String getDescription() {
-		return NLS.bind(Messages.SearchPatternAnalyzer_DescriptionReleaseStateParameter_xmsg,
-			new Object[] { getLabel(), "cloud" });
-	}
+    @Override
+    public String getDescription() {
+        return NLS.bind(Messages.SearchPatternAnalyzer_DescriptionReleaseStateParameter_xmsg, new Object[] { getLabel(),
+                "cloud" });
+    }
 
-	@Override
-	public boolean supportsPatternValues() {
-		return false;
-	}
+    @Override
+    public boolean supportsPatternValues() {
+        return false;
+    }
 
-	@Override
-	public boolean isBuffered() {
-		return true;
-	}
+    @Override
+    public boolean isBuffered() {
+        return true;
+    }
 
-	@Override
-	public boolean supportsMultipleValues() {
-		return true;
-	}
+    @Override
+    public boolean supportsMultipleValues() {
+        return true;
+    }
 
-	@Override
-	public boolean supportsNegatedValues() {
-		return true;
-	}
+    @Override
+    public boolean supportsNegatedValues() {
+        return true;
+    }
 }

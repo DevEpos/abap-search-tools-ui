@@ -72,436 +72,438 @@ import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
  */
 public abstract class CdsAnalysisPage<T extends CdsAnalysis> extends Page {
 
-	protected Composite composite;
-	protected IAbapProjectProvider projectProvider;
-	protected T analysisResult;
-	private StructuredViewer viewer;
-	private final CdsAnalysisView parentView;
-	private MenuManager menuMgr;
-	private SelectionProviderProxy selectionProvider;
-	private CopyToClipboardAction copyToClipBoardAction;
+    protected Composite composite;
+    protected IAbapProjectProvider projectProvider;
+    protected T analysisResult;
+    private StructuredViewer viewer;
+    private final CdsAnalysisView parentView;
+    private MenuManager menuMgr;
+    private SelectionProviderProxy selectionProvider;
+    private CopyToClipboardAction copyToClipBoardAction;
 
-	public CdsAnalysisPage(final CdsAnalysisView viewPart) {
-		this.parentView = viewPart;
-	}
+    public CdsAnalysisPage(final CdsAnalysisView viewPart) {
+        this.parentView = viewPart;
+    }
 
-	@Override
-	public void createControl(final Composite parent) {
-		this.menuMgr = new MenuManager("#PopUp"); //$NON-NLS-1$
-		this.menuMgr.setRemoveAllWhenShown(true);
-		this.menuMgr.setParent(getSite().getActionBars().getMenuManager());
-		this.menuMgr.addMenuListener(mgr -> {
-			fillContextMenu(mgr);
-		});
+    @Override
+    public void createControl(final Composite parent) {
+        this.menuMgr = new MenuManager("#PopUp"); //$NON-NLS-1$
+        this.menuMgr.setRemoveAllWhenShown(true);
+        this.menuMgr.setParent(getSite().getActionBars().getMenuManager());
+        this.menuMgr.addMenuListener(mgr -> {
+            fillContextMenu(mgr);
+        });
 
-		this.selectionProvider = new SelectionProviderProxy();
-		getSite().setSelectionProvider(this.selectionProvider);
-		// Register menu
-		getSite().registerContextMenu(this.parentView.getViewSite().getId(), this.menuMgr, this.selectionProvider);
+        this.selectionProvider = new SelectionProviderProxy();
+        getSite().setSelectionProvider(this.selectionProvider);
+        // Register menu
+        getSite().registerContextMenu(this.parentView.getViewSite().getId(), this.menuMgr, this.selectionProvider);
 
-		this.composite = createTreeViewerComposite(parent);
-		this.viewer = createTreeViewer(this.composite);
-		if (this.viewer != null) {
-			configureTreeViewer((TreeViewer) this.viewer);
-			registerTreeListeners();
-			createActions();
-			this.selectionProvider.addViewer(this.viewer, true);
+        this.composite = createTreeViewerComposite(parent);
+        this.viewer = createTreeViewer(this.composite);
+        if (this.viewer != null) {
+            configureTreeViewer((TreeViewer) this.viewer);
+            registerTreeListeners();
+            createActions();
+            this.selectionProvider.addViewer(this.viewer, true);
 
-			final Menu menu = this.menuMgr.createContextMenu(this.viewer.getControl());
-			this.viewer.getControl().setMenu(menu);
-		}
+            final Menu menu = this.menuMgr.createContextMenu(this.viewer.getControl());
+            this.viewer.getControl().setMenu(menu);
+        }
 
-		final IToolBarManager tbm = getSite().getActionBars().getToolBarManager();
-		tbm.removeAll();
-		CdsAnalysisView.createToolBarGroups(tbm);
-		fillToolbar(tbm);
-		tbm.update(false);
-	}
+        final IToolBarManager tbm = getSite().getActionBars().getToolBarManager();
+        tbm.removeAll();
+        CdsAnalysisView.createToolBarGroups(tbm);
+        fillToolbar(tbm);
+        tbm.update(false);
+    }
 
-	protected ISelectionProvider createSelectionProvider() {
-		return new SelectionProviderAdapter();
-	}
+    protected ISelectionProvider createSelectionProvider() {
+        return new SelectionProviderAdapter();
+    }
 
-	@Override
-	public Control getControl() {
-		return this.composite;
-	}
+    @Override
+    public Control getControl() {
+        return this.composite;
+    }
 
-	/**
-	 * Returns the owning view of this page
-	 *
-	 * @return
-	 */
-	public CdsAnalysisView getViewPart() {
-		return this.parentView;
-	}
+    /**
+     * Returns the owning view of this page
+     *
+     * @return
+     */
+    public CdsAnalysisView getViewPart() {
+        return this.parentView;
+    }
 
-	/**
-	 * Analyzes the given CDS View (or Database table/view for Where-Used) and shows
-	 * the result in the structured viewer of the page
-	 *
-	 * @param analysis the analysis input for the page
-	 */
-	@SuppressWarnings("unchecked")
-	public final void setInput(final CdsAnalysis analysis, final ViewUiState uiState) {
-		if (this.analysisResult != null) {
-			clearViewerInput();
-		}
-		this.analysisResult = (T) analysis;
-		if (analysis != null) {
-			final IAdtObjectReferenceElementInfo adtObjectInfo = analysis.getAdtObjectInfo();
-			final IDestinationProvider destProvider = ((IAdaptable) adtObjectInfo).getAdapter(IDestinationProvider.class);
-			if (destProvider != null) {
-				this.projectProvider = AbapProjectProviderAccessor.getProviderForDestination(destProvider.getDestinationId());
-			}
-			loadInput(uiState);
-		}
-	}
+    /**
+     * Analyzes the given CDS View (or Database table/view for Where-Used) and shows
+     * the result in the structured viewer of the page
+     *
+     * @param analysis the analysis input for the page
+     */
+    @SuppressWarnings("unchecked")
+    public final void setInput(final CdsAnalysis analysis, final ViewUiState uiState) {
+        if (this.analysisResult != null) {
+            clearViewerInput();
+        }
+        this.analysisResult = (T) analysis;
+        if (analysis != null) {
+            final IAdtObjectReferenceElementInfo adtObjectInfo = analysis.getAdtObjectInfo();
+            final IDestinationProvider destProvider = ((IAdaptable) adtObjectInfo).getAdapter(
+                    IDestinationProvider.class);
+            if (destProvider != null) {
+                this.projectProvider = AbapProjectProviderAccessor.getProviderForDestination(destProvider
+                        .getDestinationId());
+            }
+            loadInput(uiState);
+        }
+    }
 
-	@Override
-	public void setFocus() {
-		if (this.viewer != null) {
-			this.viewer.getControl().setFocus();
-		} else if (this.composite != null) {
-			this.composite.setFocus();
-		}
-	}
+    @Override
+    public void setFocus() {
+        if (this.viewer != null) {
+            this.viewer.getControl().setFocus();
+        } else if (this.composite != null) {
+            this.composite.setFocus();
+        }
+    }
 
-	/**
-	 * Returns the current result displayed in this page
-	 *
-	 * @return
-	 */
-	public T getAnalysisResult() {
-		return this.analysisResult;
-	}
+    /**
+     * Returns the current result displayed in this page
+     *
+     * @return
+     */
+    public T getAnalysisResult() {
+        return this.analysisResult;
+    }
 
-	/**
-	 * Clears viewer input before new content is set
-	 */
-	protected void clearViewerInput() {
-		// perform some clean up
-		if (this.viewer != null && !this.viewer.getControl().isDisposed()) {
-			this.viewer.setInput(null);
-		}
-	}
+    /**
+     * Clears viewer input before new content is set
+     */
+    protected void clearViewerInput() {
+        // perform some clean up
+        if (this.viewer != null && !this.viewer.getControl().isDisposed()) {
+            this.viewer.setInput(null);
+        }
+    }
 
-	protected SelectionProviderProxy getSelectionAdapter() {
-		return this.selectionProvider;
-	}
+    protected SelectionProviderProxy getSelectionAdapter() {
+        return this.selectionProvider;
+    }
 
-	/**
-	 * Creates the composite which will hold the tree viewer of the page
-	 * <p>
-	 * Subclasses may override to create a more complex layout <br>
-	 * </p>
-	 *
-	 * @param  parent the parent composite
-	 * @return
-	 */
-	protected Composite createTreeViewerComposite(final Composite parent) {
-		final Composite composite = new Composite(parent, SWT.NONE);
-		composite.setLayoutData(new GridData(GridData.FILL_BOTH));
-		composite.setSize(100, 100);
-		composite.setLayout(new FillLayout());
-		return composite;
-	}
+    /**
+     * Creates the composite which will hold the tree viewer of the page
+     * <p>
+     * Subclasses may override to create a more complex layout <br>
+     * </p>
+     *
+     * @param parent the parent composite
+     * @return
+     */
+    protected Composite createTreeViewerComposite(final Composite parent) {
+        final Composite composite = new Composite(parent, SWT.NONE);
+        composite.setLayoutData(new GridData(GridData.FILL_BOTH));
+        composite.setSize(100, 100);
+        composite.setLayout(new FillLayout());
+        return composite;
+    }
 
-	/**
-	 * Loads the current input into the analysis page
-	 *
-	 * @param uiState the UI state from the last activation or <code>null</code>
-	 */
-	protected abstract void loadInput(ViewUiState uiState);
+    /**
+     * Loads the current input into the analysis page
+     *
+     * @param uiState the UI state from the last activation or <code>null</code>
+     */
+    protected abstract void loadInput(ViewUiState uiState);
 
-	/**
-	 * Retrieves the current UI state of the page
-	 *
-	 * @return the current UI state of the page
-	 */
-	protected abstract ViewUiState getUiState();
+    /**
+     * Retrieves the current UI state of the page
+     *
+     * @return the current UI state of the page
+     */
+    protected abstract ViewUiState getUiState();
 
-	/**
-	 * Refreshes the current analysis content
-	 */
-	protected abstract void refreshAnalysis();
+    /**
+     * Refreshes the current analysis content
+     */
+    protected abstract void refreshAnalysis();
 
-	/**
-	 * Configures the tree viewer of the view
-	 *
-	 * @param treeViewer the tree viewer to be configures
-	 */
-	protected abstract void configureTreeViewer(TreeViewer treeViewer);
+    /**
+     * Configures the tree viewer of the view
+     *
+     * @param treeViewer the tree viewer to be configures
+     */
+    protected abstract void configureTreeViewer(TreeViewer treeViewer);
 
-	/**
-	 * Returns the viewer of this page if {@link #FLAG_LAYOUT_FLAT} is set then a
-	 * {@link TableViewer} instance will be returned, otherwise a {@link TreeViewer}
-	 *
-	 * @return
-	 */
-	protected StructuredViewer getViewer() {
-		return this.viewer;
-	}
+    /**
+     * Returns the viewer of this page if {@link #FLAG_LAYOUT_FLAT} is set then a
+     * {@link TableViewer} instance will be returned, otherwise a {@link TreeViewer}
+     *
+     * @return
+     */
+    protected StructuredViewer getViewer() {
+        return this.viewer;
+    }
 
-	/**
-	 * Create actions for the View toolbar or the context menu
-	 */
-	protected void createActions() {
-		this.copyToClipBoardAction = new CopyToClipboardAction();
-		this.copyToClipBoardAction.setActionDefinitionId(IWorkbenchCommandConstants.EDIT_COPY);
-		this.copyToClipBoardAction.registerViewer(this.viewer);
-		getSite().getActionBars().setGlobalActionHandler(ActionFactory.COPY.getId(), this.copyToClipBoardAction);
-	}
+    /**
+     * Create actions for the View toolbar or the context menu
+     */
+    protected void createActions() {
+        this.copyToClipBoardAction = new CopyToClipboardAction();
+        this.copyToClipBoardAction.setActionDefinitionId(IWorkbenchCommandConstants.EDIT_COPY);
+        this.copyToClipBoardAction.registerViewer(this.viewer);
+        getSite().getActionBars().setGlobalActionHandler(ActionFactory.COPY.getId(), this.copyToClipBoardAction);
+    }
 
-	/**
-	 * Registers the given viewer to the Copy-To-Clipboard action which is
-	 * accessible with the global shortcut <code>Strg+C</code>
-	 *
-	 * @param viewer the viewer to be registered
-	 */
-	protected final void registerViewerToClipboardAction(final StructuredViewer viewer) {
-		if (this.copyToClipBoardAction == null) {
-			return;
-		}
-		if (viewer == null) {
-			return;
-		}
-		this.copyToClipBoardAction.registerViewer(viewer);
-	}
+    /**
+     * Registers the given viewer to the Copy-To-Clipboard action which is
+     * accessible with the global shortcut <code>Strg+C</code>
+     *
+     * @param viewer the viewer to be registered
+     */
+    protected final void registerViewerToClipboardAction(final StructuredViewer viewer) {
+        if (this.copyToClipBoardAction == null) {
+            return;
+        }
+        if (viewer == null) {
+            return;
+        }
+        this.copyToClipBoardAction.registerViewer(viewer);
+    }
 
-	/**
-	 * Register listeners for the {@link TreeViewer} <br>
-	 * Subclasses may override
-	 */
-	protected void registerTreeListeners() {
-		this.viewer.addOpenListener(event -> {
-			final ITreeSelection sel = (ITreeSelection) event.getSelection();
-			final Iterator<?> selectionIter = sel.iterator();
-			while (selectionIter.hasNext()) {
-				handleOpenOnNode(selectionIter.next());
-			}
-		});
-	}
+    /**
+     * Register listeners for the {@link TreeViewer} <br>
+     * Subclasses may override
+     */
+    protected void registerTreeListeners() {
+        this.viewer.addOpenListener(event -> {
+            final ITreeSelection sel = (ITreeSelection) event.getSelection();
+            final Iterator<?> selectionIter = sel.iterator();
+            while (selectionIter.hasNext()) {
+                handleOpenOnNode(selectionIter.next());
+            }
+        });
+    }
 
-	/**
-	 * Handles the open event on one or several tree nodes in the main tree viewer
-	 * of the CDS Analysis page
-	 *
-	 * @param treeNode the tree node to be handled
-	 */
-	protected void handleOpenOnNode(final Object treeNode) {
-		if (treeNode == null) {
-			return;
-		}
-		if (treeNode instanceof IAdtObjectReferenceNode) {
-			final IAdtObjectReferenceNode selectedAdtObject = (IAdtObjectReferenceNode) treeNode;
+    /**
+     * Handles the open event on one or several tree nodes in the main tree viewer
+     * of the CDS Analysis page
+     *
+     * @param treeNode the tree node to be handled
+     */
+    protected void handleOpenOnNode(final Object treeNode) {
+        if (treeNode == null) {
+            return;
+        }
+        if (treeNode instanceof IAdtObjectReferenceNode) {
+            final IAdtObjectReferenceNode selectedAdtObject = (IAdtObjectReferenceNode) treeNode;
 
-			if (selectedAdtObject != null) {
-				final IDestinationProvider destProvider = selectedAdtObject.getAdapter(IDestinationProvider.class);
-				if (destProvider != null) {
-					final IAbapProjectProvider projectProvider = AbapProjectProviderAccessor
-						.getProviderForDestination(destProvider.getDestinationId());
-					projectProvider.openObjectReference(selectedAdtObject.getObjectReference());
-				}
-			}
-		} else if (treeNode instanceof ICollectionTreeNode) {
-			final boolean isExpanded = ((TreeViewer) this.viewer).getExpandedState(treeNode);
-			if (isExpanded) {
-				((TreeViewer) this.viewer).collapseToLevel(treeNode, 1);
-			} else {
-				((TreeViewer) this.viewer).expandToLevel(treeNode, 1);
-			}
-		} else if (treeNode instanceof ActionTreeNode) {
-			((ActionTreeNode) treeNode).getAction().execute();
-		}
-	}
+            if (selectedAdtObject != null) {
+                final IDestinationProvider destProvider = selectedAdtObject.getAdapter(IDestinationProvider.class);
+                if (destProvider != null) {
+                    final IAbapProjectProvider projectProvider = AbapProjectProviderAccessor.getProviderForDestination(
+                            destProvider.getDestinationId());
+                    projectProvider.openObjectReference(selectedAdtObject.getObjectReference());
+                }
+            }
+        } else if (treeNode instanceof ICollectionTreeNode) {
+            final boolean isExpanded = ((TreeViewer) this.viewer).getExpandedState(treeNode);
+            if (isExpanded) {
+                ((TreeViewer) this.viewer).collapseToLevel(treeNode, 1);
+            } else {
+                ((TreeViewer) this.viewer).expandToLevel(treeNode, 1);
+            }
+        } else if (treeNode instanceof ActionTreeNode) {
+            ((ActionTreeNode) treeNode).getAction().execute();
+        }
+    }
 
-	/**
-	 * Retrieves the an {@link Image} or <code>null</code> for the given element in
-	 * a
-	 *
-	 * @param  element
-	 * @return
-	 */
-	protected Image getTreeNodeImage(final Object element) {
-		Image image = null;
-		final ITreeNode node = (ITreeNode) element;
-		image = node.getImage();
-		if (image == null) {
+    /**
+     * Retrieves the an {@link Image} or <code>null</code> for the given element in
+     * a
+     *
+     * @param element
+     * @return
+     */
+    protected Image getTreeNodeImage(final Object element) {
+        Image image;
+        final ITreeNode node = (ITreeNode) element;
+        image = node.getImage();
+        if (image == null) {
 
-			if (element instanceof IAdtObjectReferenceNode) {
-				final IAdtObjectReferenceNode adtObjRefNode = (IAdtObjectReferenceNode) element;
-				if (adtObjRefNode.getObjectType() == ObjectType.CDS_VIEW) {
-					image = AdtTypeUtil.getInstance().getTypeImage(IAdtObjectTypeConstants.CDS_VIEW_DEFINITION_TYPE);
-				} else {
-					image = AdtTypeUtil.getInstance().getTypeImage(adtObjRefNode.getAdtObjectType());
-				}
-			}
-			if (element instanceof IAdaptable) {
-				final IExtendedAdtObjectInfo extendedSearchResultInfo = ((IAdaptable) element)
-					.getAdapter(IExtendedAdtObjectInfo.class);
-				if (extendedSearchResultInfo != null) {
-					final String[] overlayIds = new String[4];
-					if (extendedSearchResultInfo.isReleased()) {
-						overlayIds[IDecoration.TOP_RIGHT] = IImages.RELEASED_API_OVR;
-					}
-					final IDataSourceType sourceType = extendedSearchResultInfo.getSourceType();
-					if (sourceType != null && sourceType.getImageId() != null) {
-						overlayIds[IDecoration.BOTTOM_RIGHT] = sourceType.getImageId();
-					}
-					image = SearchAndAnalysisPlugin.getDefault().overlayImage(image, overlayIds);
-				}
-			}
-		}
-		return image;
-	}
+            if (element instanceof IAdtObjectReferenceNode) {
+                final IAdtObjectReferenceNode adtObjRefNode = (IAdtObjectReferenceNode) element;
+                if (adtObjRefNode.getObjectType() == ObjectType.CDS_VIEW) {
+                    image = AdtTypeUtil.getInstance().getTypeImage(IAdtObjectTypeConstants.CDS_VIEW_DEFINITION_TYPE);
+                } else {
+                    image = AdtTypeUtil.getInstance().getTypeImage(adtObjRefNode.getAdtObjectType());
+                }
+            }
+            if (element instanceof IAdaptable) {
+                final IExtendedAdtObjectInfo extendedSearchResultInfo = ((IAdaptable) element).getAdapter(
+                        IExtendedAdtObjectInfo.class);
+                if (extendedSearchResultInfo != null) {
+                    final String[] overlayIds = new String[4];
+                    if (extendedSearchResultInfo.isReleased()) {
+                        overlayIds[IDecoration.TOP_RIGHT] = IImages.RELEASED_API_OVR;
+                    }
+                    final IDataSourceType sourceType = extendedSearchResultInfo.getSourceType();
+                    if (sourceType != null && sourceType.getImageId() != null) {
+                        overlayIds[IDecoration.BOTTOM_RIGHT] = sourceType.getImageId();
+                    }
+                    image = SearchAndAnalysisPlugin.getDefault().overlayImage(image, overlayIds);
+                }
+            }
+        }
+        return image;
+    }
 
-	/**
-	 * Returns a {@link StyledString} for the given tree node
-	 * <code>element</element>
-	 *
-	 * @param  element the tree node for which a styled text should be determined
-	 * @return
-	 */
-	protected StyledString getTreeNodeLabel(final Object element) {
-		StyledString text = null;
-		final ITreeNode node = (ITreeNode) element;
+    /**
+     * Returns a {@link StyledString} for the given tree node
+     * <code>element</element>
+     *
+     * @param element the tree node for which a styled text should be determined
+     * @return
+     */
+    protected StyledString getTreeNodeLabel(final Object element) {
+        StyledString text = null;
+        final ITreeNode node = (ITreeNode) element;
 
-		if (element instanceof IStyledTreeNode) {
-			text = ((IStyledTreeNode) element).getStyledText();
-		} else {
-			text = new StyledString();
-			if (element instanceof LoadingTreeItemsNode) {
-				text.append(node.getDisplayName(), StylerFactory.ITALIC_STYLER);
-			} else {
+        if (element instanceof IStyledTreeNode) {
+            text = ((IStyledTreeNode) element).getStyledText();
+        } else {
+            text = new StyledString();
+            if (element instanceof LoadingTreeItemsNode) {
+                text.append(node.getDisplayName(), StylerFactory.ITALIC_STYLER);
+            } else {
 //				text.append(" "); // for broader image due to overlay
-				text.append(node.getDisplayName());
-			}
+                text.append(node.getDisplayName());
+            }
 
-			final String description = node.getDescription();
-			if (description != null && !description.isEmpty()) {
-				text.append("  " + description + "  ", //$NON-NLS-1$ //$NON-NLS-2$
-					StylerFactory.createCustomStyler(SWT.ITALIC, JFacePreferences.DECORATIONS_COLOR, null));
-			}
-		}
-		return text;
-	}
+            final String description = node.getDescription();
+            if (description != null && !description.isEmpty()) {
+                text.append("  " + description + "  ", //$NON-NLS-1$ //$NON-NLS-2$
+                        StylerFactory.createCustomStyler(SWT.ITALIC, JFacePreferences.DECORATIONS_COLOR, null));
+            }
+        }
+        return text;
+    }
 
-	/**
-	 * Creates a tree viewer instance in the given {@link Composite}
-	 *
-	 * @param  parent the parent composite for the {@link TreeViewer} instance
-	 * @return        the created tree viewer
-	 */
-	protected TreeViewer createTreeViewer(final Composite parent) {
-		return new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
-	}
+    /**
+     * Creates a tree viewer instance in the given {@link Composite}
+     *
+     * @param parent the parent composite for the {@link TreeViewer} instance
+     * @return the created tree viewer
+     */
+    protected TreeViewer createTreeViewer(final Composite parent) {
+        return new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
+    }
 
-	/**
-	 * Fills the pages' toolbar
-	 * <p>
-	 * Subclasses may override to add additional entries
-	 * </p>
-	 *
-	 * @param tbm the toolbar manager of the pages' site
-	 */
-	protected void fillToolbar(final IToolBarManager tbm) {
-		if (this.viewer instanceof TreeViewer) {
-			tbm.appendToGroup(IGeneralContextMenuConstants.GROUP_NODE_ACTIONS,
-				new CollapseAllTreeNodesAction((TreeViewer) this.viewer));
-		}
-	}
+    /**
+     * Fills the pages' toolbar
+     * <p>
+     * Subclasses may override to add additional entries
+     * </p>
+     *
+     * @param tbm the toolbar manager of the pages' site
+     */
+    protected void fillToolbar(final IToolBarManager tbm) {
+        if (this.viewer instanceof TreeViewer) {
+            tbm.appendToGroup(IGeneralContextMenuConstants.GROUP_NODE_ACTIONS, new CollapseAllTreeNodesAction(
+                    (TreeViewer) this.viewer));
+        }
+    }
 
-	/**
-	 * Fills the context menu of the current Analysis page
-	 *
-	 * @param mgr            the menu manager instance
-	 * @param commandChecker instance to verify if a command should be enabled or
-	 *                       not
-	 */
-	protected void fillContextMenu(final IMenuManager mgr, final CommandPossibleChecker commandChecker) {
-		if (!commandChecker.hasSelection()) {
-			mgr.appendToGroup(IGeneralContextMenuConstants.GROUP_EDIT, this.copyToClipBoardAction);
-			return;
-		}
-		if (commandChecker.canCommandBeEnabled(ICommandConstants.OPEN_IN_DB_BROWSER)) {
-			MenuItemFactory.addOpenInDbBrowserCommand(mgr, IContextMenuConstants.GROUP_DB_BROWSER, false);
-			MenuItemFactory.addOpenInDbBrowserCommand(mgr, IContextMenuConstants.GROUP_DB_BROWSER, true);
-		}
+    /**
+     * Fills the context menu of the current Analysis page
+     *
+     * @param mgr            the menu manager instance
+     * @param commandChecker instance to verify if a command should be enabled or
+     *                       not
+     */
+    protected void fillContextMenu(final IMenuManager mgr, final CommandPossibleChecker commandChecker) {
+        if (!commandChecker.hasSelection()) {
+            mgr.appendToGroup(IGeneralContextMenuConstants.GROUP_EDIT, this.copyToClipBoardAction);
+            return;
+        }
+        if (commandChecker.canCommandBeEnabled(ICommandConstants.OPEN_IN_DB_BROWSER)) {
+            MenuItemFactory.addOpenInDbBrowserCommand(mgr, IContextMenuConstants.GROUP_DB_BROWSER, false);
+            MenuItemFactory.addOpenInDbBrowserCommand(mgr, IContextMenuConstants.GROUP_DB_BROWSER, true);
+        }
 
-		if (this.projectProvider != null) {
-			final List<IAdtObjectReference> selectedObjRefs = commandChecker.getSelectedAdtObjectRefs();
+        if (this.projectProvider != null) {
+            final List<IAdtObjectReference> selectedObjRefs = commandChecker.getSelectedAdtObjectRefs();
 
-			mgr.appendToGroup(IGeneralContextMenuConstants.GROUP_OPEN,
-				new OpenAdtObjectAction(this.projectProvider.getProject(), selectedObjRefs));
-			if (commandChecker.hasSelection(true)) {
-				mgr.appendToGroup(IGeneralContextMenuConstants.GROUP_OPEN,
-					new ExecuteAdtObjectAction(this.projectProvider.getProject(), selectedObjRefs, true));
-			}
-		}
+            mgr.appendToGroup(IGeneralContextMenuConstants.GROUP_OPEN, new OpenAdtObjectAction(this.projectProvider
+                    .getProject(), selectedObjRefs));
+            if (commandChecker.hasSelection(true)) {
+                mgr.appendToGroup(IGeneralContextMenuConstants.GROUP_OPEN, new ExecuteAdtObjectAction(
+                        this.projectProvider.getProject(), selectedObjRefs, true));
+            }
+        }
 
-		mgr.appendToGroup(IGeneralContextMenuConstants.GROUP_EDIT, this.copyToClipBoardAction);
-	}
+        mgr.appendToGroup(IGeneralContextMenuConstants.GROUP_EDIT, this.copyToClipBoardAction);
+    }
 
-	/**
-	 * Fills the context menu of the current Analysis page
-	 *
-	 * @param mgr the menu manager instance
-	 */
-	protected final void fillContextMenu(final IMenuManager mgr) {
-		CdsAnalysisView.createContextMenuGroups(mgr);
-		fillContextMenu(mgr, new CommandPossibleChecker(false));
-	}
+    /**
+     * Fills the context menu of the current Analysis page
+     *
+     * @param mgr the menu manager instance
+     */
+    protected final void fillContextMenu(final IMenuManager mgr) {
+        CdsAnalysisView.createContextMenuGroups(mgr);
+        fillContextMenu(mgr, new CommandPossibleChecker(false));
+    }
 
-	class TreeViewerLabelProvider extends LabelProvider implements ILabelProvider, IStyledLabelProvider {
+    class TreeViewerLabelProvider extends LabelProvider implements ILabelProvider, IStyledLabelProvider {
 
-		@Override
-		public String getText(final Object element) {
-			final ITreeNode node = (ITreeNode) element;
-			return node.getName();
-		}
+        @Override
+        public String getText(final Object element) {
+            final ITreeNode node = (ITreeNode) element;
+            return node.getName();
+        }
 
-		@Override
-		public Image getImage(final Object element) {
-			return getTreeNodeImage(element);
-		}
+        @Override
+        public Image getImage(final Object element) {
+            return getTreeNodeImage(element);
+        }
 
-		@Override
-		public StyledString getStyledText(final Object element) {
-			return getTreeNodeLabel(element);
-		}
-	}
+        @Override
+        public StyledString getStyledText(final Object element) {
+            return getTreeNodeLabel(element);
+        }
+    }
 
-	static final class SortListener implements Listener {
-		private final TreeViewer viewer;
-		private final int sortDirForNewColumn;
+    static final class SortListener implements Listener {
+        private final TreeViewer viewer;
+        private final int sortDirForNewColumn;
 
-		public SortListener(final TreeViewer viewer) {
-			this(viewer, SWT.UP);
-		}
+        public SortListener(final TreeViewer viewer) {
+            this(viewer, SWT.UP);
+        }
 
-		public SortListener(final TreeViewer viewer, final int sortDirForNewColumn) {
-			this.viewer = viewer;
-			this.sortDirForNewColumn = sortDirForNewColumn;
-		}
+        public SortListener(final TreeViewer viewer, final int sortDirForNewColumn) {
+            this.viewer = viewer;
+            this.sortDirForNewColumn = sortDirForNewColumn;
+        }
 
-		@Override
-		public void handleEvent(final Event event) {
-			final TreeColumn newCol = (TreeColumn) event.widget;
-			final Tree tree = newCol.getParent();
+        @Override
+        public void handleEvent(final Event event) {
+            final TreeColumn newCol = (TreeColumn) event.widget;
+            final Tree tree = newCol.getParent();
 
-			final TreeColumn oldCol = tree.getSortColumn();
+            final TreeColumn oldCol = tree.getSortColumn();
 
-			if (oldCol != newCol) {
-				tree.setSortColumn(newCol);
-				tree.setSortDirection(this.sortDirForNewColumn);
-			} else {
-				final int oldDir = tree.getSortDirection();
+            if (oldCol != newCol) {
+                tree.setSortColumn(newCol);
+                tree.setSortDirection(sortDirForNewColumn);
+            } else {
+                final int oldDir = tree.getSortDirection();
 
-				final int newDir = oldDir == SWT.DOWN ? SWT.UP : SWT.DOWN;
-				tree.setSortDirection(newDir);
-			}
-			this.viewer.refresh(false);
-		}
-	}
+                final int newDir = oldDir == SWT.DOWN ? SWT.UP : SWT.DOWN;
+                tree.setSortDirection(newDir);
+            }
+            viewer.refresh(false);
+        }
+    }
 }

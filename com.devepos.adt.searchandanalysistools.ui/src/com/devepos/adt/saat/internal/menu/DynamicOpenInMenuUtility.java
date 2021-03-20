@@ -40,155 +40,154 @@ import com.devepos.adt.saat.internal.util.IImages;
  */
 public class DynamicOpenInMenuUtility {
 
-	/**
-	 * Creates analysis tools menu for the list of ADT Objects
-	 *
-	 * @param  adtObjects a list of ADT objects
-	 * @return            the created menu or <code>null</code>
-	 */
-	public static IMenuManager buildAnalysisToolsSubMenu(final List<IAdtObject> adtObjects) {
-		if (adtObjects == null || adtObjects.isEmpty()) {
-			return null;
-		}
-		final IProject project = adtObjects.get(0).getProject();
-		if (project == null) {
-			return null;
-		}
-		if (!FeatureTester.isObjectSearchAvailable(project)) {
-			return null;
-		}
-		return new DynamicOpenInMenuManager(adtObjects, project);
-	}
+    /**
+     * Creates analysis tools menu for the list of ADT Objects
+     *
+     * @param adtObjects a list of ADT objects
+     * @return the created menu or <code>null</code>
+     */
+    public static IMenuManager buildAnalysisToolsSubMenu(final List<IAdtObject> adtObjects) {
+        if (adtObjects == null || adtObjects.isEmpty()) {
+            return null;
+        }
+        final IProject project = adtObjects.get(0).getProject();
+        if (project == null) {
+            return null;
+        }
+        if (!FeatureTester.isObjectSearchAvailable(project)) {
+            return null;
+        }
+        return new DynamicOpenInMenuManager(adtObjects, project);
+    }
 
-	private static class DynamicOpenInMenuManager extends MenuManager implements IMenuListener {
-		private static final String ID = SearchAndAnalysisPlugin.PLUGIN_ID + ".actionsMenu"; //$NON-NLS-1$
-		private final List<IAdtObject> adtObjects;
-		private final IProject project;
-		private final boolean cdsAnalysisAvailable;
+    private static class DynamicOpenInMenuManager extends MenuManager implements IMenuListener {
+        private static final String ID = SearchAndAnalysisPlugin.PLUGIN_ID + ".actionsMenu"; //$NON-NLS-1$
+        private final List<IAdtObject> adtObjects;
+        private final IProject project;
+        private final boolean cdsAnalysisAvailable;
 
-		public DynamicOpenInMenuManager(final List<IAdtObject> adtObjects, final IProject project) {
-			super(Messages.AdtObjectMenu_MainMenuEntry,
-				SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.CDS_ANALYZER), ID);
-			this.adtObjects = adtObjects;
-			this.project = project;
-			this.cdsAnalysisAvailable = this.adtObjects.size() == 1 && FeatureTester.isCdsAnalysisAvailable(project);
-			setRemoveAllWhenShown(true);
-			addMenuListener(this);
-		}
+        public DynamicOpenInMenuManager(final List<IAdtObject> adtObjects, final IProject project) {
+            super(Messages.AdtObjectMenu_MainMenuEntry, SearchAndAnalysisPlugin.getDefault()
+                    .getImageDescriptor(IImages.CDS_ANALYZER), ID);
+            this.adtObjects = adtObjects;
+            this.project = project;
+            cdsAnalysisAvailable = this.adtObjects.size() == 1 && FeatureTester.isCdsAnalysisAvailable(project);
+            setRemoveAllWhenShown(true);
+            addMenuListener(this);
+        }
 
-		@Override
-		public void menuAboutToShow(final IMenuManager manager) {
-			final boolean isDbBrowserAvailable = FeatureTester.isSapGuiDbBrowserAvailable(this.adtObjects);
-			// Add command "Open In DB Browser"
-			if (isDbBrowserAvailable) {
-				MenuItemFactory.addOpenInDbBrowserCommand(this, false);
-				MenuItemFactory.addOpenInDbBrowserCommand(this, true);
-			}
+        @Override
+        public void menuAboutToShow(final IMenuManager manager) {
+            final boolean isDbBrowserAvailable = FeatureTester.isSapGuiDbBrowserAvailable(adtObjects);
+            // Add command "Open In DB Browser"
+            if (isDbBrowserAvailable) {
+                MenuItemFactory.addOpenInDbBrowserCommand(this, false);
+                MenuItemFactory.addOpenInDbBrowserCommand(this, true);
+            }
 
-			if (this.cdsAnalysisAvailable) {
-				if (isDbBrowserAvailable) {
-					add(new Separator());
-				}
-				final boolean isCdsView = this.adtObjects.get(0).getObjectType() == ObjectType.CDS_VIEW;
-				if (isCdsView && FeatureTester.isCdsTopDownAnalysisAvailable(this.project)) {
-					MenuItemFactory.addCdsAnalyzerCommandItem(this, null, ICommandConstants.CDS_TOP_DOWN_ANALYSIS);
-				}
-				MenuItemFactory.addCdsAnalyzerCommandItem(this, null, ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS);
-				if (isCdsView && FeatureTester.isCdsUsedEntitiesAnalysisAvailable(this.project)) {
-					MenuItemFactory.addCdsAnalyzerCommandItem(this, null, ICommandConstants.USED_ENTITIES_ANALYSIS);
-				}
-				MenuItemFactory.addCdsAnalyzerCommandItem(this, null, ICommandConstants.FIELD_ANALYSIS);
-				// Additional actions only exist for CDS view at the moment
-				if (isCdsView && FeatureTester.isNavigationTargetsFeatureAvailable(this.project)) {
-					add(new Separator());
-					add(new ExternalNavigationTargetsMenu(this.adtObjects.get(0), this.project));
-				}
-			}
+            if (cdsAnalysisAvailable) {
+                if (isDbBrowserAvailable) {
+                    add(new Separator());
+                }
+                final boolean isCdsView = adtObjects.get(0).getObjectType() == ObjectType.CDS_VIEW;
+                if (isCdsView && FeatureTester.isCdsTopDownAnalysisAvailable(project)) {
+                    MenuItemFactory.addCdsAnalyzerCommandItem(this, null, ICommandConstants.CDS_TOP_DOWN_ANALYSIS);
+                }
+                MenuItemFactory.addCdsAnalyzerCommandItem(this, null, ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS);
+                if (isCdsView && FeatureTester.isCdsUsedEntitiesAnalysisAvailable(project)) {
+                    MenuItemFactory.addCdsAnalyzerCommandItem(this, null, ICommandConstants.USED_ENTITIES_ANALYSIS);
+                }
+                MenuItemFactory.addCdsAnalyzerCommandItem(this, null, ICommandConstants.FIELD_ANALYSIS);
+                // Additional actions only exist for CDS view at the moment
+                if (isCdsView && FeatureTester.isNavigationTargetsFeatureAvailable(project)) {
+                    add(new Separator());
+                    add(new ExternalNavigationTargetsMenu(adtObjects.get(0), project));
+                }
+            }
 
-		}
+        }
 
-	}
+    }
 
-	private static class ExternalNavigationTargetsMenu extends MenuManager implements IMenuListener {
-		private static final String ID = SearchAndAnalysisPlugin.PLUGIN_ID + ".externalNavTargetsMenu"; //$NON-NLS-1$
-		private final IAdtObject adtObject;
-		private final IProject project;
+    private static class ExternalNavigationTargetsMenu extends MenuManager implements IMenuListener {
+        private static final String ID = SearchAndAnalysisPlugin.PLUGIN_ID + ".externalNavTargetsMenu"; //$NON-NLS-1$
+        private final IAdtObject adtObject;
+        private final IProject project;
 
-		public ExternalNavigationTargetsMenu(final IAdtObject adtObject, final IProject project) {
-			super(Messages.AdtObjectMenu_ExtnernalNavigationTargets_xmit,
-				SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.EXTERNAL_TOOLS), ID);
-			this.adtObject = adtObject;
-			this.project = project;
-			setRemoveAllWhenShown(true);
-			addMenuListener(this);
-		}
+        public ExternalNavigationTargetsMenu(final IAdtObject adtObject, final IProject project) {
+            super(Messages.AdtObjectMenu_ExtnernalNavigationTargets_xmit, SearchAndAnalysisPlugin.getDefault()
+                    .getImageDescriptor(IImages.EXTERNAL_TOOLS), ID);
+            this.adtObject = adtObject;
+            this.project = project;
+            setRemoveAllWhenShown(true);
+            addMenuListener(this);
+        }
 
-		@Override
-		public void menuAboutToShow(final IMenuManager manager) {
-			createLazyMenuItem();
-		}
+        @Override
+        public void menuAboutToShow(final IMenuManager manager) {
+            createLazyMenuItem();
+        }
 
-		private void createLazyMenuItem() {
-			final IContributionItem loadingIndicator = addTextContribution(Messages.AdtObjectMenu_LoadingText_xmit);
-			final String objectName = this.adtObject.getName();
-			final ObjectType objectType = this.adtObject.getObjectType();
+        private void createLazyMenuItem() {
+            final IContributionItem loadingIndicator = addTextContribution(Messages.AdtObjectMenu_LoadingText_xmit);
+            final String objectName = adtObject.getName();
+            final ObjectType objectType = adtObject.getObjectType();
 
-			final Job job = new Job(NLS.bind(Messages.AdtObjectMenu_DynamicMenuItemsLoadingJob_xmsg, objectName)) {
-				@Override
-				protected IStatus run(final IProgressMonitor monitor) {
+            final Job job = new Job(NLS.bind(Messages.AdtObjectMenu_DynamicMenuItemsLoadingJob_xmsg, objectName)) {
+                @Override
+                protected IStatus run(final IProgressMonitor monitor) {
 
-					final INavigationTargetService service = NavigationTargetServiceFactory
-						.createService(ExternalNavigationTargetsMenu.this.project);
-					final ObjectContainer<INavigationTarget[]> targetsWrapper = new ObjectContainer<>(null);
-					if (service != null) {
-						final INavigationTarget[] targets = service.getTargets(objectName, objectType);
-						targetsWrapper.setObject(targets);
-					}
-					monitor.done();
-					// update menu after targets are loaded
-					PlatformUI.getWorkbench().getDisplay().asyncExec((Runnable) () -> {
-						ExternalNavigationTargetsMenu.this.remove(loadingIndicator);
-						final INavigationTarget[] targets = targetsWrapper.getObject();
-						if (targets != null) {
-							addNavigationTargetActions(targets);
-						} else {
-							addTextContribution(Messages.AdtObjectMenu_NoTargetsFound_xmit);
-						}
-						ExternalNavigationTargetsMenu.this.update(true);
-					});
-					return Status.OK_STATUS;
-				}
-			};
-			job.schedule(100);
+                    final INavigationTargetService service = NavigationTargetServiceFactory.createService(project);
+                    final ObjectContainer<INavigationTarget[]> targetsWrapper = new ObjectContainer<>(null);
+                    if (service != null) {
+                        final INavigationTarget[] targets = service.getTargets(objectName, objectType);
+                        targetsWrapper.setObject(targets);
+                    }
+                    monitor.done();
+                    // update menu after targets are loaded
+                    PlatformUI.getWorkbench().getDisplay().asyncExec((Runnable) () -> {
+                        ExternalNavigationTargetsMenu.this.remove(loadingIndicator);
+                        final INavigationTarget[] targets = targetsWrapper.getObject();
+                        if (targets != null) {
+                            addNavigationTargetActions(targets);
+                        } else {
+                            addTextContribution(Messages.AdtObjectMenu_NoTargetsFound_xmit);
+                        }
+                        ExternalNavigationTargetsMenu.this.update(true);
+                    });
+                    return Status.OK_STATUS;
+                }
+            };
+            job.schedule(100);
 
-		}
+        }
 
-		private void addNavigationTargetActions(final INavigationTarget[] targets) {
-			for (final INavigationTarget target : targets) {
-				switch (target.getName()) {
-				case "EXCEL": //$NON-NLS-1$
-					add(new OpenWithAnalysisForOfficeExecutable(DestinationUtil.getDestinationId(this.project),
-						this.adtObject.getName()).createAction(target.getDisplayName(),
-							SearchAndAnalysisPlugin.getDefault().getImageDescriptor(target.getImageId())));
-					break;
-				case "QUERY_MONITOR": //$NON-NLS-1$
-					add(new OpenWithQueryMonitorExecutable(DestinationUtil.getDestinationId(this.project),
-						this.adtObject.getName()).createAction(target.getDisplayName(),
-							SearchAndAnalysisPlugin.getDefault().getImageDescriptor(target.getImageId())));
-					break;
-				}
-			}
-		}
+        private void addNavigationTargetActions(final INavigationTarget[] targets) {
+            for (final INavigationTarget target : targets) {
+                switch (target.getName()) {
+                case "EXCEL": //$NON-NLS-1$
+                    add(new OpenWithAnalysisForOfficeExecutable(DestinationUtil.getDestinationId(project), adtObject
+                            .getName()).createAction(target.getDisplayName(), SearchAndAnalysisPlugin.getDefault()
+                                    .getImageDescriptor(target.getImageId())));
+                    break;
+                case "QUERY_MONITOR": //$NON-NLS-1$
+                    add(new OpenWithQueryMonitorExecutable(DestinationUtil.getDestinationId(project), adtObject
+                            .getName()).createAction(target.getDisplayName(), SearchAndAnalysisPlugin.getDefault()
+                                    .getImageDescriptor(target.getImageId())));
+                    break;
+                }
+            }
+        }
 
-		private IContributionItem addTextContribution(final String text) {
-			final IContributionItem item = new ActionContributionItem(new Action(text) {
-				@Override
-				public boolean isEnabled() {
-					return false;
-				}
-			});
-			add(item);
-			return item;
-		}
-	}
+        private IContributionItem addTextContribution(final String text) {
+            final IContributionItem item = new ActionContributionItem(new Action(text) {
+                @Override
+                public boolean isEnabled() {
+                    return false;
+                }
+            });
+            add(item);
+            return item;
+        }
+    }
 }

@@ -17,14 +17,14 @@ import com.devepos.adt.saat.internal.search.contentassist.SearchParameterProposa
  */
 public class BooleanSearchParameter extends SearchParameter implements ISearchProposalProvider {
 
-	public BooleanSearchParameter(final QueryParameterName parameterName, final String description, final Image image) {
-		super(parameterName, description, image, false, false, false);
-	}
+    public BooleanSearchParameter(final QueryParameterName parameterName, final String description, final Image image) {
+        super(parameterName, description, image, false, false, false);
+    }
 
-	@Override
-	public List<IContentProposal> getProposalList(final String query) throws CoreException {
-		return Arrays.asList(new SearchParameterProposal(Boolean.TRUE.toString(), getParameterName(), null, null),
-			new SearchParameterProposal(Boolean.FALSE.toString(), getParameterName(), null, null));
-	}
+    @Override
+    public List<IContentProposal> getProposalList(final String query) throws CoreException {
+        return Arrays.asList(new SearchParameterProposal(Boolean.TRUE.toString(), getParameterName(), null, null),
+                new SearchParameterProposal(Boolean.FALSE.toString(), getParameterName(), null, null));
+    }
 
 }

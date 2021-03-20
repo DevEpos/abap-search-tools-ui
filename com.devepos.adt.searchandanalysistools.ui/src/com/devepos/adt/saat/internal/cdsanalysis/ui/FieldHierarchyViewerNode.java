@@ -11,47 +11,47 @@ import com.devepos.adt.base.ui.tree.ILazyLoadingNode;
  * @author stockbal
  */
 public class FieldHierarchyViewerNode {
-	private final ILazyLoadingNode node;
-	private boolean inputLoaded;
-	private TreePath[] expandedTreePaths;
+    private final ILazyLoadingNode node;
+    private boolean inputLoaded;
+    private TreePath[] expandedTreePaths;
 
-	public FieldHierarchyViewerNode(final ILazyLoadingNode node) {
-		this.node = node;
-	}
+    public FieldHierarchyViewerNode(final ILazyLoadingNode node) {
+        this.node = node;
+    }
 
-	public Object getInput() {
-		if (!this.inputLoaded) {
-			this.inputLoaded = true;
-		}
-		return this.node;
-	}
+    public Object getInput() {
+        if (!inputLoaded) {
+            inputLoaded = true;
+        }
+        return node;
+    }
 
-	public ILazyLoadingNode getNodeValue() {
-		return this.node;
-	}
+    public ILazyLoadingNode getNodeValue() {
+        return node;
+    }
 
-	public boolean isInputAlreadyLoaded() {
-		return this.inputLoaded;
-	}
+    public boolean isInputAlreadyLoaded() {
+        return inputLoaded;
+    }
 
-	public boolean hasContent() {
-		return this.node != null;
-	}
+    public boolean hasContent() {
+        return node != null;
+    }
 
-	public void setExpandedState(final TreePath[] paths) {
-		this.expandedTreePaths = paths;
-	}
+    public void setExpandedState(final TreePath[] paths) {
+        expandedTreePaths = paths;
+    }
 
-	public TreePath[] getExpandedState() {
-		return this.expandedTreePaths == null ? new TreePath[0] : this.expandedTreePaths;
-	}
+    public TreePath[] getExpandedState() {
+        return expandedTreePaths == null ? new TreePath[0] : expandedTreePaths;
+    }
 
-	public void refreshInput() {
-		if (this.node == null) {
-			return;
-		}
-		this.inputLoaded = false;
-		this.expandedTreePaths = null;
-		this.node.resetLoadedState();
-	}
+    public void refreshInput() {
+        if (node == null) {
+            return;
+        }
+        inputLoaded = false;
+        expandedTreePaths = null;
+        node.resetLoadedState();
+    }
 }

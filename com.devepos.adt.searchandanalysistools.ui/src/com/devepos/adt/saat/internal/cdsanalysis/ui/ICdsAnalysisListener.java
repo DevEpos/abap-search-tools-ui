@@ -7,10 +7,10 @@ package com.devepos.adt.saat.internal.cdsanalysis.ui;
  */
 public interface ICdsAnalysisListener {
 
-	/**
-	 * Notifies listener that analysis was removed
-	 * 
-	 * @param analysis the removed analysis
-	 */
-	void analysisRemoved(CdsAnalysis analysis);
+    /**
+     * Notifies listener that analysis was removed
+     *
+     * @param analysis the removed analysis
+     */
+    void analysisRemoved(CdsAnalysis analysis);
 }

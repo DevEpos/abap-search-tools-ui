@@ -29,94 +29,94 @@ import com.sap.adt.tools.core.system.IUser;
 @SuppressWarnings("restriction")
 public class UserSearchParameter implements ISearchParameter, ISearchProposalProvider {
 
-	private final QueryParameterName parameterName;
-	private final IAbapProjectProvider projectProvider;
-	private final Image image;
+    private final QueryParameterName parameterName;
+    private final IAbapProjectProvider projectProvider;
+    private final Image image;
 
-	public UserSearchParameter(final IAbapProjectProvider projectProvider) {
-		this.projectProvider = projectProvider;
-		this.parameterName = QueryParameterName.OWNER;
-		this.image = SearchAndAnalysisPlugin.getDefault().getImage(IImages.USER_PARAM);
-	}
+    public UserSearchParameter(final IAbapProjectProvider projectProvider) {
+        this.projectProvider = projectProvider;
+        parameterName = QueryParameterName.OWNER;
+        image = SearchAndAnalysisPlugin.getDefault().getImage(IImages.USER_PARAM);
+    }
 
-	@Override
-	public QueryParameterName getParameterName() {
-		return this.parameterName;
-	}
+    @Override
+    public QueryParameterName getParameterName() {
+        return parameterName;
+    }
 
-	@Override
-	public Image getImage() {
-		return this.image;
-	}
+    @Override
+    public Image getImage() {
+        return image;
+    }
 
-	@Override
-	public String getLabel() {
-		return this.parameterName.getLowerCaseKey();
-	}
+    @Override
+    public String getLabel() {
+        return parameterName.getLowerCaseKey();
+    }
 
-	@Override
-	public String getDescription() {
-		return NLS.bind(Messages.SearchPatternAnalyzer_DescriptionUserParameter_xmsg,
-			new Object[] { this.parameterName.getLowerCaseKey(), "smith" });
-	}
+    @Override
+    public String getDescription() {
+        return NLS.bind(Messages.SearchPatternAnalyzer_DescriptionUserParameter_xmsg, new Object[] { parameterName
+                .getLowerCaseKey(), "smith" });
+    }
 
-	@Override
-	public List<IContentProposal> getProposalList(final String query) throws CoreException {
-		final List<IContentProposal> proposals = new ArrayList<>();
-		try {
-			final List<IUser> users = getUsers(query);
-			if (users != null) {
-				for (final IUser user : users) {
-					proposals.add(new SearchParameterProposal(user.getId(), this.parameterName, user.getText(), query));
-					if (proposals.size() >= 50) {
-						break;
-					}
-				}
-			}
-		} catch (final Exception e) {
-			final IStatus status = new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, e.getMessage());
-			throw new CoreException(status);
-		}
-		return proposals;
-	}
+    @Override
+    public List<IContentProposal> getProposalList(final String query) throws CoreException {
+        final List<IContentProposal> proposals = new ArrayList<>();
+        try {
+            final List<IUser> users = getUsers(query);
+            if (users != null) {
+                for (final IUser user : users) {
+                    proposals.add(new SearchParameterProposal(user.getId(), parameterName, user.getText(), query));
+                    if (proposals.size() >= 50) {
+                        break;
+                    }
+                }
+            }
+        } catch (final Exception e) {
+            final IStatus status = new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, e.getMessage());
+            throw new CoreException(status);
+        }
+        return proposals;
+    }
 
-	/**
-	 * Retrieve users from ABAP system
-	 *
-	 * @param  query
-	 * @return
-	 * @throws CoreException
-	 */
-	private List<IUser> getUsers(final String query) throws CoreException {
-		List<IUser> users = null;
-		try {
-			final String destination = this.projectProvider.getDestinationId();
-			if (destination != null && this.projectProvider.ensureLoggedOn()) {
-				final IAbapSystemInfo systemInfo = AbapCore.getInstance().getAbapSystemInfo(destination);
-				users = systemInfo.getUsers(new NullProgressMonitor(), String.valueOf(query) + "*", 50);
-			}
-		} catch (final OperationCanceledException ex) {
-		}
-		return users;
-	}
+    /**
+     * Retrieve users from ABAP system
+     *
+     * @param query
+     * @return
+     * @throws CoreException
+     */
+    private List<IUser> getUsers(final String query) throws CoreException {
+        List<IUser> users = null;
+        try {
+            final String destination = projectProvider.getDestinationId();
+            if (destination != null && projectProvider.ensureLoggedOn()) {
+                final IAbapSystemInfo systemInfo = AbapCore.getInstance().getAbapSystemInfo(destination);
+                users = systemInfo.getUsers(new NullProgressMonitor(), String.valueOf(query) + "*", 50);
+            }
+        } catch (final OperationCanceledException ex) {
+        }
+        return users;
+    }
 
-	@Override
-	public boolean supportsPatternValues() {
-		return true;
-	}
+    @Override
+    public boolean supportsPatternValues() {
+        return true;
+    }
 
-	@Override
-	public boolean isBuffered() {
-		return false;
-	}
+    @Override
+    public boolean isBuffered() {
+        return false;
+    }
 
-	@Override
-	public boolean supportsMultipleValues() {
-		return true;
-	}
+    @Override
+    public boolean supportsMultipleValues() {
+        return true;
+    }
 
-	@Override
-	public boolean supportsNegatedValues() {
-		return true;
-	}
+    @Override
+    public boolean supportsNegatedValues() {
+        return true;
+    }
 }

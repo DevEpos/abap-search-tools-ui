@@ -25,55 +25,57 @@ import com.devepos.adt.saat.internal.util.IImages;
  */
 public class FieldAnalysis extends CdsAnalysis {
 
-	private LazyLoadingAdtObjectReferenceNode node;
+    private LazyLoadingAdtObjectReferenceNode node;
 
-	public FieldAnalysis(final IAdtObjectReferenceElementInfo adtObjectInfo) {
-		super(adtObjectInfo);
-		this.node = new LazyLoadingAdtObjectReferenceNode(adtObjectInfo.getName(), adtObjectInfo.getDisplayName(),
-			adtObjectInfo.getDescription(), adtObjectInfo.getAdtObjectReference(), null);
-		final IDestinationProvider destProvider = adtObjectInfo.getAdapter(IDestinationProvider.class);
-		this.node.setElementInfoProvider(new IElementInfoProvider() {
-			@Override
-			public String getProviderDescription() {
-				return NLS.bind(Messages.FieldAnalysisView_FieldLoadingProviderDesc_xmsg, adtObjectInfo.getDisplayName());
-			}
+    public FieldAnalysis(final IAdtObjectReferenceElementInfo adtObjectInfo) {
+        super(adtObjectInfo);
+        node = new LazyLoadingAdtObjectReferenceNode(adtObjectInfo.getName(), adtObjectInfo.getDisplayName(),
+                adtObjectInfo.getDescription(), adtObjectInfo.getAdtObjectReference(), null);
+        final IDestinationProvider destProvider = adtObjectInfo.getAdapter(IDestinationProvider.class);
+        node.setElementInfoProvider(new IElementInfoProvider() {
+            @Override
+            public String getProviderDescription() {
+                return NLS.bind(Messages.FieldAnalysisView_FieldLoadingProviderDesc_xmsg, adtObjectInfo
+                        .getDisplayName());
+            }
 
-			@Override
-			public List<IElementInfo> getElements() {
-				final IDdicRepositoryAccess ddicRepoAccess = DdicRepositoryAccessFactory.createDdicAccess();
-				return ddicRepoAccess.getElementColumnInformation(destProvider.getDestinationId(), adtObjectInfo.getUri());
-			}
-		});
-	}
+            @Override
+            public List<IElementInfo> getElements() {
+                final IDdicRepositoryAccess ddicRepoAccess = DdicRepositoryAccessFactory.createDdicAccess();
+                return ddicRepoAccess.getElementColumnInformation(destProvider.getDestinationId(), adtObjectInfo
+                        .getUri());
+            }
+        });
+    }
 
-	@Override
-	protected String getLabelPrefix() {
-		return Messages.FieldAnalysisView_ViewLabel_xfld;
-	}
+    @Override
+    protected String getLabelPrefix() {
+        return Messages.FieldAnalysisView_ViewLabel_xfld;
+    }
 
-	@Override
-	public Image getImage() {
-		return SearchAndAnalysisPlugin.getDefault().getImage(IImages.FIELD_ANALYSIS);
-	}
+    @Override
+    public Image getImage() {
+        return SearchAndAnalysisPlugin.getDefault().getImage(IImages.FIELD_ANALYSIS);
+    }
 
-	@Override
-	public ImageDescriptor getImageDescriptor() {
-		return SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.FIELD_ANALYSIS);
-	}
+    @Override
+    public ImageDescriptor getImageDescriptor() {
+        return SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.FIELD_ANALYSIS);
+    }
 
-	@Override
-	public CdsAnalysisType getType() {
-		return CdsAnalysisType.FIELD_ANALYSIS;
-	}
+    @Override
+    public CdsAnalysisType getType() {
+        return CdsAnalysisType.FIELD_ANALYSIS;
+    }
 
-	@Override
-	public Object getResult() {
-		return new Object[] { this.node };
-	}
+    @Override
+    public Object getResult() {
+        return new Object[] { node };
+    }
 
-	@Override
-	public void refreshAnalysis() {
-		this.node.resetLoadedState();
-	}
+    @Override
+    public void refreshAnalysis() {
+        node.resetLoadedState();
+    }
 
 }

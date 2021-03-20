@@ -29,105 +29,103 @@ import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
  */
 public class PackageSearchParameter implements ISearchParameter, ISearchProposalProvider {
 
-	private final QueryParameterName parameterName;
-	private final Image image;
-	private String destinationId;
-	private IAdtRisQuickSearch packageProvider;
-	private final IAbapProjectProvider projectProvider;
+    private final QueryParameterName parameterName;
+    private final Image image;
+    private String destinationId;
+    private IAdtRisQuickSearch packageProvider;
+    private final IAbapProjectProvider projectProvider;
 
-	/**
-	 * @param projectProvider
-	 * @param parameterName
-	 * @param imageId
-	 */
-	public PackageSearchParameter(final IAbapProjectProvider projectProvider) {
-		this.projectProvider = projectProvider;
-		this.parameterName = QueryParameterName.PACKAGE_NAME;
-		this.image = SearchAndAnalysisPlugin.getDefault().getImage(IImages.PACKAGE_PARAM);
-	}
+    /**
+     * @param projectProvider
+     * @param parameterName
+     * @param imageId
+     */
+    public PackageSearchParameter(final IAbapProjectProvider projectProvider) {
+        this.projectProvider = projectProvider;
+        parameterName = QueryParameterName.PACKAGE_NAME;
+        image = SearchAndAnalysisPlugin.getDefault().getImage(IImages.PACKAGE_PARAM);
+    }
 
-	@Override
-	public QueryParameterName getParameterName() {
-		return this.parameterName;
-	}
+    @Override
+    public QueryParameterName getParameterName() {
+        return parameterName;
+    }
 
-	@Override
-	public Image getImage() {
-		return this.image;
-	}
+    @Override
+    public Image getImage() {
+        return image;
+    }
 
-	@Override
-	public String getLabel() {
-		return this.parameterName.getLowerCaseKey();
-	}
+    @Override
+    public String getLabel() {
+        return parameterName.getLowerCaseKey();
+    }
 
-	@Override
-	public String getDescription() {
-		return NLS.bind(Messages.SearchPatternAnalyzer_DescriptionPackageParameter_xmsg,
-			new Object[] { this.parameterName.getLowerCaseKey(), "test" });
-	}
+    @Override
+    public String getDescription() {
+        return NLS.bind(Messages.SearchPatternAnalyzer_DescriptionPackageParameter_xmsg, new Object[] { parameterName
+                .getLowerCaseKey(), "test" });
+    }
 
-	@Override
-	public List<IContentProposal> getProposalList(final String query) throws CoreException {
-		final List<IContentProposal> result = new ArrayList<>();
-		try {
-			getPackageProvider();
-			if (this.packageProvider != null) {
-				List<IAdtObjectReference> packageList = new ArrayList<>();
-				packageList = this.packageProvider.execute(String.valueOf(query) + "*", 50, false, true,
-					new String[] { "DEVC/K" });
-				if (packageList != null) {
-					for (final IAdtObjectReference objRef : packageList) {
-						result.add(
-							new SearchParameterProposal(objRef.getName(), this.parameterName, objRef.getDescription(), query));
-					}
-				}
-			}
-		} catch (final OperationCanceledException ex) {
-		} catch (final Exception e) {
-			final IStatus status = new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, e.getMessage());
-			throw new CoreException(status);
-		}
+    @Override
+    public List<IContentProposal> getProposalList(final String query) throws CoreException {
+        final List<IContentProposal> result = new ArrayList<>();
+        try {
+            getPackageProvider();
+            if (packageProvider != null) {
+                List<IAdtObjectReference> packageList = new ArrayList<>();
+                packageList = packageProvider.execute(String.valueOf(query) + "*", 50, false, true, "DEVC/K");
+                if (packageList != null) {
+                    for (final IAdtObjectReference objRef : packageList) {
+                        result.add(new SearchParameterProposal(objRef.getName(), parameterName, objRef.getDescription(),
+                                query));
+                    }
+                }
+            }
+        } catch (final OperationCanceledException ex) {
+        } catch (final Exception e) {
+            final IStatus status = new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, e.getMessage());
+            throw new CoreException(status);
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	/**
-	 * Retrieve provider for retrieving packages via QuickSearch service
-	 */
-	private void getPackageProvider() {
-		final String currentDestinationId = this.projectProvider.getDestinationId();
-		if (this.destinationId == null || this.destinationId != currentDestinationId) {
-			if (this.projectProvider.ensureLoggedOn()) {
-				this.destinationId = currentDestinationId;
-			} else {
-				this.destinationId = null;
-				return;
-			}
-			try {
-				this.packageProvider = AdtRisQuickSearchFactory.createQuickSearch(this.destinationId, new NullProgressMonitor());
-			} catch (final RisQuickSearchNotSupportedException ex) {
-			}
-		}
-	}
+    /**
+     * Retrieve provider for retrieving packages via QuickSearch service
+     */
+    private void getPackageProvider() {
+        final String currentDestinationId = projectProvider.getDestinationId();
+        if (destinationId == null || destinationId != currentDestinationId) {
+            if (!projectProvider.ensureLoggedOn()) {
+                destinationId = null;
+                return;
+            }
+            destinationId = currentDestinationId;
+            try {
+                packageProvider = AdtRisQuickSearchFactory.createQuickSearch(destinationId, new NullProgressMonitor());
+            } catch (final RisQuickSearchNotSupportedException ex) {
+            }
+        }
+    }
 
-	@Override
-	public boolean supportsPatternValues() {
-		return true;
-	}
+    @Override
+    public boolean supportsPatternValues() {
+        return true;
+    }
 
-	@Override
-	public boolean isBuffered() {
-		return false;
-	}
+    @Override
+    public boolean isBuffered() {
+        return false;
+    }
 
-	@Override
-	public boolean supportsMultipleValues() {
-		return true;
-	}
+    @Override
+    public boolean supportsMultipleValues() {
+        return true;
+    }
 
-	@Override
-	public boolean supportsNegatedValues() {
-		return true;
-	}
+    @Override
+    public boolean supportsNegatedValues() {
+        return true;
+    }
 }

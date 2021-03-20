@@ -18,20 +18,20 @@ import com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavorite;;
  */
 public class OpenObjectSearchFavoritesHandler extends AbstractHandler {
 
-	@Override
-	public Object execute(final ExecutionEvent event) throws ExecutionException {
-		final SelectionDialog favoriteDialog = new ManageSearchFavoritesDialog(HandlerUtil.getActiveShell(event));
-		if (favoriteDialog.open() == Window.OK) {
-			final Object[] chosenEntries = favoriteDialog.getResult();
-			if (chosenEntries != null && chosenEntries.length == 1) {
-				final IObjectSearchFavorite favorite = (IObjectSearchFavorite) chosenEntries[0];
-				if (favorite.isProjectIndependent()) {
-					ObjectSearchEngine.openFavoriteInSearchDialog(favorite);
-				} else {
-					ObjectSearchEngine.runSearchFromFavorite(favorite);
-				}
-			}
-		}
-		return null;
-	}
+    @Override
+    public Object execute(final ExecutionEvent event) throws ExecutionException {
+        final SelectionDialog favoriteDialog = new ManageSearchFavoritesDialog(HandlerUtil.getActiveShell(event));
+        if (favoriteDialog.open() == Window.OK) {
+            final Object[] chosenEntries = favoriteDialog.getResult();
+            if (chosenEntries != null && chosenEntries.length == 1) {
+                final IObjectSearchFavorite favorite = (IObjectSearchFavorite) chosenEntries[0];
+                if (favorite.isProjectIndependent()) {
+                    ObjectSearchEngine.openFavoriteInSearchDialog(favorite);
+                } else {
+                    ObjectSearchEngine.runSearchFromFavorite(favorite);
+                }
+            }
+        }
+        return null;
+    }
 }

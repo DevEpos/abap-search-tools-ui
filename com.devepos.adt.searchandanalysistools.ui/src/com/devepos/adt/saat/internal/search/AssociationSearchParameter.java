@@ -21,68 +21,68 @@ import com.devepos.adt.saat.internal.util.IImages;
  *
  * @author stockbal
  */
-public class AssociationSearchParameter extends DatabaseEntityProposalProvider
-	implements ISearchParameter, ISearchProposalProvider {
+public class AssociationSearchParameter extends DatabaseEntityProposalProvider implements ISearchParameter,
+        ISearchProposalProvider {
 
-	private final Image image;
+    private final Image image;
 
-	/**
-	 *
-	 */
-	public AssociationSearchParameter(final IAbapProjectProvider projectProvider) {
-		super(projectProvider, QueryParameterName.ASSOCIATED_IN);
-		this.image = SearchAndAnalysisPlugin.getDefault().getImage(IImages.USED_AS_ASSOCICATION_PARAM);
-	}
+    /**
+     *
+     */
+    public AssociationSearchParameter(final IAbapProjectProvider projectProvider) {
+        super(projectProvider, QueryParameterName.ASSOCIATED_IN);
+        image = SearchAndAnalysisPlugin.getDefault().getImage(IImages.USED_AS_ASSOCICATION_PARAM);
+    }
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see com.devepos.adt.saat.internal.search.ISearchProposalProvider#
-	 * getProposalList(java.lang.String)
-	 */
-	@Override
-	public List<IContentProposal> getProposalList(final String query) throws CoreException {
-		return getProposals(query);
-	}
+    /*
+     * (non-Javadoc)
+     *
+     * @see com.devepos.adt.saat.internal.search.ISearchProposalProvider#
+     * getProposalList(java.lang.String)
+     */
+    @Override
+    public List<IContentProposal> getProposalList(final String query) throws CoreException {
+        return getProposals(query);
+    }
 
-	@Override
-	public QueryParameterName getParameterName() {
-		return this.parameterName;
-	}
+    @Override
+    public QueryParameterName getParameterName() {
+        return parameterName;
+    }
 
-	@Override
-	public Image getImage() {
-		return this.image;
-	}
+    @Override
+    public Image getImage() {
+        return image;
+    }
 
-	@Override
-	public String getLabel() {
-		return this.parameterName.getLowerCaseKey();
-	}
+    @Override
+    public String getLabel() {
+        return parameterName.getLowerCaseKey();
+    }
 
-	@Override
-	public String getDescription() {
-		return NLS.bind(Messages.SearchPatternAnalyzer_DescriptionAssociationParameter_xmsg,
-			new Object[] { getLabel(), "I_PRODUCT" });
-	}
+    @Override
+    public String getDescription() {
+        return NLS.bind(Messages.SearchPatternAnalyzer_DescriptionAssociationParameter_xmsg, new Object[] { getLabel(),
+                "I_PRODUCT" });
+    }
 
-	@Override
-	public boolean supportsPatternValues() {
-		return true;
-	}
+    @Override
+    public boolean supportsPatternValues() {
+        return true;
+    }
 
-	@Override
-	public boolean isBuffered() {
-		return false;
-	}
+    @Override
+    public boolean isBuffered() {
+        return false;
+    }
 
-	@Override
-	public boolean supportsMultipleValues() {
-		return true;
-	}
+    @Override
+    public boolean supportsMultipleValues() {
+        return true;
+    }
 
-	@Override
-	public boolean supportsNegatedValues() {
-		return true;
-	}
+    @Override
+    public boolean supportsNegatedValues() {
+        return true;
+    }
 }

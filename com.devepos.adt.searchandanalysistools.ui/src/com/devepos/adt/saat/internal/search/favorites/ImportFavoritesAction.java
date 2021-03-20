@@ -20,45 +20,46 @@ import com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavorite;
  */
 public class ImportFavoritesAction extends Action {
 
-	public ImportFavoritesAction() {
-		super(Messages.ImportFavoritesAction_ImportFavoritesAction_xmit,
-			SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.IMPORT));
-	}
+    public ImportFavoritesAction() {
+        super(Messages.ImportFavoritesAction_ImportFavoritesAction_xmit, SearchAndAnalysisPlugin.getDefault()
+                .getImageDescriptor(IImages.IMPORT));
+    }
 
-	@Override
-	public void run() {
-		final Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-		final FileDialog dialog = new FileDialog(shell, SWT.OPEN);
-		dialog.setFilterNames(new String[] { "XML (*.xml)", Messages.ImportFavoritesAction_AllFilesFileType_xmit }); //$NON-NLS-1$
-		dialog.setFilterExtensions(new String[] { "*.xml", "*.*" }); //$NON-NLS-1$ //$NON-NLS-2$
-		dialog.setFileName("favorites.xml"); //$NON-NLS-1$
+    @Override
+    public void run() {
+        final Shell shell = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+        final FileDialog dialog = new FileDialog(shell, SWT.OPEN);
+        dialog.setFilterNames(new String[] { "XML (*.xml)", Messages.ImportFavoritesAction_AllFilesFileType_xmit }); //$NON-NLS-1$
+        dialog.setFilterExtensions(new String[] { "*.xml", "*.*" }); //$NON-NLS-1$ //$NON-NLS-2$
+        dialog.setFileName("favorites.xml"); //$NON-NLS-1$
 
-		final String importFileName = dialog.open();
-		if (!"".equals(importFileName)) { //$NON-NLS-1$
-			final IObjectSearchFavorites existingFavorites = SearchAndAnalysisPlugin.getDefault().getFavoriteManager();
-			final IObjectSearchFavorites importedFavorites = new ObjectSearchFavorites();
-			ObjectSearchFavoriteStorage.deserialize(importedFavorites, importFileName);
-			int importedFavoritesCount = 0;
-			int favoritesInImportFile = 0;
-			if (importedFavorites.hasEntries()) {
-				favoritesInImportFile = importedFavorites.getFavorites().size();
-				for (final IObjectSearchFavorite imported : importedFavorites.getFavorites()) {
-					if (!existingFavorites.contains(imported.getDestinationId(), imported.getSearchType(),
-						imported.getDescription())) {
-						existingFavorites.addFavorite(imported);
-						importedFavoritesCount++;
-					}
-				}
-				if (importedFavoritesCount > 0) {
-					ObjectSearchFavoriteStorage.serialize();
-				}
-				MessageDialog.openInformation(shell, Messages.ImportFavoritesAction_ImportSuccess_xtit, NLS.bind(
-					Messages.ImportFavoritesAction_ImportSuccess_xmsg, importedFavoritesCount, favoritesInImportFile));
-			} else {
-				MessageDialog.openInformation(shell, Messages.ImportFavoritesAction_ImportSuccess_xtit,
-					Messages.ImportFavoritesAction_NoFavoritesImported_xmsg);
-			}
-		}
+        final String importFileName = dialog.open();
+        if (!"".equals(importFileName)) { //$NON-NLS-1$
+            final IObjectSearchFavorites existingFavorites = SearchAndAnalysisPlugin.getDefault().getFavoriteManager();
+            final IObjectSearchFavorites importedFavorites = new ObjectSearchFavorites();
+            ObjectSearchFavoriteStorage.deserialize(importedFavorites, importFileName);
+            int importedFavoritesCount = 0;
+            int favoritesInImportFile = 0;
+            if (importedFavorites.hasEntries()) {
+                favoritesInImportFile = importedFavorites.getFavorites().size();
+                for (final IObjectSearchFavorite imported : importedFavorites.getFavorites()) {
+                    if (!existingFavorites.contains(imported.getDestinationId(), imported.getSearchType(), imported
+                            .getDescription())) {
+                        existingFavorites.addFavorite(imported);
+                        importedFavoritesCount++;
+                    }
+                }
+                if (importedFavoritesCount > 0) {
+                    ObjectSearchFavoriteStorage.serialize();
+                }
+                MessageDialog.openInformation(shell, Messages.ImportFavoritesAction_ImportSuccess_xtit, NLS.bind(
+                        Messages.ImportFavoritesAction_ImportSuccess_xmsg, importedFavoritesCount,
+                        favoritesInImportFile));
+            } else {
+                MessageDialog.openInformation(shell, Messages.ImportFavoritesAction_ImportSuccess_xtit,
+                        Messages.ImportFavoritesAction_NoFavoritesImported_xmsg);
+            }
+        }
 
-	}
+    }
 }

@@ -35,92 +35,93 @@ import com.sap.adt.tools.core.project.IAbapProject;
  * @author stockbal
  */
 public abstract class OpenInCdsAnalyzerHandler extends AbstractHandler {
-	private final CdsAnalysisType mode;
+    private final CdsAnalysisType mode;
 
-	protected OpenInCdsAnalyzerHandler(final CdsAnalysisType mode) {
-		this.mode = mode;
-	}
+    protected OpenInCdsAnalyzerHandler(final CdsAnalysisType mode) {
+        this.mode = mode;
+    }
 
-	@Override
-	public Object execute(final ExecutionEvent event) throws ExecutionException {
-		final List<IAdtObject> selectedObjects = AdtUIUtil.getAdtObjectsFromSelection(true);
-		if (selectedObjects == null || selectedObjects.isEmpty() || selectedObjects.size() > 1) {
-			return null;
-		}
-		final IAdtObject selectedObject = selectedObjects.get(0);
-		final IProject project = selectedObject.getProject();
-		if (!canExecute(selectedObject)) {
-			return null;
-		}
-		if (!isFeatureAvailable(project)) {
-			MessageDialog.openInformation(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-				Messages.Dialog_InfoTitle_xmsg,
-				NLS.bind(getFeatureUnavailableMessage(), DestinationUtil.getDestinationId(project)));
-			return null;
-		}
-		final IAbapProject abapProject = selectedObject.getProject().getAdapter(IAbapProject.class);
-		// register the abapProject
-		AbapProjectProviderAccessor.registerProjectProvider(new AbapProjectProxy(selectedObject.getProject()));
-		final IAdtObjectReference objectRef = selectedObject.getReference();
-		if (objectRef != null && objectRef.getUri() != null) {
-			analyzeObject(objectRef, abapProject.getDestinationId());
-		}
-		return null;
+    @Override
+    public Object execute(final ExecutionEvent event) throws ExecutionException {
+        final List<IAdtObject> selectedObjects = AdtUIUtil.getAdtObjectsFromSelection(true);
+        if (selectedObjects == null || selectedObjects.isEmpty() || selectedObjects.size() > 1) {
+            return null;
+        }
+        final IAdtObject selectedObject = selectedObjects.get(0);
+        final IProject project = selectedObject.getProject();
+        if (!canExecute(selectedObject)) {
+            return null;
+        }
+        if (!isFeatureAvailable(project)) {
+            MessageDialog.openInformation(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+                    Messages.Dialog_InfoTitle_xmsg, NLS.bind(getFeatureUnavailableMessage(), DestinationUtil
+                            .getDestinationId(project)));
+            return null;
+        }
+        final IAbapProject abapProject = selectedObject.getProject().getAdapter(IAbapProject.class);
+        // register the abapProject
+        AbapProjectProviderAccessor.registerProjectProvider(new AbapProjectProxy(selectedObject.getProject()));
+        final IAdtObjectReference objectRef = selectedObject.getReference();
+        if (objectRef != null && objectRef.getUri() != null) {
+            analyzeObject(objectRef, abapProject.getDestinationId());
+        }
+        return null;
 
-	}
+    }
 
-	private void analyzeObject(final IAdtObjectReference objectRef, final String destinationId) {
-		final CdsAnalysisManager analysisManager = CdsAnalysisManager.getInstance();
-		final CdsAnalysisKey analysisKey = new CdsAnalysisKey(this.mode, objectRef.getUri(), destinationId);
-		final CdsAnalysis existing = analysisManager.getExistingAnalysis(analysisKey);
-		if (existing == null) {
-			// determine ADT information about CDS view
-			final Job adtObjectRetrievalJob = Job.create(Messages.CdsAnalysis_LoadAdtObjectJobName_xmsg,
-				(ICoreRunnable) monitor -> {
-					// check if search is possible in selected project
-					final IAdtObjectReferenceElementInfo adtObjectRefElemInfo = ElementInfoRetrievalServiceFactory.createService()
-						.retrieveBasicElementInformation(destinationId, objectRef.getUri());
-					if (adtObjectRefElemInfo != null) {
-						final CdsAnalysis newAnalysis = createTypedAnalysis(adtObjectRefElemInfo);
-						PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
-							analysisManager.addAnalysis(newAnalysis);
-							analysisManager.registerAnalysis(analysisKey, newAnalysis);
-							analysisManager.showAnalysis(newAnalysis);
-						});
-					}
-				});
-			adtObjectRetrievalJob.schedule();
+    private void analyzeObject(final IAdtObjectReference objectRef, final String destinationId) {
+        final CdsAnalysisManager analysisManager = CdsAnalysisManager.getInstance();
+        final CdsAnalysisKey analysisKey = new CdsAnalysisKey(mode, objectRef.getUri(), destinationId);
+        final CdsAnalysis existing = analysisManager.getExistingAnalysis(analysisKey);
+        if (existing == null) {
+            // determine ADT information about CDS view
+            final Job adtObjectRetrievalJob = Job.create(Messages.CdsAnalysis_LoadAdtObjectJobName_xmsg,
+                    (ICoreRunnable) monitor -> {
+                        // check if search is possible in selected project
+                        final IAdtObjectReferenceElementInfo adtObjectRefElemInfo = ElementInfoRetrievalServiceFactory
+                                .createService()
+                                .retrieveBasicElementInformation(destinationId, objectRef.getUri());
+                        if (adtObjectRefElemInfo != null) {
+                            final CdsAnalysis newAnalysis = createTypedAnalysis(adtObjectRefElemInfo);
+                            PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
+                                analysisManager.addAnalysis(newAnalysis);
+                                analysisManager.registerAnalysis(analysisKey, newAnalysis);
+                                analysisManager.showAnalysis(newAnalysis);
+                            });
+                        }
+                    });
+            adtObjectRetrievalJob.schedule();
 
-		} else {
-			analysisManager.showAnalysis(existing);
-		}
+        } else {
+            analysisManager.showAnalysis(existing);
+        }
 
-	}
+    }
 
-	/**
-	 * Creates CDS analysis object which can be shown in the CDS Analyzer view
-	 *
-	 * @param  objectRefInfo information about ADT object reference
-	 * @return               the created CDS analysis instance
-	 */
-	protected abstract CdsAnalysis createTypedAnalysis(IAdtObjectReferenceElementInfo objectRefInfo);
+    /**
+     * Creates CDS analysis object which can be shown in the CDS Analyzer view
+     *
+     * @param objectRefInfo information about ADT object reference
+     * @return the created CDS analysis instance
+     */
+    protected abstract CdsAnalysis createTypedAnalysis(IAdtObjectReferenceElementInfo objectRefInfo);
 
-	/**
-	 * @return the message text to be used if the given feature is not available
-	 */
-	protected String getFeatureUnavailableMessage() {
-		return Messages.CdsAnalysis_FeatureIsNotSupported_xmsg;
-	}
+    /**
+     * @return the message text to be used if the given feature is not available
+     */
+    protected String getFeatureUnavailableMessage() {
+        return Messages.CdsAnalysis_FeatureIsNotSupported_xmsg;
+    }
 
-	protected boolean isFeatureAvailable(final IProject project) {
-		if (project == null) {
-			return false;
-		}
-		return FeatureTester.isCdsAnalysisAvailable(project);
-	}
+    protected boolean isFeatureAvailable(final IProject project) {
+        if (project == null) {
+            return false;
+        }
+        return FeatureTester.isCdsAnalysisAvailable(project);
+    }
 
-	protected boolean canExecute(final IAdtObject selectedObject) {
-		return selectedObject.getObjectType() == ObjectType.CDS_VIEW;
-	}
+    protected boolean canExecute(final IAdtObject selectedObject) {
+        return selectedObject.getObjectType() == ObjectType.CDS_VIEW;
+    }
 
 }

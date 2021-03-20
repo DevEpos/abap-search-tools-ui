@@ -11,24 +11,24 @@ import com.devepos.adt.base.ui.project.IAbapProjectProvider;
  */
 public interface ISearchParameterHandler {
 
-	/**
-	 * Retrieves a list of all valid search parameters
-	 *
-	 * @return List of search parameters
-	 */
-	List<ISearchParameter> getParameters();
+    /**
+     * Retrieves a list of all valid search parameters
+     *
+     * @return List of search parameters
+     */
+    List<ISearchParameter> getParameters();
 
-	/**
-	 * Sets the search type for the current query
-	 *
-	 * @param searchType
-	 */
-	void setSearchType(SearchType searchType);
+    /**
+     * Sets the search type for the current query
+     *
+     * @param searchType
+     */
+    void setSearchType(SearchType searchType);
 
-	/**
-	 * Updates the project provider
-	 *
-	 * @param project the new project provider
-	 */
-	void updateProjectProvider(IAbapProjectProvider projectProvider);
+    /**
+     * Updates the project provider
+     *
+     * @param project the new project provider
+     */
+    void updateProjectProvider(IAbapProjectProvider projectProvider);
 }

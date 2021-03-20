@@ -16,14 +16,14 @@ import com.devepos.adt.saat.internal.search.ui.ObjectSearchResultPage;
  */
 public class OpenObjectSearchDialogHandler extends AbstractHandler {
 
-	@Override
-	public Object execute(final ExecutionEvent event) throws ExecutionException {
-		final IWorkbenchWindow activeWindow = HandlerUtil.getActiveWorkbenchWindow(event);
-		final SearchDialog dialog = new SearchDialog(activeWindow, ObjectSearchResultPage.DIALOG_ID);
-		dialog.setBlockOnOpen(false);
-		dialog.open();
-		dialog.setBlockOnOpen(true);
-		return null;
-	}
+    @Override
+    public Object execute(final ExecutionEvent event) throws ExecutionException {
+        final IWorkbenchWindow activeWindow = HandlerUtil.getActiveWorkbenchWindow(event);
+        final SearchDialog dialog = new SearchDialog(activeWindow, ObjectSearchResultPage.DIALOG_ID);
+        dialog.setBlockOnOpen(false);
+        dialog.open();
+        dialog.setBlockOnOpen(true);
+        return null;
+    }
 
 }

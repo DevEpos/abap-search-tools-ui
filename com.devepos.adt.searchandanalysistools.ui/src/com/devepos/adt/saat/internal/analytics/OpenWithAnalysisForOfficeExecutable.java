@@ -11,20 +11,21 @@ import com.devepos.adt.saat.internal.util.OpenInUtil;
  * @author stockbal
  */
 public class OpenWithAnalysisForOfficeExecutable extends Executable {
-	private final String cdsViewname;
-	private final String destinationId;
+    private final String cdsViewname;
+    private final String destinationId;
 
-	public OpenWithAnalysisForOfficeExecutable(final String destinationId, final String cdsViewName) {
-		this.cdsViewname = cdsViewName;
-		this.destinationId = destinationId;
-	}
+    public OpenWithAnalysisForOfficeExecutable(final String destinationId, final String cdsViewName) {
+        cdsViewname = cdsViewName;
+        this.destinationId = destinationId;
+    }
 
-	@Override
-	public void execute() {
-		final IAbapProjectProvider projectProvider = AbapProjectProviderAccessor.getProviderForDestination(this.destinationId);
-		if (projectProvider != null) {
-			OpenInUtil.openCDSInAnalysisForOffice(projectProvider.getProject(), this.cdsViewname);
-		}
-	}
+    @Override
+    public void execute() {
+        final IAbapProjectProvider projectProvider = AbapProjectProviderAccessor.getProviderForDestination(
+                destinationId);
+        if (projectProvider != null) {
+            OpenInUtil.openCDSInAnalysisForOffice(projectProvider.getProject(), cdsViewname);
+        }
+    }
 
 }
