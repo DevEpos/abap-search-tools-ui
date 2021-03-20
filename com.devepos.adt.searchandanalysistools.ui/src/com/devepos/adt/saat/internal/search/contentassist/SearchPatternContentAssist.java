@@ -203,8 +203,7 @@ public class SearchPatternContentAssist extends ContentProposalProvider {
      */
     private PopupDialog getProposalsPopup() {
         final ContentProposalAdapter proposalAdapter = getContentProposalAdapter();
-        return (PopupDialog) Reflection.forObject(proposalAdapter)
-                .getFieldValue("popup", proposalAdapter.getClass().getSuperclass());
+        return (PopupDialog) Reflection.forObject(proposalAdapter).getFieldValue("popup", proposalAdapter.getClass());
     }
 
     private boolean isTextFieldEditable() {
