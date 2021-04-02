@@ -31,7 +31,7 @@ public class CdsSecondaryElementInfoContentHandler implements IContentHandler<IE
 
     @Override
     public IElementInfoCollection deserialize(final IMessageBody body,
-            final Class<? extends IElementInfoCollection> clazz) {
+        final Class<? extends IElementInfoCollection> clazz) {
 
         try {
             processSecondaryElements(new AdtStaxContentHandlerUtility().parseXML(body));
@@ -70,11 +70,11 @@ public class CdsSecondaryElementInfoContentHandler implements IContentHandler<IE
 
     private void addAdtObjectCollection(final IXmlElement element, final String displayName) {
         final IElementInfoCollection collection = new ElementInfoCollection(displayName, SearchAndAnalysisPlugin
-                .getDefault()
-                .getImage(IImages.TYPE_GROUP));
+            .getDefault()
+            .getImage(IImages.TYPE_GROUP));
         for (final IXmlElement child : element.getChildren()) {
             final IAdtObjectReferenceElementInfo elementInfo = ElementInfoXMLExtractor.deserializeAdtObjectInfo(
-                    destinationId, child);
+                destinationId, child);
             if (elementInfo != null) {
                 elementInfo.setLazyLoadingSupport(false);
                 collection.getChildren().add(elementInfo);
@@ -86,7 +86,7 @@ public class CdsSecondaryElementInfoContentHandler implements IContentHandler<IE
     private void createCollection(final IXmlElement rootElement) {
         final String displayName = rootElement.getAttributeValue(IXmlTags.AT_RAW_NAME);
         collection = new ElementInfoCollection(displayName, SearchAndAnalysisPlugin.getDefault()
-                .getImage(IImages.VIRTUAL_FOLDER));
+            .getImage(IImages.VIRTUAL_FOLDER));
     }
 
     @Override

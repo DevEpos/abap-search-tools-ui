@@ -41,7 +41,7 @@ public final class FeatureTester {
     public static boolean isNavigationTargetsFeatureAvailable(final IProject project) {
         final IAbapProject abapProject = project.getAdapter(IAbapProject.class);
         final NavigationTargetsUriDiscovery uriDiscovery = new NavigationTargetsUriDiscovery(abapProject
-                .getDestinationId());
+            .getDestinationId());
         return uriDiscovery.isResourceDiscoverySuccessful() && uriDiscovery.getNavTargetsUri() != null;
     }
 

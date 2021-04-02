@@ -27,6 +27,6 @@ public class OpenColorPreferencePageAction extends Action {
     @Override
     public void run() {
         PreferencesUtil.createPreferenceDialogOn(null, COLORS_AND_FONTS_PREFERENCES, new String[] {
-                COLORS_AND_FONTS_PREFERENCES }, colorId).open();
+            COLORS_AND_FONTS_PREFERENCES }, colorId).open();
     }
 }

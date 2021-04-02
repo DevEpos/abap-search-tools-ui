@@ -18,7 +18,7 @@ import com.devepos.adt.saat.internal.util.IImages;
 public class ExportFavoritesAction extends Action {
     public ExportFavoritesAction() {
         super(Messages.ExportFavoritesAction_ActionTitle_xmit, SearchAndAnalysisPlugin.getDefault()
-                .getImageDescriptor(IImages.EXPORT));
+            .getImageDescriptor(IImages.EXPORT));
     }
 
     @Override

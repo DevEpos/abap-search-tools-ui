@@ -24,7 +24,7 @@ public class BooleanSearchParameter extends SearchParameter implements ISearchPr
     @Override
     public List<IContentProposal> getProposalList(final String query) throws CoreException {
         return Arrays.asList(new SearchParameterProposal(Boolean.TRUE.toString(), getParameterName(), null, null),
-                new SearchParameterProposal(Boolean.FALSE.toString(), getParameterName(), null, null));
+            new SearchParameterProposal(Boolean.FALSE.toString(), getParameterName(), null, null));
     }
 
 }

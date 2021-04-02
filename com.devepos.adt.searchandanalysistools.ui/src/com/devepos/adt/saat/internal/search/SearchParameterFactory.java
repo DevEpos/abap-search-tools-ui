@@ -23,9 +23,9 @@ public class SearchParameterFactory {
      */
     public static ISearchParameter createDescriptionParameter() {
         return new SearchParameter(QueryParameterName.DESCRIPTION, MessageFormat.format(
-                Messages.SearchPatternAnalyzer_DescriptionDescriptionParameter_xmsg, QueryParameterName.DESCRIPTION
-                        .getLowerCaseKey(), "*material*"), //$NON-NLS-1$
-                SearchAndAnalysisPlugin.getDefault().getImage(IImages.DESCRIPTION_PARAM), true, true, true);
+            Messages.SearchPatternAnalyzer_DescriptionDescriptionParameter_xmsg, QueryParameterName.DESCRIPTION
+                .getLowerCaseKey(), "*material*"), //$NON-NLS-1$
+            SearchAndAnalysisPlugin.getDefault().getImage(IImages.DESCRIPTION_PARAM), true, true, true);
     }
 
     /**
@@ -36,9 +36,9 @@ public class SearchParameterFactory {
      */
     public static ISearchParameter createHasParameterParameter() {
         return new BooleanSearchParameter(QueryParameterName.HAS_PARAMS, MessageFormat.format(
-                Messages.SearchPatternAnalyzer_DescriptionParamsParameter_xmsg, QueryParameterName.HAS_PARAMS
-                        .getLowerCaseKey(), "true"), //$NON-NLS-1$
-                SearchAndAnalysisPlugin.getDefault().getImage(IImages.PARAMETER_PARAM));
+            Messages.SearchPatternAnalyzer_DescriptionParamsParameter_xmsg, QueryParameterName.HAS_PARAMS
+                .getLowerCaseKey(), "true"), //$NON-NLS-1$
+            SearchAndAnalysisPlugin.getDefault().getImage(IImages.PARAMETER_PARAM));
     }
 
     /**
@@ -49,9 +49,9 @@ public class SearchParameterFactory {
      */
     public static ISearchParameter createCdsParamParameter() {
         return new SearchParameter(QueryParameterName.CDS_PARAMETER, MessageFormat.format(
-                Messages.SearchPatternAnalyzer_DescriptionParamParameter_xmsg, QueryParameterName.CDS_PARAMETER
-                        .getLowerCaseKey(), "p_plant"), //$NON-NLS-1$
-                SearchAndAnalysisPlugin.getDefault().getImage(IImages.PARAMETER_PARAM), true, true, true);
+            Messages.SearchPatternAnalyzer_DescriptionParamParameter_xmsg, QueryParameterName.CDS_PARAMETER
+                .getLowerCaseKey(), "p_plant"), //$NON-NLS-1$
+            SearchAndAnalysisPlugin.getDefault().getImage(IImages.PARAMETER_PARAM), true, true, true);
     }
 
     /**
@@ -62,9 +62,9 @@ public class SearchParameterFactory {
      */
     public static ISearchParameter createCdsTypeParameter(final IAbapProjectProvider projectProvider) {
         final NamedItemParameter parameter = new NamedItemParameter(projectProvider, QueryParameterName.TYPE,
-                NamedItemType.CDS_TYPE, true, ""); //$NON-NLS-1$
+            NamedItemType.CDS_TYPE, true, ""); //$NON-NLS-1$
         parameter.setDescription(MessageFormat.format(Messages.SearchPatternAnalyzer_DescriptionCdsTypeParameter_xmsg,
-                QueryParameterName.TYPE.getLowerCaseKey(), "function")); //$NON-NLS-1$
+            QueryParameterName.TYPE.getLowerCaseKey(), "function")); //$NON-NLS-1$
         parameter.setImage(SearchAndAnalysisPlugin.getDefault().getImage(IImages.TYPE_PARAM));
         parameter.setSupportsNegatedValues(true);
         return parameter;
@@ -78,9 +78,9 @@ public class SearchParameterFactory {
      */
     public static ISearchParameter createTableTypeParameter(final IAbapProjectProvider projectProvider) {
         final NamedItemParameter parameter = new NamedItemParameter(projectProvider, QueryParameterName.TYPE,
-                NamedItemType.TABLE_TYPE, true, ""); //$NON-NLS-1$
+            NamedItemType.TABLE_TYPE, true, ""); //$NON-NLS-1$
         parameter.setDescription(MessageFormat.format(Messages.SearchPatternAnalyzer_DescriptionTableTypeParameter_xmsg,
-                QueryParameterName.TYPE.getLowerCaseKey(), "table")); //$NON-NLS-1$
+            QueryParameterName.TYPE.getLowerCaseKey(), "table")); //$NON-NLS-1$
         parameter.setImage(SearchAndAnalysisPlugin.getDefault().getImage(IImages.TYPE_PARAM));
 //		parameter.setSupportsNegatedValues(true);
         return parameter;
@@ -94,10 +94,10 @@ public class SearchParameterFactory {
      */
     public static ISearchParameter createClassCategoryParameter(final IAbapProjectProvider projectProvider) {
         final NamedItemParameter parameter = new NamedItemParameter(projectProvider, QueryParameterName.CATEGORY,
-                NamedItemType.CLASS_CATEGORY, true, ""); //$NON-NLS-1$
+            NamedItemType.CLASS_CATEGORY, true, ""); //$NON-NLS-1$
         parameter.setDescription(MessageFormat.format(
-                Messages.SearchPatternAnalyzer_DescriptionClassCategoryParameter_xmsg, QueryParameterName.CATEGORY
-                        .getLowerCaseKey()));
+            Messages.SearchPatternAnalyzer_DescriptionClassCategoryParameter_xmsg, QueryParameterName.CATEGORY
+                .getLowerCaseKey()));
         parameter.setImage(SearchAndAnalysisPlugin.getDefault().getImage(IImages.FOLDER));
         parameter.setSupportsNegatedValues(true);
         return parameter;
@@ -111,9 +111,9 @@ public class SearchParameterFactory {
      */
     public static ISearchParameter createAbapLanguageParameter(final IAbapProjectProvider projectProvider) {
         final NamedItemParameter parameter = new NamedItemParameter(projectProvider, QueryParameterName.ABAP_LANGUAGE,
-                NamedItemType.ABAP_CLASS_LANGUAGE, true, ""); //$NON-NLS-1$
+            NamedItemType.ABAP_CLASS_LANGUAGE, true, ""); //$NON-NLS-1$
         parameter.setDescription(MessageFormat.format(Messages.SearchPatternAnalyzer_DescriptionAbapLangParameter_xmsg,
-                QueryParameterName.ABAP_LANGUAGE.getLowerCaseKey()));
+            QueryParameterName.ABAP_LANGUAGE.getLowerCaseKey()));
         parameter.setImage(SearchAndAnalysisPlugin.getDefault().getImage(IImages.ABAP_VERSION));
         parameter.setSupportsNegatedValues(true);
         return parameter;
@@ -127,9 +127,9 @@ public class SearchParameterFactory {
      */
     public static ISearchParameter createClassTypeParameter(final IAbapProjectProvider projectProvider) {
         final NamedItemParameter parameter = new NamedItemParameter(projectProvider, QueryParameterName.TYPE,
-                NamedItemType.CLASS_TYPE, true, ""); //$NON-NLS-1$
+            NamedItemType.CLASS_TYPE, true, ""); //$NON-NLS-1$
         parameter.setDescription(MessageFormat.format(Messages.SearchPatternAnalyzer_DescriptionClassTypeParameter_xmsg,
-                QueryParameterName.TYPE.getLowerCaseKey()));
+            QueryParameterName.TYPE.getLowerCaseKey()));
         parameter.setImage(SearchAndAnalysisPlugin.getDefault().getImage(IImages.TYPE_PARAM));
         parameter.setSupportsNegatedValues(true);
         return parameter;
@@ -143,9 +143,9 @@ public class SearchParameterFactory {
      */
     public static ISearchParameter createClassFlagParameter(final IAbapProjectProvider projectProvider) {
         final NamedItemParameter parameter = new NamedItemParameter(projectProvider, QueryParameterName.FLAG,
-                NamedItemType.CLASS_FLAG, true, ""); //$NON-NLS-1$
+            NamedItemType.CLASS_FLAG, true, ""); //$NON-NLS-1$
         parameter.setDescription(MessageFormat.format(Messages.SearchPatternAnalyzer_DescriptionFlagParameter_xmsg,
-                QueryParameterName.FLAG.getLowerCaseKey()));
+            QueryParameterName.FLAG.getLowerCaseKey()));
         parameter.setImage(SearchAndAnalysisPlugin.getDefault().getImage(IImages.ENABLED_CHECKBOX));
         parameter.setSupportsNegatedValues(true);
         return parameter;
@@ -159,9 +159,8 @@ public class SearchParameterFactory {
      */
     public static ISearchParameter createFriendParameter() {
         return new SearchParameter(QueryParameterName.FRIEND, MessageFormat.format(
-                Messages.SearchPatternAnalyzer_DescriptionFriendParameter_xmsg, QueryParameterName.FRIEND
-                        .getLowerCaseKey()), SearchAndAnalysisPlugin.getDefault().getImage(IImages.FRIEND), true, true,
-                true);
+            Messages.SearchPatternAnalyzer_DescriptionFriendParameter_xmsg, QueryParameterName.FRIEND
+                .getLowerCaseKey()), SearchAndAnalysisPlugin.getDefault().getImage(IImages.FRIEND), true, true, true);
     }
 
     /**
@@ -172,9 +171,9 @@ public class SearchParameterFactory {
      */
     public static ISearchParameter createSuperTypeParameter() {
         return new SearchParameter(QueryParameterName.SUPER_TYPE, MessageFormat.format(
-                Messages.SearchPatternAnalyzer_DescriptionSuperTypeParameter_xmsg, QueryParameterName.SUPER_TYPE
-                        .getLowerCaseKey()), SearchAndAnalysisPlugin.getDefault().getImage(IImages.SUPER_TYPE), true,
-                true, true);
+            Messages.SearchPatternAnalyzer_DescriptionSuperTypeParameter_xmsg, QueryParameterName.SUPER_TYPE
+                .getLowerCaseKey()), SearchAndAnalysisPlugin.getDefault().getImage(IImages.SUPER_TYPE), true, true,
+            true);
     }
 
     /**
@@ -185,9 +184,9 @@ public class SearchParameterFactory {
      */
     public static ISearchParameter createInterfaceParameter() {
         return new SearchParameter(QueryParameterName.INTERFACE, MessageFormat.format(
-                Messages.SearchPatternAnalyzer_DescriptionInterfaceParameter_xmsg, QueryParameterName.INTERFACE
-                        .getLowerCaseKey()), SearchAndAnalysisPlugin.getDefault().getImage(IImages.INTERFACE), true,
-                true, true);
+            Messages.SearchPatternAnalyzer_DescriptionInterfaceParameter_xmsg, QueryParameterName.INTERFACE
+                .getLowerCaseKey()), SearchAndAnalysisPlugin.getDefault().getImage(IImages.INTERFACE), true, true,
+            true);
     }
 
     /**
@@ -198,9 +197,8 @@ public class SearchParameterFactory {
      */
     public static ISearchParameter createMethodParameter() {
         return new SearchParameter(QueryParameterName.METHOD, MessageFormat.format(
-                Messages.SearchPatternAnalyzer_DescriptionMethodParameter_xmsg, QueryParameterName.METHOD
-                        .getLowerCaseKey()), SearchAndAnalysisPlugin.getDefault().getImage(IImages.METHOD), true, true,
-                true);
+            Messages.SearchPatternAnalyzer_DescriptionMethodParameter_xmsg, QueryParameterName.METHOD
+                .getLowerCaseKey()), SearchAndAnalysisPlugin.getDefault().getImage(IImages.METHOD), true, true, true);
     }
 
     /**
@@ -211,17 +209,17 @@ public class SearchParameterFactory {
      */
     public static ISearchParameter createAttributeParameter() {
         return new SearchParameter(QueryParameterName.ATTRIBUTE, MessageFormat.format(
-                Messages.SearchPatternAnalyzer_DescriptionAttributeParameter_xmsg, QueryParameterName.ATTRIBUTE
-                        .getLowerCaseKey()), SearchAndAnalysisPlugin.getDefault().getImage(IImages.ATTRIBUTE), true,
-                true, true);
+            Messages.SearchPatternAnalyzer_DescriptionAttributeParameter_xmsg, QueryParameterName.ATTRIBUTE
+                .getLowerCaseKey()), SearchAndAnalysisPlugin.getDefault().getImage(IImages.ATTRIBUTE), true, true,
+            true);
     }
 
     public static ISearchParameter createDeliveryClassParameter(final IAbapProjectProvider projectProvider) {
         final NamedItemParameter parameter = new NamedItemParameter(projectProvider, QueryParameterName.DELIVERY_CLASS,
-                NamedItemType.TABLE_DELIVERY_CLASS, true, ""); //$NON-NLS-1$
+            NamedItemType.TABLE_DELIVERY_CLASS, true, ""); //$NON-NLS-1$
         parameter.setDescription(MessageFormat.format(
-                Messages.SearchPatternAnalyzer_DescriptionDeliveryClassParameter_xmsg, QueryParameterName.DELIVERY_CLASS
-                        .getLowerCaseKey()));
+            Messages.SearchPatternAnalyzer_DescriptionDeliveryClassParameter_xmsg, QueryParameterName.DELIVERY_CLASS
+                .getLowerCaseKey()));
         parameter.setImage(AdtBaseUIResources.getImage(IAdtBaseImages.TRANSPORT));
         parameter.setSupportsNegatedValues(true);
         return parameter;

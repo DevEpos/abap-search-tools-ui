@@ -41,7 +41,7 @@ public class RunWhereUsedQueryHandler extends AbstractHandler {
     public Object execute(final ExecutionEvent event) throws ExecutionException {
         // open search dialog to choose ABAP Development object
         final IAdtRisSearchResultProxy result = AdtRisSearchUtil.searchAdtObjectViaDialog(
-                Messages.RunWhereUsedQueryHandler_openObjectDialog_xtit, false, null);
+            Messages.RunWhereUsedQueryHandler_openObjectDialog_xtit, false, null);
 
         if (result == null) {
             return null;
@@ -54,7 +54,7 @@ public class RunWhereUsedQueryHandler extends AbstractHandler {
         final String adtObjectType = selectedAdtObjRef.getType();
 
         if (IAdtObjectTypeConstants.DDLS_DEFINITION_TYPE.equals(adtObjectType)
-                || IAdtObjectTypeConstants.CDS_VIEW_DEFINITION_TYPE.equals(adtObjectType)) {
+            || IAdtObjectTypeConstants.CDS_VIEW_DEFINITION_TYPE.equals(adtObjectType)) {
             runWhereUsedForDdls(event, project, selectedAdtObjRef);
         } else {
             runWhereUsed(project, adtObjectUri);
@@ -67,20 +67,19 @@ public class RunWhereUsedQueryHandler extends AbstractHandler {
      * Runs where used query for a CDS View
      */
     private void runWhereUsedForDdls(final ExecutionEvent event, final IProject project,
-            final IAdtObjectReference adtObjectRef) {
+        final IAdtObjectReference adtObjectRef) {
         final Display display = HandlerUtil.getActiveShell(event).getDisplay();
 
         final Job readDdlsUriJob = Job.create(Messages.ElementInfoProvider_RetrievingElementInfoDescription_xmsg,
-                monitor -> {
-                    final IAdtObjectReferenceElementInfo ddlsObjectInfo = ElementInfoRetrievalServiceFactory
-                            .createService()
-                            .retrieveBasicElementInformation(DestinationUtil.getDestinationId(project), adtObjectRef
-                                    .getName(), ObjectType.CDS_VIEW);
-                    if (ddlsObjectInfo != null) {
-                        ddlsUri = ddlsObjectInfo.getUri();
-                    }
-                    monitor.done();
-                });
+            monitor -> {
+                final IAdtObjectReferenceElementInfo ddlsObjectInfo = ElementInfoRetrievalServiceFactory.createService()
+                    .retrieveBasicElementInformation(DestinationUtil.getDestinationId(project), adtObjectRef.getName(),
+                        ObjectType.CDS_VIEW);
+                if (ddlsObjectInfo != null) {
+                    ddlsUri = ddlsObjectInfo.getUri();
+                }
+                monitor.done();
+            });
         readDdlsUriJob.addJobChangeListener(new JobChangeAdapter() {
             @Override
             public void done(final IJobChangeEvent event) {
@@ -97,9 +96,9 @@ public class RunWhereUsedQueryHandler extends AbstractHandler {
      */
     private void runWhereUsed(final IProject project, final String uri) {
         final AdtRisUsageReferencesSearchQueryParameters usageSearchParameters = new AdtRisUsageReferencesSearchQueryParameters(
-                project, URI.create(uri));
+            project, URI.create(uri));
         final AdtRisUsageReferencesSearchQuery searchQuery = new AdtRisUsageReferencesSearchQuery(
-                usageSearchParameters);
+            usageSearchParameters);
         NewSearchUI.runQueryInBackground(searchQuery);
 
         /*

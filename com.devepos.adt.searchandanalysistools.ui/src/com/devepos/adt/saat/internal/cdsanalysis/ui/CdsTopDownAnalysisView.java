@@ -54,8 +54,8 @@ import com.devepos.adt.saat.internal.util.CommandPossibleChecker;
 public class CdsTopDownAnalysisView extends CdsAnalysisPage<CdsTopDownAnalysis> {
 
     private enum Column {
-        OBJECT_NAME(400, Messages.CdsTopDownAnalysisView_ObjectTypeColumn_xmit), RELATION(100,
-                Messages.CdsTopDownAnalysisView_SqlRelationColumn_xmit);
+        OBJECT_NAME(400, Messages.CdsTopDownAnalysisView_ObjectTypeColumn_xmit),
+        RELATION(100, Messages.CdsTopDownAnalysisView_SqlRelationColumn_xmit);
 
         public final int defaultWidth;
         public final String headerText;
@@ -82,7 +82,7 @@ public class CdsTopDownAnalysisView extends CdsAnalysisPage<CdsTopDownAnalysis> 
         columns = Arrays.asList(Column.OBJECT_NAME, Column.RELATION);
         propertyChangeListener = event -> {
             if (SHOW_ALIAS_NAMES_PREF_KEY.equals(event.getProperty()) || SHOW_DESCRIPTIONS_PREF_KEY.equals(event
-                    .getProperty())) {
+                .getProperty())) {
                 getViewer().refresh();
             } else if (ICdsAnalysisPreferences.TOP_DOWN_LOAD_ASSOCIATIONS.equals(event.getProperty())) {
                 refreshAnalysis();
@@ -112,22 +112,22 @@ public class CdsTopDownAnalysisView extends CdsAnalysisPage<CdsTopDownAnalysis> 
         super.fillContextMenu(mgr, commandPossibleChecker);
         if (commandPossibleChecker.canCommandBeEnabled(ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS)) {
             MenuItemFactory.addCdsAnalyzerCommandItem(mgr, IContextMenuConstants.GROUP_CDS_ANALYSIS,
-                    ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS);
+                ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS);
         }
         if (commandPossibleChecker.canCommandBeEnabled(ICommandConstants.USED_ENTITIES_ANALYSIS)) {
             MenuItemFactory.addCdsAnalyzerCommandItem(mgr, IContextMenuConstants.GROUP_CDS_ANALYSIS,
-                    ICommandConstants.USED_ENTITIES_ANALYSIS);
+                ICommandConstants.USED_ENTITIES_ANALYSIS);
         }
         if (commandPossibleChecker.canCommandBeEnabled(ICommandConstants.FIELD_ANALYSIS)) {
             MenuItemFactory.addCdsAnalyzerCommandItem(mgr, IContextMenuConstants.GROUP_CDS_ANALYSIS,
-                    ICommandConstants.FIELD_ANALYSIS);
+                ICommandConstants.FIELD_ANALYSIS);
         }
     }
 
     @Override
     protected void configureTreeViewer(final TreeViewer treeViewer) {
         final LazyLoadingTreeContentProvider contentProvider = new LazyLoadingTreeContentProvider(
-                LazyLoadingRefreshMode.ROOT_AND_NON_LAZY_CHILDREN, 1);
+            LazyLoadingRefreshMode.ROOT_AND_NON_LAZY_CHILDREN, 1);
         contentProvider.setExpansionChecker(node -> {
             final ISqlRelationInfo relation = node.getAdapter(ISqlRelationInfo.class);
             return relation != null && !"ASSOCIATIONS".equals(relation.getType()); //$NON-NLS-1$
@@ -193,11 +193,11 @@ public class CdsTopDownAnalysisView extends CdsAnalysisPage<CdsTopDownAnalysis> 
         super.createActions();
         final IPreferenceStore prefStore = SearchAndAnalysisPlugin.getDefault().getPreferenceStore();
         showDescriptions = new PreferenceToggleAction(Messages.CdsTopDownAnalysisView_ShowDescriptionsToggleAction_xmit,
-                null, SHOW_DESCRIPTIONS_PREF_KEY, true, prefStore);
+            null, SHOW_DESCRIPTIONS_PREF_KEY, true, prefStore);
         showAliasNames = new PreferenceToggleAction(Messages.CdsTopDownAnalysisView_ShowAliasNamesToggleAction_xmit,
-                null, SHOW_ALIAS_NAMES_PREF_KEY, true, prefStore);
+            null, SHOW_ALIAS_NAMES_PREF_KEY, true, prefStore);
         loadAssociations = new PreferenceToggleAction(Messages.CdsTopDownAnalysisView_LoadAssociationsToggleAction_xmit,
-                null, ICdsAnalysisPreferences.TOP_DOWN_LOAD_ASSOCIATIONS, false, prefStore);
+            null, ICdsAnalysisPreferences.TOP_DOWN_LOAD_ASSOCIATIONS, false, prefStore);
         showColorsAndFontsPrefs = new OpenColorPreferencePageAction(IColorConstants.CDS_ANALYSIS_ALIAS_NAME);
     }
 
@@ -224,8 +224,8 @@ public class CdsTopDownAnalysisView extends CdsAnalysisPage<CdsTopDownAnalysis> 
                     final String alias = relationalInfo.getAliasName();
                     if (alias != null && !alias.isEmpty()) {
                         text.append(" [" + alias + "] ", //$NON-NLS-1$ //$NON-NLS-2$
-                                StylerFactory.createCustomStyler(SWT.NORMAL, IColorConstants.CDS_ANALYSIS_ALIAS_NAME,
-                                        null));
+                            StylerFactory.createCustomStyler(SWT.NORMAL, IColorConstants.CDS_ANALYSIS_ALIAS_NAME,
+                                null));
                     }
                 }
             }
@@ -234,7 +234,7 @@ public class CdsTopDownAnalysisView extends CdsAnalysisPage<CdsTopDownAnalysis> 
                 final String description = node.getDescription();
                 if (description != null && !description.isEmpty()) {
                     text.append("  " + description + "  ", //$NON-NLS-1$ //$NON-NLS-2$
-                            StylerFactory.createCustomStyler(SWT.ITALIC, JFacePreferences.DECORATIONS_COLOR, null));
+                        StylerFactory.createCustomStyler(SWT.ITALIC, JFacePreferences.DECORATIONS_COLOR, null));
                 }
             }
         }
@@ -261,7 +261,7 @@ public class CdsTopDownAnalysisView extends CdsAnalysisPage<CdsTopDownAnalysis> 
      * @author stockbal
      */
     class ColumnLabelProvider extends CellLabelProvider implements
-            DelegatingStyledCellLabelProvider.IStyledLabelProvider {
+        DelegatingStyledCellLabelProvider.IStyledLabelProvider {
 
         private final Column column;
 
@@ -275,13 +275,13 @@ public class CdsTopDownAnalysisView extends CdsAnalysisPage<CdsTopDownAnalysis> 
                 final IAdtObjectReferenceNode adtNode = (IAdtObjectReferenceNode) element;
                 final StringBuffer tooltip = new StringBuffer();
                 appendTooltipInfo(tooltip, Messages.CdsTopDownAnalysisView_NameTooltipPart_xtol, adtNode
-                        .getDisplayName());
+                    .getDisplayName());
                 appendTooltipInfo(tooltip, Messages.CdsTopDownAnalysisView_DescriptionTooltipPart_xtol, adtNode
-                        .getDescription());
+                    .getDescription());
                 final ISqlRelationInfo relationInfo = adtNode.getAdapter(ISqlRelationInfo.class);
                 if (relationInfo != null) {
                     appendTooltipInfo(tooltip, Messages.CdsTopDownAnalysisView_AliasTooltipPart_xtol, relationInfo
-                            .getAliasName());
+                        .getAliasName());
                 }
                 return tooltip.toString();
             }
@@ -303,7 +303,7 @@ public class CdsTopDownAnalysisView extends CdsAnalysisPage<CdsTopDownAnalysis> 
                 }
 
                 if (relationalInfo != null && relationalInfo.getRelation() != null && !relationalInfo.getRelation()
-                        .isEmpty()) {
+                    .isEmpty()) {
                     text.append(relationalInfo.getRelation());
                 }
 

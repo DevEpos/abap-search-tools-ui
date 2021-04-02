@@ -24,12 +24,12 @@ public class FieldWhereUsedInCdsElementInfoProvider implements IElementInfoProvi
     private boolean searchDbViews;
 
     public FieldWhereUsedInCdsElementInfoProvider(final String destinationId, final String objectName,
-            final String field) {
+        final String field) {
         this(destinationId, objectName, field, false, false);
     }
 
     public FieldWhereUsedInCdsElementInfoProvider(final String destinationId, final String objectName,
-            final String field, final boolean searchCalcFields, final boolean searchDbViews) {
+        final String field, final boolean searchCalcFields, final boolean searchDbViews) {
         this.objectName = objectName;
         this.field = field;
         this.destinationId = destinationId;
@@ -48,7 +48,7 @@ public class FieldWhereUsedInCdsElementInfoProvider implements IElementInfoProvi
     @Override
     public List<IElementInfo> getElements() {
         final IElementInfo whereUsedInCdsInfo = CdsAnalysisServiceFactory.createCdsAnalysisService()
-                .loadWhereUsedFieldAnalysis(objectName, field, searchCalcFields, searchDbViews, destinationId);
+            .loadWhereUsedFieldAnalysis(objectName, field, searchCalcFields, searchDbViews, destinationId);
         if (whereUsedInCdsInfo instanceof IElementInfoCollection) {
             return ((IElementInfoCollection) whereUsedInCdsInfo).getChildren();
         }

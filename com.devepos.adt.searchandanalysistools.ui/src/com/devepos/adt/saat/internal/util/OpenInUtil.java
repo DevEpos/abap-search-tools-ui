@@ -46,15 +46,14 @@ public class OpenInUtil {
      *                            DB Browser will be skipped
      */
     public static void openEntity(final IProject project, final String entityId, final String entityMode,
-            final boolean skipSelectionScreen) {
+        final boolean skipSelectionScreen) {
         final WorkbenchPart part = (WorkbenchPart) AdtSapGuiEditorUtilityFactory.createSapGuiEditorUtility()
-                .openEditorAndStartTransaction(project, "ZDBBR", true, //$NON-NLS-1$
-                        Stream.of(new String[][] { { "ADT", String.valueOf(true) }, { "ENTITY_ID", entityId }, //$NON-NLS-1$ //$NON-NLS-2$
-                                { "ENTITY_MODE", entityMode }, { "SKIP_SELSCREEN", String.valueOf( //$NON-NLS-1$ //$NON-NLS-2$
-                                        skipSelectionScreen) } })
-                                .collect(Collectors.toMap(data -> data[0], data -> data[1])));
+            .openEditorAndStartTransaction(project, "ZDBBR", true, //$NON-NLS-1$
+                Stream.of(new String[][] { { "ADT", String.valueOf(true) }, { "ENTITY_ID", entityId }, //$NON-NLS-1$ //$NON-NLS-2$
+                    { "ENTITY_MODE", entityMode }, { "SKIP_SELSCREEN", String.valueOf( //$NON-NLS-1$ //$NON-NLS-2$
+                        skipSelectionScreen) } }).collect(Collectors.toMap(data -> data[0], data -> data[1])));
         AdtUIUtil.overrideSapGuiPartTitle(part, project, entityId, String.format("DB Browser - %s", entityId), //$NON-NLS-1$
-                SearchAndAnalysisPlugin.getDefault().getImage(IImages.DB_BROWSER_DATA_PREVIEW));
+            SearchAndAnalysisPlugin.getDefault().getImage(IImages.DB_BROWSER_DATA_PREVIEW));
     }
 
     /**
@@ -65,11 +64,11 @@ public class OpenInUtil {
      */
     public static void openCDSInQueryMonitor(final IProject project, final String cdsViewName) {
         final WorkbenchPart sapGuipart = (WorkbenchPart) AdtSapGuiEditorUtilityFactory.createSapGuiEditorUtility()
-                .openEditorAndStartTransaction(project, "ZSAT_ADT_QRYMONOPEN", true, //$NON-NLS-1$
-                        Stream.of(new String[][] { { "ENTITY_ID", cdsViewName.toUpperCase() } }) //$NON-NLS-1$
-                                .collect(Collectors.toMap(data -> data[0], data -> data[1])));
+            .openEditorAndStartTransaction(project, "ZSAT_ADT_QRYMONOPEN", true, //$NON-NLS-1$
+                Stream.of(new String[][] { { "ENTITY_ID", cdsViewName.toUpperCase() } }) //$NON-NLS-1$
+                    .collect(Collectors.toMap(data -> data[0], data -> data[1])));
         AdtUIUtil.overrideSapGuiPartTitle(sapGuipart, project, cdsViewName, String.format("%s (Query Monitor)", //$NON-NLS-1$
-                cdsViewName), SearchAndAnalysisPlugin.getDefault().getImage(IImages.ANALYTICAL_QUERY));
+            cdsViewName), SearchAndAnalysisPlugin.getDefault().getImage(IImages.ANALYTICAL_QUERY));
     }
 
     /**
@@ -83,15 +82,15 @@ public class OpenInUtil {
             final IAbapProjectProvider projectProvider = new AbapProjectProxy(project);
 
             final AnalysisForOfficeUriDiscovery aoxUriDiscovery = new AnalysisForOfficeUriDiscovery(projectProvider
-                    .getDestinationId());
+                .getDestinationId());
             final URI launcherResourceURI = aoxUriDiscovery.createAnalysisForOfficeLauncherURI(cdsViewName
-                    .toUpperCase());
+                .toUpperCase());
             if (launcherResourceURI == null) {
                 throw new CoreException(new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID,
-                        Messages.OpenInUtil_AnalysisForOfficeNotActive_xmsg));
+                    Messages.OpenInUtil_AnalysisForOfficeNotActive_xmsg));
             }
             final IRestResource launcherResource = AdtRestResourceFactory.createRestResourceFactory()
-                    .createRestResource(launcherResourceURI, projectProvider.createStatelessSession());
+                .createRestResource(launcherResourceURI, projectProvider.createStatelessSession());
             launcherResource.addContentHandler(new AnalysisForOfficeLauncherContentHandler());
             final String launcherContent = launcherResource.get(monitor, AdtUtil.getHeaders(), String.class);
 

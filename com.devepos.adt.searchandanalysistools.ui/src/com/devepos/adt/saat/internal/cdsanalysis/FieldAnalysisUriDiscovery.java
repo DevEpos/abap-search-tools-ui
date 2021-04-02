@@ -73,7 +73,7 @@ public class FieldAnalysisUriDiscovery extends UriDiscoveryBase {
     public URI createTopDownCdsAnalysisResourceUri(final String cdsViewName, final String field) {
         URI uri = null;
         final IAdtUriTemplate template = createResourceUriTemplate(cdsViewName, field,
-                DISCOVERY_TEMPLATE_COL_HIERARCHY);
+            DISCOVERY_TEMPLATE_COL_HIERARCHY);
         if (template != null) {
             uri = URI.create(template.expand());
         }
@@ -93,10 +93,10 @@ public class FieldAnalysisUriDiscovery extends UriDiscoveryBase {
      * @return REST resource URI
      */
     public URI createWhereUsedAnalysisResourceUri(final String objectName, final String field,
-            final boolean searchCalcFields, final boolean searchDbViews) {
+        final boolean searchCalcFields, final boolean searchDbViews) {
         URI uri = null;
         final IAdtUriTemplate template = createResourceUriTemplate(objectName, field,
-                DISCOVERY_TEMPLATE_COL_WHERE_USED);
+            DISCOVERY_TEMPLATE_COL_WHERE_USED);
         if (template != null) {
             if (template.containsVariable(SEARCH_CALC_FIELDS_PARAMETER) && searchCalcFields) {
                 template.set(SEARCH_CALC_FIELDS_PARAMETER, "X");
@@ -110,7 +110,7 @@ public class FieldAnalysisUriDiscovery extends UriDiscoveryBase {
     }
 
     private IAdtUriTemplate createResourceUriTemplate(final String name, final String field,
-            final String templateUriPart) {
+        final String templateUriPart) {
         final IAdtUriTemplate template = getFieldAnalysisTemplate(templateUriPart);
         if (template != null) {
             if (template.containsVariable(NAME_PARAMETER)) {

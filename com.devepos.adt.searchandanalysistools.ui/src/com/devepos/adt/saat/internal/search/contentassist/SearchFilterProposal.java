@@ -29,7 +29,7 @@ public class SearchFilterProposal implements IContentProposal {
      *                           automatic proposals
      */
     public SearchFilterProposal(final String name, final Image image, final String description,
-            final String wordToComplete, final boolean hasProposalSupport) {
+        final String wordToComplete, final boolean hasProposalSupport) {
         this.name = name;
         this.image = image;
         this.description = description;
@@ -47,7 +47,7 @@ public class SearchFilterProposal implements IContentProposal {
      *                           automatic proposals
      */
     public SearchFilterProposal(final String name, final Image image, final String description,
-            final boolean hasProposalSupport) {
+        final boolean hasProposalSupport) {
         this(name, image, description, null, hasProposalSupport);
     }
 

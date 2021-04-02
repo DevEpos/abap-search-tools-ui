@@ -56,9 +56,9 @@ public class ObjectSearchFavorites implements IObjectSearchFavorites {
     @Override
     public boolean contains(final String destinationId, final String searchType, final String description) {
         return entries.stream()
-                .anyMatch(f -> description.equals(f.getDescription()) && (f.getDestinationId() == null
-                        && destinationId == null || destinationId.equals(f.getDestinationId())) && searchType.equals(f
-                                .getSearchType()));
+            .anyMatch(f -> description.equals(f.getDescription()) && (f.getDestinationId() == null
+                && destinationId == null || destinationId.equals(f.getDestinationId())) && searchType.equals(f
+                    .getSearchType()));
     }
 
     @Override

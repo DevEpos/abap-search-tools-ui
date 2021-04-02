@@ -44,7 +44,7 @@ public class ObjectSearchFavoriteStorage {
         }
         final IObjectSearchFavoritesFactory factory = IObjectSearchFavoritesFactory.eINSTANCE;
         final com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavorites eFavorites = factory
-                .createObjectSearchFavorites();
+            .createObjectSearchFavorites();
         favorites.getFavorites().forEach(f -> eFavorites.getObjectSearchFavorites().add(f));
 
         // Obtain a new resource set
@@ -97,8 +97,8 @@ public class ObjectSearchFavoriteStorage {
                     return;
                 }
                 ((com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavorites) favoriteList)
-                        .getObjectSearchFavorites()
-                        .forEach(fav -> favorites.addFavorite(fav));
+                    .getObjectSearchFavorites()
+                    .forEach(fav -> favorites.addFavorite(fav));
             }
         } catch (final IllegalArgumentException | IOException e) {
             e.printStackTrace();

@@ -22,10 +22,10 @@ public class CdsTopDownElementInfoProvider implements IElementInfoProvider {
     @Override
     public List<IElementInfo> getElements() {
         final boolean loadAssociations = SearchAndAnalysisPlugin.getDefault()
-                .getPreferenceStore()
-                .getBoolean(ICdsAnalysisPreferences.TOP_DOWN_LOAD_ASSOCIATIONS);
+            .getPreferenceStore()
+            .getBoolean(ICdsAnalysisPreferences.TOP_DOWN_LOAD_ASSOCIATIONS);
         final IElementInfo cdsTopDownInfo = CdsAnalysisServiceFactory.createCdsAnalysisService()
-                .loadTopDownAnalysis(cdsViewName, loadAssociations, destinationId);
+            .loadTopDownAnalysis(cdsViewName, loadAssociations, destinationId);
         if (cdsTopDownInfo != null) {
             return ((IElementInfoCollection) cdsTopDownInfo).getChildren();
         }

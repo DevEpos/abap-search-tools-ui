@@ -7,8 +7,9 @@ import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.util.IImages;
 
 public enum SearchType {
-    CDS_VIEW("CDS View", "cds", IImages.CDS_VIEW), DB_TABLE_VIEW("Database Table/View", "dbtabview",
-            IImages.TABLE_DEFINITION), CLASS_INTERFACE("Class/Interface", "classintf", IImages.CLASS_INTERFACE);
+    CDS_VIEW("CDS View", "cds", IImages.CDS_VIEW),
+    DB_TABLE_VIEW("Database Table/View", "dbtabview", IImages.TABLE_DEFINITION),
+    CLASS_INTERFACE("Class/Interface", "classintf", IImages.CLASS_INTERFACE);
 
     private final String name;
     private final String uriTerm;

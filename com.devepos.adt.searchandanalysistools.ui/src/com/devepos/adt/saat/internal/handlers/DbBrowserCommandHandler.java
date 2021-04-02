@@ -39,8 +39,8 @@ public abstract class DbBrowserCommandHandler extends AbstractHandler {
      */
     protected void showFeatureNotAvailableDialog(final IProject project) {
         MessageDialog.openInformation(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-                Messages.Dialog_InfoTitle_xmsg, NLS.bind(Messages.DbBrowser_featureIsNotAvailable_xmsg, DestinationUtil
-                        .getDestinationId(project)));
+            Messages.Dialog_InfoTitle_xmsg, NLS.bind(Messages.DbBrowser_featureIsNotAvailable_xmsg, DestinationUtil
+                .getDestinationId(project)));
     }
 
 }

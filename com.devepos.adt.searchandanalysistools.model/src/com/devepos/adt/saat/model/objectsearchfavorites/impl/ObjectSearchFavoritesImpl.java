@@ -69,7 +69,7 @@ public class ObjectSearchFavoritesImpl extends MinimalEObjectImpl.Container impl
     public EList<IObjectSearchFavorite> getObjectSearchFavorites() {
         if (objectSearchFavorites == null) {
             objectSearchFavorites = new EObjectContainmentEList<>(IObjectSearchFavorite.class, this,
-                    IObjectSearchFavoritesPackage.OBJECT_SEARCH_FAVORITES__OBJECT_SEARCH_FAVORITES);
+                IObjectSearchFavoritesPackage.OBJECT_SEARCH_FAVORITES__OBJECT_SEARCH_FAVORITES);
         }
         return objectSearchFavorites;
     }
@@ -81,7 +81,7 @@ public class ObjectSearchFavoritesImpl extends MinimalEObjectImpl.Container impl
      */
     @Override
     public NotificationChain eInverseRemove(final InternalEObject otherEnd, final int featureID,
-            final NotificationChain msgs) {
+        final NotificationChain msgs) {
         switch (featureID) {
         case IObjectSearchFavoritesPackage.OBJECT_SEARCH_FAVORITES__OBJECT_SEARCH_FAVORITES:
             return ((InternalEList<?>) getObjectSearchFavorites()).basicRemove(otherEnd, msgs);

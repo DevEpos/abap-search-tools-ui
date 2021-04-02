@@ -151,10 +151,10 @@ public abstract class CdsAnalysisPage<T extends CdsAnalysis> extends Page {
         if (analysis != null) {
             final IAdtObjectReferenceElementInfo adtObjectInfo = analysis.getAdtObjectInfo();
             final IDestinationProvider destProvider = ((IAdaptable) adtObjectInfo).getAdapter(
-                    IDestinationProvider.class);
+                IDestinationProvider.class);
             if (destProvider != null) {
                 this.projectProvider = AbapProjectProviderAccessor.getProviderForDestination(destProvider
-                        .getDestinationId());
+                    .getDestinationId());
             }
             loadInput(uiState);
         }
@@ -302,7 +302,7 @@ public abstract class CdsAnalysisPage<T extends CdsAnalysis> extends Page {
                 final IDestinationProvider destProvider = selectedAdtObject.getAdapter(IDestinationProvider.class);
                 if (destProvider != null) {
                     final IAbapProjectProvider projectProvider = AbapProjectProviderAccessor.getProviderForDestination(
-                            destProvider.getDestinationId());
+                        destProvider.getDestinationId());
                     projectProvider.openObjectReference(selectedAdtObject.getObjectReference());
                 }
             }
@@ -341,7 +341,7 @@ public abstract class CdsAnalysisPage<T extends CdsAnalysis> extends Page {
             }
             if (element instanceof IAdaptable) {
                 final IExtendedAdtObjectInfo extendedSearchResultInfo = ((IAdaptable) element).getAdapter(
-                        IExtendedAdtObjectInfo.class);
+                    IExtendedAdtObjectInfo.class);
                 if (extendedSearchResultInfo != null) {
                     final String[] overlayIds = new String[4];
                     if (extendedSearchResultInfo.isReleased()) {
@@ -383,7 +383,7 @@ public abstract class CdsAnalysisPage<T extends CdsAnalysis> extends Page {
             final String description = node.getDescription();
             if (description != null && !description.isEmpty()) {
                 text.append("  " + description + "  ", //$NON-NLS-1$ //$NON-NLS-2$
-                        StylerFactory.createCustomStyler(SWT.ITALIC, JFacePreferences.DECORATIONS_COLOR, null));
+                    StylerFactory.createCustomStyler(SWT.ITALIC, JFacePreferences.DECORATIONS_COLOR, null));
             }
         }
         return text;
@@ -410,7 +410,7 @@ public abstract class CdsAnalysisPage<T extends CdsAnalysis> extends Page {
     protected void fillToolbar(final IToolBarManager tbm) {
         if (this.viewer instanceof TreeViewer) {
             tbm.appendToGroup(IGeneralContextMenuConstants.GROUP_NODE_ACTIONS, new CollapseAllTreeNodesAction(
-                    (TreeViewer) this.viewer));
+                (TreeViewer) this.viewer));
         }
     }
 
@@ -435,10 +435,10 @@ public abstract class CdsAnalysisPage<T extends CdsAnalysis> extends Page {
             final List<IAdtObjectReference> selectedObjRefs = commandChecker.getSelectedAdtObjectRefs();
 
             mgr.appendToGroup(IGeneralContextMenuConstants.GROUP_OPEN, new OpenAdtObjectAction(this.projectProvider
-                    .getProject(), selectedObjRefs));
+                .getProject(), selectedObjRefs));
             if (commandChecker.hasSelection(true)) {
                 mgr.appendToGroup(IGeneralContextMenuConstants.GROUP_OPEN, new ExecuteAdtObjectAction(
-                        this.projectProvider.getProject(), selectedObjRefs, true));
+                    this.projectProvider.getProject(), selectedObjRefs, true));
             }
         }
 

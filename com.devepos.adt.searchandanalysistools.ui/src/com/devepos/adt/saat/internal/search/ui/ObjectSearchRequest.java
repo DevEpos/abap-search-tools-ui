@@ -42,7 +42,7 @@ public class ObjectSearchRequest {
         }
         final ObjectSearchRequest otherEntry = (ObjectSearchRequest) object;
         return query.equalsIgnoreCase(otherEntry.getQuery()) && destinationId.equalsIgnoreCase(otherEntry
-                .getDestinationId()) && andSearchActive == otherEntry.isAndSearchActive();
+            .getDestinationId()) && andSearchActive == otherEntry.isAndSearchActive();
     }
 
     @Override
@@ -62,7 +62,7 @@ public class ObjectSearchRequest {
 
     public String getDestinationId() {
         return projectProvider != null ? projectProvider.getDestinationId()
-                : destinationId != null ? destinationId : "";
+            : destinationId != null ? destinationId : "";
     }
 
     public boolean isAndSearchActive() {

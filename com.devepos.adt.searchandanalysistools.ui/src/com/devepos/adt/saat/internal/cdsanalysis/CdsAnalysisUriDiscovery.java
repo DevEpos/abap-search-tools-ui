@@ -91,7 +91,7 @@ public class CdsAnalysisUriDiscovery extends UriDiscoveryBase {
      * View
      */
     private URI createCdsAnalysisResourceUri(final String templateUriPart, final String cdsViewName,
-            final Map<String, Object> parameterMap) {
+        final Map<String, Object> parameterMap) {
         final IAdtUriTemplate template = getCdsAnalysisTemplate(templateUriPart);
         URI uri = null;
         if (template != null) {

@@ -18,7 +18,7 @@ public class AdtObjectReferenceDeserializer {
      * @throws XMLParseException
      */
     public static IAdtObjectReference deserializeFromStream(final XMLStreamReader xsr,
-            final boolean checkForMandatoryAttributes) throws XMLParseException {
+        final boolean checkForMandatoryAttributes) throws XMLParseException {
         final IAdtObjectReference objectReference = AdtObjectReferenceModelFactory.createReference();
 
         final String nameSpace = NS_URI_ADT_CORE;

@@ -22,7 +22,7 @@ public interface IElementInfoRetrievalService {
      * @return the found element information of the ADT object or <code>null</code>
      */
     IAdtObjectReferenceElementInfo retrieveBasicElementInformation(final String destinationId, String objectName,
-            ObjectType objectType);
+        ObjectType objectType);
 
     /**
      * Retrieves some basic information about the given object
@@ -42,7 +42,7 @@ public interface IElementInfoRetrievalService {
      * @return the found element information or <code>null</code>
      */
     IAdtObjectReferenceElementInfo retrieveElementInformation(final String destinationId,
-            IAdtObjectReference objectReference);
+        IAdtObjectReference objectReference);
 
     /**
      * Retrieve secondary element information about the given CDS view

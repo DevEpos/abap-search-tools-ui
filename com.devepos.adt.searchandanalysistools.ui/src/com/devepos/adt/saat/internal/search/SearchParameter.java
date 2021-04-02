@@ -42,7 +42,7 @@ public class SearchParameter implements ISearchParameter {
      *                               multiple values
      */
     public SearchParameter(final QueryParameterName parameterName, final String description, final Image image,
-            final boolean supportsPatternValues, final boolean supportsMultipleValues) {
+        final boolean supportsPatternValues, final boolean supportsMultipleValues) {
         this(parameterName, description, image, supportsMultipleValues, supportsMultipleValues, false);
     }
 
@@ -60,8 +60,8 @@ public class SearchParameter implements ISearchParameter {
      *                               negation of values
      */
     public SearchParameter(final QueryParameterName parameterName, final String description, final Image image,
-            final boolean supportsPatternValues, final boolean supportsMultipleValues,
-            final boolean supportsNegatedValues) {
+        final boolean supportsPatternValues, final boolean supportsMultipleValues,
+        final boolean supportsNegatedValues) {
         this.parameterName = parameterName;
         this.description = description;
         this.image = image;

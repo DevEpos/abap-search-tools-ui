@@ -24,7 +24,7 @@ public class CdsAnalysisService implements ICdsAnalysisService {
 
     @Override
     public IAdtObjectReferenceElementInfo loadTopDownAnalysis(final String cdsView, final boolean loadAssociations,
-            final String destinationId) {
+        final String destinationId) {
         final Map<String, Object> parameters = new HashMap<>();
         if (loadAssociations) {
             parameters.put("withAssociations", "X"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -37,9 +37,9 @@ public class CdsAnalysisService implements ICdsAnalysisService {
             return null;
         }
         final URI resourceUri = new CdsAnalysisUriDiscovery(destinationId).createTopDownAnalysisResourceUri(cdsView,
-                parameters);
+            parameters);
         return analyzeCdsView(resourceUri, new CdsTopDownAnalysisContentHandler(destinationId), destinationId,
-                projectProvider);
+            projectProvider);
     }
 
     @Override
@@ -52,9 +52,9 @@ public class CdsAnalysisService implements ICdsAnalysisService {
             return null;
         }
         final URI resourceUri = new CdsAnalysisUriDiscovery(destinationId).createUsedEntitiesAnalysisResourceUri(
-                cdsView, null);
+            cdsView, null);
         return analyzeCdsView(resourceUri, new CdsUsedEntitiesAnalysisContentHandler(destinationId), destinationId,
-                projectProvider);
+            projectProvider);
     }
 
     @Override
@@ -67,9 +67,9 @@ public class CdsAnalysisService implements ICdsAnalysisService {
             return null;
         }
         final IContentHandler<IAdtObjectReferenceElementInfo> adtObjectHandler = new FieldAnalysisContentHandler(
-                destinationId, true);
+            destinationId, true);
         final FieldAnalysisUriDiscovery uriDiscovery = new FieldAnalysisUriDiscovery(projectProvider
-                .getDestinationId());
+            .getDestinationId());
 
         final URI resourceUri = uriDiscovery.createTopDownCdsAnalysisResourceUri(cdsView, field);
 
@@ -78,7 +78,7 @@ public class CdsAnalysisService implements ICdsAnalysisService {
 
     @Override
     public IElementInfo loadWhereUsedFieldAnalysis(final String objectName, final String field,
-            final boolean searchCalcFields, final boolean searchDbViews, final String destinationId) {
+        final boolean searchCalcFields, final boolean searchDbViews, final String destinationId) {
         if (objectName == null || field == null) {
             return null;
         }
@@ -87,22 +87,22 @@ public class CdsAnalysisService implements ICdsAnalysisService {
             return null;
         }
         final IContentHandler<IAdtObjectReferenceElementInfo> adtObjectHandler = new FieldAnalysisContentHandler(
-                destinationId, false, searchCalcFields, searchDbViews);
+            destinationId, false, searchCalcFields, searchDbViews);
         final FieldAnalysisUriDiscovery uriDiscovery = new FieldAnalysisUriDiscovery(projectProvider
-                .getDestinationId());
+            .getDestinationId());
 
         final URI resourceUri = uriDiscovery.createWhereUsedAnalysisResourceUri(objectName, field, searchCalcFields,
-                searchDbViews);
+            searchDbViews);
 
         return getFieldAnalysis(projectProvider, adtObjectHandler, resourceUri);
     }
 
     private IAdtObjectReferenceElementInfo analyzeCdsView(final URI resourceUri,
-            final IContentHandler<IAdtObjectReferenceElementInfo> contentHandler, final String destinationId,
-            final IAbapProjectProvider projectProvider) {
+        final IContentHandler<IAdtObjectReferenceElementInfo> contentHandler, final String destinationId,
+        final IAbapProjectProvider projectProvider) {
         final ISystemSession session = projectProvider.createStatelessSession();
         final IRestResource restResource = AdtRestResourceFactory.createRestResourceFactory()
-                .createRestResource(resourceUri, session);
+            .createRestResource(resourceUri, session);
         restResource.addContentHandler(contentHandler);
 
         try {
@@ -117,14 +117,14 @@ public class CdsAnalysisService implements ICdsAnalysisService {
      * Retrieves the field analysis result with GET
      */
     private IAdtObjectReferenceElementInfo getFieldAnalysis(final IAbapProjectProvider projectProvider,
-            final IContentHandler<IAdtObjectReferenceElementInfo> adtObjectHandler, final URI resourceUri) {
+        final IContentHandler<IAdtObjectReferenceElementInfo> adtObjectHandler, final URI resourceUri) {
 
         if (resourceUri == null) {
             return null;
         }
         final ISystemSession session = projectProvider.createStatelessSession();
         final IRestResource restResource = AdtRestResourceFactory.createRestResourceFactory()
-                .createRestResource(resourceUri, session);
+            .createRestResource(resourceUri, session);
         restResource.addContentHandler(adtObjectHandler);
 
         IAdtObjectReferenceElementInfo elementInfo = null;
@@ -141,7 +141,7 @@ public class CdsAnalysisService implements ICdsAnalysisService {
             return null;
         }
         final IAbapProjectProvider projectProvider = AbapProjectProviderAccessor.getProviderForDestination(
-                destinationId);
+            destinationId);
         if (projectProvider == null || !projectProvider.ensureLoggedOn()) {
             return null;
         }

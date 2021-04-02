@@ -32,13 +32,13 @@ public class NavigationTargetService implements INavigationTargetService {
             return null;
         }
         final IAbapProjectProvider projectProvider = AbapProjectProviderAccessor.getProviderForDestination(
-                destinationId);
+            destinationId);
         if (!projectProvider.ensureLoggedOn()) {
             return null;
         }
         final IContentHandler<INavigationTarget[]> adtObjectHandler = new NavigationTargetsContentHandler();
         final NavigationTargetsUriDiscovery uriDiscovery = new NavigationTargetsUriDiscovery(projectProvider
-                .getDestinationId());
+            .getDestinationId());
 
         final URI resourceUri = uriDiscovery.createNavTargetsResourceUri(objectName, objectType);
         if (resourceUri == null) {
@@ -47,7 +47,7 @@ public class NavigationTargetService implements INavigationTargetService {
 
         final ISystemSession session = projectProvider.createStatelessSession();
         final IRestResource restResource = AdtRestResourceFactory.createRestResourceFactory()
-                .createRestResource(resourceUri, session);
+            .createRestResource(resourceUri, session);
         restResource.addContentHandler(adtObjectHandler);
 
         INavigationTarget[] targets = null;

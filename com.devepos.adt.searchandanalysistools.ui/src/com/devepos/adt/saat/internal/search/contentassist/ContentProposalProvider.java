@@ -27,7 +27,7 @@ import com.devepos.adt.saat.internal.messages.Messages;
 public abstract class ContentProposalProvider implements IContentProposalProvider {
     private final KeyStroke triggeringKeyStroke;
     private static final KeyStroke DEFAULT_ACTIVATION_KEYSTROKE = KeyStroke.getInstance(isMacOS() ? SWT.MOD4 : SWT.MOD1,
-            SWT.SPACE);
+        SWT.SPACE);
     private final ContentProposalAdapter contentProposalAdapter;
 
     public ContentProposalProvider(final Control control) {
@@ -109,7 +109,7 @@ public abstract class ContentProposalProvider implements IContentProposalProvide
                 final IBindingService service = PlatformUI.getWorkbench().getService(IBindingService.class);
                 if (service != null) {
                     final TriggerSequence binding = service.getBestActiveBindingFor(
-                            "org.eclipse.ui.edit.text.contentAssist.proposals");
+                        "org.eclipse.ui.edit.text.contentAssist.proposals");
                     if (binding instanceof KeySequence) {
                         final KeyStroke[] keyStrokes = ((KeySequence) binding).getKeyStrokes();
                         if (keyStrokes.length == 1) {

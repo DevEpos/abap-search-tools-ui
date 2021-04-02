@@ -23,7 +23,7 @@ public class OpenWithQueryMonitorExecutable extends Executable {
     @Override
     public void execute() {
         final IAbapProjectProvider projectProvider = AbapProjectProviderAccessor.getProviderForDestination(
-                destinationId);
+            destinationId);
         if (projectProvider != null) {
             OpenInUtil.openCDSInQueryMonitor(projectProvider.getProject(), cdsViewName);
         }

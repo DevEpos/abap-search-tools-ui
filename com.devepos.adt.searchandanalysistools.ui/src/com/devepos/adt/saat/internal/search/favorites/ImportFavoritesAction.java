@@ -22,7 +22,7 @@ public class ImportFavoritesAction extends Action {
 
     public ImportFavoritesAction() {
         super(Messages.ImportFavoritesAction_ImportFavoritesAction_xmit, SearchAndAnalysisPlugin.getDefault()
-                .getImageDescriptor(IImages.IMPORT));
+            .getImageDescriptor(IImages.IMPORT));
     }
 
     @Override
@@ -44,7 +44,7 @@ public class ImportFavoritesAction extends Action {
                 favoritesInImportFile = importedFavorites.getFavorites().size();
                 for (final IObjectSearchFavorite imported : importedFavorites.getFavorites()) {
                     if (!existingFavorites.contains(imported.getDestinationId(), imported.getSearchType(), imported
-                            .getDescription())) {
+                        .getDescription())) {
                         existingFavorites.addFavorite(imported);
                         importedFavoritesCount++;
                     }
@@ -53,11 +53,10 @@ public class ImportFavoritesAction extends Action {
                     ObjectSearchFavoriteStorage.serialize();
                 }
                 MessageDialog.openInformation(shell, Messages.ImportFavoritesAction_ImportSuccess_xtit, NLS.bind(
-                        Messages.ImportFavoritesAction_ImportSuccess_xmsg, importedFavoritesCount,
-                        favoritesInImportFile));
+                    Messages.ImportFavoritesAction_ImportSuccess_xmsg, importedFavoritesCount, favoritesInImportFile));
             } else {
                 MessageDialog.openInformation(shell, Messages.ImportFavoritesAction_ImportSuccess_xtit,
-                        Messages.ImportFavoritesAction_NoFavoritesImported_xmsg);
+                    Messages.ImportFavoritesAction_NoFavoritesImported_xmsg);
             }
         }
 

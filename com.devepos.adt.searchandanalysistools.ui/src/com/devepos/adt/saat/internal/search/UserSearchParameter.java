@@ -57,7 +57,7 @@ public class UserSearchParameter implements ISearchParameter, ISearchProposalPro
     @Override
     public String getDescription() {
         return NLS.bind(Messages.SearchPatternAnalyzer_DescriptionUserParameter_xmsg, new Object[] { parameterName
-                .getLowerCaseKey(), "smith" });
+            .getLowerCaseKey(), "smith" });
     }
 
     @Override

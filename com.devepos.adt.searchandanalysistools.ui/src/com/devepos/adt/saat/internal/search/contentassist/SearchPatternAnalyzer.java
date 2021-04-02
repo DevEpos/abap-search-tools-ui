@@ -71,7 +71,7 @@ public class SearchPatternAnalyzer {
 
         if (!isSearchTermAllowed && !searchTerm.isEmpty()) {
             final String errorMessage = NLS.bind(Messages.SearchPatternAnalyzer_ErrorInvalidSearchParameter_xmsg,
-                    searchTerm);
+                searchTerm);
             throw new CoreException(new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, errorMessage));
         }
 
@@ -79,7 +79,7 @@ public class SearchPatternAnalyzer {
         for (final String part : condensedPattern.split(SPACE)) {
             if (!part.isEmpty() && !isParameter(part) && !part.equalsIgnoreCase(searchTerm)) {
                 final String errorMessage = NLS.bind(Messages.SearchPatternAnalyzer_ErrorInvalidSearchParameter_xmsg,
-                        part);
+                    part);
                 throw new CoreException(new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, errorMessage));
             }
         }
@@ -100,15 +100,15 @@ public class SearchPatternAnalyzer {
         final String pattern = condense(searchPattern);
         final String parameterKeyLower = parameterKey.toLowerCase(Locale.ENGLISH);
         final List<String> paramSections = Stream.of(pattern.split(SPACE))
-                .filter(p -> p.startsWith(parameterKeyLower + PARAM_KEY_END))
-                .collect(Collectors.toList());
+            .filter(p -> p.startsWith(parameterKeyLower + PARAM_KEY_END))
+            .collect(Collectors.toList());
         if (paramSections == null || paramSections.isEmpty()) {
             return result;
         }
         for (final String paramSection : paramSections) {
             result.addAll(Stream.of(paramSection.substring(parameterKeyLower.length() + 1).split(VALUE_LIST_SEP))
-                    .filter(value -> !value.isEmpty())
-                    .collect(Collectors.toList()));
+                .filter(value -> !value.isEmpty())
+                .collect(Collectors.toList()));
         }
         return result;
     }
@@ -129,11 +129,11 @@ public class SearchPatternAnalyzer {
             // no query part so every parameter gets added to the proposal list
             if (lastPart.isEmpty()) {
                 filters.add(new SearchFilterProposal(searchParam.getLabel(), searchParam.getImage(), searchParam
-                        .getDescription(), searchParam instanceof ISearchProposalProvider));
+                    .getDescription(), searchParam instanceof ISearchProposalProvider));
             } else {
                 if (searchParam.getLabel().startsWith(lastPart)) {
                     filters.add(new SearchFilterProposal(searchParam.getLabel(), searchParam.getImage(), searchParam
-                            .getDescription(), lastPart, searchParam instanceof ISearchProposalProvider));
+                        .getDescription(), lastPart, searchParam instanceof ISearchProposalProvider));
                 }
 
             }
@@ -203,23 +203,23 @@ public class SearchPatternAnalyzer {
          * parameters
          */
         return Stream.of(condense(searchPattern).split(SPACE))
-                .filter(p -> !p.isEmpty() && !p.contains(PARAM_KEY_END))
-                .findFirst()
-                .orElse(EMPTY);
+            .filter(p -> !p.isEmpty() && !p.contains(PARAM_KEY_END))
+            .findFirst()
+            .orElse(EMPTY);
     }
 
     private boolean checkParameterValuesProvided(final String part, final ISearchParameter param) throws CoreException {
         // Error -> only parameter key + ":" supplied
         if (part.length() <= (param.getLabel() + PARAM_KEY_END).length()) {
             throw new CoreException(new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, NLS.bind(
-                    Messages.SearchPatternAnalyzer_ErrorIncompleteSearchParameter_xmsg, part)));
+                Messages.SearchPatternAnalyzer_ErrorIncompleteSearchParameter_xmsg, part)));
         }
 
         final String paramValuesString = part.substring(param.getLabel().length() + 1);
         // Error -> no parameter values supplied
         if (paramValuesString.isEmpty()) {
             throw new CoreException(new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, NLS.bind(
-                    Messages.SearchPatternAnalyzer_ErrorIncompleteSearchParameter_xmsg, part)));
+                Messages.SearchPatternAnalyzer_ErrorIncompleteSearchParameter_xmsg, part)));
         }
 
         final String[] paramValues = paramValuesString.split(VALUE_LIST_SEP);
@@ -232,7 +232,7 @@ public class SearchPatternAnalyzer {
         // 5) check if negation is allowed
         if (!param.supportsMultipleValues() && paramValues.length > 1) {
             throw new CoreException(new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, NLS.bind(
-                    Messages.SearchPatternAnalyzer_ErrorParamAllowsOnlySingleValues_xmsg, param.getLabel())));
+                Messages.SearchPatternAnalyzer_ErrorParamAllowsOnlySingleValues_xmsg, param.getLabel())));
         }
         if (param instanceof IValidatable) {
             for (final String value : paramValues) {
@@ -245,19 +245,19 @@ public class SearchPatternAnalyzer {
                 final List<IContentProposal> proposalList = ((ISearchProposalProvider) param).getProposalList(value);
                 if (!isValueInProposalList(proposalList, value)) {
                     throw new CoreException(new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, NLS.bind(
-                            Messages.SearchPatternAnalyzer_ErrorUnsupportedParamValue_xmsg, param.getLabel(), value)));
+                        Messages.SearchPatternAnalyzer_ErrorUnsupportedParamValue_xmsg, param.getLabel(), value)));
                 }
             }
         }
         if (!param.supportsPatternValues() && Stream.of(paramValues)
-                .anyMatch(value -> value.contains(ANY_VALUE_CHAR) || value.contains(SOME_VALUE_CHAR))) {
+            .anyMatch(value -> value.contains(ANY_VALUE_CHAR) || value.contains(SOME_VALUE_CHAR))) {
             throw new CoreException(new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, NLS.bind(
-                    Messages.SearchPatternAnalyzer_ErrorWildcardsNotSupportedInParam_xmsg, param.getLabel())));
+                Messages.SearchPatternAnalyzer_ErrorWildcardsNotSupportedInParam_xmsg, param.getLabel())));
         }
         if (!param.supportsNegatedValues() && Stream.of(paramValues)
-                .anyMatch(StringUtil::startsWithNegationCharacter)) {
+            .anyMatch(StringUtil::startsWithNegationCharacter)) {
             throw new CoreException(new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, MessageFormat.format(
-                    "Parameter ''{0}'' does not permit negation", param.getLabel())));
+                "Parameter ''{0}'' does not permit negation", param.getLabel())));
         }
 
         return true;

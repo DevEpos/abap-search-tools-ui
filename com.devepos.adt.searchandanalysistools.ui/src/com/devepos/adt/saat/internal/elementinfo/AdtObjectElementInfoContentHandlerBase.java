@@ -21,7 +21,7 @@ import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
  * @author stockbal
  */
 public abstract class AdtObjectElementInfoContentHandlerBase implements
-        IContentHandler<IAdtObjectReferenceElementInfo> {
+    IContentHandler<IAdtObjectReferenceElementInfo> {
 
     protected final AdtStaxContentHandlerUtility utility = new AdtStaxContentHandlerUtility();
     protected IAdtObjectReferenceElementInfo elementInfo = null;
@@ -58,7 +58,7 @@ public abstract class AdtObjectElementInfoContentHandlerBase implements
 
         if (name != null && !name.isEmpty() && uri != null && !uri.isEmpty() && type != null && !type.isEmpty()) {
             final IAdtObjectReference adtObjectRef = AdtObjectReferenceModelFactory.createReference(destinationId, name,
-                    type, uri);
+                type, uri);
             adtObjectRef.setPackageName(packageName);
             elementInfo.setAdtObjectReference(adtObjectRef);
         }

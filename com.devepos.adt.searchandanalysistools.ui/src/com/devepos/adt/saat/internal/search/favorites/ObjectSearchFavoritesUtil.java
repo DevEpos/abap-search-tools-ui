@@ -20,8 +20,8 @@ public final class ObjectSearchFavoritesUtil {
      */
     public static String getFavoriteDisplayName(final IObjectSearchFavorite favorite) {
         final String systemId = String.format("[%s] ", favorite.isProjectIndependent() ? "?"
-                : DestinationUtil.getSystemId(favorite.getDestinationId()));
+            : DestinationUtil.getSystemId(favorite.getDestinationId()));
         return String.format("%s%s - '%s'", systemId, favorite.getDescription(), String.format("%s %s", favorite
-                .getObjectName(), favorite.getSearchFilter()).trim());
+            .getObjectName(), favorite.getSearchFilter()).trim());
     }
 }

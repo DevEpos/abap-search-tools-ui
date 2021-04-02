@@ -55,8 +55,7 @@ public class WhereUsedInCdsElementInfoProvider implements IElementInfoProvider {
      *                           search
      */
     private WhereUsedInCdsElementInfoProvider(final String destinationId, final String adtObjectName,
-            final boolean searchSelectFrom, final boolean searchAssociations,
-            final QueryParameterName searchParameter) {
+        final boolean searchSelectFrom, final boolean searchAssociations, final QueryParameterName searchParameter) {
         this.destinationId = destinationId;
         this.adtObjectName = adtObjectName;
         updateSearchParameters(searchSelectFrom, searchAssociations, searchParameter);
@@ -76,7 +75,7 @@ public class WhereUsedInCdsElementInfoProvider implements IElementInfoProvider {
      *                           views
      */
     public WhereUsedInCdsElementInfoProvider(final String destinationId, final String adtObjectName,
-            final boolean searchSelectFrom, final boolean searchAssociations) {
+        final boolean searchSelectFrom, final boolean searchAssociations) {
         this(destinationId, adtObjectName, searchSelectFrom, searchAssociations, null);
     }
 
@@ -101,7 +100,7 @@ public class WhereUsedInCdsElementInfoProvider implements IElementInfoProvider {
     @Override
     public List<IElementInfo> getElements() {
         final ObjectContainer<List<IElementInfo>> elementInfoWrapper = new ObjectContainer<>(
-                new ArrayList<IElementInfo>());
+            new ArrayList<IElementInfo>());
         if (searchAssocications && searchSelectFrom && searchParameter == null) {
             return Arrays.asList(createLazyWhereUsedProviderElement(true), createLazyWhereUsedProviderElement(false));
         }
@@ -113,8 +112,8 @@ public class WhereUsedInCdsElementInfoProvider implements IElementInfoProvider {
             parameters.put(QueryParameterName.LOCAL_DECLARED_ASSOC_ONLY.toString(), "X"); //$NON-NLS-1$
         }
         if (SearchAndAnalysisPlugin.getDefault()
-                .getPreferenceStore()
-                .getBoolean(ICdsAnalysisPreferences.WHERE_USED_ONLY_RELEASED_USAGES)) {
+            .getPreferenceStore()
+            .getBoolean(ICdsAnalysisPreferences.WHERE_USED_ONLY_RELEASED_USAGES)) {
             parameters.put(QueryParameterName.RELEASE_STATE.toString(), "RELEASED");
         }
         searchRequest.setParameters(parameters, null);
@@ -124,10 +123,10 @@ public class WhereUsedInCdsElementInfoProvider implements IElementInfoProvider {
         final IStatus queryRunStatus = searchQuery.run(new NullProgressMonitor());
         if (queryRunStatus.isOK()) {
             final List<IAdtObjectReferenceElementInfo> result = ((ObjectSearchResult) searchQuery.getSearchResult())
-                    .getResult();
+                .getResult();
             for (final IAdtObjectReferenceElementInfo elementInfo : result) {
                 final WhereUsedInCdsElementInfoProvider elemInfoProvider = new WhereUsedInCdsElementInfoProvider(
-                        destinationId, elementInfo.getName(), searchSelectFrom, searchAssocications);
+                    destinationId, elementInfo.getName(), searchSelectFrom, searchAssocications);
                 elemInfoProvider.setLocalAssociationsOnly(localAssociationsOnly);
                 elementInfo.setElementInfoProvider(elemInfoProvider);
                 elementInfoWrapper.getObject().add(elementInfo);
@@ -155,7 +154,7 @@ public class WhereUsedInCdsElementInfoProvider implements IElementInfoProvider {
      *                           search
      */
     private void updateSearchParameters(final boolean searchSelectFrom, final boolean searchAssociations,
-            final QueryParameterName searchParameter) {
+        final QueryParameterName searchParameter) {
         Assert.isTrue(searchSelectFrom || searchAssociations);
         this.searchSelectFrom = searchSelectFrom;
         searchAssocications = searchAssociations;
@@ -185,8 +184,8 @@ public class WhereUsedInCdsElementInfoProvider implements IElementInfoProvider {
             name = Messages.CdsAnalysis_UsesInAssociationsTreeNode_xlfd;
         }
         final WhereUsedInCdsElementInfoProvider provider = new WhereUsedInCdsElementInfoProvider(destinationId,
-                adtObjectName, searchSelectFrom, searchAssocications, searchFrom ? QueryParameterName.SELECT_SOURCE_IN
-                        : QueryParameterName.ASSOCIATED_IN);
+            adtObjectName, searchSelectFrom, searchAssocications, searchFrom ? QueryParameterName.SELECT_SOURCE_IN
+                : QueryParameterName.ASSOCIATED_IN);
         if (!searchFrom) {
             provider.setLocalAssociationsOnly(localAssociationsOnly);
         }

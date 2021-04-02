@@ -18,7 +18,7 @@ import com.devepos.adt.saat.internal.util.IImages;
  * @author stockbal
  */
 public class FieldSearchParameter extends NamedItemProposalProvider implements ISearchParameter,
-        ISearchProposalProvider {
+    ISearchProposalProvider {
     private final Image image;
 
     public FieldSearchParameter(final IAbapProjectProvider projectProvider, final NamedItemType namedItemType) {
@@ -49,7 +49,7 @@ public class FieldSearchParameter extends NamedItemProposalProvider implements I
     @Override
     public String getDescription() {
         return NLS.bind(Messages.SearchPatternAnalyzer_DescriptionFieldParameter_xmsg, new Object[] { getLabel(),
-                "matnr" });
+            "matnr" });
     }
 
     @Override

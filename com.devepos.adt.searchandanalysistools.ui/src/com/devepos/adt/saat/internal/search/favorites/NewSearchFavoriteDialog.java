@@ -90,13 +90,13 @@ public class NewSearchFavoriteDialog extends StatusDialog {
         GridLayoutFactory.swtDefaults().numColumns(2).applyTo(group);
 
         createReadOnlyTextWithLabel(Messages.NewSearchFavoriteDialog_Project_xfld, searchRequest.getDestinationId(),
-                group);
+            group);
         createReadOnlyTextWithLabel(Messages.NewSearchFavoriteDialog_SearchType_xfld, searchRequest.getSearchType()
-                .toString(), group);
+            .toString(), group);
         createReadOnlyTextWithLabel(Messages.NewSearchFavoriteDialog_ObjectName_xlfd, searchRequest.getSearchTerm(),
-                group);
+            group);
         createReadOnlyTextWithLabel(Messages.NewSearchFavoriteDialog_SearchFilter_xlfd, searchRequest
-                .getParametersString(), group);
+            .getParametersString(), group);
 
         final Button isAndSearchActiveCheckBox = new Button(group, SWT.CHECK);
         isAndSearchActiveCheckBox.setText(Messages.ObjectSearch_UseAndFilter_xtol);
@@ -109,8 +109,8 @@ public class NewSearchFavoriteDialog extends StatusDialog {
         final Label labelControl = new Label(parent, SWT.NONE);
         labelControl.setText(label);
         GridDataFactory.fillDefaults()
-                .hint(convertWidthInCharsToPixels(LABEL_WIDTH), SWT.DEFAULT)
-                .applyTo(labelControl);
+            .hint(convertWidthInCharsToPixels(LABEL_WIDTH), SWT.DEFAULT)
+            .applyTo(labelControl);
 
         final Text textControl = new Text(parent, SWT.READ_ONLY | SWT.BORDER | SWT.NO_FOCUS);
         textControl.setText(content);
@@ -132,8 +132,8 @@ public class NewSearchFavoriteDialog extends StatusDialog {
         final Label favoriteDescriptionLabel = new Label(group, SWT.NONE);
         favoriteDescriptionLabel.setText(Messages.NewSearchFavoriteDialog_Description_xfld);
         GridDataFactory.fillDefaults()
-                .hint(convertWidthInCharsToPixels(LABEL_WIDTH), SWT.DEFAULT)
-                .applyTo(favoriteDescriptionLabel);
+            .hint(convertWidthInCharsToPixels(LABEL_WIDTH), SWT.DEFAULT)
+            .applyTo(favoriteDescriptionLabel);
 
         final Text favoriteDescription = new Text(group, SWT.BORDER);
         favoriteDescription.addModifyListener(e -> {
@@ -152,9 +152,9 @@ public class NewSearchFavoriteDialog extends StatusDialog {
             }
         });
         GridDataFactory.fillDefaults()
-                .span(2, 1)
-                .hint(convertWidthInCharsToPixels(60), SWT.DEFAULT)
-                .applyTo(isProjectIndependentCheckBox);
+            .span(2, 1)
+            .hint(convertWidthInCharsToPixels(60), SWT.DEFAULT)
+            .applyTo(isProjectIndependentCheckBox);
 
         favoriteDescription.setFocus();
     }
@@ -162,7 +162,7 @@ public class NewSearchFavoriteDialog extends StatusDialog {
     @Override
     protected void createButtonsForButtonBar(final Composite parent) {
         createButton = createButton(parent, IDialogConstants.OK_ID,
-                Messages.NewSearchFavoriteDialog_CreateFavorite_xbut, true);
+            Messages.NewSearchFavoriteDialog_CreateFavorite_xbut, true);
         createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
     }
 
@@ -185,14 +185,14 @@ public class NewSearchFavoriteDialog extends StatusDialog {
         IStatus status = null;
         if (favoriteDescription == null || favoriteDescription.isEmpty()) {
             status = new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, IStatus.ERROR,
-                    Messages.NewSearchFavoriteDialog_NoDescriptionError_xmsg, null);
+                Messages.NewSearchFavoriteDialog_NoDescriptionError_xmsg, null);
         } else {
             // check if there already is a favorite with this description
             if (favoriteManager.contains(isProjectIndependent ? null : searchRequest.getDestinationId(), searchRequest
-                    .getSearchType()
-                    .name(), favoriteDescription)) {
+                .getSearchType()
+                .name(), favoriteDescription)) {
                 status = new Status(IStatus.WARNING, SearchAndAnalysisPlugin.PLUGIN_ID, IStatus.WARNING, NLS.bind(
-                        Messages.NewSearchFavoriteDialog_DuplicateFavoriteError_xmsg, favoriteDescription), null);
+                    Messages.NewSearchFavoriteDialog_DuplicateFavoriteError_xmsg, favoriteDescription), null);
             }
         }
         updateStatus(status);

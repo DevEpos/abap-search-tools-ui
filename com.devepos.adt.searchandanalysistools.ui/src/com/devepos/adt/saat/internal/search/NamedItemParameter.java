@@ -35,7 +35,7 @@ public class NamedItemParameter extends NamedItemProposalProvider implements ISe
      *                        <code>false</code>
      */
     public NamedItemParameter(final IAbapProjectProvider projectProvider, final QueryParameterName parameterName,
-            final NamedItemType namedItemType, final boolean isBuffered, final String initialQuery) {
+        final NamedItemType namedItemType, final boolean isBuffered, final String initialQuery) {
         super(projectProvider, parameterName, namedItemType, isBuffered);
         this.initialQuery = initialQuery;
     }

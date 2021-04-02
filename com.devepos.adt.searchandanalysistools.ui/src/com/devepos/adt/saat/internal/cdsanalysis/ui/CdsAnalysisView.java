@@ -217,10 +217,10 @@ public class CdsAnalysisView extends PageBookView implements ICdsAnalysisListene
 
                 description = new Label(descriptionComposite, SWT.LEAD | SWT.TOP | SWT.WRAP);
                 GridDataFactory.fillDefaults()
-                        .align(SWT.FILL, SWT.CENTER)
-                        .grab(true, false)
-                        .indent(5, SWT.DEFAULT)
-                        .applyTo(description);
+                    .align(SWT.FILL, SWT.CENTER)
+                    .grab(true, false)
+                    .indent(5, SWT.DEFAULT)
+                    .applyTo(description);
                 description.setText(label);
 
                 final Label separator = new Label(descriptionComposite, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -427,7 +427,7 @@ public class CdsAnalysisView extends PageBookView implements ICdsAnalysisListene
     private class RefreshCurrentAnalysisAction extends Action {
         public RefreshCurrentAnalysisAction() {
             super(Messages.CdsAnalysis_RefreshAction_xtol, SearchAndAnalysisPlugin.getDefault()
-                    .getImageDescriptor(IImages.REFRESH));
+                .getImageDescriptor(IImages.REFRESH));
         }
 
         @Override

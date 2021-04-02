@@ -200,8 +200,8 @@ public class CdsAnalysisManager {
 
     private void establishHistoryLimit() {
         final int historyLimit = SearchAndAnalysisPlugin.getDefault()
-                .getPreferenceStore()
-                .getInt(IPreferences.MAX_CDS_ANALYZER_HISTORY);
+            .getPreferenceStore()
+            .getInt(IPreferences.MAX_CDS_ANALYZER_HISTORY);
         if (historyLimit >= getSize()) {
             return;
         }

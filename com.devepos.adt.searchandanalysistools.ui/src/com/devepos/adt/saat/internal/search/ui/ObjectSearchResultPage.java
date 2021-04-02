@@ -132,8 +132,8 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
     public void setActionBars(final IActionBars actionBars) {
         final IToolBarManager tbm = actionBars.getToolBarManager();
         MenuItemFactory.addCommandItem(tbm, IContextMenuConstants.GROUP_NEW,
-                ICommandConstants.OBJECT_SEARCH_OPEN_IN_DIALOG, IImages.SEARCH,
-                Messages.ObjectSearchResultPage_OpenInSearchDialog_xtol, false, null);
+            ICommandConstants.OBJECT_SEARCH_OPEN_IN_DIALOG, IImages.SEARCH,
+            Messages.ObjectSearchResultPage_OpenInSearchDialog_xtol, false, null);
         tbm.appendToGroup(IContextMenuConstants.GROUP_NEW, favoritesAction);
         tbm.appendToGroup(IContextMenuConstants.GROUP_EDIT, collapseAllNodesAction);
         tbm.appendToGroup(IContextMenuConstants.GROUP_EDIT, expandAllAction);
@@ -291,7 +291,7 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
             isDbBrowserIntegrationAvailable = FeatureTester.isSapGuiDbBrowserAvailable(projectProvider.getProject());
             isCdsTopDownAnalysisAvailable = FeatureTester.isCdsTopDownAnalysisAvailable(projectProvider.getProject());
             isCdsUsedEntitiesAnalysisAvailable = FeatureTester.isCdsUsedEntitiesAnalysisAvailable(projectProvider
-                    .getProject());
+                .getProject());
         }
 
     }
@@ -395,22 +395,22 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
             }
 
             if (!selectionHasExpandedNodes && selectedObject instanceof ICollectionTreeNode && searchResultTree
-                    .getExpandedState(selectedObject)) {
+                .getExpandedState(selectedObject)) {
                 selectionHasExpandedNodes = true;
             }
             if (!hasCollapsedPackages && selectedObject instanceof PackageNode && !searchResultTree.getExpandedState(
-                    selectedObject)) {
+                selectedObject)) {
                 hasCollapsedPackages = true;
             }
         }
 
         if (!adtObjRefs.isEmpty()) {
             menu.appendToGroup(IContextMenuConstants.GROUP_OPEN, new OpenAdtObjectAction(projectProvider.getProject(),
-                    adtObjRefs));
+                adtObjRefs));
         }
         if (!previewAdtObjRefs.isEmpty()) {
             menu.appendToGroup(IContextMenuConstants.GROUP_OPEN, new ExecuteAdtObjectAction(projectProvider
-                    .getProject(), previewAdtObjRefs, true));
+                .getProject(), previewAdtObjRefs, true));
 
             if (isDbBrowserIntegrationAvailable) {
                 menu.add(new Separator(com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_DB_BROWSER));
@@ -422,33 +422,33 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
         if (!adtObjRefs.isEmpty()) {
             menu.add(new Separator(IContextMenuConstants.GROUP_ADDITIONS));
             MenuItemFactory.addCommandItem(menu, IContextMenuConstants.GROUP_ADDITIONS,
-                    "com.sap.adt.ris.whereused.ui.callWhereUsed", //$NON-NLS-1$
-                    IImages.WHERE_USED_LIST, Messages.ObjectSearch_WhereUsedListAction_xmit, null);
+                "com.sap.adt.ris.whereused.ui.callWhereUsed", //$NON-NLS-1$
+                IImages.WHERE_USED_LIST, Messages.ObjectSearch_WhereUsedListAction_xmit, null);
         }
 
         // check if action is supported in the current project
         if (singleDataPreviewObjectSelected && new CdsAnalysisUriDiscovery(projectProvider.getDestinationId())
-                .getCdsAnalysisUri() != null) {
+            .getCdsAnalysisUri() != null) {
             menu.add(new Separator(com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_CDS_ANALYSIS));
             if (singleCdsViewSelected && isCdsTopDownAnalysisAvailable) {
                 MenuItemFactory.addCdsAnalyzerCommandItem(menu,
-                        com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_CDS_ANALYSIS,
-                        ICommandConstants.CDS_TOP_DOWN_ANALYSIS);
+                    com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_CDS_ANALYSIS,
+                    ICommandConstants.CDS_TOP_DOWN_ANALYSIS);
             }
             if (!previewAdtObjRefs.isEmpty()) {
                 MenuItemFactory.addCdsAnalyzerCommandItem(menu,
-                        com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_CDS_ANALYSIS,
-                        ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS);
+                    com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_CDS_ANALYSIS,
+                    ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS);
             }
             if (singleCdsViewSelected && isCdsUsedEntitiesAnalysisAvailable) {
                 MenuItemFactory.addCdsAnalyzerCommandItem(menu,
-                        com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_CDS_ANALYSIS,
-                        ICommandConstants.USED_ENTITIES_ANALYSIS);
+                    com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_CDS_ANALYSIS,
+                    ICommandConstants.USED_ENTITIES_ANALYSIS);
             }
             if (!previewAdtObjRefs.isEmpty()) {
                 MenuItemFactory.addCdsAnalyzerCommandItem(menu,
-                        com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_CDS_ANALYSIS,
-                        ICommandConstants.FIELD_ANALYSIS);
+                    com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_CDS_ANALYSIS,
+                    ICommandConstants.FIELD_ANALYSIS);
             }
 
         }
@@ -594,7 +594,7 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
                 final String description = searchResult.getDescription();
                 if (description != null && !description.isEmpty()) {
                     text.append("  " + description + "  ", //$NON-NLS-1$ //$NON-NLS-2$
-                            StylerFactory.createCustomStyler(SWT.ITALIC, JFacePreferences.DECORATIONS_COLOR, null));
+                        StylerFactory.createCustomStyler(SWT.ITALIC, JFacePreferences.DECORATIONS_COLOR, null));
                 }
             }
 
@@ -636,7 +636,7 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 
         public ExpandSelectedPackageNodesAction(final TreeViewer viewer) {
             super(Messages.ObjectSearch_ExpandNodeAction_xmsg, SearchAndAnalysisPlugin.getDefault()
-                    .getImageDescriptor(IImages.EXPAND_ALL));
+                .getImageDescriptor(IImages.EXPAND_ALL));
             this.viewer = viewer;
         }
 

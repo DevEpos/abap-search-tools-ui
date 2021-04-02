@@ -13,7 +13,7 @@ import com.devepos.adt.saat.internal.search.contentassist.SearchParameterProposa
 public class DatabaseEntityProposalProvider extends NamedItemProposalProvider {
 
     public DatabaseEntityProposalProvider(final IAbapProjectProvider projectProvider,
-            final QueryParameterName parameterName) {
+        final QueryParameterName parameterName) {
         super(projectProvider, parameterName, NamedItemType.DB_ENTITY);
     }
 

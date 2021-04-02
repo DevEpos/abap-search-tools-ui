@@ -34,7 +34,7 @@ public interface ICdsAnalysisService {
      * @return the found field hierarchy information
      */
     IElementInfo loadWhereUsedFieldAnalysis(final String objectName, final String field, final boolean searchCalcFields,
-            final boolean searchDbViews, final String destinationId);
+        final boolean searchDbViews, final String destinationId);
 
     /**
      * Loads SELECT Part of a single CDS View

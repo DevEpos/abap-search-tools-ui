@@ -20,21 +20,21 @@ public class NavigationUtil {
      * @param destinationId the destination id of the ABAP project
      */
     public static void navigateToEntityColumn(final String entityName, final String fieldName,
-            final String destinationId) {
+        final String destinationId) {
         final Job loadFieldUriJob = Job.create(NLS.bind("Load Field URI for ''{0}.{1}''", entityName, fieldName),
-                monitor -> {
-                    final IDdicRepositoryAccess ddicRepoAccess = DdicRepositoryAccessFactory.createDdicAccess();
-                    final IAdtObjectReference adtObjectRef = ddicRepoAccess.getColumnUri(destinationId, entityName,
-                            fieldName);
-                    if (adtObjectRef != null) {
-                        PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
-                            AdtUIUtil.navigateWithObjectReference(adtObjectRef, AbapProjectProviderAccessor
-                                    .getProviderForDestination(destinationId)
-                                    .getProject());
-                        });
-                    }
-                    monitor.done();
-                });
+            monitor -> {
+                final IDdicRepositoryAccess ddicRepoAccess = DdicRepositoryAccessFactory.createDdicAccess();
+                final IAdtObjectReference adtObjectRef = ddicRepoAccess.getColumnUri(destinationId, entityName,
+                    fieldName);
+                if (adtObjectRef != null) {
+                    PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
+                        AdtUIUtil.navigateWithObjectReference(adtObjectRef, AbapProjectProviderAccessor
+                            .getProviderForDestination(destinationId)
+                            .getProject());
+                    });
+                }
+                monitor.done();
+            });
         loadFieldUriJob.schedule();
     }
 }

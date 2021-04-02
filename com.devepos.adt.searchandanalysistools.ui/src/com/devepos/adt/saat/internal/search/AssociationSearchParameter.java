@@ -22,7 +22,7 @@ import com.devepos.adt.saat.internal.util.IImages;
  * @author stockbal
  */
 public class AssociationSearchParameter extends DatabaseEntityProposalProvider implements ISearchParameter,
-        ISearchProposalProvider {
+    ISearchProposalProvider {
 
     private final Image image;
 
@@ -63,7 +63,7 @@ public class AssociationSearchParameter extends DatabaseEntityProposalProvider i
     @Override
     public String getDescription() {
         return NLS.bind(Messages.SearchPatternAnalyzer_DescriptionAssociationParameter_xmsg, new Object[] { getLabel(),
-                "I_PRODUCT" });
+            "I_PRODUCT" });
     }
 
     @Override

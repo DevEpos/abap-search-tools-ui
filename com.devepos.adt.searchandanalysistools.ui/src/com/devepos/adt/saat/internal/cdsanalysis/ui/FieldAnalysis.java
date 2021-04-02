@@ -30,20 +30,20 @@ public class FieldAnalysis extends CdsAnalysis {
     public FieldAnalysis(final IAdtObjectReferenceElementInfo adtObjectInfo) {
         super(adtObjectInfo);
         node = new LazyLoadingAdtObjectReferenceNode(adtObjectInfo.getName(), adtObjectInfo.getDisplayName(),
-                adtObjectInfo.getDescription(), adtObjectInfo.getAdtObjectReference(), null);
+            adtObjectInfo.getDescription(), adtObjectInfo.getAdtObjectReference(), null);
         final IDestinationProvider destProvider = adtObjectInfo.getAdapter(IDestinationProvider.class);
         node.setElementInfoProvider(new IElementInfoProvider() {
             @Override
             public String getProviderDescription() {
                 return NLS.bind(Messages.FieldAnalysisView_FieldLoadingProviderDesc_xmsg, adtObjectInfo
-                        .getDisplayName());
+                    .getDisplayName());
             }
 
             @Override
             public List<IElementInfo> getElements() {
                 final IDdicRepositoryAccess ddicRepoAccess = DdicRepositoryAccessFactory.createDdicAccess();
                 return ddicRepoAccess.getElementColumnInformation(destProvider.getDestinationId(), adtObjectInfo
-                        .getUri());
+                    .getUri());
             }
         });
     }

@@ -20,7 +20,7 @@ public class BasicElementInfoContentHandler extends AdtObjectElementInfoContentH
 
     @Override
     public IAdtObjectReferenceElementInfo deserialize(final IMessageBody messageBody,
-            final Class<? extends IAdtObjectReferenceElementInfo> arg1) {
+        final Class<? extends IAdtObjectReferenceElementInfo> arg1) {
         try {
             createElementInfo(utility.parseXML(messageBody, IXmlTags.EL_PROPERTY));
             return elementInfo;
@@ -36,10 +36,10 @@ public class BasicElementInfoContentHandler extends AdtObjectElementInfoContentH
             return;
         }
         final IXmlElement propertiesEl = rootElement.getChildren()
-                .stream()
-                .filter(c -> c.getName().equals(IXmlTags.EL_PROPERTIES))
-                .findFirst()
-                .get();
+            .stream()
+            .filter(c -> c.getName().equals(IXmlTags.EL_PROPERTIES))
+            .findFirst()
+            .get();
 
         IDataSourceType sourceType = null;
         String apiState = null;

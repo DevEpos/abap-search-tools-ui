@@ -54,8 +54,8 @@ public abstract class OpenInCdsAnalyzerHandler extends AbstractHandler {
         }
         if (!isFeatureAvailable(project)) {
             MessageDialog.openInformation(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-                    Messages.Dialog_InfoTitle_xmsg, NLS.bind(getFeatureUnavailableMessage(), DestinationUtil
-                            .getDestinationId(project)));
+                Messages.Dialog_InfoTitle_xmsg, NLS.bind(getFeatureUnavailableMessage(), DestinationUtil
+                    .getDestinationId(project)));
             return null;
         }
         final IAbapProject abapProject = selectedObject.getProject().getAdapter(IAbapProject.class);
@@ -76,20 +76,20 @@ public abstract class OpenInCdsAnalyzerHandler extends AbstractHandler {
         if (existing == null) {
             // determine ADT information about CDS view
             final Job adtObjectRetrievalJob = Job.create(Messages.CdsAnalysis_LoadAdtObjectJobName_xmsg,
-                    (ICoreRunnable) monitor -> {
-                        // check if search is possible in selected project
-                        final IAdtObjectReferenceElementInfo adtObjectRefElemInfo = ElementInfoRetrievalServiceFactory
-                                .createService()
-                                .retrieveBasicElementInformation(destinationId, objectRef.getUri());
-                        if (adtObjectRefElemInfo != null) {
-                            final CdsAnalysis newAnalysis = createTypedAnalysis(adtObjectRefElemInfo);
-                            PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
-                                analysisManager.addAnalysis(newAnalysis);
-                                analysisManager.registerAnalysis(analysisKey, newAnalysis);
-                                analysisManager.showAnalysis(newAnalysis);
-                            });
-                        }
-                    });
+                (ICoreRunnable) monitor -> {
+                    // check if search is possible in selected project
+                    final IAdtObjectReferenceElementInfo adtObjectRefElemInfo = ElementInfoRetrievalServiceFactory
+                        .createService()
+                        .retrieveBasicElementInformation(destinationId, objectRef.getUri());
+                    if (adtObjectRefElemInfo != null) {
+                        final CdsAnalysis newAnalysis = createTypedAnalysis(adtObjectRefElemInfo);
+                        PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
+                            analysisManager.addAnalysis(newAnalysis);
+                            analysisManager.registerAnalysis(analysisKey, newAnalysis);
+                            analysisManager.showAnalysis(newAnalysis);
+                        });
+                    }
+                });
             adtObjectRetrievalJob.schedule();
 
         } else {

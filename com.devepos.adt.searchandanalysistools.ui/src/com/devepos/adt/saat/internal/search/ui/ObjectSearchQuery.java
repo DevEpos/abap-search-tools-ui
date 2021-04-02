@@ -70,11 +70,11 @@ public class ObjectSearchQuery implements ISearchQuery {
         }
         if (projectProvider == null) {
             return new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, NLS.bind(
-                    "Destination Id ''{0}'' is not valid", destinationId));
+                "Destination Id ''{0}'' is not valid", destinationId));
         }
         if (!projectProvider.ensureLoggedOn()) {
             return new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, NLS.bind(
-                    Messages.ObjectSearch_ProjectLogonFailed_xmsg, projectProvider.getProjectName()));
+                Messages.ObjectSearch_ProjectLogonFailed_xmsg, projectProvider.getProjectName()));
         }
         final ObjectSearchUriDiscovery uriDiscovery = new ObjectSearchUriDiscovery(destinationId);
 
@@ -98,10 +98,10 @@ public class ObjectSearchQuery implements ISearchQuery {
         final String searchTerm = searchRequest.getSearchTerm();
         parameterMap.put(QueryParameterName.OBJECT_NAME.toString(), searchTerm != null ? searchTerm : "");
         final URI objectSearchUri = uriDiscovery.createResourceUriFromTemplate(searchRequest.getSearchType(),
-                parameterMap);
+            parameterMap);
         if (objectSearchUri == null) {
             return new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, NLS.bind(
-                    Messages.ObjectSearch_SearchNotSupportedInProject_xmsg, projectProvider.getProjectName()));
+                Messages.ObjectSearch_SearchNotSupportedInProject_xmsg, projectProvider.getProjectName()));
         }
 
         monitor.beginTask(Messages.ObjectSearch_SearchJobProgressText_xmsg, 1);
@@ -109,16 +109,16 @@ public class ObjectSearchQuery implements ISearchQuery {
         final ISystemSession session = projectProvider.createStatelessSession();
 
         final IRestResource restResource = AdtRestResourceFactory.createRestResourceFactory()
-                .createRestResource(objectSearchUri, session);
+            .createRestResource(objectSearchUri, session);
         restResource.addContentHandler(new ObjectSearchContentHandler(projectProvider.getDestinationId()));
 
         try {
             final com.devepos.adt.saat.internal.search.ObjectSearchResult searchResult = restResource.get(monitor,
-                    AdtUtil.getHeaders(), com.devepos.adt.saat.internal.search.ObjectSearchResult.class);
+                AdtUtil.getHeaders(), com.devepos.adt.saat.internal.search.ObjectSearchResult.class);
 
             final List<IAdtObjectReferenceElementInfo> rawResult = searchResult.getRawResult();
             if (rawResult != null && !searchRequest.shouldReadAllEntries() && rawResult.size() > searchRequest
-                    .getMaxResults()) {
+                .getMaxResults()) {
                 this.searchResult.setHasMoreResults(true);
             }
             this.searchResult.addSearchResult(rawResult, searchResult.getPackageResult());
@@ -128,8 +128,8 @@ public class ObjectSearchQuery implements ISearchQuery {
         } catch (final ResourceException exc) {
             final String localizedMessage = exc.getLocalizedMessage();
             return new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, localizedMessage != null
-                    ? localizedMessage
-                    : Messages.ObjectSearch_GeneralError_xmsg);
+                ? localizedMessage
+                : Messages.ObjectSearch_GeneralError_xmsg);
         }
     }
 

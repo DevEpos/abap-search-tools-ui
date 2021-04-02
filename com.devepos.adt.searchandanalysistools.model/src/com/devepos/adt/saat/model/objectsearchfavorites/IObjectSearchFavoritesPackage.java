@@ -52,7 +52,7 @@ public interface IObjectSearchFavoritesPackage extends EPackage {
      * @generated
      */
     IObjectSearchFavoritesPackage eINSTANCE = com.devepos.adt.saat.model.objectsearchfavorites.impl.ObjectSearchFavoritesPackageImpl
-            .init();
+        .init();
 
     /**
      * The meta object id for the
@@ -393,7 +393,7 @@ public interface IObjectSearchFavoritesPackage extends EPackage {
          * @generated
          */
         EReference OBJECT_SEARCH_FAVORITES__OBJECT_SEARCH_FAVORITES = eINSTANCE
-                .getObjectSearchFavorites_ObjectSearchFavorites();
+            .getObjectSearchFavorites_ObjectSearchFavorites();
 
         /**
          * The meta object literal for the

@@ -29,10 +29,10 @@ class ElementInfoRetrievalService implements IElementInfoRetrievalService {
 
     @Override
     public IAdtObjectReferenceElementInfo retrieveElementInformation(final String destinationId,
-            final IAdtObjectReference objectReference) {
+        final IAdtObjectReference objectReference) {
         // TODO: throw proper exception
         final IAbapProjectProvider projectProvider = AbapProjectProviderAccessor.getProviderForDestination(
-                destinationId);
+            destinationId);
         if (projectProvider == null || !projectProvider.ensureLoggedOn()) {
             return null;
         }
@@ -46,14 +46,14 @@ class ElementInfoRetrievalService implements IElementInfoRetrievalService {
         IContentHandler<IAdtObjectReferenceElementInfo> adtObjectHandler = null;
         final ElementInfoUriDiscovery uriDiscovery = new ElementInfoUriDiscovery(projectProvider.getDestinationId());
         final AnalysisForOfficeUriDiscovery anlyticsURIDiscovery = new AnalysisForOfficeUriDiscovery(projectProvider
-                .getDestinationId());
+            .getDestinationId());
 
         if (type.equals(ObjectType.CDS_VIEW.getAdtExecutionType())) {
             adtObjectHandler = new CdsViewElementInfoContentHandler(destinationId, uriDiscovery
-                    .getCDSSecondaryElementInfoTemplate() != null, anlyticsURIDiscovery.getLauncherTemplate() != null);
+                .getCDSSecondaryElementInfoTemplate() != null, anlyticsURIDiscovery.getLauncherTemplate() != null);
             if (SearchAndAnalysisPlugin.getDefault()
-                    .getPreferenceStore()
-                    .getBoolean(IPreferences.SHOW_FULL_ASSOCIATION_NAME)) {
+                .getPreferenceStore()
+                .getBoolean(IPreferences.SHOW_FULL_ASSOCIATION_NAME)) {
                 paramsMap.put("showAssocName", "X"); //$NON-NLS-1$ //$NON-NLS-2$
             }
             objectType = ObjectType.CDS_VIEW;
@@ -71,7 +71,7 @@ class ElementInfoRetrievalService implements IElementInfoRetrievalService {
 
             final ISystemSession session = projectProvider.createStatelessSession();
             final IRestResource restResource = AdtRestResourceFactory.createRestResourceFactory()
-                    .createRestResource(resourceUri, session);
+                .createRestResource(resourceUri, session);
             restResource.addContentHandler(adtObjectHandler);
 
             try {
@@ -87,20 +87,20 @@ class ElementInfoRetrievalService implements IElementInfoRetrievalService {
     public IElementInfoCollection retrieveCDSSecondaryElements(final String destinationId, final String cdsViewName) {
         // TODO: throw proper exception
         final IAbapProjectProvider projectProvider = AbapProjectProviderAccessor.getProviderForDestination(
-                destinationId);
+            destinationId);
         if (projectProvider == null || !projectProvider.ensureLoggedOn()) {
             return null;
         }
         IElementInfoCollection secondaryElementInfo = null;
 
         final IContentHandler<IElementInfoCollection> handler = new CdsSecondaryElementInfoContentHandler(
-                destinationId);
+            destinationId);
         final URI resourceUri = new ElementInfoUriDiscovery(projectProvider.getDestinationId())
-                .createCDSSecondaryElementInfoResourceURI(cdsViewName);
+            .createCDSSecondaryElementInfoResourceURI(cdsViewName);
 
         final ISystemSession session = projectProvider.createStatelessSession();
         final IRestResource restResource = AdtRestResourceFactory.createRestResourceFactory()
-                .createRestResource(resourceUri, session);
+            .createRestResource(resourceUri, session);
         restResource.addContentHandler(handler);
 
         try {
@@ -113,17 +113,17 @@ class ElementInfoRetrievalService implements IElementInfoRetrievalService {
 
     @Override
     public IAdtObjectReferenceElementInfo retrieveBasicElementInformation(final String destinationId,
-            final String objectName, final ObjectType objectType) {
+        final String objectName, final ObjectType objectType) {
         if (destinationId == null || objectType == null) {
             return null;
         }
         final IAbapProjectProvider projectProvider = AbapProjectProviderAccessor.getProviderForDestination(
-                destinationId);
+            destinationId);
         if (projectProvider == null || !projectProvider.ensureLoggedOn()) {
             return null;
         }
         final IContentHandler<IAdtObjectReferenceElementInfo> adtObjectHandler = new BasicElementInfoContentHandler(
-                destinationId);
+            destinationId);
         final ElementInfoUriDiscovery uriDiscovery = new ElementInfoUriDiscovery(projectProvider.getDestinationId());
         if (!uriDiscovery.isResourceDiscoverySuccessful()) {
             return null;
@@ -135,7 +135,7 @@ class ElementInfoRetrievalService implements IElementInfoRetrievalService {
 
         final ISystemSession session = projectProvider.createStatelessSession();
         final IRestResource restResource = AdtRestResourceFactory.createRestResourceFactory()
-                .createRestResource(resourceUri, session);
+            .createRestResource(resourceUri, session);
         restResource.addContentHandler(adtObjectHandler);
 
         IAdtObjectReferenceElementInfo elementInfo = null;
@@ -149,17 +149,17 @@ class ElementInfoRetrievalService implements IElementInfoRetrievalService {
 
     @Override
     public IAdtObjectReferenceElementInfo retrieveBasicElementInformation(final String destinationId,
-            final String uri) {
+        final String uri) {
         if (destinationId == null || uri == null) {
             return null;
         }
         final IAbapProjectProvider projectProvider = AbapProjectProviderAccessor.getProviderForDestination(
-                destinationId);
+            destinationId);
         if (projectProvider == null || !projectProvider.ensureLoggedOn()) {
             return null;
         }
         final IContentHandler<IAdtObjectReferenceElementInfo> adtObjectHandler = new BasicElementInfoContentHandler(
-                destinationId);
+            destinationId);
         final ElementInfoUriDiscovery uriDiscovery = new ElementInfoUriDiscovery(projectProvider.getDestinationId());
 
         final Map<String, Object> paramsMap = new HashMap<>();
@@ -168,7 +168,7 @@ class ElementInfoRetrievalService implements IElementInfoRetrievalService {
 
         final ISystemSession session = projectProvider.createStatelessSession();
         final IRestResource restResource = AdtRestResourceFactory.createRestResourceFactory()
-                .createRestResource(resourceUri, session);
+            .createRestResource(resourceUri, session);
         restResource.addContentHandler(adtObjectHandler);
 
         IAdtObjectReferenceElementInfo elementInfo = null;

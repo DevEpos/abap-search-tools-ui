@@ -19,7 +19,7 @@ import com.devepos.adt.saat.internal.util.IImages;
  * @author stockbal
  */
 public class SelectFromSearchParameter extends DatabaseEntityProposalProvider implements ISearchParameter,
-        ISearchProposalProvider {
+    ISearchProposalProvider {
 
     private final Image image;
 
@@ -46,7 +46,7 @@ public class SelectFromSearchParameter extends DatabaseEntityProposalProvider im
     @Override
     public String getDescription() {
         return NLS.bind(Messages.SearchPatternAnalyzer_DescriptionFromParameter_xmsg, new Object[] { getLabel(),
-                "mara" });
+            "mara" });
     }
 
     @Override

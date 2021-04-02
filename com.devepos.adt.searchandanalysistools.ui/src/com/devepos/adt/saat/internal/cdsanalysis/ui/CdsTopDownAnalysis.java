@@ -24,10 +24,10 @@ public class CdsTopDownAnalysis extends CdsAnalysis {
     public CdsTopDownAnalysis(final IAdtObjectReferenceElementInfo cdsObjInfo) {
         super(cdsObjInfo);
         final LazyLoadingAdtObjectReferenceNode node = new LazyLoadingAdtObjectReferenceNode(cdsObjInfo.getName(),
-                cdsObjInfo.getDisplayName(), cdsObjInfo.getDescription(), cdsObjInfo.getAdtObjectReference(), null);
+            cdsObjInfo.getDisplayName(), cdsObjInfo.getDescription(), cdsObjInfo.getAdtObjectReference(), null);
         final IDestinationProvider destProvider = cdsObjInfo.getAdapter(IDestinationProvider.class);
         node.setElementInfoProvider(new CdsTopDownElementInfoProvider(destProvider != null ? destProvider
-                .getDestinationId() : null, cdsObjInfo.getName()));
+            .getDestinationId() : null, cdsObjInfo.getName()));
         node.setAdditionalInfo(cdsObjInfo.getAdditionalInfo());
         cdsNode = node;
     }

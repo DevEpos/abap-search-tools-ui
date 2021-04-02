@@ -42,7 +42,7 @@ public class NamedItemProposalProvider {
      * @param namedItemType   the type of named item to look for
      */
     public NamedItemProposalProvider(final IAbapProjectProvider projectProvider, final QueryParameterName parameterName,
-            final NamedItemType namedItemType) {
+        final NamedItemType namedItemType) {
         this(projectProvider, parameterName, namedItemType, false);
     }
 
@@ -58,7 +58,7 @@ public class NamedItemProposalProvider {
      *                        be very small
      */
     public NamedItemProposalProvider(final IAbapProjectProvider projectProvider, final QueryParameterName parameterName,
-            final NamedItemType namedItemType, final boolean cacheResults) {
+        final NamedItemType namedItemType, final boolean cacheResults) {
         this.projectProvider = projectProvider;
         this.parameterName = parameterName;
         this.namedItemType = namedItemType;
@@ -114,7 +114,7 @@ public class NamedItemProposalProvider {
      * @throws CoreException
      */
     protected List<IContentProposal> getProposals(final String query, final String cacheQuery, final String dataFilter)
-            throws CoreException {
+        throws CoreException {
         final List<IContentProposal> result = new ArrayList<>();
 
         try {
@@ -210,8 +210,8 @@ public class NamedItemProposalProvider {
         }
         // filter results from cache before returning them
         return namedItems != null ? Stream.of(namedItems)
-                .filter(namedItem -> filterResult(namedItem, cacheQuery))
-                .toArray(INamedItem[]::new) : null;
+            .filter(namedItem -> filterResult(namedItem, cacheQuery))
+            .toArray(INamedItem[]::new) : null;
     }
 
 }

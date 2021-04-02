@@ -18,7 +18,7 @@ public class ViewElementInfoContentHandler extends AdtObjectElementInfoContentHa
 
     @Override
     public IAdtObjectReferenceElementInfo deserialize(final IMessageBody messageBody,
-            final Class<? extends IAdtObjectReferenceElementInfo> clazz) {
+        final Class<? extends IAdtObjectReferenceElementInfo> clazz) {
 
         try {
             processViewInfo(utility.parseXML(messageBody));

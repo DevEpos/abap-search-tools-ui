@@ -83,7 +83,7 @@ public class FieldHierarchyViewer extends TreeViewer {
      * @param viewSite     the view site or <code>null</code>
      */
     public void initContextMenu(final IMenuListener menuListener, final String popupId,
-            final IWorkbenchPartSite viewSite) {
+        final IWorkbenchPartSite viewSite) {
         final MenuManager menuMgr = new MenuManager(popupId);
         menuMgr.setRemoveAllWhenShown(true);
         menuMgr.addMenuListener(menuListener);
@@ -124,7 +124,7 @@ public class FieldHierarchyViewer extends TreeViewer {
         final TreeColumn column = viewerColumn.getColumn();
         column.setText(headerText);
         viewerColumn.setLabelProvider(new DelegatingStyledCellLabelProvider(new FieldHierarchyViewerCellLabelProvider(
-                columnIndex)));
+            columnIndex)));
         column.setWidth(width);
         column.setMoveable(true);
     }
@@ -181,7 +181,7 @@ public class FieldHierarchyViewer extends TreeViewer {
             if (columnIndex != 0) {
                 if (adtObjectRefNode != null) {
                     final String calculated = adtObjectRefNode.getPropertyValue(
-                            ICdsAnalysisConstants.IS_CALCULATED_PROP);
+                        ICdsAnalysisConstants.IS_CALCULATED_PROP);
                     if ("X".equals(calculated)) {
                         return SearchAndAnalysisPlugin.getDefault().getImage(IImages.FUNCTION);
                     }
@@ -193,9 +193,9 @@ public class FieldHierarchyViewer extends TreeViewer {
             Image image = node.getImage();
             if (image == null && adtObjectRefNode != null) {
                 image = AdtTypeUtil.getInstance()
-                        .getTypeImage(adtObjectRefNode.getObjectType() == ObjectType.CDS_VIEW
-                                ? IAdtObjectTypeConstants.CDS_VIEW_DEFINITION_TYPE
-                                : adtObjectRefNode.getAdtObjectType());
+                    .getTypeImage(adtObjectRefNode.getObjectType() == ObjectType.CDS_VIEW
+                        ? IAdtObjectTypeConstants.CDS_VIEW_DEFINITION_TYPE
+                        : adtObjectRefNode.getAdtObjectType());
             }
             if (image == null) {
                 return null;

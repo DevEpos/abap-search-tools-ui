@@ -40,7 +40,7 @@ public interface INamedItemService {
      * @return an array of the found named items
      */
     INamedItem[] getNamedItems(final NamedItemType type, final int maxResults, final String name,
-            final String description);
+        final String description);
 
     /**
      * Retrieves a list of named items for the given type. Results can be restricted
@@ -57,6 +57,6 @@ public interface INamedItemService {
      * @return
      */
     INamedItem[] getNamedItems(final NamedItemType type, final int maxResults, final String name,
-            final String description, final String data);
+        final String description, final String data);
 
 }

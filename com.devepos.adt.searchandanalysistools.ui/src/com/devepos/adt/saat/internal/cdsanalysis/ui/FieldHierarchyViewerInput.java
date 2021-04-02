@@ -25,7 +25,7 @@ public class FieldHierarchyViewerInput {
     private FieldWhereUsedInCdsElementInfoProvider whereUsedProvider;
 
     public FieldHierarchyViewerInput(final TreeViewer viewer, final ILazyLoadingNode topDownNode,
-            final String baseEntityName, final String baseFieldName, final IDestinationProvider destinationProvider) {
+        final String baseEntityName, final String baseFieldName, final IDestinationProvider destinationProvider) {
         this.viewer = viewer;
         this.topDownNode = new FieldHierarchyViewerNode(topDownNode);
         searchCalcFields = false;
@@ -34,7 +34,7 @@ public class FieldHierarchyViewerInput {
         this.destinationProvider = destinationProvider;
         SearchAndAnalysisPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(event -> {
             if (FieldAnalysisView.SEARCH_DB_VIEWS_WHERE_USED_PREF_KEY.equals(event.getProperty())
-                    && whereUsedProvider != null) {
+                && whereUsedProvider != null) {
                 whereUsedProvider.setSearchDbViews((boolean) event.getNewValue());
             }
         });
@@ -98,11 +98,11 @@ public class FieldHierarchyViewerInput {
      */
     public void createWhereUsedNode() {
         whereUsedProvider = new FieldWhereUsedInCdsElementInfoProvider(destinationProvider.getDestinationId(),
-                baseEntityName, baseFieldName, false, SearchAndAnalysisPlugin.getDefault()
-                        .getPreferenceStore()
-                        .getBoolean(FieldAnalysisView.SEARCH_DB_VIEWS_WHERE_USED_PREF_KEY));
+            baseEntityName, baseFieldName, false, SearchAndAnalysisPlugin.getDefault()
+                .getPreferenceStore()
+                .getBoolean(FieldAnalysisView.SEARCH_DB_VIEWS_WHERE_USED_PREF_KEY));
         whereUsedNode = new FieldHierarchyViewerNode(new LazyLoadingFolderNode(baseFieldName, whereUsedProvider, null,
-                null));
+            null));
     }
 
     /**

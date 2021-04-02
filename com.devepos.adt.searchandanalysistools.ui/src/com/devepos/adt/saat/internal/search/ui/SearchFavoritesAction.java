@@ -39,7 +39,7 @@ public class SearchFavoritesAction extends Action implements IMenuCreator {
 
     public SearchFavoritesAction() {
         super(Messages.ObjectSearch_SearchFavoritesAction_xtol, SearchAndAnalysisPlugin.getDefault()
-                .getImageDescriptor(IImages.FAVORITES));
+            .getImageDescriptor(IImages.FAVORITES));
         setMenuCreator(this);
         favoriteManager = SearchAndAnalysisPlugin.getDefault().getFavoriteManager();
     }
@@ -137,8 +137,8 @@ public class SearchFavoritesAction extends Action implements IMenuCreator {
      */
     private void openOrganizeFavoritesDialog() {
         final SelectionDialog favoritesDialog = new ManageSearchFavoritesDialog(PlatformUI.getWorkbench()
-                .getActiveWorkbenchWindow()
-                .getShell());
+            .getActiveWorkbenchWindow()
+            .getShell());
         if (favoritesDialog.open() == Window.OK) {
             final Object[] chosenEntries = favoritesDialog.getResult();
             if (chosenEntries != null && chosenEntries.length == 1) {
@@ -152,9 +152,9 @@ public class SearchFavoritesAction extends Action implements IMenuCreator {
      */
     private void createNewFavorite() {
         final IWorkbenchPart activePart = PlatformUI.getWorkbench()
-                .getActiveWorkbenchWindow()
-                .getActivePage()
-                .getActivePart();
+            .getActiveWorkbenchWindow()
+            .getActivePage()
+            .getActivePart();
         if (!(activePart instanceof SearchView)) {
             return;
         }
@@ -164,7 +164,7 @@ public class SearchFavoritesAction extends Action implements IMenuCreator {
             return;
         }
         new NewSearchFavoriteDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-                ((ObjectSearchResultPage) resultPage).getSearchQuery().getSearchRequest()).open();
+            ((ObjectSearchResultPage) resultPage).getSearchQuery().getSearchRequest()).open();
     }
 
     /*

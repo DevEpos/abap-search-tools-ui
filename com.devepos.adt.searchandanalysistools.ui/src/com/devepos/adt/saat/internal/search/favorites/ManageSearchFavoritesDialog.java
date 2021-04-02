@@ -87,7 +87,7 @@ public class ManageSearchFavoritesDialog extends SelectionDialog {
     @Override
     protected IDialogSettings getDialogBoundsSettings() {
         return SearchAndAnalysisPlugin.getDefault()
-                .getDialogSettingsSection("DialogBounds_ManageSearchFavoritesDialog"); //$NON-NLS-1$
+            .getDialogSettingsSection("DialogBounds_ManageSearchFavoritesDialog"); //$NON-NLS-1$
     }
 
     @Override
@@ -136,10 +136,10 @@ public class ManageSearchFavoritesDialog extends SelectionDialog {
             }
         });
         GridDataFactory.fillDefaults()
-                .span(1, 2)
-                .hint(convertWidthInCharsToPixels(WIDTH_IN_CHARACTERS), convertHeightInCharsToPixels(15))
-                .grab(true, true)
-                .applyTo(table);
+            .span(1, 2)
+            .hint(convertWidthInCharsToPixels(WIDTH_IN_CHARACTERS), convertHeightInCharsToPixels(15))
+            .grab(true, true)
+            .applyTo(table);
 
         removeButton = new Button(parent, SWT.PUSH);
         removeButton.setText(Messages.SearchHistorySelectionDialog_DeleteHistoryEntry_xbut);
@@ -150,9 +150,9 @@ public class ManageSearchFavoritesDialog extends SelectionDialog {
             }
         });
         GridDataFactory.fillDefaults()
-                .align(SWT.BEGINNING, SWT.BEGINNING)
-                .hint(convertWidthInCharsToPixels(BUTTON_CHAR_WIDTH), SWT.DEFAULT)
-                .applyTo(removeButton);
+            .align(SWT.BEGINNING, SWT.BEGINNING)
+            .hint(convertWidthInCharsToPixels(BUTTON_CHAR_WIDTH), SWT.DEFAULT)
+            .applyTo(removeButton);
 
         applyDialogFont(ancestor);
 
@@ -252,8 +252,8 @@ public class ManageSearchFavoritesDialog extends SelectionDialog {
         }
         if (!input.isEmpty() && this.orderChanged) {
             final List<IObjectSearchFavorite> favorites = SearchAndAnalysisPlugin.getDefault()
-                    .getFavoriteManager()
-                    .getFavorites();
+                .getFavoriteManager()
+                .getFavorites();
             favorites.clear();
             favorites.addAll(input);
             orderChanged = true;

@@ -30,13 +30,13 @@ public class CdsUsedEntitiesAnalysis extends CdsAnalysis {
     public CdsUsedEntitiesAnalysis(final IAdtObjectReferenceElementInfo cdsViewAdtObj) {
         super(cdsViewAdtObj);
         node = new LazyLoadingAdtObjectReferenceNode(cdsViewAdtObj.getName(), cdsViewAdtObj.getDisplayName(),
-                cdsViewAdtObj.getDescription(), cdsViewAdtObj.getAdtObjectReference(), null);
+            cdsViewAdtObj.getDescription(), cdsViewAdtObj.getAdtObjectReference(), null);
         final IDestinationProvider destProvider = cdsViewAdtObj.getAdapter(IDestinationProvider.class);
         node.setElementInfoProvider(new IElementInfoProvider() {
             @Override
             public String getProviderDescription() {
                 return NLS.bind(Messages.CdsAnalysis_UsageAnalysisProviderDescription_xmsg, cdsViewAdtObj
-                        .getDisplayName());
+                    .getDisplayName());
             }
 
             @Override
@@ -45,7 +45,7 @@ public class CdsUsedEntitiesAnalysis extends CdsAnalysis {
                     return null;
                 }
                 final IElementInfo cdsTopDownInfo = CdsAnalysisServiceFactory.createCdsAnalysisService()
-                        .loadUsedEntitiesAnalysis(cdsViewAdtObj.getName(), destProvider.getDestinationId());
+                    .loadUsedEntitiesAnalysis(cdsViewAdtObj.getName(), destProvider.getDestinationId());
                 if (cdsTopDownInfo != null) {
                     return ((IElementInfoCollection) cdsTopDownInfo).getChildren();
                 }

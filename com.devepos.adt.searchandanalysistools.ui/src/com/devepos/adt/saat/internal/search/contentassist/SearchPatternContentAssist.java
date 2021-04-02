@@ -54,7 +54,7 @@ public class SearchPatternContentAssist extends ContentProposalProvider {
             @Override
             public void proposalAccepted(final IContentProposal proposal) {
                 if (proposal instanceof SearchFilterProposal && ((SearchFilterProposal) proposal)
-                        .hasProposalSupport()) {
+                    .hasProposalSupport()) {
                     // this call is needed, otherwise a new proposal pop up will not open,
                     // regardless of the inserted ":" character
                     Reflection.forObject(getContentProposalAdapter()).invoke("autoActivate");
@@ -223,7 +223,7 @@ public class SearchPatternContentAssist extends ContentProposalProvider {
     }
 
     private void resizePopupDeferred(final PopupDialog popup) throws NoSuchMethodException, IllegalAccessException,
-            InvocationTargetException {
+        InvocationTargetException {
         if (queryResults == null || queryResults.size() == 0) {
             popup.close();
             return;
@@ -250,7 +250,7 @@ public class SearchPatternContentAssist extends ContentProposalProvider {
                 popup.close();
             } else {
                 Reflection.forObject(popup)
-                        .invoke("setProposals", new Class[] { IContentProposal[].class }, new Object[] { proposals });
+                    .invoke("setProposals", new Class[] { IContentProposal[].class }, new Object[] { proposals });
                 try {
                     resizePopupDeferred(popup);
                 } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {

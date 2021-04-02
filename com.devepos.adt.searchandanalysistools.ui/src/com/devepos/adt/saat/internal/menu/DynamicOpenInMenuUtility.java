@@ -68,7 +68,7 @@ public class DynamicOpenInMenuUtility {
 
         public DynamicOpenInMenuManager(final List<IAdtObject> adtObjects, final IProject project) {
             super(Messages.AdtObjectMenu_MainMenuEntry, SearchAndAnalysisPlugin.getDefault()
-                    .getImageDescriptor(IImages.CDS_ANALYZER), ID);
+                .getImageDescriptor(IImages.CDS_ANALYZER), ID);
             this.adtObjects = adtObjects;
             this.project = project;
             cdsAnalysisAvailable = this.adtObjects.size() == 1 && FeatureTester.isCdsAnalysisAvailable(project);
@@ -116,7 +116,7 @@ public class DynamicOpenInMenuUtility {
 
         public ExternalNavigationTargetsMenu(final IAdtObject adtObject, final IProject project) {
             super(Messages.AdtObjectMenu_ExtnernalNavigationTargets_xmit, SearchAndAnalysisPlugin.getDefault()
-                    .getImageDescriptor(IImages.EXTERNAL_TOOLS), ID);
+                .getImageDescriptor(IImages.EXTERNAL_TOOLS), ID);
             this.adtObject = adtObject;
             this.project = project;
             setRemoveAllWhenShown(true);
@@ -167,13 +167,13 @@ public class DynamicOpenInMenuUtility {
                 switch (target.getName()) {
                 case "EXCEL": //$NON-NLS-1$
                     add(new OpenWithAnalysisForOfficeExecutable(DestinationUtil.getDestinationId(project), adtObject
-                            .getName()).createAction(target.getDisplayName(), SearchAndAnalysisPlugin.getDefault()
-                                    .getImageDescriptor(target.getImageId())));
+                        .getName()).createAction(target.getDisplayName(), SearchAndAnalysisPlugin.getDefault()
+                            .getImageDescriptor(target.getImageId())));
                     break;
                 case "QUERY_MONITOR": //$NON-NLS-1$
                     add(new OpenWithQueryMonitorExecutable(DestinationUtil.getDestinationId(project), adtObject
-                            .getName()).createAction(target.getDisplayName(), SearchAndAnalysisPlugin.getDefault()
-                                    .getImageDescriptor(target.getImageId())));
+                        .getName()).createAction(target.getDisplayName(), SearchAndAnalysisPlugin.getDefault()
+                            .getImageDescriptor(target.getImageId())));
                     break;
                 }
             }

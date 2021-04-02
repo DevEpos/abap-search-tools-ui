@@ -221,7 +221,7 @@ public abstract class ViewPartInfo extends ScrolledComposite {
         final Link link = new Link(content, SWT.NONE);
         link.setBackground(JFaceColors.getBannerBackground(Display.getDefault()));
         link.setText(String.format("<a href=\"%s\">%s %s</a>", ViewPartInfo.HELP_LINK, "Learn more about",
-                helpLinkText));
+            helpLinkText));
         link.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(final SelectionEvent e) {

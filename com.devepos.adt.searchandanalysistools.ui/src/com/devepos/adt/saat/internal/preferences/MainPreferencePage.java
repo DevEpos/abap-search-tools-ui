@@ -78,22 +78,22 @@ public class MainPreferencePage extends PreferencePage implements IWorkbenchPref
         GridDataFactory.fillDefaults().grab(true, false).applyTo(searchGroup);
 
         final FieldEditor maxSearchResultsEditor = new IntegerFieldEditor(IPreferences.MAX_SEARCH_RESULTS,
-                Messages.MainPreferencePage_MaxResultsSetting_xfld, searchGroup, 4);
+            Messages.MainPreferencePage_MaxResultsSetting_xfld, searchGroup, 4);
         fields.add(maxSearchResultsEditor);
 
         // create combo editor for default search type
         final FieldEditor defaultSearchTypeEditor = new ComboFieldEditor(IPreferences.DEFAULT_SEARCH_TYPE,
-                Messages.MainPreferencePage_DefaultSearchTypeSetting_xfld, SearchType.toNamesAndKeys(), searchGroup);
+            Messages.MainPreferencePage_DefaultSearchTypeSetting_xfld, SearchType.toNamesAndKeys(), searchGroup);
         fields.add(defaultSearchTypeEditor);
 
         addBooleanEditor(IPreferences.CURSOR_AT_END_OF_SEARCH_INPUT,
-                Messages.MainPreferencePage_CursorAtEndSetting_xfld, searchGroup);
+            Messages.MainPreferencePage_CursorAtEndSetting_xfld, searchGroup);
         addBooleanEditor(IPreferences.FOCUS_ON_SEARCH_TYPE, Messages.MainPreferencePage_FocusOnSearchType_xfld,
-                searchGroup);
+            searchGroup);
         addBooleanEditor(IPreferences.TAKE_TEXT_SELECTION_INTO_SEARCH,
-                Messages.MainPreferencePage_UseCurrentTextSelectionForObjName_xfld, searchGroup);
+            Messages.MainPreferencePage_UseCurrentTextSelectionForObjName_xfld, searchGroup);
         addBooleanEditor(IPreferences.OVERWRITE_OPENED_SEARCH_QUERY,
-                Messages.MainPreferencePage_OverwriteSearchQuerySetting_xfld, searchGroup);
+            Messages.MainPreferencePage_OverwriteSearchQuerySetting_xfld, searchGroup);
 
         /*
          * Layout of group needs to be set at last as the field editors will change it
@@ -119,7 +119,7 @@ public class MainPreferencePage extends PreferencePage implements IWorkbenchPref
         GridLayoutFactory.swtDefaults().numColumns(2).applyTo(cdsSettingsGroup);
 
         addBooleanEditor(IPreferences.SHOW_FULL_ASSOCIATION_NAME,
-                Messages.MainPreferencePage_DisplayAssociationName_xckl, cdsSettingsGroup);
+            Messages.MainPreferencePage_DisplayAssociationName_xckl, cdsSettingsGroup);
 
         adjustMargins(cdsSettingsGroup);
     }
@@ -134,7 +134,7 @@ public class MainPreferencePage extends PreferencePage implements IWorkbenchPref
     }
 
     private BooleanFieldEditor addBooleanEditor(final String preferenceId, final String labelText,
-            final Composite parent) {
+        final Composite parent) {
         final BooleanFieldEditor booleanEditor = new BooleanFieldEditor(preferenceId, labelText, parent);
         fields.add(booleanEditor);
 

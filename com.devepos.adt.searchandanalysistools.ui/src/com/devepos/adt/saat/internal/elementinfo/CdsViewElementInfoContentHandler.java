@@ -35,7 +35,7 @@ public class CdsViewElementInfoContentHandler extends AdtObjectElementInfoConten
     private boolean isQuery;
 
     public CdsViewElementInfoContentHandler(final String destinationId, final boolean createSecondaryElementsFolder,
-            final boolean hasAnalyticsService) {
+        final boolean hasAnalyticsService) {
         super(destinationId);
         this.createSecondaryElementsFolder = createSecondaryElementsFolder;
         this.hasAnalyticsService = hasAnalyticsService;
@@ -43,7 +43,7 @@ public class CdsViewElementInfoContentHandler extends AdtObjectElementInfoConten
 
     @Override
     public IAdtObjectReferenceElementInfo deserialize(final IMessageBody messageBody,
-            final Class<? extends IAdtObjectReferenceElementInfo> clazz) {
+        final Class<? extends IAdtObjectReferenceElementInfo> clazz) {
 
         try {
             processCdsViewInfo(utility.parseXML(messageBody));
@@ -79,25 +79,26 @@ public class CdsViewElementInfoContentHandler extends AdtObjectElementInfoConten
          */
         if (isQuery && hasAnalyticsService) {
             final ElementInfoCollection openInTargets = new ElementInfoCollection(
-                    Messages.ElementInformation_CustomNavigationTarget_xtit, SearchAndAnalysisPlugin.getDefault()
-                            .getImage(IImages.EXTERNAL_TOOLS));
+                Messages.ElementInformation_CustomNavigationTarget_xtit, SearchAndAnalysisPlugin.getDefault()
+                    .getImage(IImages.EXTERNAL_TOOLS));
             openInTargets.getChildren()
-                    .add(new ActionElementInfo(Messages.ElementInformation_AnalysisForOfficeTarget_xtit,
-                            SearchAndAnalysisPlugin.getDefault().getImage(IImages.EXCEL_APPLICATION),
-                            new OpenWithAnalysisForOfficeExecutable(destinationId, elementInfo.getName())));
+                .add(new ActionElementInfo(Messages.ElementInformation_AnalysisForOfficeTarget_xtit,
+                    SearchAndAnalysisPlugin.getDefault().getImage(IImages.EXCEL_APPLICATION),
+                    new OpenWithAnalysisForOfficeExecutable(destinationId, elementInfo.getName())));
             openInTargets.getChildren()
-                    .add(new ActionElementInfo(Messages.ElementInformation_QueryMonitorTarget_xtit,
-                            SearchAndAnalysisPlugin.getDefault().getImage(IImages.ANALYTICAL_QUERY),
-                            new OpenWithQueryMonitorExecutable(destinationId, elementInfo.getName())));
+                .add(new ActionElementInfo(Messages.ElementInformation_QueryMonitorTarget_xtit, SearchAndAnalysisPlugin
+                    .getDefault()
+                    .getImage(IImages.ANALYTICAL_QUERY), new OpenWithQueryMonitorExecutable(destinationId, elementInfo
+                        .getName())));
             elementInfo.getChildren().add(openInTargets);
         }
 
         // add additional collection to lazy load additional information
         if (createSecondaryElementsFolder) {
             final ILazyLoadingElementInfo secondaryElementsFolder = new LazyLoadingElementInfo(
-                    Messages.ElementInformation_SecondaryObjInfo_xtit, SearchAndAnalysisPlugin.getDefault()
-                            .getImage(IImages.VIRTUAL_FOLDER), new CdsSecondaryObjectsProvider(destinationId,
-                                    elementInfo.getName()));
+                Messages.ElementInformation_SecondaryObjInfo_xtit, SearchAndAnalysisPlugin.getDefault()
+                    .getImage(IImages.VIRTUAL_FOLDER), new CdsSecondaryObjectsProvider(destinationId, elementInfo
+                        .getName()));
             secondaryElementsFolder.setContentRefreshMode(LazyLoadingRefreshMode.ROOT_AND_NON_LAZY_CHILDREN);
             elementInfo.getChildren().add(secondaryElementsFolder);
         }
@@ -120,25 +121,25 @@ public class CdsViewElementInfoContentHandler extends AdtObjectElementInfoConten
         if (apiState != null && !apiState.isEmpty()) {
 
             propertiesCollection.getChildren()
-                    .add(new SimpleElementInfo(Messages.ElementInformation_APIState_xtit,
-                            Messages.ElementInformation_APIState_xtit, SearchAndAnalysisPlugin.getDefault()
-                                    .getImage(IImages.API_PARAM), apiState));
+                .add(new SimpleElementInfo(Messages.ElementInformation_APIState_xtit,
+                    Messages.ElementInformation_APIState_xtit, SearchAndAnalysisPlugin.getDefault()
+                        .getImage(IImages.API_PARAM), apiState));
         }
         return propertiesCollection;
     }
 
     private void deserializeAMDPReference(final IXmlElement child) {
         final IAdtObjectReference objectRef = AdtObjectReferenceDeserializer.deserializeFromElement(child
-                .getFirstChild());
+            .getFirstChild());
         if (objectRef != null) {
             if (objectRef instanceof IDestinationProvider) {
                 ((IDestinationProvider) objectRef).setDestinationId(destinationId);
             }
             final IElementInfoCollection classesColl = new ElementInfoCollection(
-                    Messages.ElementInformation_ClassesCollection_xtit, SearchAndAnalysisPlugin.getDefault()
-                            .getImage(IImages.TYPE_GROUP));
+                Messages.ElementInformation_ClassesCollection_xtit, SearchAndAnalysisPlugin.getDefault()
+                    .getImage(IImages.TYPE_GROUP));
             final IAdtObjectReferenceElementInfo objectRefInfo = new AdtObjectReferenceElementInfo(objectRef.getName(),
-                    objectRef.getName(), objectRef.getDescription());
+                objectRef.getName(), objectRef.getDescription());
             objectRefInfo.setAdtObjectReference(objectRef);
             classesColl.getChildren().add(objectRefInfo);
 
@@ -148,17 +149,17 @@ public class CdsViewElementInfoContentHandler extends AdtObjectElementInfoConten
 
     private void deserializeSelectFromEntities(final IXmlElement selectFromEl) {
         final IElementInfoCollection selectFromCollection = new ElementInfoCollection(
-                Messages.ElementInformation_SelectFromCollection_xtit, SearchAndAnalysisPlugin.getDefault()
-                        .getImage(IImages.SELECT_FROM_PARAM));
+            Messages.ElementInformation_SelectFromCollection_xtit, SearchAndAnalysisPlugin.getDefault()
+                .getImage(IImages.SELECT_FROM_PARAM));
 
         for (final IXmlElement child : selectFromEl.getChildren()) {
             final IAdtObjectReferenceElementInfo selectFrom = ElementInfoXMLExtractor.deserializeAdtObjectInfo(
-                    destinationId, child);
+                destinationId, child);
 
             if (selectFrom != null) {
                 addExtendedInfo(child, selectFrom);
                 selectFrom.setElementInfoProvider(new ObjectSearchElementInfoProvider(destinationId, selectFrom
-                        .getAdtObjectReference()));
+                    .getAdtObjectReference()));
                 selectFromCollection.getChildren().add(selectFrom);
             }
         }
@@ -167,8 +168,8 @@ public class CdsViewElementInfoContentHandler extends AdtObjectElementInfoConten
 
     private void deserializeAssociations(final IXmlElement associationsEl) {
         final IElementInfoCollection associationColl = new ElementInfoCollection(
-                Messages.ElementInformation_AssociationsCollection_xtit, SearchAndAnalysisPlugin.getDefault()
-                        .getImage(IImages.ASSOCIATION));
+            Messages.ElementInformation_AssociationsCollection_xtit, SearchAndAnalysisPlugin.getDefault()
+                .getImage(IImages.ASSOCIATION));
         for (final IXmlElement child : associationsEl.getChildren()) {
             final IAdtObjectReferenceElementInfo association = deserializeAssociation(child);
             if (association != null) {
@@ -202,7 +203,7 @@ public class CdsViewElementInfoContentHandler extends AdtObjectElementInfoConten
             }
             addExtendedInfo(adtObjectInfo, adtObjRefElInfo);
             final IAdtObjectReference adtObjectRef = AdtObjectReferenceModelFactory.createReference(destinationId, name,
-                    adtType, uri);
+                adtType, uri);
             adtObjectRef.setPackageName(packageName);
             adtObjRefElInfo.setAdtObjectReference(adtObjectRef);
             adtObjRefElInfo.setElementInfoProvider(new ObjectSearchElementInfoProvider(destinationId, adtObjectRef));

@@ -19,7 +19,7 @@ import com.devepos.adt.saat.internal.util.IImages;
  * @author stockbal
  */
 public class CdsExtendedBySearchParameter extends NamedItemProposalProvider implements ISearchParameter,
-        ISearchProposalProvider {
+    ISearchProposalProvider {
 
     public CdsExtendedBySearchParameter(final IAbapProjectProvider projectProvider) {
         super(projectProvider, QueryParameterName.EXTENDED_BY, NamedItemType.CDS_EXTENSION);
@@ -53,7 +53,7 @@ public class CdsExtendedBySearchParameter extends NamedItemProposalProvider impl
     @Override
     public String getDescription() {
         return NLS.bind(Messages.SearchPatternAnalyzer_DescriptionCdsExtendedByParameter_xmsg, new Object[] {
-                getLabel(), "X_view" });
+            getLabel(), "X_view" });
     }
 
     @Override

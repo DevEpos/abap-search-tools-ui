@@ -20,7 +20,7 @@ import com.devepos.adt.saat.internal.util.IImages;
  * @author stockbal
  */
 public class ReleaseStateSearchParameter extends NamedItemProposalProvider implements ISearchParameter,
-        ISearchProposalProvider {
+    ISearchProposalProvider {
     private final Image image;
 
     public ReleaseStateSearchParameter(final IAbapProjectProvider projectProvider) {
@@ -41,7 +41,7 @@ public class ReleaseStateSearchParameter extends NamedItemProposalProvider imple
     @Override
     protected IContentProposal createProposalFromNamedItem(final INamedItem item, final String query) {
         return new SearchParameterProposal(item.getName(), parameterName, item.getDescription(), getDescriptionFromItem(
-                item.getData()), null, query);
+            item.getData()), null, query);
     }
 
     /*
@@ -77,7 +77,7 @@ public class ReleaseStateSearchParameter extends NamedItemProposalProvider imple
     @Override
     public String getDescription() {
         return NLS.bind(Messages.SearchPatternAnalyzer_DescriptionReleaseStateParameter_xmsg, new Object[] { getLabel(),
-                "cloud" });
+            "cloud" });
     }
 
     @Override

@@ -51,7 +51,7 @@ public class DdicRepositoryAccessUriDiscovery extends UriDiscoveryBase {
      * @return REST resource URI
      */
     public URI createDdicAccessResource(final String accessMode, final String objectUri, final List<String> paths,
-            final List<String> filters) {
+        final List<String> filters) {
         final IAdtUriTemplate template = getDdicAccessUriTemplate();
         URI uri = null;
         if (template != null) {

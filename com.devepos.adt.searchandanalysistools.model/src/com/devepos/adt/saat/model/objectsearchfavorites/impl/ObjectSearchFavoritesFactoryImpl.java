@@ -29,7 +29,7 @@ public class ObjectSearchFavoritesFactoryImpl extends EFactoryImpl implements IO
     public static IObjectSearchFavoritesFactory init() {
         try {
             IObjectSearchFavoritesFactory theObjectSearchFavoritesFactory = (IObjectSearchFavoritesFactory) EPackage.Registry.INSTANCE
-                    .getEFactory(IObjectSearchFavoritesPackage.eNS_URI);
+                .getEFactory(IObjectSearchFavoritesPackage.eNS_URI);
             if (theObjectSearchFavoritesFactory != null) {
                 return theObjectSearchFavoritesFactory;
             }

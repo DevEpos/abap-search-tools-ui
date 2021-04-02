@@ -133,7 +133,7 @@ public class FieldHierarchyView implements IDestinationProvider {
      * @param entityType    the type of the database entity
      */
     public void setEntityInformation(final String entityName, final IDestinationProvider destinationProvider,
-            final ObjectType entityType) {
+        final ObjectType entityType) {
         currentInputObjectType = entityType;
         currentEntityName = entityName;
         this.destinationProvider = destinationProvider;
@@ -175,11 +175,11 @@ public class FieldHierarchyView implements IDestinationProvider {
             // create new input
             LazyLoadingFolderNode topDownNode = null;
             if (parentView.uriDiscovery.isHierarchyAnalysisAvailable()
-                    && currentInputObjectType == ObjectType.CDS_VIEW) {
+                && currentInputObjectType == ObjectType.CDS_VIEW) {
                 topDownNode = new LazyLoadingFolderNode(currentEntityName, currentEntityName,
-                        new CdsFieldTopDownElementInfoProvider(getDestinationId(), currentEntityName, fieldName), node
-                                .getParent()
-                                .getImage(), null, null);
+                    new CdsFieldTopDownElementInfoProvider(getDestinationId(), currentEntityName, fieldName), node
+                        .getParent()
+                        .getImage(), null, null);
                 topDownNode.getProperties().put(ICdsAnalysisConstants.FIELD_PROP, node.getDisplayName());
             }
             input = new FieldHierarchyViewerInput(hierarchyTreeViewer, topDownNode, currentEntityName, fieldName, this);
@@ -222,9 +222,9 @@ public class FieldHierarchyView implements IDestinationProvider {
     private void createToolbarActions() {
         actionToggleGroup = new RadioActionGroup();
         actionToggleGroup.addAction(TOP_DOWN_ACTION, Messages.FieldHierarchyViewer_FieldOriginModeButton_xtol,
-                SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.FIELD_TOP_DOWN), true);
+            SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.FIELD_TOP_DOWN), true);
         actionToggleGroup.addAction(WHERE_USED_ACTION, Messages.FieldHierarchyViewer_FieldReferencesModeButton_xtol,
-                SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.FIELD_WHERE_USED), false);
+            SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.FIELD_WHERE_USED), false);
         actionToggleGroup.addActionToggledListener(actionId -> {
             final boolean isTopDown = TOP_DOWN_ACTION.equals(actionId);
             hierarchyTreeViewer.updateInput(isTopDown);
@@ -232,7 +232,7 @@ public class FieldHierarchyView implements IDestinationProvider {
             searchCalcFieldsAction.setEnabled(!isTopDown);
         });
         searchCalcFieldsAction = new Action(Messages.FieldHierarchyView_CalculatedFieldsSearch_xtol,
-                IAction.AS_CHECK_BOX) {
+            IAction.AS_CHECK_BOX) {
             @Override
             public void run() {
                 if (currentFieldInput == null) {
@@ -243,7 +243,7 @@ public class FieldHierarchyView implements IDestinationProvider {
             }
         };
         searchCalcFieldsAction.setImageDescriptor(SearchAndAnalysisPlugin.getDefault()
-                .getImageDescriptor(IImages.FUNCTION));
+            .getImageDescriptor(IImages.FUNCTION));
     }
 
     private void fillToolbar(final ToolBarManager fieldTbm) {
@@ -263,10 +263,10 @@ public class FieldHierarchyView implements IDestinationProvider {
         label.setText(Messages.FieldHierarchyView_NoFieldSelected_xfld);
 
         GridDataFactory.fillDefaults()
-                .align(SWT.FILL, SWT.CENTER)
-                .grab(true, false)
-                .indent(5, SWT.DEFAULT)
-                .applyTo(label);
+            .align(SWT.FILL, SWT.CENTER)
+            .grab(true, false)
+            .indent(5, SWT.DEFAULT)
+            .applyTo(label);
         return composite;
     }
 
@@ -288,8 +288,8 @@ public class FieldHierarchyView implements IDestinationProvider {
     private void updateToolbarLabel(final boolean topDown) {
         hierarchyViewerPaneLabel.setImage(fieldNode.getImage());
         final StringBuilder infoLabelText = new StringBuilder(currentInputObjectType != ObjectType.CDS_VIEW ? fieldNode
-                .getDisplayName()
-                .toUpperCase() : fieldNode.getDisplayName());
+            .getDisplayName()
+            .toUpperCase() : fieldNode.getDisplayName());
         infoLabelText.append("   ["); //$NON-NLS-1$
         if (topDown) {
             infoLabelText.append(Messages.FieldHierarchyView_FieldOriginModeHeading_xfld);
@@ -308,7 +308,7 @@ public class FieldHierarchyView implements IDestinationProvider {
             parentView.fillContextMenu(menu);
             if (menu.find(ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS) != null) {
                 MenuItemFactory.addCdsAnalyzerCommandItem(menu, IContextMenuConstants.GROUP_CDS_ANALYSIS,
-                        ICommandConstants.FIELD_ANALYSIS);
+                    ICommandConstants.FIELD_ANALYSIS);
             }
             contributeToHierarchyViewerContextMenu(menu);
         }, null, null);
@@ -343,7 +343,7 @@ public class FieldHierarchyView implements IDestinationProvider {
         }
 
         menu.appendToGroup(IGeneralContextMenuConstants.GROUP_OPEN, new Action(
-                Messages.FieldHierarchyView_NavigateToFieldAction_xmit) {
+            Messages.FieldHierarchyView_NavigateToFieldAction_xmit) {
             @Override
             public void run() {
                 NavigationUtil.navigateToEntityColumn(entityName, fieldName, getDestinationId());

@@ -37,7 +37,7 @@ public class ElementInfoCollectionContentHandler implements IContentHandler<IEle
 
     @Override
     public IElementInfoCollection deserialize(final IMessageBody body,
-            final Class<? extends IElementInfoCollection> dataType) {
+        final Class<? extends IElementInfoCollection> dataType) {
         final IElementInfoCollection collection = new ElementInfoCollection();
 
         final IXmlElement rootElement = utility.parseXML(body, IXmlTags.EL_PROPERTY);
@@ -87,9 +87,9 @@ public class ElementInfoCollectionContentHandler implements IContentHandler<IEle
         IElementInfo elementInfo = null;
         if (name != null && !name.isEmpty() && uri != null && !uri.isEmpty() && type != null && !type.isEmpty()) {
             final IAdtObjectReferenceElementInfo adtObjRefElemInfo = new AdtObjectReferenceElementInfo(name, rawName,
-                    description);
+                description);
             final IAdtObjectReference adtObjectRef = AdtObjectReferenceModelFactory.createReference(destinationId, name,
-                    type, uri);
+                type, uri);
             adtObjectRef.setPackageName(packageName);
             adtObjRefElemInfo.setAdtObjectReference(adtObjectRef);
             adtObjRefElemInfo.setElementInfoProvider(new ObjectSearchElementInfoProvider(destinationId, adtObjectRef));

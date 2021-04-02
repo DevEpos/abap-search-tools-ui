@@ -29,7 +29,7 @@ public class ObjectSearchElementInfoProvider implements IElementInfoProvider {
     @Override
     public List<IElementInfo> getElements() {
         final IAdtObjectReferenceElementInfo elementInfo = ElementInfoRetrievalServiceFactory.createService()
-                .retrieveElementInformation(destinationId, adtObjectRef);
+            .retrieveElementInformation(destinationId, adtObjectRef);
 
         if (elementInfo != null) {
             return elementInfo.getChildren();

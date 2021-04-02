@@ -35,11 +35,11 @@ public class ObjectSearchEngine {
      */
     public static void runSearchFromFavorite(final IObjectSearchFavorite favorite) {
         final IAbapProjectProvider projectProvider = AbapProjectProviderAccessor.getProviderForDestination(favorite
-                .getDestinationId());
+            .getDestinationId());
         if (projectProvider == null || !projectProvider.hasProject()) {
             MessageDialog.openError(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-                    Messages.Dialog_ErrorTitle_xmsg, MessageFormat.format(Messages.ObjectSearch_NoProjectFound_xmsg,
-                            favorite.getDestinationId()));
+                Messages.Dialog_ErrorTitle_xmsg, MessageFormat.format(Messages.ObjectSearch_NoProjectFound_xmsg,
+                    favorite.getDestinationId()));
             openFavoriteInSearchDialog(favorite);
         } else {
             final String searchFilter = favorite.getSearchFilter();
@@ -53,7 +53,7 @@ public class ObjectSearchEngine {
 
             if (searchFilter != null && !searchFilter.isEmpty()) {
                 final SearchPatternProvider patternProvider = new SearchPatternProvider(projectProvider, searchRequest
-                        .getSearchType());
+                    .getSearchType());
 
                 final Map<String, Object> parameterMap = patternProvider.getSearchParameters(searchFilter);
                 searchRequest.setParameters(parameterMap, searchFilter);

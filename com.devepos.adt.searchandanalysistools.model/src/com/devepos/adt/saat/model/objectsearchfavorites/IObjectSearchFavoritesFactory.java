@@ -19,7 +19,7 @@ public interface IObjectSearchFavoritesFactory extends EFactory {
      * @generated
      */
     IObjectSearchFavoritesFactory eINSTANCE = com.devepos.adt.saat.model.objectsearchfavorites.impl.ObjectSearchFavoritesFactoryImpl
-            .init();
+        .init();
 
     /**
      * Returns a new object of class '<em>Object Search Favorites</em>'. <!--

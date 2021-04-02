@@ -68,8 +68,8 @@ public class FieldAnalysisView extends CdsAnalysisPage<FieldAnalysis> {
     public void createControl(final Composite parent) {
         super.createControl(parent);
         SearchAndAnalysisPlugin.getDefault()
-                .getPreferenceStore()
-                .setDefault(VIEW_LAYOUT_PREF_KEY, ViewLayoutOrientation.AUTOMATIC.name());
+            .getPreferenceStore()
+            .setDefault(VIEW_LAYOUT_PREF_KEY, ViewLayoutOrientation.AUTOMATIC.name());
         registerViewerToClipboardAction(hierarchyView.getViewer());
     }
 
@@ -78,15 +78,15 @@ public class FieldAnalysisView extends CdsAnalysisPage<FieldAnalysis> {
         super.fillContextMenu(mgr, commandPossibleChecker);
         if (commandPossibleChecker.canCommandBeEnabled(ICommandConstants.CDS_TOP_DOWN_ANALYSIS)) {
             MenuItemFactory.addCdsAnalyzerCommandItem(mgr, IContextMenuConstants.GROUP_CDS_ANALYSIS,
-                    ICommandConstants.CDS_TOP_DOWN_ANALYSIS);
+                ICommandConstants.CDS_TOP_DOWN_ANALYSIS);
         }
         if (commandPossibleChecker.canCommandBeEnabled(ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS)) {
             MenuItemFactory.addCdsAnalyzerCommandItem(mgr, IContextMenuConstants.GROUP_CDS_ANALYSIS,
-                    ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS);
+                ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS);
         }
         if (commandPossibleChecker.canCommandBeEnabled(ICommandConstants.USED_ENTITIES_ANALYSIS)) {
             MenuItemFactory.addCdsAnalyzerCommandItem(mgr, IContextMenuConstants.GROUP_CDS_ANALYSIS,
-                    ICommandConstants.USED_ENTITIES_ANALYSIS);
+                ICommandConstants.USED_ENTITIES_ANALYSIS);
         }
     }
 
@@ -104,9 +104,9 @@ public class FieldAnalysisView extends CdsAnalysisPage<FieldAnalysis> {
         super.createActions();
         final IPreferenceStore prefStore = SearchAndAnalysisPlugin.getDefault().getPreferenceStore();
         searchDbViewUsages = new PreferenceToggleAction(Messages.FieldAnalysisView_SearchDbViewsInWhereUsed_xmit, null,
-                SEARCH_DB_VIEWS_WHERE_USED_PREF_KEY, false, prefStore);
+            SEARCH_DB_VIEWS_WHERE_USED_PREF_KEY, false, prefStore);
         viewLayoutToggleAction = new ToggleViewLayoutAction(fieldsHierarchySplitter, getControl(), prefStore,
-                VIEW_LAYOUT_PREF_KEY, true, true, true);
+            VIEW_LAYOUT_PREF_KEY, true, true, true);
     }
 
     @Override
@@ -183,7 +183,7 @@ public class FieldAnalysisView extends CdsAnalysisPage<FieldAnalysis> {
         boolean refreshFieldsTree = true;
         final IStructuredSelection selection = (IStructuredSelection) fieldsTree.getViewer().getSelection();
         if (selection != null && !selection.isEmpty() && !(selection
-                .getFirstElement() instanceof IAdtObjectReferenceNode)) {
+            .getFirstElement() instanceof IAdtObjectReferenceNode)) {
             refreshFieldsTree = false;
         }
         if (refreshFieldsTree) {
@@ -211,7 +211,7 @@ public class FieldAnalysisView extends CdsAnalysisPage<FieldAnalysis> {
             final Object selectedObj = selection.getFirstElement();
             if (selectedObj instanceof SimpleInfoTreeNode) {
                 NavigationUtil.navigateToEntityColumn(currentEntity, ((SimpleInfoTreeNode) selectedObj)
-                        .getDisplayName(), destProvider.getDestinationId());
+                    .getDisplayName(), destProvider.getDestinationId());
             }
         });
         treeViewer.addSelectionChangedListener(event -> {
@@ -238,7 +238,7 @@ public class FieldAnalysisView extends CdsAnalysisPage<FieldAnalysis> {
      */
     private FilteredTree createFilteredTree(final Composite parent) {
         final FilteredTree tree = new PrefixedAsteriskFilteredTree(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL
-                | SWT.FULL_SELECTION, createPatternFilter()) {
+            | SWT.FULL_SELECTION, createPatternFilter()) {
             @Override
             protected void textChanged() {
                 super.textChanged();
@@ -262,10 +262,10 @@ public class FieldAnalysisView extends CdsAnalysisPage<FieldAnalysis> {
                 if (element instanceof ITreeNode) {
                     final ITreeNode node = (ITreeNode) element;
                     return wordMatches(node.getName()) || wordMatches(node.getDisplayName()) || wordMatches(node
-                            .getDescription());
+                        .getDescription());
                 }
                 final DelegatingStyledCellLabelProvider labelProvider = (DelegatingStyledCellLabelProvider) getViewer()
-                        .getLabelProvider();
+                    .getLabelProvider();
                 final String labelText = labelProvider.getStyledStringProvider().getStyledText(element).getString();
                 return wordMatches(labelText);
             }

@@ -79,14 +79,14 @@ public class ObjectSearchFavoritesPackageImpl extends EPackageImpl implements IO
     public static IObjectSearchFavoritesPackage init() {
         if (isInited) {
             return (IObjectSearchFavoritesPackage) EPackage.Registry.INSTANCE.getEPackage(
-                    IObjectSearchFavoritesPackage.eNS_URI);
+                IObjectSearchFavoritesPackage.eNS_URI);
         }
 
         // Obtain or create and register package
         Object registeredObjectSearchFavoritesPackage = EPackage.Registry.INSTANCE.get(eNS_URI);
         ObjectSearchFavoritesPackageImpl theObjectSearchFavoritesPackage = registeredObjectSearchFavoritesPackage instanceof ObjectSearchFavoritesPackageImpl
-                ? (ObjectSearchFavoritesPackageImpl) registeredObjectSearchFavoritesPackage
-                : new ObjectSearchFavoritesPackageImpl();
+            ? (ObjectSearchFavoritesPackageImpl) registeredObjectSearchFavoritesPackage
+            : new ObjectSearchFavoritesPackageImpl();
 
         isInited = true;
 
@@ -303,40 +303,40 @@ public class ObjectSearchFavoritesPackageImpl extends EPackageImpl implements IO
 
         // Initialize classes, features, and operations; add parameters
         initEClass(objectSearchFavoritesEClass, IObjectSearchFavorites.class, "ObjectSearchFavorites", !IS_ABSTRACT,
-                !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+            !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEReference(getObjectSearchFavorites_ObjectSearchFavorites(), getObjectSearchFavorite(), null,
-                "objectSearchFavorites", null, 1, -1, IObjectSearchFavorites.class, !IS_TRANSIENT, !IS_VOLATILE,
-                IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+            "objectSearchFavorites", null, 1, -1, IObjectSearchFavorites.class, !IS_TRANSIENT, !IS_VOLATILE,
+            IS_CHANGEABLE, IS_COMPOSITE, !IS_RESOLVE_PROXIES, !IS_UNSETTABLE, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
 
         initEClass(objectSearchFavoriteEClass, IObjectSearchFavorite.class, "ObjectSearchFavorite", !IS_ABSTRACT,
-                !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
+            !IS_INTERFACE, IS_GENERATED_INSTANCE_CLASS);
         initEAttribute(getObjectSearchFavorite_ObjectName(), ecorePackage.getEString(), "objectName", null, 0, 1,
-                IObjectSearchFavorite.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
-                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+            IObjectSearchFavorite.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+            !IS_DERIVED, IS_ORDERED);
         initEAttribute(getObjectSearchFavorite_SearchFilter(), ecorePackage.getEString(), "searchFilter", null, 0, 1,
-                IObjectSearchFavorite.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
-                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+            IObjectSearchFavorite.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+            !IS_DERIVED, IS_ORDERED);
         initEAttribute(getObjectSearchFavorite_Description(), ecorePackage.getEString(), "description", null, 0, 1,
-                IObjectSearchFavorite.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
-                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+            IObjectSearchFavorite.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+            !IS_DERIVED, IS_ORDERED);
         initEAttribute(getObjectSearchFavorite_DestinationId(), ecorePackage.getEString(), "destinationId", null, 0, 1,
-                IObjectSearchFavorite.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
-                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+            IObjectSearchFavorite.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+            !IS_DERIVED, IS_ORDERED);
         initEAttribute(getObjectSearchFavorite_AndSearchActive(), ecorePackage.getEBoolean(), "andSearchActive", null,
-                0, 1, IObjectSearchFavorite.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
-                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+            0, 1, IObjectSearchFavorite.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+            IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getObjectSearchFavorite_SearchType(), ecorePackage.getEString(), "searchType", null, 0, 1,
-                IObjectSearchFavorite.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
-                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+            IObjectSearchFavorite.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+            !IS_DERIVED, IS_ORDERED);
         initEAttribute(getObjectSearchFavorite_ProjectIndependent(), ecorePackage.getEBoolean(), "projectIndependent",
-                null, 0, 1, IObjectSearchFavorite.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE,
-                !IS_ID, IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+            null, 0, 1, IObjectSearchFavorite.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
+            IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
         initEAttribute(getObjectSearchFavorite_MaxResults(), ecorePackage.getEInt(), "maxResults", null, 0, 1,
-                IObjectSearchFavorite.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
-                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+            IObjectSearchFavorite.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+            !IS_DERIVED, IS_ORDERED);
         initEAttribute(getObjectSearchFavorite_AllResults(), ecorePackage.getEBoolean(), "allResults", null, 0, 1,
-                IObjectSearchFavorite.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID,
-                IS_UNIQUE, !IS_DERIVED, IS_ORDERED);
+            IObjectSearchFavorite.class, !IS_TRANSIENT, !IS_VOLATILE, IS_CHANGEABLE, !IS_UNSETTABLE, !IS_ID, IS_UNIQUE,
+            !IS_DERIVED, IS_ORDERED);
 
         // Create resource
         createResource(eNS_URI);

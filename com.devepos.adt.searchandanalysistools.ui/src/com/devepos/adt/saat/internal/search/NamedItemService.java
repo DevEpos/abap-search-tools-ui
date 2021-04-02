@@ -33,13 +33,13 @@ public class NamedItemService implements INamedItemService {
 
     @Override
     public INamedItem[] getNamedItems(final NamedItemType type, final int maxResults, final String name,
-            final String description) {
+        final String description) {
         return getNamedItems(type, maxResults, name, description, null);
     }
 
     @Override
     public INamedItem[] getNamedItems(final NamedItemType type, final int maxResults, final String name,
-            final String description, final String data) {
+        final String description, final String data) {
         INamedItem[] namedItems = null;
         final IAdtUriTemplate template = getNamedItemTemplate(type);
         if (template != null) {
@@ -47,8 +47,8 @@ public class NamedItemService implements INamedItemService {
             final URI resourceUri = URI.create(template.expand());
             // create resource and fire request
             final IRestResource resource = AdtRestResourceFactory.createRestResourceFactory()
-                    .createRestResource(resourceUri, AdtSystemSessionFactory.createSystemSessionFactory()
-                            .createStatelessSession(destination));
+                .createRestResource(resourceUri, AdtSystemSessionFactory.createSystemSessionFactory()
+                    .createStatelessSession(destination));
             resource.addContentHandler(new NamedItemContentHandler());
             namedItems = resource.get(null, AdtUtil.getHeaders(), INamedItem[].class);
         }
@@ -65,7 +65,7 @@ public class NamedItemService implements INamedItemService {
      * @param data
      */
     private void fillTemplate(final IAdtUriTemplate template, final int maxResults, final String name,
-            final String description, final String data) {
+        final String description, final String data) {
         if (maxResults > 0) {
             template.set("maxItemCount", maxResults);
         }

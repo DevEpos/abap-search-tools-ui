@@ -30,7 +30,7 @@ public class SearchParameterProposal implements IContentProposal {
      * @param description the description of the proposal
      */
     public SearchParameterProposal(final String key, final QueryParameterName paramName, final String description,
-            final String wordToComplete) {
+        final String wordToComplete) {
         this(key, paramName, description, null, null, wordToComplete);
     }
 
@@ -44,7 +44,7 @@ public class SearchParameterProposal implements IContentProposal {
      * @param type        the specific type of the parameter proposal
      */
     public SearchParameterProposal(final String key, final QueryParameterName paramName, final String description,
-            final ObjectType type, final String wordToComplete) {
+        final ObjectType type, final String wordToComplete) {
         this(key, paramName, description, null, type, wordToComplete);
     }
 
@@ -59,7 +59,7 @@ public class SearchParameterProposal implements IContentProposal {
      * @param type        the specific type of the parameter proposal
      */
     public SearchParameterProposal(final String key, final QueryParameterName paramName, final String description,
-            final String longText, final ObjectType type, final String wordToComplete) {
+        final String longText, final ObjectType type, final String wordToComplete) {
         this.key = key;
         this.paramName = paramName;
         this.longText = longText;

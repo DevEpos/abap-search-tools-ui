@@ -22,11 +22,11 @@ public class ContentHandlerUtil {
     public static Map<String, String> deserializeProperties(final IXmlElement xmlElement) {
         final Map<String, String> properties = new HashMap<>();
         final IXmlElement propertiesEl = xmlElement.getName().equals(IXmlTags.EL_PROPERTIES) ? xmlElement
-                : xmlElement.getChildren()
-                        .stream()
-                        .filter(c -> c.getName().equals(IXmlTags.EL_PROPERTIES))
-                        .findFirst()
-                        .orElse(null);
+            : xmlElement.getChildren()
+                .stream()
+                .filter(c -> c.getName().equals(IXmlTags.EL_PROPERTIES))
+                .findFirst()
+                .orElse(null);
         if (propertiesEl != null) {
             for (final IXmlElement propertyEl : propertiesEl.getChildren()) {
                 final String key = propertyEl.getAttributeValue(IXmlTags.AT_KEY);

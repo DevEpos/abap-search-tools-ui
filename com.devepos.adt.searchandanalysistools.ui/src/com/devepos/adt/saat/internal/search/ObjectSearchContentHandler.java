@@ -72,7 +72,7 @@ public class ObjectSearchContentHandler implements IContentHandler<ObjectSearchR
     }
 
     private void deserializeResult(final IXmlElement rootElement,
-            final List<IAdtObjectReferenceElementInfo> collection) {
+        final List<IAdtObjectReferenceElementInfo> collection) {
         for (final IXmlElement elementInfoElement : rootElement.getChildren()) {
             final String type = elementInfoElement.getAttributeValue(IXmlTags.AT_TYPE);
             final String name = elementInfoElement.getAttributeValue(IXmlTags.AT_NAME);
@@ -83,19 +83,19 @@ public class ObjectSearchContentHandler implements IContentHandler<ObjectSearchR
             final String owner = elementInfoElement.getAttributeValue(IXmlTags.AT_OWNER);
 
             final IAdtObjectReferenceElementInfo elementInfo = new AdtObjectReferenceElementInfo(name, rawName,
-                    description);
+                description);
 
             if (name != null && !name.isEmpty() && uri != null && !uri.isEmpty() && type != null && !type.isEmpty()) {
                 final IAdtObjectReference adtObjectRef = AdtObjectReferenceModelFactory.createReference(destinationId,
-                        name, type, uri);
+                    name, type, uri);
                 adtObjectRef.setPackageName(packageName);
                 elementInfo.setAdtObjectReference(adtObjectRef);
                 if (IAdtObjectTypeConstants.CLASS_DEFINITION_TYPE.equals(type)
-                        || IAdtObjectTypeConstants.INTERFACE_DEFINITION.equals(type)) {
+                    || IAdtObjectTypeConstants.INTERFACE_DEFINITION.equals(type)) {
                     elementInfo.setLazyLoadingSupport(false);
                 } else {
                     elementInfo.setElementInfoProvider(new ObjectSearchElementInfoProvider(destinationId,
-                            adtObjectRef));
+                        adtObjectRef));
                 }
             }
             addAdditionalResultInformation(elementInfoElement, elementInfo);
@@ -115,15 +115,15 @@ public class ObjectSearchContentHandler implements IContentHandler<ObjectSearchR
     }
 
     private void addAdditionalResultInformation(final IXmlElement elementInfoElement,
-            final IAdtObjectReferenceElementInfo elementInfo) {
+        final IAdtObjectReferenceElementInfo elementInfo) {
         if (!elementInfoElement.hasChildren()) {
             return;
         }
         final IXmlElement propertiesEl = elementInfoElement.getChildren()
-                .stream()
-                .filter(child -> child.getName().equals(IXmlTags.EL_PROPERTIES))
-                .findFirst()
-                .orElse(null);
+            .stream()
+            .filter(child -> child.getName().equals(IXmlTags.EL_PROPERTIES))
+            .findFirst()
+            .orElse(null);
         if (propertiesEl == null || propertiesEl.getChildren() == null) {
             return;
         }

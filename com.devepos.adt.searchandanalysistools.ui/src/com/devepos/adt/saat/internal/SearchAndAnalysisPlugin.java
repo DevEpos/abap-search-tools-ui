@@ -73,7 +73,7 @@ public class SearchAndAnalysisPlugin extends AbstractAdtUIPlugin {
         registerImage(imageRegistry, IImages.TABLE_DEFINITION, "icons/Table.png");
         registerImage(imageRegistry, IImages.VIEW_DEFINITION, "icons/ViewDefinition.png");
         registerImage(imageRegistry, IImages.SEARCH_HISTORY, "icons/full/elcl16/search_history.png",
-                "org.eclipse.search");
+            "org.eclipse.search");
         registerImage(imageRegistry, IImages.HISTORY_LIST, "icons/HistoryList.png");
         registerImage(imageRegistry, IImages.USER, "icons/UserEdit.png");
         registerImage(imageRegistry, IImages.WAITING, "icons/WaitingIndicator.png");
@@ -107,7 +107,7 @@ public class SearchAndAnalysisPlugin extends AbstractAdtUIPlugin {
         registerImage(imageRegistry, IImages.FIELD_ANALYSIS, "icons/CdsFieldAnalysis.png");
         registerImage(imageRegistry, IImages.WHERE_USED_IN, "icons/WhereUsedInCds.png");
         registerImage(imageRegistry, IImages.WHERE_USED_LIST, "icons/etool/where_used.png",
-                "com.sap.adt.ris.whereused.ui");
+            "com.sap.adt.ris.whereused.ui");
         registerImage(imageRegistry, IImages.USAGE_ANALYZER, "icons/CdsUsageAnalyzer.png");
         registerImage(imageRegistry, IImages.UNION, "icons/Union.png");
         registerImage(imageRegistry, IImages.JOIN_RESULT_SOURCE, "icons/JoinedDataSource.png");
@@ -127,11 +127,11 @@ public class SearchAndAnalysisPlugin extends AbstractAdtUIPlugin {
 
         // images for layout
         registerImage(imageRegistry, IImages.VERTICAL_LAYOUT, "icons/full/elcl16/verticalOrientation.png",
-                "org.eclipse.search");
+            "org.eclipse.search");
         registerImage(imageRegistry, IImages.AUTOMATIC_LAYOUT, "icons/full/elcl16/automaticOrientation.png",
-                "org.eclipse.search");
+            "org.eclipse.search");
         registerImage(imageRegistry, IImages.HORIZONTAL_LAYOUT, "icons/full/elcl16/horizontalOrientation.png",
-                "org.eclipse.search");
+            "org.eclipse.search");
 
         // register overlay images
         registerImage(imageRegistry, IImages.RELEASED_API_OVR, "icons/ovr/Released.png");

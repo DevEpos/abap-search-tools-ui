@@ -43,8 +43,8 @@ public class ObjectSearchUriDiscovery extends UriDiscoveryBase {
             return new ArrayList<>();
         }
         return Stream.of(QueryParameterName.values())
-                .filter(p -> searchUriTemplate.containsVariable(p.toString()))
-                .collect(Collectors.toList());
+            .filter(p -> searchUriTemplate.containsVariable(p.toString()))
+            .collect(Collectors.toList());
     }
 
     /**

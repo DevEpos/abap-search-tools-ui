@@ -25,7 +25,7 @@ public class TableElementInfoContentHandler extends AdtObjectElementInfoContentH
 
     @Override
     public IAdtObjectReferenceElementInfo deserialize(final IMessageBody messageBody,
-            final Class<? extends IAdtObjectReferenceElementInfo> clazz) {
+        final Class<? extends IAdtObjectReferenceElementInfo> clazz) {
 
         try {
             processTableInfo(utility.parseXML(messageBody));
@@ -52,10 +52,10 @@ public class TableElementInfoContentHandler extends AdtObjectElementInfoContentH
 
     private void deserializeTechSettings(final IXmlElement element) {
         final IElementInfoCollection techSettingsColl = new ElementInfoCollection(
-                Messages.ElementInformation_TechSettings_xtit, SearchAndAnalysisPlugin.getDefault()
-                        .getImage(IImages.FOLDER));
+            Messages.ElementInformation_TechSettings_xtit, SearchAndAnalysisPlugin.getDefault()
+                .getImage(IImages.FOLDER));
         final IAdtObjectReferenceElementInfo techSettings = ElementInfoXMLExtractor.deserializeAdtObjectInfo(
-                destinationId, element.getFirstChild());
+            destinationId, element.getFirstChild());
         techSettings.setLazyLoadingSupport(false);
         techSettingsColl.getChildren().add(techSettings);
         addCollection(techSettingsColl);

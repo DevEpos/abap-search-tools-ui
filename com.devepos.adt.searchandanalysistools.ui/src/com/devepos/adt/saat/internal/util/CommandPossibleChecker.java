@@ -81,10 +81,10 @@ public class CommandPossibleChecker {
         switch (commandId) {
         case ICommandConstants.CDS_TOP_DOWN_ANALYSIS:
             return isSingleCdsSelection() && FeatureTester.isCdsTopDownAnalysisAvailable(selectedAdtObjects.get(0)
-                    .getProject());
+                .getProject());
         case ICommandConstants.USED_ENTITIES_ANALYSIS:
             return isSingleCdsSelection() && FeatureTester.isCdsUsedEntitiesAnalysisAvailable(selectedAdtObjects.get(0)
-                    .getProject());
+                .getProject());
         case ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS:
             return hasSingleSelection(true);
         case ICommandConstants.FIELD_ANALYSIS:

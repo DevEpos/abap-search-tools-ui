@@ -128,11 +128,11 @@ public class SearchPatternProvider implements ISearchParameterHandler {
             return new ArrayList<>();
         }
         final List<QueryParameterName> supportedParameters = new ObjectSearchUriDiscovery(projectProvider
-                .getDestinationId()).getSupportedSearchParameters(searchType);
+            .getDestinationId()).getSupportedSearchParameters(searchType);
 
         return parameters.stream()
-                .filter(param -> supportedParameters.contains(param.getParameterName()))
-                .collect(Collectors.toList());
+            .filter(param -> supportedParameters.contains(param.getParameterName()))
+            .collect(Collectors.toList());
     }
 
     /**
@@ -187,8 +187,8 @@ public class SearchPatternProvider implements ISearchParameterHandler {
 
     private int getMaxRows(final String searchPattern, final List<ISearchParameter> parameters) {
         final int maxRows = SearchAndAnalysisPlugin.getDefault()
-                .getPreferenceStore()
-                .getInt(IPreferences.MAX_SEARCH_RESULTS);
+            .getPreferenceStore()
+            .getInt(IPreferences.MAX_SEARCH_RESULTS);
         final List<String> values = getParameterValues(searchPattern, QueryParameterName.MAX_ROWS.toString());
         if (values == null || values.isEmpty()) {
             return maxRows;

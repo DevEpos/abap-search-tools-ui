@@ -66,7 +66,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
     private static final int MIN_SCALE = 1;
     private static final int SMALL_SCALE_UPPER_BOUND = MULTIPLIER * SMALL_SCALE_LIMIT;
     private static final int MAX_RESULTS_UPPER_BOUND = SMALL_SCALE_UPPER_BOUND + (MAX_SCALE - SMALL_SCALE_LIMIT)
-            * BIG_MULTIPLIER;
+        * BIG_MULTIPLIER;
     private static final int STATUS_PROJECT = 100;
     private static final int STATUS_PARAMETERS = 200;
     private static final int STATUS_SEARCH_TYPE = 300;
@@ -122,8 +122,8 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
         createStatusArea(parent);
 
         searchPatternProvider = new SearchPatternProvider(projectProvider, (SearchType) searchTypeViewer
-                .getStructuredSelection()
-                .getFirstElement());
+            .getStructuredSelection()
+            .getFirstElement());
         searchPatternProvider.enableSearchTermInput(false);
         searchPatternProvider.addContentAssist(parametersInput);
 
@@ -278,10 +278,10 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 
     private IStatus validateSearchType(final SearchType selectedSearchType) {
         if (uriDiscovery != null && projectProvider != null && projectProvider.hasProject() && uriDiscovery
-                .getObjectSearchTemplate(selectedSearchType) == null) {
+            .getObjectSearchTemplate(selectedSearchType) == null) {
             return new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, STATUS_SEARCH_TYPE, NLS.bind(
-                    Messages.ObjectSearch_SearchTypeNotSupported_xmsg, selectedSearchType, projectProvider
-                            .getProjectName()), null);
+                Messages.ObjectSearch_SearchTypeNotSupported_xmsg, selectedSearchType, projectProvider
+                    .getProjectName()), null);
         }
         return new Status(IStatus.OK, SearchAndAnalysisPlugin.PLUGIN_ID, STATUS_SEARCH_TYPE, null, null);
     }
@@ -301,8 +301,8 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 
         final ControlDecoration decorator = new ControlDecoration(searchInput, 16512);
         final Image decoratorImage = FieldDecorationRegistry.getDefault()
-                .getFieldDecoration("DEC_INFORMATION")
-                .getImage();
+            .getFieldDecoration("DEC_INFORMATION")
+            .getImage();
         decorator.setMarginWidth(2);
         decorator.setImage(decoratorImage);
         final StringBuilder decoratorText = new StringBuilder();
@@ -334,10 +334,10 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
         SWTUtil.addTextEditMenu(parametersInput);
 
         GridDataFactory.fillDefaults()
-                .align(SWT.FILL, SWT.CENTER)
-                .span(2, 1)
-                .grab(true, false)
-                .applyTo(parametersInput);
+            .align(SWT.FILL, SWT.CENTER)
+            .span(2, 1)
+            .grab(true, false)
+            .applyTo(parametersInput);
 
         parametersInput.addModifyListener(event -> {
             validateParameterPattern();
@@ -354,13 +354,13 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
             try {
                 searchPatternProvider.checkSearchParametersComplete(parameterPattern);
                 searchRequest.setParameters(searchPatternProvider.getSearchParameters(parameterPattern),
-                        parameterPattern);
+                    parameterPattern);
                 validateAndSetStatus(new Status(IStatus.OK, SearchAndAnalysisPlugin.PLUGIN_ID, STATUS_PARAMETERS, null,
-                        null));
+                    null));
             } catch (final CoreException e) {
                 searchRequest.setParameters(null, ""); //$NON-NLS-1$
                 validateAndSetStatus(new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, STATUS_PARAMETERS, e
-                        .getMessage(), e));
+                    .getMessage(), e));
             }
             updateOKStatus();
         }
@@ -399,9 +399,9 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
 
         this.maxResultsLabel = new Label(parent, SWT.NONE);
         GridDataFactory.fillDefaults()
-                .align(SWT.LEAD, SWT.CENTER)
-                .hint(convertHorizontalDLUsToPixels(50), SWT.DEFAULT)
-                .applyTo(this.maxResultsLabel);
+            .align(SWT.LEAD, SWT.CENTER)
+            .hint(convertHorizontalDLUsToPixels(50), SWT.DEFAULT)
+            .applyTo(this.maxResultsLabel);
     }
 
     private void createSeparator(final Composite parent) {
@@ -441,7 +441,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
             setProject(projectName);
 
             if (validateAndSetStatus(validateProject(projectName)) && validateAndSetStatus(validateSearchType(
-                    searchRequest.getSearchType()))) {
+                searchRequest.getSearchType()))) {
                 validateParameterPattern();
             }
 
@@ -501,20 +501,19 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
             if (!projectProvider.hasProject()) {
                 // project does not exist
                 return new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, STATUS_PROJECT,
-                        Messages.ObjectSearch_ProjectDoesNotExistError_xmsg, null);
+                    Messages.ObjectSearch_ProjectDoesNotExistError_xmsg, null);
             }
             // check if user is logged on to project
             if (!projectProvider.ensureLoggedOn()) {
                 return new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, STATUS_PROJECT, NLS.bind(
-                        Messages.ObjectSearch_ProjectLogonFailed_xmsg, projectProvider.getProjectName()), null);
+                    Messages.ObjectSearch_ProjectLogonFailed_xmsg, projectProvider.getProjectName()), null);
             }
             // check if the project supports the object search
             uriDiscovery = new ObjectSearchUriDiscovery(projectProvider.getDestinationId());
             if (uriDiscovery.getObjectSearchUri() == null) {
                 uriDiscovery = null;
                 return new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, STATUS_PROJECT, NLS.bind(
-                        Messages.ObjectSearch_SearchNotSupportedInProject_xmsg, projectProvider.getProjectName()),
-                        null);
+                    Messages.ObjectSearch_SearchNotSupportedInProject_xmsg, projectProvider.getProjectName()), null);
             }
             return new Status(IStatus.OK, SearchAndAnalysisPlugin.PLUGIN_ID, STATUS_PROJECT, null, null);
         }
@@ -612,7 +611,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
                 maxResultsScale.setSelection(MAX_SCALE);
             } else if (maxResults >= SMALL_SCALE_UPPER_BOUND && maxResults < MAX_RESULTS_UPPER_BOUND) {
                 maxResultsScale.setSelection(SMALL_SCALE_LIMIT + (maxResults - SMALL_SCALE_UPPER_BOUND)
-                        / BIG_MULTIPLIER);
+                    / BIG_MULTIPLIER);
                 this.maxResults = maxResults;
             } else {
                 int maxResultScalePref = maxResults / MULTIPLIER;

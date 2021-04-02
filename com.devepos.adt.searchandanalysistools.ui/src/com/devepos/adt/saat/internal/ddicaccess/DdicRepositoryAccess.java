@@ -33,12 +33,12 @@ class DdicRepositoryAccess implements IDdicRepositoryAccess {
     public List<IElementInfo> getElementColumnInformation(final String destinationId, final String objectUri) {
 
         final IAbapProjectProvider projectProvider = AbapProjectProviderAccessor.getProviderForDestination(
-                destinationId);
+            destinationId);
         if (projectProvider == null || !projectProvider.ensureLoggedOn()) {
             return null;
         }
         final IElementInfoCollection ddicInfo = accessDdicInformation(destinationId, "getColumns", objectUri, null, //$NON-NLS-1$
-                Arrays.asList("noClientCols:X"), projectProvider); //$NON-NLS-1$
+            Arrays.asList("noClientCols:X"), projectProvider); //$NON-NLS-1$
 
         return filterColumns(ddicInfo);
     }
@@ -64,16 +64,16 @@ class DdicRepositoryAccess implements IDdicRepositoryAccess {
     @Override
     public IAdtObjectReference getColumnUri(final String destinationId, final String objectName, final String column) {
         final IAbapProjectProvider projectProvider = AbapProjectProviderAccessor.getProviderForDestination(
-                destinationId);
+            destinationId);
         if (projectProvider == null || !projectProvider.ensureLoggedOn()) {
             return null;
         }
         final IElementInfoCollection ddicInfo = accessDdicInformation(destinationId, "getUriForPaths", null, //$NON-NLS-1$
-                Arrays.asList(String.format("%s.%s", objectName, column)), null, projectProvider); //$NON-NLS-1$
+            Arrays.asList(String.format("%s.%s", objectName, column)), null, projectProvider); //$NON-NLS-1$
         if (ddicInfo != null && ddicInfo.hasChildren()) {
             final IElementInfo firstInfo = ddicInfo.getChildren().get(0);
             return firstInfo instanceof IAdtObjectReferenceElementInfo ? ((IAdtObjectReferenceElementInfo) firstInfo)
-                    .getAdtObjectReference() : null;
+                .getAdtObjectReference() : null;
         }
         return null;
     }
@@ -82,17 +82,17 @@ class DdicRepositoryAccess implements IDdicRepositoryAccess {
      * Retrieves DDIC information
      */
     private IElementInfoCollection accessDdicInformation(final String destinationId, final String accessMode,
-            final String objectUri, final List<String> paths, final List<String> filters,
-            final IAbapProjectProvider projectProvider) {
+        final String objectUri, final List<String> paths, final List<String> filters,
+        final IAbapProjectProvider projectProvider) {
         IElementInfoCollection ddicInfo = null;
 
         final IContentHandler<IElementInfoCollection> handler = new ElementInfoCollectionContentHandler(destinationId);
         final URI resourceUri = new DdicRepositoryAccessUriDiscovery(projectProvider.getDestinationId())
-                .createDdicAccessResource(accessMode, objectUri, paths, filters);
+            .createDdicAccessResource(accessMode, objectUri, paths, filters);
 
         final ISystemSession session = projectProvider.createStatelessSession();
         final IRestResource restResource = AdtRestResourceFactory.createRestResourceFactory()
-                .createRestResource(resourceUri, session);
+            .createRestResource(resourceUri, session);
         restResource.addContentHandler(handler);
 
         try {

@@ -53,12 +53,12 @@ public class OpenDbBrowserHandler extends DbBrowserCommandHandler {
         }
 
         final WorkbenchPart part = (WorkbenchPart) AdtSapGuiEditorUtilityFactory.createSapGuiEditorUtility()
-                .openEditorAndStartTransaction(currentProject, "ZDBBR", true, //$NON-NLS-1$
-                        Stream.of(new String[][] { { "ADT", String.valueOf(true) } }) //$NON-NLS-1$
-                                .collect(Collectors.toMap(data -> data[0], data -> data[1])));
+            .openEditorAndStartTransaction(currentProject, "ZDBBR", true, //$NON-NLS-1$
+                Stream.of(new String[][] { { "ADT", String.valueOf(true) } }) //$NON-NLS-1$
+                    .collect(Collectors.toMap(data -> data[0], data -> data[1])));
 
         AdtUIUtil.overrideSapGuiPartTitle(part, currentProject, Messages.DbBrowser_xtit, Messages.DbBrowser_xtit,
-                SearchAndAnalysisPlugin.getDefault().getImage(IImages.DB_BROWSER_DATA_PREVIEW));
+            SearchAndAnalysisPlugin.getDefault().getImage(IImages.DB_BROWSER_DATA_PREVIEW));
         return null;
     }
 

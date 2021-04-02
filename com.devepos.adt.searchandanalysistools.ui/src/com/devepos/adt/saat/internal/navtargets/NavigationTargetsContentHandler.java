@@ -50,11 +50,11 @@ public class NavigationTargetsContentHandler implements IContentHandler<INavigat
             switch (name) {
             case "EXCEL":
                 target = new NavigationTarget(name, Messages.ElementInformation_AnalysisForOfficeTarget_xtit,
-                        IImages.EXCEL_APPLICATION);
+                    IImages.EXCEL_APPLICATION);
                 break;
             case "QUERY_MONITOR":
                 target = new NavigationTarget(name, Messages.ElementInformation_QueryMonitorTarget_xtit,
-                        IImages.ANALYTICAL_QUERY);
+                    IImages.ANALYTICAL_QUERY);
                 break;
             }
             if (target != null) {

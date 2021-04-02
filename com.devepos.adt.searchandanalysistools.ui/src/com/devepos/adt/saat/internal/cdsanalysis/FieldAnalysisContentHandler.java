@@ -39,7 +39,7 @@ public class FieldAnalysisContentHandler extends AdtObjectElementInfoContentHand
     }
 
     public FieldAnalysisContentHandler(final String destinationId, final boolean topDown,
-            final boolean searchCalcFields, final boolean searchDbViews) {
+        final boolean searchCalcFields, final boolean searchDbViews) {
         super(destinationId);
         this.topDown = topDown;
         this.searchCalcFields = searchCalcFields;
@@ -53,7 +53,7 @@ public class FieldAnalysisContentHandler extends AdtObjectElementInfoContentHand
 
     @Override
     public IAdtObjectReferenceElementInfo deserialize(final IMessageBody messageBody,
-            final Class<? extends IAdtObjectReferenceElementInfo> clazz) {
+        final Class<? extends IAdtObjectReferenceElementInfo> clazz) {
 
         try {
             deserializeNodeInfo(utility.parseXML(messageBody, IXmlTags.EL_PROPERTY), null, true);
@@ -89,7 +89,7 @@ public class FieldAnalysisContentHandler extends AdtObjectElementInfoContentHand
     }
 
     private IElementInfo extractElementInfo(final IXmlElement xmlElement, final IElementInfo parent,
-            final boolean isRoot) {
+        final boolean isRoot) {
         IElementInfo elementInfo = null;
         final String name = xmlElement.getAttributeValue(IXmlTags.AT_NAME);
         final String displayName = xmlElement.getAttributeValue(IXmlTags.AT_RAW_NAME);
@@ -101,26 +101,25 @@ public class FieldAnalysisContentHandler extends AdtObjectElementInfoContentHand
 
         if (xmlElement.hasChild(IXmlTags.EL_ELEMENT_INFO)) {
             final IAdtObjectReferenceElementInfo adtObjInfo = createAdtObjectRefInfo(name, displayName, type, uri,
-                    fieldName, false, properties);
+                fieldName, false, properties);
             elementInfo = adtObjInfo;
         } else {
             if (topDown) {
                 final IAdtObjectReferenceElementInfo adtObjRefInfo = createAdtObjectRefInfo(name, displayName, type,
-                        uri, fieldName, false, properties);
+                    uri, fieldName, false, properties);
                 if (properties.get(ICdsAnalysisConstants.IS_CALCULATED_PROP) != null && isRoot) {
                     final IElementInfo calculatedFieldInfo = new SimpleElementInfo(
-                            Messages.FieldAnalysisContentHandler_CalculatedField_xmsg, SearchAndAnalysisPlugin
-                                    .getDefault()
-                                    .getImage(IImages.FUNCTION));
+                        Messages.FieldAnalysisContentHandler_CalculatedField_xmsg, SearchAndAnalysisPlugin.getDefault()
+                            .getImage(IImages.FUNCTION));
                     adtObjRefInfo.getChildren().add(calculatedFieldInfo);
                 }
 
                 elementInfo = adtObjRefInfo;
             } else {
                 final IAdtObjectReferenceElementInfo adtObjRefInfo = createAdtObjectRefInfo(name, displayName, type,
-                        uri, fieldName, true, properties);
+                    uri, fieldName, true, properties);
                 adtObjRefInfo.setElementInfoProvider(new FieldWhereUsedInCdsElementInfoProvider(destinationId,
-                        displayName, fieldName, searchCalcFields, searchDbViews));
+                    displayName, fieldName, searchCalcFields, searchDbViews));
                 elementInfo = adtObjRefInfo;
             }
         }
@@ -129,11 +128,11 @@ public class FieldAnalysisContentHandler extends AdtObjectElementInfoContentHand
     }
 
     private IAdtObjectReferenceElementInfo createAdtObjectRefInfo(final String name, final String displayName,
-            final String type, final String uri, final String fieldName, final boolean lazyLoadingSupport,
-            final Map<String, String> properties) {
+        final String type, final String uri, final String fieldName, final boolean lazyLoadingSupport,
+        final Map<String, String> properties) {
         final IAdtObjectReferenceElementInfo adtObjInfo = new AdtObjectReferenceElementInfo(name, displayName, null);
         adtObjInfo.setAdtObjectReference(AdtObjectReferenceModelFactory.createReference(destinationId, name, type,
-                uri));
+            uri));
         adtObjInfo.setLazyLoadingSupport(lazyLoadingSupport);
         adtObjInfo.getProperties().putAll(properties);
 

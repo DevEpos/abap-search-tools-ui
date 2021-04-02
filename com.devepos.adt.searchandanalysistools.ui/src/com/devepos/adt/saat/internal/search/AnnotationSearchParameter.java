@@ -16,7 +16,7 @@ import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.util.IImages;
 
 public class AnnotationSearchParameter extends NamedItemProposalProvider implements ISearchParameter,
-        ISearchProposalProvider, IValidatable {
+    ISearchProposalProvider, IValidatable {
 
     public static final String KEY_VAL_SEPARATOR = "="; //$NON-NLS-1$
     private final NamedItemProposalProvider annotationValueProposalProvider;
@@ -30,7 +30,7 @@ public class AnnotationSearchParameter extends NamedItemProposalProvider impleme
         parameterName = QueryParameterName.ANNOTATION;
         image = SearchAndAnalysisPlugin.getDefault().getImage(IImages.ANNOTATION_PARAM);
         annotationValueProposalProvider = new NamedItemProposalProvider(projectProvider, QueryParameterName.ANNOTATION,
-                NamedItemType.ANNOTATION_VALUE);
+            NamedItemType.ANNOTATION_VALUE);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class AnnotationSearchParameter extends NamedItemProposalProvider impleme
     @Override
     public String getDescription() {
         return NLS.bind(Messages.SearchPatternAnalyzer_DescriptionAnnotationParameter_xmsg, new Object[] { getLabel(),
-                "ObjectModel*foreignkey*", "VDM.viewType=#basic" }); //$NON-NLS-1$ //$NON-NLS-2$
+            "ObjectModel*foreignkey*", "VDM.viewType=#basic" }); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     @Override
@@ -70,7 +70,7 @@ public class AnnotationSearchParameter extends NamedItemProposalProvider impleme
             }
             final String annotationValueQuery = StringUtil.removeNegationCharacter(queryParts[1].replaceAll("%", "")); //$NON-NLS-1$ //$NON-NLS-2$
             return annotationValueProposalProvider.getProposals(annotationValueQuery, annotationValueQuery, StringUtil
-                    .removeNegationCharacter(queryParts[0]));
+                .removeNegationCharacter(queryParts[0]));
         }
         return getProposals(query);
     }
@@ -103,7 +103,7 @@ public class AnnotationSearchParameter extends NamedItemProposalProvider impleme
 
             if (StringUtil.startsWithNegationCharacter(annoKey)) {
                 throw new CoreException(new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, NLS.bind(
-                        Messages.SearchPatternAnalyzer_NoValuePartPossibleIfKeyIsNegated_xmsg, getLabel())));
+                    Messages.SearchPatternAnalyzer_NoValuePartPossibleIfKeyIsNegated_xmsg, getLabel())));
             }
 
         }

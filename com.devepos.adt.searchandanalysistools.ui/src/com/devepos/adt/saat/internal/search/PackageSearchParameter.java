@@ -64,7 +64,7 @@ public class PackageSearchParameter implements ISearchParameter, ISearchProposal
     @Override
     public String getDescription() {
         return NLS.bind(Messages.SearchPatternAnalyzer_DescriptionPackageParameter_xmsg, new Object[] { parameterName
-                .getLowerCaseKey(), "test" });
+            .getLowerCaseKey(), "test" });
     }
 
     @Override
@@ -78,7 +78,7 @@ public class PackageSearchParameter implements ISearchParameter, ISearchProposal
                 if (packageList != null) {
                     for (final IAdtObjectReference objRef : packageList) {
                         result.add(new SearchParameterProposal(objRef.getName(), parameterName, objRef.getDescription(),
-                                query));
+                            query));
                     }
                 }
             }

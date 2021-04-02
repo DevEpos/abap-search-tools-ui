@@ -99,15 +99,15 @@ public class WhereUsedInCdsAnalysis extends CdsAnalysis {
     public void createResult(final ILazyLoadingListener l) {
         final ILazyLoadingListener lazyLoadingListener = count -> {
             rootWhereUsedCount = NLS.bind(count == 1
-                    ? Messages.WhereUsedInCdsAnalysisView_SingleReferenceLabelSuffix_xfld
-                    : Messages.WhereUsedInCdsAnalysisView_MultipleReferencesLabelSuffix_xfld, new DecimalFormat(
-                            "###,###").format(count)); //$NON-NLS-1$
+                ? Messages.WhereUsedInCdsAnalysisView_SingleReferenceLabelSuffix_xfld
+                : Messages.WhereUsedInCdsAnalysisView_MultipleReferencesLabelSuffix_xfld, new DecimalFormat("###,###") //$NON-NLS-1$
+                    .format(count));
         };
         node = new LazyLoadingAdtObjectReferenceNode(adtObjectInfo.getName(), adtObjectInfo.getDisplayName(),
-                adtObjectInfo.getDescription(), adtObjectInfo.getAdtObjectReference(), null);
+            adtObjectInfo.getDescription(), adtObjectInfo.getAdtObjectReference(), null);
         final IDestinationProvider destProvider = adtObjectInfo.getAdapter(IDestinationProvider.class);
         rootWhereUsedProvider = new WhereUsedInCdsElementInfoProvider(destProvider != null ? destProvider
-                .getDestinationId() : null, adtObjectInfo.getName(), showSelectFromUses, showAssocUses);
+            .getDestinationId() : null, adtObjectInfo.getName(), showSelectFromUses, showAssocUses);
         cdsWhereUsedNode = node;
         rootWhereUsedProvider.setLocalAssociationsOnly(localAssociationsOnly);
         node.setElementInfoProvider(rootWhereUsedProvider);

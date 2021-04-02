@@ -33,7 +33,7 @@ public class CdsTopDownAnalysisContentHandler extends AdtObjectElementInfoConten
 
     @Override
     public IAdtObjectReferenceElementInfo deserialize(final IMessageBody messageBody,
-            final Class<? extends IAdtObjectReferenceElementInfo> clazz) {
+        final Class<? extends IAdtObjectReferenceElementInfo> clazz) {
 
         try {
             deserializeNodeInfo(utility.parseXML(messageBody, IXmlTags.EL_PROPERTY), null, true);
@@ -54,9 +54,9 @@ public class CdsTopDownAnalysisContentHandler extends AdtObjectElementInfoConten
 
         if (uri != null && !uri.isEmpty() && type != null && !type.isEmpty()) {
             final IAdtObjectReferenceElementInfo adtObjRefInfo = new AdtObjectReferenceElementInfo(name, rawName,
-                    description);
+                description);
             final IAdtObjectReference adtObjectRef = AdtObjectReferenceModelFactory.createReference(destinationId, name,
-                    type, uri);
+                type, uri);
             adtObjectRef.setPackageName(packageName);
             adtObjRefInfo.setAdtObjectReference(adtObjectRef);
             final ObjectType objectType = ObjectType.getFromAdtType(adtObjectRef.getType());
@@ -131,7 +131,7 @@ public class CdsTopDownAnalysisContentHandler extends AdtObjectElementInfoConten
 //				imageId = IImages.DATA_SOURCE;
             }
             return new ElementInfoCollection(name, rawName, SearchAndAnalysisPlugin.getDefault().getImage(imageId),
-                    null);
+                null);
         }
         return null;
     }

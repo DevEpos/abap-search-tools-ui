@@ -12,7 +12,7 @@ public class DynamicOpenInMenu extends CompoundContributionItem {
 
     public DynamicOpenInMenu() {
         dynamicOpenInMenu = DynamicOpenInMenuUtility.buildAnalysisToolsSubMenu(AdtUIUtil.getAdtObjectsFromSelection(
-                true));
+            true));
     }
 
     public DynamicOpenInMenu(final String id) {

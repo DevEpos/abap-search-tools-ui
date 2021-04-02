@@ -89,7 +89,7 @@ public class ManageCdsAnalysesDialog extends StatusDialog {
     @Override
     protected IDialogSettings getDialogBoundsSettings() {
         return SearchAndAnalysisPlugin.getDefault()
-                .getDialogSettingsSection("DialogBounds_ManageCdsAnalysisHistoryDialog"); //$NON-NLS-1$
+            .getDialogSettingsSection("DialogBounds_ManageCdsAnalysisHistoryDialog"); //$NON-NLS-1$
     }
 
     @Override
@@ -148,10 +148,10 @@ public class ManageCdsAnalysesDialog extends StatusDialog {
             }
         });
         GridDataFactory.fillDefaults()
-                .span(1, 2)
-                .hint(convertWidthInCharsToPixels(WIDTH_IN_CHARACTERS), convertHeightInCharsToPixels(15))
-                .grab(true, true)
-                .applyTo(table);
+            .span(1, 2)
+            .hint(convertWidthInCharsToPixels(WIDTH_IN_CHARACTERS), convertHeightInCharsToPixels(15))
+            .grab(true, true)
+            .applyTo(table);
 
         removeButton = new Button(parent, SWT.PUSH);
         removeButton.setText(Messages.SearchHistorySelectionDialog_DeleteHistoryEntry_xbut);
@@ -162,9 +162,9 @@ public class ManageCdsAnalysesDialog extends StatusDialog {
             }
         });
         GridDataFactory.fillDefaults()
-                .align(SWT.BEGINNING, SWT.BEGINNING)
-                .hint(convertWidthInCharsToPixels(BUTTON_CHAR_WIDTH), SWT.DEFAULT)
-                .applyTo(removeButton);
+            .align(SWT.BEGINNING, SWT.BEGINNING)
+            .hint(convertWidthInCharsToPixels(BUTTON_CHAR_WIDTH), SWT.DEFAULT)
+            .applyTo(removeButton);
 
         final Composite maxHistoryComposite = new Composite(ancestor, SWT.NONE);
         GridLayoutFactory.swtDefaults().numColumns(3).applyTo(maxHistoryComposite);
@@ -199,11 +199,11 @@ public class ManageCdsAnalysesDialog extends StatusDialog {
             final int size = Integer.parseInt(historySize);
             if (size < 1 || size > 30) {
                 status = new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, IStatus.ERROR,
-                        Messages.CdsAnalysis_HistoryNumberInvalid_xmsg, null);
+                    Messages.CdsAnalysis_HistoryNumberInvalid_xmsg, null);
             }
         } catch (final NumberFormatException e) {
             status = new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, IStatus.ERROR,
-                    Messages.CdsAnalysis_HistoryNumberInvalid_xmsg, null);
+                Messages.CdsAnalysis_HistoryNumberInvalid_xmsg, null);
         }
         if (status == null) {
             status = Status.OK_STATUS;

@@ -40,14 +40,14 @@ import com.devepos.adt.saat.internal.util.CommandPossibleChecker;
  */
 public class CdsUsageAnalysisView extends CdsAnalysisPage<CdsUsedEntitiesAnalysis> {
     private enum Column {
-        OBJECT_NAME(400, Messages.CdsUsageAnalysisView_ObjectNameColumn_xfld), OCCURRENCES(80,
-                Messages.CdsUsageAnalysisView_OccurrencesColumn_xfld), USED_ENTITY_COUNT(60,
-                        Messages.CdsUsageAnalysisView_EntitiesColumn_xfld,
-                        Messages.CdsUsageAnalysisView_EntitiesColumn_xtol), USED_JOIN_COUNT(60,
-                                Messages.CdsUsageAnalysisView_JoinsColumn_xfld,
-                                Messages.CdsUsageAnalysisView_JoinsColumn_xtol), USED_UNION_COUNT(60,
-                                        Messages.CdsUsageAnalysisView_UnionsColumn_xfld,
-                                        Messages.CdsUsageAnalysisView_UnionsColumn_xtol);
+        OBJECT_NAME(400, Messages.CdsUsageAnalysisView_ObjectNameColumn_xfld),
+        OCCURRENCES(80, Messages.CdsUsageAnalysisView_OccurrencesColumn_xfld),
+        USED_ENTITY_COUNT(60, Messages.CdsUsageAnalysisView_EntitiesColumn_xfld,
+            Messages.CdsUsageAnalysisView_EntitiesColumn_xtol),
+        USED_JOIN_COUNT(60, Messages.CdsUsageAnalysisView_JoinsColumn_xfld,
+            Messages.CdsUsageAnalysisView_JoinsColumn_xtol),
+        USED_UNION_COUNT(60, Messages.CdsUsageAnalysisView_UnionsColumn_xfld,
+            Messages.CdsUsageAnalysisView_UnionsColumn_xtol);
 
         private static final Map<Integer, Column> COLUMNS;
 
@@ -91,15 +91,15 @@ public class CdsUsageAnalysisView extends CdsAnalysisPage<CdsUsedEntitiesAnalysi
         super.fillContextMenu(mgr, commandPossibleChecker);
         if (commandPossibleChecker.canCommandBeEnabled(ICommandConstants.CDS_TOP_DOWN_ANALYSIS)) {
             MenuItemFactory.addCdsAnalyzerCommandItem(mgr, IContextMenuConstants.GROUP_CDS_ANALYSIS,
-                    ICommandConstants.CDS_TOP_DOWN_ANALYSIS);
+                ICommandConstants.CDS_TOP_DOWN_ANALYSIS);
         }
         if (commandPossibleChecker.canCommandBeEnabled(ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS)) {
             MenuItemFactory.addCdsAnalyzerCommandItem(mgr, IContextMenuConstants.GROUP_CDS_ANALYSIS,
-                    ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS);
+                ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS);
         }
         if (commandPossibleChecker.canCommandBeEnabled(ICommandConstants.FIELD_ANALYSIS)) {
             MenuItemFactory.addCdsAnalyzerCommandItem(mgr, IContextMenuConstants.GROUP_CDS_ANALYSIS,
-                    ICommandConstants.FIELD_ANALYSIS);
+                ICommandConstants.FIELD_ANALYSIS);
         }
     }
 
@@ -180,7 +180,7 @@ public class CdsUsageAnalysisView extends CdsAnalysisPage<CdsUsedEntitiesAnalysi
      * @author stockbal
      */
     class ColumnLabelProvider extends CellLabelProvider implements
-            DelegatingStyledCellLabelProvider.IStyledLabelProvider {
+        DelegatingStyledCellLabelProvider.IStyledLabelProvider {
 
         private final Column column;
 

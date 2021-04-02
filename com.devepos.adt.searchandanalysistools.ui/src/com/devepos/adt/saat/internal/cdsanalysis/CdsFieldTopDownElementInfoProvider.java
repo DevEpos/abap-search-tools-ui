@@ -16,7 +16,7 @@ public class CdsFieldTopDownElementInfoProvider implements IElementInfoProvider 
     private final String destinationId;
 
     public CdsFieldTopDownElementInfoProvider(final String destinationId, final String cdsViewName,
-            final String field) {
+        final String field) {
         this.cdsViewName = cdsViewName;
         this.field = field;
         this.destinationId = destinationId;
@@ -25,7 +25,7 @@ public class CdsFieldTopDownElementInfoProvider implements IElementInfoProvider 
     @Override
     public List<IElementInfo> getElements() {
         final IElementInfo cdsTopDownInfo = CdsAnalysisServiceFactory.createCdsAnalysisService()
-                .loadTopDownFieldAnalysis(cdsViewName, field, destinationId);
+            .loadTopDownFieldAnalysis(cdsViewName, field, destinationId);
         if (cdsTopDownInfo != null) {
             return ((IElementInfoCollection) cdsTopDownInfo).getChildren();
         }

@@ -68,7 +68,7 @@ public class ElementInfoUriDiscovery extends UriDiscoveryBase {
      * @return REST resource URI
      */
     public URI createElementInfoResourceUri(final String name, final ObjectType objectType,
-            final Map<String, Object> params) {
+        final Map<String, Object> params) {
         final IAdtUriTemplate template = getElementInfoTemplate();
         URI uri = null;
         if (template != null) {

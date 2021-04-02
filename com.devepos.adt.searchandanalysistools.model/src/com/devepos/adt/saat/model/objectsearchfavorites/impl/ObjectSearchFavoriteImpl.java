@@ -260,7 +260,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
         objectName = newObjectName;
         if (eNotificationRequired()) {
             eNotify(new ENotificationImpl(this, Notification.SET,
-                    IObjectSearchFavoritesPackage.OBJECT_SEARCH_FAVORITE__OBJECT_NAME, oldObjectName, objectName));
+                IObjectSearchFavoritesPackage.OBJECT_SEARCH_FAVORITE__OBJECT_NAME, oldObjectName, objectName));
         }
     }
 
@@ -285,8 +285,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
         searchFilter = newSearchFilter;
         if (eNotificationRequired()) {
             eNotify(new ENotificationImpl(this, Notification.SET,
-                    IObjectSearchFavoritesPackage.OBJECT_SEARCH_FAVORITE__SEARCH_FILTER, oldSearchFilter,
-                    searchFilter));
+                IObjectSearchFavoritesPackage.OBJECT_SEARCH_FAVORITE__SEARCH_FILTER, oldSearchFilter, searchFilter));
         }
     }
 
@@ -311,7 +310,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
         description = newDescription;
         if (eNotificationRequired()) {
             eNotify(new ENotificationImpl(this, Notification.SET,
-                    IObjectSearchFavoritesPackage.OBJECT_SEARCH_FAVORITE__DESCRIPTION, oldDescription, description));
+                IObjectSearchFavoritesPackage.OBJECT_SEARCH_FAVORITE__DESCRIPTION, oldDescription, description));
         }
     }
 
@@ -336,8 +335,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
         destinationId = newDestinationId;
         if (eNotificationRequired()) {
             eNotify(new ENotificationImpl(this, Notification.SET,
-                    IObjectSearchFavoritesPackage.OBJECT_SEARCH_FAVORITE__DESTINATION_ID, oldDestinationId,
-                    destinationId));
+                IObjectSearchFavoritesPackage.OBJECT_SEARCH_FAVORITE__DESTINATION_ID, oldDestinationId, destinationId));
         }
     }
 
@@ -362,8 +360,8 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
         andSearchActive = newAndSearchActive;
         if (eNotificationRequired()) {
             eNotify(new ENotificationImpl(this, Notification.SET,
-                    IObjectSearchFavoritesPackage.OBJECT_SEARCH_FAVORITE__AND_SEARCH_ACTIVE, oldAndSearchActive,
-                    andSearchActive));
+                IObjectSearchFavoritesPackage.OBJECT_SEARCH_FAVORITE__AND_SEARCH_ACTIVE, oldAndSearchActive,
+                andSearchActive));
         }
     }
 
@@ -388,7 +386,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
         searchType = newSearchType;
         if (eNotificationRequired()) {
             eNotify(new ENotificationImpl(this, Notification.SET,
-                    IObjectSearchFavoritesPackage.OBJECT_SEARCH_FAVORITE__SEARCH_TYPE, oldSearchType, searchType));
+                IObjectSearchFavoritesPackage.OBJECT_SEARCH_FAVORITE__SEARCH_TYPE, oldSearchType, searchType));
         }
     }
 
@@ -413,8 +411,8 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
         projectIndependent = newProjectIndependent;
         if (eNotificationRequired()) {
             eNotify(new ENotificationImpl(this, Notification.SET,
-                    IObjectSearchFavoritesPackage.OBJECT_SEARCH_FAVORITE__PROJECT_INDEPENDENT, oldProjectIndependent,
-                    projectIndependent));
+                IObjectSearchFavoritesPackage.OBJECT_SEARCH_FAVORITE__PROJECT_INDEPENDENT, oldProjectIndependent,
+                projectIndependent));
         }
     }
 
@@ -439,7 +437,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
         maxResults = newMaxResults;
         if (eNotificationRequired()) {
             eNotify(new ENotificationImpl(this, Notification.SET,
-                    IObjectSearchFavoritesPackage.OBJECT_SEARCH_FAVORITE__MAX_RESULTS, oldMaxResults, maxResults));
+                IObjectSearchFavoritesPackage.OBJECT_SEARCH_FAVORITE__MAX_RESULTS, oldMaxResults, maxResults));
         }
     }
 
@@ -464,7 +462,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
         allResults = newAllResults;
         if (eNotificationRequired()) {
             eNotify(new ENotificationImpl(this, Notification.SET,
-                    IObjectSearchFavoritesPackage.OBJECT_SEARCH_FAVORITE__ALL_RESULTS, oldAllResults, allResults));
+                IObjectSearchFavoritesPackage.OBJECT_SEARCH_FAVORITE__ALL_RESULTS, oldAllResults, allResults));
         }
     }
 
@@ -592,7 +590,7 @@ public class ObjectSearchFavoriteImpl extends MinimalEObjectImpl.Container imple
             return DESCRIPTION_EDEFAULT == null ? description != null : !DESCRIPTION_EDEFAULT.equals(description);
         case IObjectSearchFavoritesPackage.OBJECT_SEARCH_FAVORITE__DESTINATION_ID:
             return DESTINATION_ID_EDEFAULT == null ? destinationId != null
-                    : !DESTINATION_ID_EDEFAULT.equals(destinationId);
+                : !DESTINATION_ID_EDEFAULT.equals(destinationId);
         case IObjectSearchFavoritesPackage.OBJECT_SEARCH_FAVORITE__AND_SEARCH_ACTIVE:
             return andSearchActive != AND_SEARCH_ACTIVE_EDEFAULT;
         case IObjectSearchFavoritesPackage.OBJECT_SEARCH_FAVORITE__SEARCH_TYPE:
