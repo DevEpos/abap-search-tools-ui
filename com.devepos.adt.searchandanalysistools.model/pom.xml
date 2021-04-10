@@ -5,13 +5,13 @@
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>com.devepos.adt.searchandanalysistools.model</artifactId>
 	<groupId>com.devepos.adt</groupId>
-	<version>1.3.3-SNAPSHOT</version>
+	<version>1.3.4-SNAPSHOT</version>
 	<packaging>eclipse-plugin</packaging>
 
 	<parent>
 		<artifactId>com.devepos.adt.searchandanalysistools.parent</artifactId>
 		<groupId>com.devepos.adt</groupId>
-		<version>1.3.3-SNAPSHOT</version>
+		<version>1.3.4-SNAPSHOT</version>
 		<relativePath>../</relativePath>
 	</parent>
 
