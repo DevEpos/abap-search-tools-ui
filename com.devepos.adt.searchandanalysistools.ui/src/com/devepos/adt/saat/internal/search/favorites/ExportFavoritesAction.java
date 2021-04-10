@@ -6,9 +6,10 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
+import com.devepos.adt.base.ui.AdtBaseUIResources;
+import com.devepos.adt.base.ui.IAdtBaseImages;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.messages.Messages;
-import com.devepos.adt.saat.internal.util.IImages;
 
 /**
  * Exports the current search favorites to the file system
@@ -17,8 +18,8 @@ import com.devepos.adt.saat.internal.util.IImages;
  */
 public class ExportFavoritesAction extends Action {
     public ExportFavoritesAction() {
-        super(Messages.ExportFavoritesAction_ActionTitle_xmit, SearchAndAnalysisPlugin.getDefault()
-            .getImageDescriptor(IImages.EXPORT));
+        super(Messages.ExportFavoritesAction_ActionTitle_xmit, AdtBaseUIResources.getImageDescriptor(
+            IAdtBaseImages.EXPORT));
     }
 
     @Override

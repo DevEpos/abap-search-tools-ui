@@ -32,7 +32,9 @@ import org.eclipse.ui.part.PageBookView;
 import org.eclipse.ui.part.PageSwitcher;
 import org.eclipse.ui.part.ShowInContext;
 
+import com.devepos.adt.base.ui.AdtBaseUIResources;
 import com.devepos.adt.base.ui.DummyPart;
+import com.devepos.adt.base.ui.IAdtBaseImages;
 import com.devepos.adt.base.ui.IGeneralContextMenuConstants;
 import com.devepos.adt.saat.internal.IContextMenuConstants;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
@@ -41,7 +43,6 @@ import com.devepos.adt.saat.internal.help.HelpUtil;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.preferences.IPreferences;
 import com.devepos.adt.saat.internal.ui.ViewUiState;
-import com.devepos.adt.saat.internal.util.IImages;
 
 /**
  * A view which is to be used to analyse a selected CDS view (either from the
@@ -426,8 +427,8 @@ public class CdsAnalysisView extends PageBookView implements ICdsAnalysisListene
      */
     private class RefreshCurrentAnalysisAction extends Action {
         public RefreshCurrentAnalysisAction() {
-            super(Messages.CdsAnalysis_RefreshAction_xtol, SearchAndAnalysisPlugin.getDefault()
-                .getImageDescriptor(IImages.REFRESH));
+            super(Messages.CdsAnalysis_RefreshAction_xtol, AdtBaseUIResources.getImageDescriptor(
+                IAdtBaseImages.REFRESH));
         }
 
         @Override

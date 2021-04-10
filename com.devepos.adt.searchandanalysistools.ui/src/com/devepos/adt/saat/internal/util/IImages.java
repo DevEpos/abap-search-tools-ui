@@ -7,22 +7,6 @@ package com.devepos.adt.saat.internal.util;
  */
 public interface IImages {
     /**
-     * Image for horizontal view layout
-     */
-    String HORIZONTAL_LAYOUT = "IMG_HORIZONTAL_LAYOUT";
-    /**
-     * Image for vertical view layout
-     */
-    String VERTICAL_LAYOUT = "IMG_VERTICAL_LAYOUT";
-    /**
-     * Image for automatic view layout
-     */
-    String AUTOMATIC_LAYOUT = "IMG_AUTOMATIC_LAYOUT";
-    /**
-     * Identifies the Refresh Image
-     */
-    String REFRESH = "IMG_REFRESH";
-    /**
      * Identifies the Image for the ADT Data Preview
      */
     String ADT_DATA_DATA_PREVIEW = "IMG_ADT_DATA_PREVIEW";
@@ -98,7 +82,6 @@ public interface IImages {
      * Identifies the image for a key column/field
      */
     String KEY_COLUMN = "IMG_KEY_COLUMN";
-
     /**
      * Identifies the image for the annotation parameter
      */
@@ -136,10 +119,6 @@ public interface IImages {
      */
     String ABAP_TYPE = "IMG_ABAP_TYPE";
     /**
-     * Identifies an image that signals a loading operation
-     */
-    String WAITING = "IMG_WAITING";
-    /**
      * Identifies an image for the <em>Extended by</em> parameter
      */
     String EXTENSION = "IMG_EXTENSION";
@@ -176,14 +155,6 @@ public interface IImages {
      */
     String TECHNICAL_SETTINGS = "IMG_TECH_SETTINGS";
     /**
-     * Expand all nodes Image
-     */
-    String EXPAND_ALL = "IMG_EXPAND_ALL";
-    /**
-     * Collapse all nodes image
-     */
-    String COLLAPSE_ALL = "IMG_COLLAPSE_ALL";
-    /**
      * Image for an ABAP Access Control File
      */
     String ACCESS_CONTROL = "IMG_ACCESS_CONTROl";
@@ -215,10 +186,6 @@ public interface IImages {
      * Image for SQL inner join condition
      */
     String INNER_JOIN = "IMG_INNER_JOIN";
-    /**
-     * Image for Search
-     */
-    String SEARCH = "IMG_SEARCH";
     /**
      * Image for the object search
      */
@@ -264,10 +231,6 @@ public interface IImages {
      */
     String WHERE_USED_IN = "IMG_WHERE_USED_IN";
     /**
-     * Image for Where-Used-List feature (ADT)
-     */
-    String WHERE_USED_LIST = "IMG_WHERE_USED_LIST";
-    /**
      * Image for Top-Down analysis
      */
     String TOP_DOWN = "IMG_TOP_DOWN";
@@ -303,14 +266,6 @@ public interface IImages {
      * Image to mark elements which are functional
      */
     String FUNCTION = "IMG_FUNCTION";
-    /**
-     * Image Id for "Import"
-     */
-    String IMPORT = "IMG_IMPORT";
-    /**
-     * Image Id for "Export"
-     */
-    String EXPORT = "IMG_EXPORT";
     /**
      * Image id for "Package"
      */

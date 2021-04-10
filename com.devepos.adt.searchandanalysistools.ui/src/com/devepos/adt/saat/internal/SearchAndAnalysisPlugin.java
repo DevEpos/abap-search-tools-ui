@@ -68,7 +68,6 @@ public class SearchAndAnalysisPlugin extends AbstractAdtUIPlugin {
         // register all kinds of images
         registerImage(imageRegistry, IImages.DB_BROWSER_DATA_PREVIEW, "icons/DBBrowser.png");
         registerImage(imageRegistry, IImages.ADT_DATA_DATA_PREVIEW, "icons/ADTDataPreview.png");
-        registerImage(imageRegistry, IImages.REFRESH, "icons/full/elcl16/refresh.png", "org.eclipse.search");
         registerImage(imageRegistry, IImages.CDS_VIEW, "icons/CDSEntity.png");
         registerImage(imageRegistry, IImages.TABLE_DEFINITION, "icons/Table.png");
         registerImage(imageRegistry, IImages.VIEW_DEFINITION, "icons/ViewDefinition.png");
@@ -76,7 +75,6 @@ public class SearchAndAnalysisPlugin extends AbstractAdtUIPlugin {
             "org.eclipse.search");
         registerImage(imageRegistry, IImages.HISTORY_LIST, "icons/HistoryList.png");
         registerImage(imageRegistry, IImages.USER, "icons/UserEdit.png");
-        registerImage(imageRegistry, IImages.WAITING, "icons/WaitingIndicator.png");
         registerImage(imageRegistry, IImages.PROPERTIES, "icons/Properties.png");
         registerImage(imageRegistry, IImages.DATE, "icons/Date.png");
         registerImage(imageRegistry, IImages.CLASS, "icons/Class.png");
@@ -87,8 +85,6 @@ public class SearchAndAnalysisPlugin extends AbstractAdtUIPlugin {
         registerImage(imageRegistry, IImages.FOLDER, "icons/Folder.png");
         registerImage(imageRegistry, IImages.VIRTUAL_FOLDER, "icons/VirtualFolder.png");
         registerImage(imageRegistry, IImages.TECHNICAL_SETTINGS, "icons/TechnicalSettings.png");
-        registerImage(imageRegistry, IImages.EXPAND_ALL, "icons/full/elcl16/expandall.png", "org.eclipse.search");
-        registerImage(imageRegistry, IImages.COLLAPSE_ALL, "icons/full/elcl16/collapseall.png", "org.eclipse.search");
         registerImage(imageRegistry, IImages.ACCESS_CONTROL, "icons/AccessControl.png");
         registerImage(imageRegistry, IImages.BUSINESS_OBJECT, "icons/BusinessObject.png");
         registerImage(imageRegistry, IImages.METADATA_EXTENSION, "icons/MetadataExtension.png");
@@ -97,7 +93,6 @@ public class SearchAndAnalysisPlugin extends AbstractAdtUIPlugin {
         registerImage(imageRegistry, IImages.EXTERNAL_TOOLS, "icons/ExternalTools.png");
         registerImage(imageRegistry, IImages.SAP_GUI_LOGO, "icons/SapGuiLogo.png");
         registerImage(imageRegistry, IImages.INNER_JOIN, "icons/InnerJoin.png");
-        registerImage(imageRegistry, IImages.SEARCH, "icons/full/etool16/search.png", "org.eclipse.search");
         registerImage(imageRegistry, IImages.OBJECT_SEARCH, "icons/ABAPSearch.png");
         registerImage(imageRegistry, IImages.FAVORITES, "icons/Favorites.png");
         registerImage(imageRegistry, IImages.CDS_ANALYZER, "icons/CdsAnalyzerView.png");
@@ -106,8 +101,6 @@ public class SearchAndAnalysisPlugin extends AbstractAdtUIPlugin {
         registerImage(imageRegistry, IImages.TOP_DOWN, "icons/TopDown.png");
         registerImage(imageRegistry, IImages.FIELD_ANALYSIS, "icons/CdsFieldAnalysis.png");
         registerImage(imageRegistry, IImages.WHERE_USED_IN, "icons/WhereUsedInCds.png");
-        registerImage(imageRegistry, IImages.WHERE_USED_LIST, "icons/etool/where_used.png",
-            "com.sap.adt.ris.whereused.ui");
         registerImage(imageRegistry, IImages.USAGE_ANALYZER, "icons/CdsUsageAnalyzer.png");
         registerImage(imageRegistry, IImages.UNION, "icons/Union.png");
         registerImage(imageRegistry, IImages.JOIN_RESULT_SOURCE, "icons/JoinedDataSource.png");
@@ -116,22 +109,12 @@ public class SearchAndAnalysisPlugin extends AbstractAdtUIPlugin {
         registerImage(imageRegistry, IImages.FIELD_WHERE_USED, "icons/FieldWhereUsed.png");
         registerImage(imageRegistry, IImages.CALCULATOR, "icons/Calculator.png");
         registerImage(imageRegistry, IImages.FUNCTION, "icons/Function.png");
-        registerImage(imageRegistry, IImages.IMPORT, "icons/full/etool16/import_wiz.png", "org.eclipse.ui");
-        registerImage(imageRegistry, IImages.EXPORT, "icons/full/etool16/export_wiz.png", "org.eclipse.ui");
         registerImage(imageRegistry, IImages.ABAP_VERSION, "icons/Version.gif");
         registerImage(imageRegistry, IImages.SUPER_TYPE, "icons/SuperType.png");
         registerImage(imageRegistry, IImages.FRIEND, "icons/Friend.png");
         registerImage(imageRegistry, IImages.ATTRIBUTE, "icons/Attribute.png");
         registerImage(imageRegistry, IImages.METHOD, "icons/Method.png");
         registerImage(imageRegistry, IImages.ENABLED_CHECKBOX, "icons/EnabledCheckbox.png");
-
-        // images for layout
-        registerImage(imageRegistry, IImages.VERTICAL_LAYOUT, "icons/full/elcl16/verticalOrientation.png",
-            "org.eclipse.search");
-        registerImage(imageRegistry, IImages.AUTOMATIC_LAYOUT, "icons/full/elcl16/automaticOrientation.png",
-            "org.eclipse.search");
-        registerImage(imageRegistry, IImages.HORIZONTAL_LAYOUT, "icons/full/elcl16/horizontalOrientation.png",
-            "org.eclipse.search");
 
         // register overlay images
         registerImage(imageRegistry, IImages.RELEASED_API_OVR, "icons/ovr/Released.png");

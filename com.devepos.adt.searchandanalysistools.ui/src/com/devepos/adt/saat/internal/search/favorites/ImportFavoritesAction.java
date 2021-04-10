@@ -8,9 +8,10 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
+import com.devepos.adt.base.ui.AdtBaseUIResources;
+import com.devepos.adt.base.ui.IAdtBaseImages;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.messages.Messages;
-import com.devepos.adt.saat.internal.util.IImages;
 import com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavorite;
 
 /**
@@ -21,8 +22,8 @@ import com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavorite;
 public class ImportFavoritesAction extends Action {
 
     public ImportFavoritesAction() {
-        super(Messages.ImportFavoritesAction_ImportFavoritesAction_xmit, SearchAndAnalysisPlugin.getDefault()
-            .getImageDescriptor(IImages.IMPORT));
+        super(Messages.ImportFavoritesAction_ImportFavoritesAction_xmit, AdtBaseUIResources.getImageDescriptor(
+            IAdtBaseImages.IMPORT));
     }
 
     @Override

@@ -8,6 +8,7 @@ import org.eclipse.core.runtime.Assert;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.menus.CommandContributionItem;
 import org.eclipse.ui.menus.CommandContributionItemParameter;
@@ -48,8 +49,9 @@ public class MenuItemFactory {
      */
     public static void addOpenInDbBrowserCommand(final IMenuManager mgr, final String groupId,
         final boolean skipSelscreen) {
-        addCommandItem(mgr, groupId, ICommandConstants.OPEN_IN_DB_BROWSER, IImages.DB_BROWSER_DATA_PREVIEW,
-            skipSelscreen ? Messages.ObjectSearch_OpenInDbBrowserAndSkip_xmit
+        addCommandItem(mgr, groupId, ICommandConstants.OPEN_IN_DB_BROWSER, SearchAndAnalysisPlugin.getDefault()
+            .getImageDescriptor(IImages.DB_BROWSER_DATA_PREVIEW), skipSelscreen
+                ? Messages.ObjectSearch_OpenInDbBrowserAndSkip_xmit
                 : Messages.ObjectSearch_OpenInDbBrowser_xmit, new String[][] { {
                     OpenInDbBrowserHandler.PARAM_SKIP_SELSCREEN, String.valueOf(skipSelscreen) } });
     }
@@ -88,7 +90,8 @@ public class MenuItemFactory {
         }
 
         Assert.isTrue(label != null && imageId != null);
-        addCommandItem(mgr, groupId, commandId, imageId, label, null);
+        addCommandItem(mgr, groupId, commandId, SearchAndAnalysisPlugin.getDefault().getImageDescriptor(imageId), label,
+            null);
     }
 
     /**
@@ -100,14 +103,14 @@ public class MenuItemFactory {
      * @param groupId   the group name where the command should be inserted in the
      *                  menu or <code>null</code>
      * @param commandId the fully qualified id of the command
-     * @param imageId   an image id from {@link IImages}
+     * @param imgDescr  an image for the command item
      * @param label     the label of the menu entry
      * @param params    an optional list of parameter key/value pairs for the
      *                  command
      */
     public static void addCommandItem(final IMenuManager mgr, final String groupId, final String commandId,
-        final String imageId, final String label, final String[][] params) {
-        final IContributionItem commandItem = createCommandContributionItem(groupId, commandId, imageId, label, true,
+        final ImageDescriptor imgDescr, final String label, final String[][] params) {
+        final IContributionItem commandItem = createCommandContributionItem(groupId, commandId, imgDescr, label, true,
             params);
         if (groupId != null) {
             mgr.appendToGroup(groupId, commandItem);
@@ -123,7 +126,7 @@ public class MenuItemFactory {
      * @param tbm            the toolbar manager instance
      * @param groupId        the group id to which the command should be added
      * @param commandId      a unique identifier of a command
-     * @param imageId        an id for an image registered in this plugin
+     * @param imgDescr       an image for the command item
      * @param label          the label to be displayed for the command
      * @param visibleEnabled if <code>true</code> the visibility of the contribution
      *                       item will depend on the <code>enabled</code> state of
@@ -131,9 +134,9 @@ public class MenuItemFactory {
      * @param params         an optional two dimensional array of command parameters
      */
     public static void addCommandItem(final IToolBarManager tbm, final String groupId, final String commandId,
-        final String imageId, final String label, final boolean visibleEnabled, final String[][] params) {
+        final ImageDescriptor imgDescr, final String label, final boolean visibleEnabled, final String[][] params) {
 
-        final IContributionItem commandItem = createCommandContributionItem(groupId, commandId, imageId, label,
+        final IContributionItem commandItem = createCommandContributionItem(groupId, commandId, imgDescr, label,
             visibleEnabled, params);
 
         if (groupId != null) {
@@ -144,17 +147,15 @@ public class MenuItemFactory {
     }
 
     private static IContributionItem createCommandContributionItem(final String groupId, final String commandId,
-        final String imageId, final String label, final boolean visibleEnabled, final String[][] params) {
+        final ImageDescriptor imgDescr, final String label, final boolean visibleEnabled, final String[][] params) {
         Map<String, String> paramMap = null;
         if (params != null) {
             paramMap = Stream.of(params).collect(Collectors.toMap(key -> key[0], data -> data[1]));
         }
         final CommandContributionItemParameter parameter = new CommandContributionItemParameter(PlatformUI
             .getWorkbench()
-            .getActiveWorkbenchWindow(), commandId, commandId, paramMap, imageId != null ? SearchAndAnalysisPlugin
-                .getDefault()
-                .getImageDescriptor(imageId) : null, null, null, label, null, null, CommandContributionItem.STYLE_PUSH,
-            null, visibleEnabled);
+            .getActiveWorkbenchWindow(), commandId, commandId, paramMap, imgDescr, null, null, label, null, null,
+            CommandContributionItem.STYLE_PUSH, null, visibleEnabled);
         return new CommandContributionItem(parameter);
     }
 }

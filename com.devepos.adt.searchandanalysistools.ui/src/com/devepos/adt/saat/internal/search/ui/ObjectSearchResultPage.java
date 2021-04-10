@@ -49,6 +49,8 @@ import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.Page;
 
 import com.devepos.adt.base.ObjectType;
+import com.devepos.adt.base.ui.AdtBaseUIResources;
+import com.devepos.adt.base.ui.IAdtBaseImages;
 import com.devepos.adt.base.ui.IGeneralContextMenuConstants;
 import com.devepos.adt.base.ui.StylerFactory;
 import com.devepos.adt.base.ui.action.CollapseAllTreeNodesAction;
@@ -132,8 +134,8 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
     public void setActionBars(final IActionBars actionBars) {
         final IToolBarManager tbm = actionBars.getToolBarManager();
         MenuItemFactory.addCommandItem(tbm, IContextMenuConstants.GROUP_NEW,
-            ICommandConstants.OBJECT_SEARCH_OPEN_IN_DIALOG, IImages.SEARCH,
-            Messages.ObjectSearchResultPage_OpenInSearchDialog_xtol, false, null);
+            ICommandConstants.OBJECT_SEARCH_OPEN_IN_DIALOG, AdtBaseUIResources.getImageDescriptor(
+                IAdtBaseImages.SEARCH), Messages.ObjectSearchResultPage_OpenInSearchDialog_xtol, false, null);
         tbm.appendToGroup(IContextMenuConstants.GROUP_NEW, favoritesAction);
         tbm.appendToGroup(IContextMenuConstants.GROUP_EDIT, collapseAllNodesAction);
         tbm.appendToGroup(IContextMenuConstants.GROUP_EDIT, expandAllAction);
@@ -423,7 +425,8 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
             menu.add(new Separator(IContextMenuConstants.GROUP_ADDITIONS));
             MenuItemFactory.addCommandItem(menu, IContextMenuConstants.GROUP_ADDITIONS,
                 "com.sap.adt.ris.whereused.ui.callWhereUsed", //$NON-NLS-1$
-                IImages.WHERE_USED_LIST, Messages.ObjectSearch_WhereUsedListAction_xmit, null);
+                AdtBaseUIResources.getImageDescriptor(IAdtBaseImages.WHERE_USED_LIST),
+                Messages.ObjectSearch_WhereUsedListAction_xmit, null);
         }
 
         // check if action is supported in the current project
@@ -635,8 +638,8 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
         private final TreeViewer viewer;
 
         public ExpandSelectedPackageNodesAction(final TreeViewer viewer) {
-            super(Messages.ObjectSearch_ExpandNodeAction_xmsg, SearchAndAnalysisPlugin.getDefault()
-                .getImageDescriptor(IImages.EXPAND_ALL));
+            super(Messages.ObjectSearch_ExpandNodeAction_xmsg, AdtBaseUIResources.getImageDescriptor(
+                IAdtBaseImages.EXPAND_ALL));
             this.viewer = viewer;
         }
 
