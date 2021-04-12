@@ -9,11 +9,11 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.jobs.IJobChangeEvent;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.runtime.jobs.JobChangeAdapter;
-import org.eclipse.search.internal.ui.SearchPlugin;
 import org.eclipse.search.ui.NewSearchUI;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.devepos.adt.base.IAdtObjectTypeConstants;
@@ -34,6 +34,7 @@ import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
  *
  * @author stockbal
  */
+@SuppressWarnings("restriction")
 public class RunWhereUsedQueryHandler extends AbstractHandler {
     private String ddlsUri;
 
@@ -105,7 +106,7 @@ public class RunWhereUsedQueryHandler extends AbstractHandler {
          * If there is no active page in the workbench window the search view will not
          * be brought to the front so it has to be done manually
          */
-        final IWorkbenchPage activeSearchPage = SearchPlugin.getActivePage();
+        final IWorkbenchPage activeSearchPage = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
         final IWorkbenchPart activeSearchView = activeSearchPage.getActivePart();
         if (activeSearchPage != null && activeSearchView != null && activeSearchPage.isPartVisible(activeSearchView)) {
             activeSearchPage.bringToTop(activeSearchView);

@@ -23,7 +23,6 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.StyledString;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.search.internal.ui.SearchPlugin;
 import org.eclipse.search.ui.IContextMenuConstants;
 import org.eclipse.search.ui.ISearchResult;
 import org.eclipse.search.ui.ISearchResultListener;
@@ -44,7 +43,6 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.IWorkbenchCommandConstants;
-import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.Page;
 
@@ -68,6 +66,7 @@ import com.devepos.adt.base.ui.tree.LazyLoadingTreeContentProvider;
 import com.devepos.adt.base.ui.tree.LoadingTreeItemsNode;
 import com.devepos.adt.base.ui.tree.PackageNode;
 import com.devepos.adt.base.ui.util.AdtTypeUtil;
+import com.devepos.adt.base.ui.util.WorkbenchUtil;
 import com.devepos.adt.saat.internal.ICommandConstants;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.cdsanalysis.CdsAnalysisUriDiscovery;
@@ -238,14 +237,7 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
         }
         state = null;
         Display.getDefault().asyncExec(() -> {
-            /*
-             * If there is no active page in the workbench window the search view will not
-             * be brought to the front so it has to be done manually
-             */
-            final IWorkbenchPage activeSearchPage = SearchPlugin.getActivePage();
-            if (activeSearchPage != null && searchViewPart != null && activeSearchPage.isPartVisible(searchViewPart)) {
-                activeSearchPage.bringToTop(searchViewPart);
-            }
+            WorkbenchUtil.bringPartToFront(searchViewPart);
             searchViewPart.updateLabel();
             final IAbapProjectProvider projectProvider = searchQuery.getProjectProvider();
             if (projectProvider != this.projectProvider) {
