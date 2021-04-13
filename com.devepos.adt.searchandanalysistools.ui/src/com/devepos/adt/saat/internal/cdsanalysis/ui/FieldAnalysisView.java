@@ -13,6 +13,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ViewForm;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.dialogs.FilteredTree;
@@ -71,6 +72,18 @@ public class FieldAnalysisView extends CdsAnalysisPage<FieldAnalysis> {
             .getPreferenceStore()
             .setDefault(VIEW_LAYOUT_PREF_KEY, ViewLayoutOrientation.AUTOMATIC.name());
         registerViewerToClipboardAction(hierarchyView.getViewer());
+        /*
+         * Workaround for activated DevStyle theme so that the field tree is snapped to
+         * the top. As it may not only be the DevStyle theme which causes this problem a
+         * precondition check on the current workbench theme is not done
+         */
+        Display.getDefault().asyncExec(() -> {
+            Control control = getControl();
+            if (control != null) {
+                control.pack(true);
+                control.requestLayout();
+            }
+        });
     }
 
     @Override
