@@ -52,11 +52,6 @@
             name="%category.objectsearch.name">
       </category>
       <command
-            categoryId="com.devepos.adt.saat.objectsearch.commands.category"
-            id="com.devepos.adt.saat.objectsearch.command.openInDialog"
-            name="%command.objectsearch.openindialog.name">
-      </command>
-      <command
             categoryId="com.sap.adt.ris.search.ui.commands.category"
             id="com.devepos.adt.saat.search.command.runWhereUsedForObject"
             name="%command.search.runWhereUsedQuery.name">
@@ -98,17 +93,6 @@
       <handler
             class="com.devepos.adt.saat.internal.handlers.PerformFieldAnalysisHandler"
             commandId="com.devepos.adt.saat.cdsanalysis.command.performFieldAnalysis">
-      </handler>
-      <handler
-            class="com.devepos.adt.saat.internal.handlers.OpenInSearchDialogHandler"
-            commandId="com.devepos.adt.saat.objectsearch.command.openInDialog">
-         <enabledWhen>
-            <with
-                  variable="activePart">
-               <instanceof
-                     value="org.eclipse.search2.internal.ui.SearchView">
-               </instanceof>
-            </with></enabledWhen>
       </handler>
       <handler
             class="com.devepos.adt.saat.internal.handlers.RunWhereUsedQueryHandler"
@@ -304,12 +288,6 @@
      </extension>
      <extension
            point="org.eclipse.ui.bindings">
-        <key
-              commandId="com.devepos.adt.saat.objectsearch.command.openInDialog"
-              contextId="org.eclipse.ui.contexts.window"
-              schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
-              sequence="M1+O">
-        </key>
      </extension>
      <extension
            point="org.eclipse.ui.themes">
@@ -343,7 +321,7 @@
            point="org.eclipse.help.contexts">
         <contexts
               file="contexts.xml"
-              plugin="com.devepos.adt.searchandanalysistools">
+              plugin="com.devepos.adt.searchandanalysistools.ui">
         </contexts>
      </extension>
 </plugin>

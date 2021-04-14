@@ -35,7 +35,7 @@ import com.devepos.adt.saat.internal.IContextMenuConstants;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.cdsanalysis.CdsFieldTopDownElementInfoProvider;
 import com.devepos.adt.saat.internal.cdsanalysis.ICdsAnalysisConstants;
-import com.devepos.adt.saat.internal.menu.MenuItemFactory;
+import com.devepos.adt.saat.internal.menu.SaatMenuItemFactory;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.util.IImages;
 import com.devepos.adt.saat.internal.util.NavigationUtil;
@@ -307,7 +307,7 @@ public class FieldHierarchyView implements IDestinationProvider {
         hierarchyTreeViewer.initContextMenu(menu -> {
             parentView.fillContextMenu(menu);
             if (menu.find(ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS) != null) {
-                MenuItemFactory.addCdsAnalyzerCommandItem(menu, IContextMenuConstants.GROUP_CDS_ANALYSIS,
+                SaatMenuItemFactory.addCdsAnalyzerCommandItem(menu, IContextMenuConstants.GROUP_CDS_ANALYSIS,
                     ICommandConstants.FIELD_ANALYSIS);
             }
             contributeToHierarchyViewerContextMenu(menu);

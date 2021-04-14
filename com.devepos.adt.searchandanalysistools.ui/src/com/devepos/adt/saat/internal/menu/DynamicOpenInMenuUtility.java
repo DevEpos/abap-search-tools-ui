@@ -81,8 +81,8 @@ public class DynamicOpenInMenuUtility {
             final boolean isDbBrowserAvailable = FeatureTester.isSapGuiDbBrowserAvailable(adtObjects);
             // Add command "Open In DB Browser"
             if (isDbBrowserAvailable) {
-                MenuItemFactory.addOpenInDbBrowserCommand(this, false);
-                MenuItemFactory.addOpenInDbBrowserCommand(this, true);
+                SaatMenuItemFactory.addOpenInDbBrowserCommand(this, false);
+                SaatMenuItemFactory.addOpenInDbBrowserCommand(this, true);
             }
 
             if (cdsAnalysisAvailable) {
@@ -91,13 +91,13 @@ public class DynamicOpenInMenuUtility {
                 }
                 final boolean isCdsView = adtObjects.get(0).getObjectType() == ObjectType.CDS_VIEW;
                 if (isCdsView && FeatureTester.isCdsTopDownAnalysisAvailable(project)) {
-                    MenuItemFactory.addCdsAnalyzerCommandItem(this, null, ICommandConstants.CDS_TOP_DOWN_ANALYSIS);
+                    SaatMenuItemFactory.addCdsAnalyzerCommandItem(this, null, ICommandConstants.CDS_TOP_DOWN_ANALYSIS);
                 }
-                MenuItemFactory.addCdsAnalyzerCommandItem(this, null, ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS);
+                SaatMenuItemFactory.addCdsAnalyzerCommandItem(this, null, ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS);
                 if (isCdsView && FeatureTester.isCdsUsedEntitiesAnalysisAvailable(project)) {
-                    MenuItemFactory.addCdsAnalyzerCommandItem(this, null, ICommandConstants.USED_ENTITIES_ANALYSIS);
+                    SaatMenuItemFactory.addCdsAnalyzerCommandItem(this, null, ICommandConstants.USED_ENTITIES_ANALYSIS);
                 }
-                MenuItemFactory.addCdsAnalyzerCommandItem(this, null, ICommandConstants.FIELD_ANALYSIS);
+                SaatMenuItemFactory.addCdsAnalyzerCommandItem(this, null, ICommandConstants.FIELD_ANALYSIS);
                 // Additional actions only exist for CDS view at the moment
                 if (isCdsView && FeatureTester.isNavigationTargetsFeatureAvailable(project)) {
                     add(new Separator());

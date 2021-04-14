@@ -56,7 +56,7 @@ import com.devepos.adt.saat.internal.ICommandConstants;
 import com.devepos.adt.saat.internal.IContextMenuConstants;
 import com.devepos.adt.saat.internal.IDataSourceType;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
-import com.devepos.adt.saat.internal.menu.MenuItemFactory;
+import com.devepos.adt.saat.internal.menu.SaatMenuItemFactory;
 import com.devepos.adt.saat.internal.search.IExtendedAdtObjectInfo;
 import com.devepos.adt.saat.internal.ui.SelectionProviderAdapter;
 import com.devepos.adt.saat.internal.ui.SelectionProviderProxy;
@@ -427,8 +427,8 @@ public abstract class CdsAnalysisPage<T extends CdsAnalysis> extends Page {
             return;
         }
         if (commandChecker.canCommandBeEnabled(ICommandConstants.OPEN_IN_DB_BROWSER)) {
-            MenuItemFactory.addOpenInDbBrowserCommand(mgr, IContextMenuConstants.GROUP_DB_BROWSER, false);
-            MenuItemFactory.addOpenInDbBrowserCommand(mgr, IContextMenuConstants.GROUP_DB_BROWSER, true);
+            SaatMenuItemFactory.addOpenInDbBrowserCommand(mgr, IContextMenuConstants.GROUP_DB_BROWSER, false);
+            SaatMenuItemFactory.addOpenInDbBrowserCommand(mgr, IContextMenuConstants.GROUP_DB_BROWSER, true);
         }
 
         if (this.projectProvider != null) {

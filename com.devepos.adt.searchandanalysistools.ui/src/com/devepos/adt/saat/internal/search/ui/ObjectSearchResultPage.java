@@ -49,14 +49,17 @@ import org.eclipse.ui.part.Page;
 import com.devepos.adt.base.ObjectType;
 import com.devepos.adt.base.ui.AdtBaseUIResources;
 import com.devepos.adt.base.ui.IAdtBaseImages;
+import com.devepos.adt.base.ui.IAdtBaseUICommandConstants;
 import com.devepos.adt.base.ui.IGeneralContextMenuConstants;
 import com.devepos.adt.base.ui.StylerFactory;
 import com.devepos.adt.base.ui.action.CollapseAllTreeNodesAction;
 import com.devepos.adt.base.ui.action.CollapseTreeNodesAction;
+import com.devepos.adt.base.ui.action.CommandFactory;
 import com.devepos.adt.base.ui.action.CopyToClipboardAction;
 import com.devepos.adt.base.ui.action.ExecuteAdtObjectAction;
 import com.devepos.adt.base.ui.action.OpenAdtObjectAction;
 import com.devepos.adt.base.ui.project.IAbapProjectProvider;
+import com.devepos.adt.base.ui.search.ISearchResultPageExtension;
 import com.devepos.adt.base.ui.tree.ActionTreeNode;
 import com.devepos.adt.base.ui.tree.IAdtObjectReferenceNode;
 import com.devepos.adt.base.ui.tree.ICollectionTreeNode;
@@ -70,7 +73,7 @@ import com.devepos.adt.base.ui.util.WorkbenchUtil;
 import com.devepos.adt.saat.internal.ICommandConstants;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.cdsanalysis.CdsAnalysisUriDiscovery;
-import com.devepos.adt.saat.internal.menu.MenuItemFactory;
+import com.devepos.adt.saat.internal.menu.SaatMenuItemFactory;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.search.IExtendedAdtObjectInfo;
 import com.devepos.adt.saat.internal.util.FeatureTester;
@@ -82,9 +85,9 @@ import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
  *
  * @author stockbal
  */
-public class ObjectSearchResultPage extends Page implements ISearchResultPage, ISearchResultListener {
+public class ObjectSearchResultPage extends Page implements ISearchResultPage, ISearchResultListener,
+    ISearchResultPageExtension<ObjectSearchQuery> {
     public static final String GROUPED_BY_PACKAGE_PREF = "com.devepos.adt.saat.objectsearch.groupByPackage"; //$NON-NLS-1$
-    public static final String DIALOG_ID = "com.devepos.adt.saat.ObjectSearchPage"; //$NON-NLS-1$ ;
     private String id;
     private UIState state;
     private ObjectSearchResult result;
@@ -116,8 +119,14 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
     /**
      * @return the {@link ObjectSearchQuery} of this the result page
      */
+    @Override
     public ObjectSearchQuery getSearchQuery() {
         return searchQuery != null ? searchQuery : null;
+    }
+
+    @Override
+    public String getSearchPageId() {
+        return ObjectSearchPage.PAGE_ID;
     }
 
     @Override
@@ -132,9 +141,8 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
     @Override
     public void setActionBars(final IActionBars actionBars) {
         final IToolBarManager tbm = actionBars.getToolBarManager();
-        MenuItemFactory.addCommandItem(tbm, IContextMenuConstants.GROUP_NEW,
-            ICommandConstants.OBJECT_SEARCH_OPEN_IN_DIALOG, AdtBaseUIResources.getImageDescriptor(
-                IAdtBaseImages.SEARCH), Messages.ObjectSearchResultPage_OpenInSearchDialog_xtol, false, null);
+        tbm.appendToGroup(IContextMenuConstants.GROUP_NEW, CommandFactory.createContribItemById(
+            IAdtBaseUICommandConstants.OPEN_QUERY_IN_SEARCH_DIALOG, false, null));
         tbm.appendToGroup(IContextMenuConstants.GROUP_NEW, favoritesAction);
         tbm.appendToGroup(IContextMenuConstants.GROUP_EDIT, collapseAllNodesAction);
         tbm.appendToGroup(IContextMenuConstants.GROUP_EDIT, expandAllAction);
@@ -251,13 +259,6 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
             updateUiState();
         });
 
-    }
-
-    /**
-     * @return the ID of corresponding Search Dialog Page of this result page
-     */
-    public String getSearchDialogId() {
-        return DIALOG_ID;
     }
 
     /**
@@ -408,17 +409,15 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 
             if (isDbBrowserIntegrationAvailable) {
                 menu.add(new Separator(com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_DB_BROWSER));
-                MenuItemFactory.addOpenInDbBrowserCommand(menu, false);
-                MenuItemFactory.addOpenInDbBrowserCommand(menu, true);
+                SaatMenuItemFactory.addOpenInDbBrowserCommand(menu, false);
+                SaatMenuItemFactory.addOpenInDbBrowserCommand(menu, true);
             }
         }
 
         if (!adtObjRefs.isEmpty()) {
             menu.add(new Separator(IContextMenuConstants.GROUP_ADDITIONS));
-            MenuItemFactory.addCommandItem(menu, IContextMenuConstants.GROUP_ADDITIONS,
-                "com.sap.adt.ris.whereused.ui.callWhereUsed", //$NON-NLS-1$
-                AdtBaseUIResources.getImageDescriptor(IAdtBaseImages.WHERE_USED_LIST),
-                Messages.ObjectSearch_WhereUsedListAction_xmit, null);
+            menu.appendToGroup(IContextMenuConstants.GROUP_ADDITIONS, CommandFactory.createContribItemById(
+                IAdtBaseUICommandConstants.WHERE_USED_IN, true, null));
         }
 
         // check if action is supported in the current project
@@ -426,22 +425,22 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
             .getCdsAnalysisUri() != null) {
             menu.add(new Separator(com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_CDS_ANALYSIS));
             if (singleCdsViewSelected && isCdsTopDownAnalysisAvailable) {
-                MenuItemFactory.addCdsAnalyzerCommandItem(menu,
+                SaatMenuItemFactory.addCdsAnalyzerCommandItem(menu,
                     com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_CDS_ANALYSIS,
                     ICommandConstants.CDS_TOP_DOWN_ANALYSIS);
             }
             if (!previewAdtObjRefs.isEmpty()) {
-                MenuItemFactory.addCdsAnalyzerCommandItem(menu,
+                SaatMenuItemFactory.addCdsAnalyzerCommandItem(menu,
                     com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_CDS_ANALYSIS,
                     ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS);
             }
             if (singleCdsViewSelected && isCdsUsedEntitiesAnalysisAvailable) {
-                MenuItemFactory.addCdsAnalyzerCommandItem(menu,
+                SaatMenuItemFactory.addCdsAnalyzerCommandItem(menu,
                     com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_CDS_ANALYSIS,
                     ICommandConstants.USED_ENTITIES_ANALYSIS);
             }
             if (!previewAdtObjRefs.isEmpty()) {
-                MenuItemFactory.addCdsAnalyzerCommandItem(menu,
+                SaatMenuItemFactory.addCdsAnalyzerCommandItem(menu,
                     com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_CDS_ANALYSIS,
                     ICommandConstants.FIELD_ANALYSIS);
             }

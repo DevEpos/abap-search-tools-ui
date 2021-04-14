@@ -36,6 +36,8 @@ import org.eclipse.swt.widgets.Text;
 import com.devepos.adt.base.ui.project.AbapProjectProxy;
 import com.devepos.adt.base.ui.project.IAbapProjectProvider;
 import com.devepos.adt.base.ui.project.ProjectUtil;
+import com.devepos.adt.base.ui.search.IChangeableSearchPage;
+import com.devepos.adt.base.ui.search.SearchPageUtil;
 import com.devepos.adt.base.ui.util.SelectionUtil;
 import com.devepos.adt.base.ui.util.StatusUtil;
 import com.devepos.adt.base.ui.util.TextControlUtil;
@@ -56,9 +58,9 @@ import com.sap.adt.util.ui.SWTUtil;
  *
  * @author stockbal
  */
-public class ObjectSearchPage extends DialogPage implements ISearchPage {
+public class ObjectSearchPage extends DialogPage implements ISearchPage, IChangeableSearchPage<ObjectSearchQuery> {
     public static final String LAST_PROJECT_PREF = "com.devepos.adt.saat.objectsearch.lastSelectedProject"; //$NON-NLS-1$
-
+    public static final String PAGE_ID = "com.devepos.adt.saat.ObjectSearchPage"; //$NON-NLS-1$
     private static final int MULTIPLIER = 50;
     private static final int BIG_MULTIPLIER = 500;
     private static final int SMALL_SCALE_LIMIT = 20;
@@ -131,6 +133,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
         updateOKStatus();
 
         setFocus();
+        SearchPageUtil.notifySearchPageListeners(this);
     }
 
     @Override
@@ -174,6 +177,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage {
      *
      * @param request the Object Search Request to be used
      */
+    @Override
     public void setInputFromSearchQuery(final ObjectSearchQuery query) {
         final ObjectSearchRequest request = query.getSearchRequest();
         final boolean doSetCursorToEnd = prefStore.getBoolean(IPreferences.CURSOR_AT_END_OF_SEARCH_INPUT);

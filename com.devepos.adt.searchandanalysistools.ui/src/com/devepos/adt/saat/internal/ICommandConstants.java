@@ -30,9 +30,4 @@ public interface ICommandConstants {
      * Command id to execute the Field Analysis
      */
     String FIELD_ANALYSIS = "com.devepos.adt.saat.cdsanalysis.command.performFieldAnalysis";
-
-    /**
-     * Command id to open the current object search again in the search dialog
-     */
-    String OBJECT_SEARCH_OPEN_IN_DIALOG = "com.devepos.adt.saat.objectsearch.command.openInDialog";
 }

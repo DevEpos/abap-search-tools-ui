@@ -13,7 +13,6 @@ import org.eclipse.ui.actions.CompoundContributionItem;
 
 import com.devepos.adt.saat.internal.search.SearchType;
 import com.devepos.adt.saat.internal.search.ui.ObjectSearchPage;
-import com.devepos.adt.saat.internal.search.ui.ObjectSearchResultPage;
 
 /**
  * Menu contribution which creates quick start menu items for the ABAP object
@@ -49,7 +48,7 @@ public class ObjectSearchModesMenu extends CompoundContributionItem {
 
     private void openSearchDialog(final SearchType searchType) {
         final IWorkbenchWindow activeWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-        final SearchDialog dialog = new SearchDialog(activeWindow, ObjectSearchResultPage.DIALOG_ID);
+        final SearchDialog dialog = new SearchDialog(activeWindow, ObjectSearchPage.PAGE_ID);
         dialog.setBlockOnOpen(false);
         dialog.open();
         if (dialog.getSelectedPage() instanceof ObjectSearchPage) {

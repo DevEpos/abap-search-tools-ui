@@ -17,7 +17,6 @@ import com.devepos.adt.saat.internal.search.contentassist.SearchPatternProvider;
 import com.devepos.adt.saat.internal.search.ui.ObjectSearchPage;
 import com.devepos.adt.saat.internal.search.ui.ObjectSearchQuery;
 import com.devepos.adt.saat.internal.search.ui.ObjectSearchRequest;
-import com.devepos.adt.saat.internal.search.ui.ObjectSearchResultPage;
 import com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavorite;
 
 /**
@@ -75,7 +74,7 @@ public class ObjectSearchEngine {
 
         searchRequest.setParameters(null, searchFilter);
         final IWorkbenchWindow activeWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-        final SearchDialog dialog = new SearchDialog(activeWindow, ObjectSearchResultPage.DIALOG_ID);
+        final SearchDialog dialog = new SearchDialog(activeWindow, ObjectSearchPage.PAGE_ID);
         dialog.setBlockOnOpen(false);
         dialog.open();
         if (dialog.getSelectedPage() instanceof ObjectSearchPage) {
