@@ -194,7 +194,10 @@
                   label="%command.search.runWhereUsedQuery.name"
                   style="push">
                <visibleWhen
-                     checkEnabled="true">
+                     checkEnabled="false">
+                  <reference
+                        definitionId="com.sap.adt.tools.core.ui.toolsActive">
+                  </reference>
                </visibleWhen>
             </command>
             <command
