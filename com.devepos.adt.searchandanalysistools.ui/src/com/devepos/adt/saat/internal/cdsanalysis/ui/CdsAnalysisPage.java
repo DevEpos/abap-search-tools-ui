@@ -37,7 +37,7 @@ import com.devepos.adt.base.IAdtObjectTypeConstants;
 import com.devepos.adt.base.ObjectType;
 import com.devepos.adt.base.destinations.IDestinationProvider;
 import com.devepos.adt.base.elementinfo.IAdtObjectReferenceElementInfo;
-import com.devepos.adt.base.ui.IGeneralContextMenuConstants;
+import com.devepos.adt.base.ui.IGeneralMenuConstants;
 import com.devepos.adt.base.ui.StylerFactory;
 import com.devepos.adt.base.ui.action.CollapseAllTreeNodesAction;
 import com.devepos.adt.base.ui.action.CopyToClipboardAction;
@@ -409,7 +409,7 @@ public abstract class CdsAnalysisPage<T extends CdsAnalysis> extends Page {
      */
     protected void fillToolbar(final IToolBarManager tbm) {
         if (this.viewer instanceof TreeViewer) {
-            tbm.appendToGroup(IGeneralContextMenuConstants.GROUP_NODE_ACTIONS, new CollapseAllTreeNodesAction(
+            tbm.appendToGroup(IGeneralMenuConstants.GROUP_NODE_ACTIONS, new CollapseAllTreeNodesAction(
                 (TreeViewer) this.viewer));
         }
     }
@@ -423,7 +423,7 @@ public abstract class CdsAnalysisPage<T extends CdsAnalysis> extends Page {
      */
     protected void fillContextMenu(final IMenuManager mgr, final CommandPossibleChecker commandChecker) {
         if (!commandChecker.hasSelection()) {
-            mgr.appendToGroup(IGeneralContextMenuConstants.GROUP_EDIT, this.copyToClipBoardAction);
+            mgr.appendToGroup(IGeneralMenuConstants.GROUP_EDIT, this.copyToClipBoardAction);
             return;
         }
         if (commandChecker.canCommandBeEnabled(ICommandConstants.OPEN_IN_DB_BROWSER)) {
@@ -434,15 +434,15 @@ public abstract class CdsAnalysisPage<T extends CdsAnalysis> extends Page {
         if (this.projectProvider != null) {
             final List<IAdtObjectReference> selectedObjRefs = commandChecker.getSelectedAdtObjectRefs();
 
-            mgr.appendToGroup(IGeneralContextMenuConstants.GROUP_OPEN, new OpenAdtObjectAction(this.projectProvider
+            mgr.appendToGroup(IGeneralMenuConstants.GROUP_OPEN, new OpenAdtObjectAction(this.projectProvider
                 .getProject(), selectedObjRefs));
             if (commandChecker.hasSelection(true)) {
-                mgr.appendToGroup(IGeneralContextMenuConstants.GROUP_OPEN, new ExecuteAdtObjectAction(
-                    this.projectProvider.getProject(), selectedObjRefs, true));
+                mgr.appendToGroup(IGeneralMenuConstants.GROUP_OPEN, new ExecuteAdtObjectAction(this.projectProvider
+                    .getProject(), selectedObjRefs, true));
             }
         }
 
-        mgr.appendToGroup(IGeneralContextMenuConstants.GROUP_EDIT, this.copyToClipBoardAction);
+        mgr.appendToGroup(IGeneralMenuConstants.GROUP_EDIT, this.copyToClipBoardAction);
     }
 
     /**

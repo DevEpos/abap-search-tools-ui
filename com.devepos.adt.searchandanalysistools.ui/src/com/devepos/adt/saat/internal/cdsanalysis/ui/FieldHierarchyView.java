@@ -25,7 +25,7 @@ import org.eclipse.ui.part.PageBook;
 
 import com.devepos.adt.base.ObjectType;
 import com.devepos.adt.base.destinations.IDestinationProvider;
-import com.devepos.adt.base.ui.IGeneralContextMenuConstants;
+import com.devepos.adt.base.ui.IGeneralMenuConstants;
 import com.devepos.adt.base.ui.action.RadioActionGroup;
 import com.devepos.adt.base.ui.tree.IAdtObjectReferenceNode;
 import com.devepos.adt.base.ui.tree.ITreeNode;
@@ -342,7 +342,7 @@ public class FieldHierarchyView implements IDestinationProvider {
             return;
         }
 
-        menu.appendToGroup(IGeneralContextMenuConstants.GROUP_OPEN, new Action(
+        menu.appendToGroup(IGeneralMenuConstants.GROUP_OPEN, new Action(
             Messages.FieldHierarchyView_NavigateToFieldAction_xmit) {
             @Override
             public void run() {

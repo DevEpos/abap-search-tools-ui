@@ -23,7 +23,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.IActionBars;
 
 import com.devepos.adt.base.elementinfo.LazyLoadingRefreshMode;
-import com.devepos.adt.base.ui.IGeneralContextMenuConstants;
+import com.devepos.adt.base.ui.IGeneralMenuConstants;
 import com.devepos.adt.base.ui.StylerFactory;
 import com.devepos.adt.base.ui.action.PreferenceToggleAction;
 import com.devepos.adt.base.ui.tree.IAdtObjectReferenceNode;
@@ -181,11 +181,11 @@ public class CdsTopDownAnalysisView extends CdsAnalysisPage<CdsTopDownAnalysis> 
     public void setActionBars(final IActionBars actionBars) {
         super.setActionBars(actionBars);
         final IMenuManager menu = actionBars.getMenuManager();
-        menu.appendToGroup(IGeneralContextMenuConstants.GROUP_PROPERTIES, showDescriptions);
-        menu.appendToGroup(IGeneralContextMenuConstants.GROUP_PROPERTIES, showAliasNames);
-        menu.appendToGroup(IGeneralContextMenuConstants.GROUP_PROPERTIES, new Separator());
-        menu.appendToGroup(IGeneralContextMenuConstants.GROUP_PROPERTIES, loadAssociations);
-        menu.appendToGroup(IGeneralContextMenuConstants.GROUP_ADDITIONS, showColorsAndFontsPrefs);
+        menu.appendToGroup(IGeneralMenuConstants.GROUP_PROPERTIES, showDescriptions);
+        menu.appendToGroup(IGeneralMenuConstants.GROUP_PROPERTIES, showAliasNames);
+        menu.appendToGroup(IGeneralMenuConstants.GROUP_PROPERTIES, new Separator());
+        menu.appendToGroup(IGeneralMenuConstants.GROUP_PROPERTIES, loadAssociations);
+        menu.appendToGroup(IGeneralMenuConstants.GROUP_ADDITIONS, showColorsAndFontsPrefs);
     }
 
     @Override

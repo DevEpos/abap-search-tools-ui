@@ -14,7 +14,7 @@ import org.eclipse.ui.PlatformUI;
 
 import com.devepos.adt.base.destinations.IDestinationProvider;
 import com.devepos.adt.base.elementinfo.IAdtObjectReferenceElementInfo;
-import com.devepos.adt.base.ui.IGeneralContextMenuConstants;
+import com.devepos.adt.base.ui.IGeneralMenuConstants;
 import com.devepos.adt.base.ui.StylerFactory;
 import com.devepos.adt.base.ui.action.PreferenceToggleAction;
 import com.devepos.adt.base.ui.tree.ICollectionTreeNode;
@@ -186,10 +186,10 @@ public class WhereUsedInCdsAnalysisView extends CdsAnalysisPage<WhereUsedInCdsAn
     public void setActionBars(final IActionBars actionBars) {
         super.setActionBars(actionBars);
         final IMenuManager menu = actionBars.getMenuManager();
-        menu.appendToGroup(IGeneralContextMenuConstants.GROUP_FILTERING, showFromUses);
-        menu.appendToGroup(IGeneralContextMenuConstants.GROUP_FILTERING, showAssocUses);
-        menu.appendToGroup(IGeneralContextMenuConstants.GROUP_ADDITIONS, releasedUsagesOnly);
-        menu.appendToGroup(IGeneralContextMenuConstants.GROUP_ADDITIONS, localAssociationsOnly);
+        menu.appendToGroup(IGeneralMenuConstants.GROUP_FILTERING, showFromUses);
+        menu.appendToGroup(IGeneralMenuConstants.GROUP_FILTERING, showAssocUses);
+        menu.appendToGroup(IGeneralMenuConstants.GROUP_ADDITIONS, releasedUsagesOnly);
+        menu.appendToGroup(IGeneralMenuConstants.GROUP_ADDITIONS, localAssociationsOnly);
     }
 
     @Override

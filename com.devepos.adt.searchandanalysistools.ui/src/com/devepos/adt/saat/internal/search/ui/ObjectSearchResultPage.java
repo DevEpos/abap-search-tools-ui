@@ -50,7 +50,7 @@ import com.devepos.adt.base.ObjectType;
 import com.devepos.adt.base.ui.AdtBaseUIResources;
 import com.devepos.adt.base.ui.IAdtBaseImages;
 import com.devepos.adt.base.ui.IGeneralCommandConstants;
-import com.devepos.adt.base.ui.IGeneralContextMenuConstants;
+import com.devepos.adt.base.ui.IGeneralMenuConstants;
 import com.devepos.adt.base.ui.StylerFactory;
 import com.devepos.adt.base.ui.action.CollapseAllTreeNodesAction;
 import com.devepos.adt.base.ui.action.CollapseTreeNodesAction;
@@ -447,7 +447,7 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 
         }
         if (selectionHasExpandedNodes || hasCollapsedPackages) {
-            menu.add(new Separator(IGeneralContextMenuConstants.GROUP_NODE_ACTIONS));
+            menu.add(new Separator(IGeneralMenuConstants.GROUP_NODE_ACTIONS));
             if (hasCollapsedPackages) {
                 menu.add(expandPackageNodesAction);
             }
