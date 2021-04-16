@@ -48,8 +48,10 @@ import org.eclipse.ui.part.Page;
 
 import com.devepos.adt.base.ObjectType;
 import com.devepos.adt.base.ui.AdtBaseUIResources;
+import com.devepos.adt.base.ui.ContextHelper;
 import com.devepos.adt.base.ui.IAdtBaseImages;
 import com.devepos.adt.base.ui.IGeneralCommandConstants;
+import com.devepos.adt.base.ui.IGeneralContextConstants;
 import com.devepos.adt.base.ui.IGeneralMenuConstants;
 import com.devepos.adt.base.ui.StylerFactory;
 import com.devepos.adt.base.ui.action.CollapseAllTreeNodesAction;
@@ -110,6 +112,7 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
     private boolean isCdsTopDownAnalysisAvailable;
     private boolean isCdsUsedEntitiesAnalysisAvailable;
     private final IPreferenceStore prefStore;
+    private ContextHelper contextHelper;
 
     public ObjectSearchResultPage() {
         prefStore = SearchAndAnalysisPlugin.getDefault().getPreferenceStore();
@@ -136,6 +139,10 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
         initializeActions();
         hookContextMenu();
         getSite().setSelectionProvider(searchResultTree);
+
+        contextHelper = ContextHelper.createForServiceLocator(getSite());
+        contextHelper.activateAbapContext();
+        contextHelper.activateContext(IGeneralContextConstants.SEARCH_PAGE_VIEWS);
     }
 
     @Override
@@ -156,6 +163,9 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
 
     @Override
     public void dispose() {
+        if (contextHelper != null) {
+            contextHelper.deactivateAllContexts();
+        }
         super.dispose();
     }
 
