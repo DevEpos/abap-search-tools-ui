@@ -250,8 +250,7 @@ public class FieldAnalysisView extends CdsAnalysisPage<FieldAnalysis> {
      * Creates the filtered tree for the display of the fields of a database entity
      */
     private FilterableTree createFilteredTree(final Composite parent) {
-        final FilterableTree tree = new FilterableTree(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL
-            | SWT.FULL_SELECTION, "type filter text", false) {
+        final FilterableTree tree = new FilterableTree(parent, "type filter text", false) {
             @Override
             protected void filterStringChanged() {
                 super.filterStringChanged();
@@ -263,6 +262,7 @@ public class FieldAnalysisView extends CdsAnalysisPage<FieldAnalysis> {
                 });
             }
         };
+        tree.setViewer(new TreeViewer(tree, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION));
         tree.setElementMatcher(element -> {
             IWordMatcher wordMatcher = tree.getWordMatcher();
             if (element instanceof ITreeNode) {
