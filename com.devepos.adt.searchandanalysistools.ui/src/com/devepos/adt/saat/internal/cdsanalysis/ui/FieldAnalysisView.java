@@ -8,16 +8,14 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ViewForm;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Tree;
 import org.eclipse.ui.IActionBars;
-import org.eclipse.ui.dialogs.FilteredTree;
-import org.eclipse.ui.dialogs.PatternFilter;
 
 import com.devepos.adt.base.ObjectType;
 import com.devepos.adt.base.destinations.IDestinationProvider;
@@ -25,10 +23,12 @@ import com.devepos.adt.base.elementinfo.IAdtObjectReferenceElementInfo;
 import com.devepos.adt.base.ui.action.PreferenceToggleAction;
 import com.devepos.adt.base.ui.action.ToggleViewLayoutAction;
 import com.devepos.adt.base.ui.action.ViewLayoutOrientation;
+import com.devepos.adt.base.ui.controls.FilterableComposite;
+import com.devepos.adt.base.ui.controls.FilterableComposite.IWordMatcher;
+import com.devepos.adt.base.ui.tree.FilterableTree;
 import com.devepos.adt.base.ui.tree.IAdtObjectReferenceNode;
 import com.devepos.adt.base.ui.tree.ITreeNode;
 import com.devepos.adt.base.ui.tree.LazyLoadingTreeContentProvider;
-import com.devepos.adt.base.ui.tree.PrefixedAsteriskFilteredTree;
 import com.devepos.adt.base.ui.tree.SimpleInfoTreeNode;
 import com.devepos.adt.saat.internal.ICommandConstants;
 import com.devepos.adt.saat.internal.IContextMenuConstants;
@@ -52,7 +52,7 @@ public class FieldAnalysisView extends CdsAnalysisPage<FieldAnalysis> {
     static final String SEARCH_DB_VIEWS_WHERE_USED_PREF_KEY = "com.devepos.adt.saat.fieldanalysis.searchDbViewUsages"; //$NON-NLS-1$
     private static final String VIEW_LAYOUT_PREF_KEY = "com.devepos.adt.saat.fieldanalysis.viewLayout"; //$NON-NLS-1$
     private SashForm fieldsHierarchySplitter;
-    private FilteredTree fieldsTree;
+    private FilterableComposite<TreeViewer, Tree> fieldsTree;
     private ViewForm fieldsViewerViewForm;
     private FieldHierarchyView hierarchyView;
     private String currentEntity;
@@ -201,7 +201,7 @@ public class FieldAnalysisView extends CdsAnalysisPage<FieldAnalysis> {
         }
         if (refreshFieldsTree) {
             // refresh complete field tree
-            fieldsTree.getFilterControl().setText(""); //$NON-NLS-1$
+            fieldsTree.resetFilter();
             hierarchyView.clearInputCache();
             analysisResult.refreshAnalysis();
             getViewPart().updateLabel();
@@ -249,40 +249,33 @@ public class FieldAnalysisView extends CdsAnalysisPage<FieldAnalysis> {
     /*
      * Creates the filtered tree for the display of the fields of a database entity
      */
-    private FilteredTree createFilteredTree(final Composite parent) {
-        final FilteredTree tree = new PrefixedAsteriskFilteredTree(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL
-            | SWT.FULL_SELECTION, createPatternFilter()) {
+    private FilterableTree createFilteredTree(final Composite parent) {
+        final FilterableTree tree = new FilterableTree(parent, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL
+            | SWT.FULL_SELECTION, "type filter text", false) {
             @Override
-            protected void textChanged() {
-                super.textChanged();
+            protected void filterStringChanged() {
+                super.filterStringChanged();
                 Display.getDefault().timerExec(500, (Runnable) () -> {
-                    if (filterText != null && filterText.getText().length() == 0) {
+                    String filterString = getFilterString();
+                    if (filterString == null || filterString.trim().length() == 0) {
                         getViewer().expandAll();
                     }
                 });
             }
         };
-        return tree;
-    }
-
-    /*
-     * Creates the pattern filter which will be used for filtering the field tree
-     */
-    private PatternFilter createPatternFilter() {
-        return new PatternFilter() {
-            @Override
-            protected boolean isLeafMatch(final Viewer viewer, final Object element) {
-                if (element instanceof ITreeNode) {
-                    final ITreeNode node = (ITreeNode) element;
-                    return wordMatches(node.getName()) || wordMatches(node.getDisplayName()) || wordMatches(node
-                        .getDescription());
-                }
-                final DelegatingStyledCellLabelProvider labelProvider = (DelegatingStyledCellLabelProvider) getViewer()
-                    .getLabelProvider();
-                final String labelText = labelProvider.getStyledStringProvider().getStyledText(element).getString();
-                return wordMatches(labelText);
+        tree.setElementMatcher(element -> {
+            IWordMatcher wordMatcher = tree.getWordMatcher();
+            if (element instanceof ITreeNode) {
+                final ITreeNode node = (ITreeNode) element;
+                return wordMatcher.matchesWord(node.getName()) || wordMatcher.matchesWord(node.getDisplayName())
+                    || wordMatcher.matchesWord(node.getDescription());
             }
-        };
+            final DelegatingStyledCellLabelProvider labelProvider = (DelegatingStyledCellLabelProvider) getViewer()
+                .getLabelProvider();
+            final String labelText = labelProvider.getStyledStringProvider().getStyledText(element).getString();
+            return wordMatcher.matchesWord(labelText);
+        });
+        return tree;
     }
 
     private class UiState extends TreeViewUiState {
