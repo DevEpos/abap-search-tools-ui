@@ -49,7 +49,7 @@ import org.eclipse.ui.part.Page;
 import com.devepos.adt.base.ObjectType;
 import com.devepos.adt.base.ui.AdtBaseUIResources;
 import com.devepos.adt.base.ui.IAdtBaseImages;
-import com.devepos.adt.base.ui.IAdtBaseUICommandConstants;
+import com.devepos.adt.base.ui.IGeneralCommandConstants;
 import com.devepos.adt.base.ui.IGeneralContextMenuConstants;
 import com.devepos.adt.base.ui.StylerFactory;
 import com.devepos.adt.base.ui.action.CollapseAllTreeNodesAction;
@@ -142,7 +142,7 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
     public void setActionBars(final IActionBars actionBars) {
         final IToolBarManager tbm = actionBars.getToolBarManager();
         tbm.appendToGroup(IContextMenuConstants.GROUP_NEW, CommandFactory.createContribItemById(
-            IAdtBaseUICommandConstants.OPEN_QUERY_IN_SEARCH_DIALOG, false, null));
+            IGeneralCommandConstants.OPEN_QUERY_IN_SEARCH_DIALOG, false, null));
         tbm.appendToGroup(IContextMenuConstants.GROUP_NEW, favoritesAction);
         tbm.appendToGroup(IContextMenuConstants.GROUP_EDIT, collapseAllNodesAction);
         tbm.appendToGroup(IContextMenuConstants.GROUP_EDIT, expandAllAction);
@@ -417,7 +417,7 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage, I
         if (!adtObjRefs.isEmpty()) {
             menu.add(new Separator(IContextMenuConstants.GROUP_ADDITIONS));
             menu.appendToGroup(IContextMenuConstants.GROUP_ADDITIONS, CommandFactory.createContribItemById(
-                IAdtBaseUICommandConstants.WHERE_USED_IN, true, null));
+                IGeneralCommandConstants.WHERE_USED_IN, true, null));
         }
 
         // check if action is supported in the current project
