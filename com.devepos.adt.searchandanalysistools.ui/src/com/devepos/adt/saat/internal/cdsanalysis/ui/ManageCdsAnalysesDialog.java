@@ -205,12 +205,8 @@ public class ManageCdsAnalysesDialog extends StatusDialog {
             status = new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, IStatus.ERROR,
                 Messages.CdsAnalysis_HistoryNumberInvalid_xmsg, null);
         }
-        if (status == null) {
-            status = Status.OK_STATUS;
-        }
-
         updateStatus(status);
-        return !status.matches(IStatus.ERROR);
+        return status == null || !status.matches(IStatus.ERROR);
     }
 
     protected final void validateDialogState() {
