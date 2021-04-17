@@ -125,9 +125,9 @@ public class SearchAndAnalysisPlugin extends AbstractAdtUIPlugin {
         // Object Search parameter image registrations
         registerImage(imageRegistry, IImages.DESCRIPTION_PARAM, "icons/Documentation.png");
         registerImage(imageRegistry, IImages.PARAMETER_PARAM, "icons/ImportingParameter.png");
-        registerImage(imageRegistry, IImages.PACKAGE_PARAM, "/icons/Package.png");
+        registerImage(imageRegistry, IImages.PACKAGE_PARAM, "icons/obj/package_obj.png", "com.sap.adt.tools.core.ui");
         registerImage(imageRegistry, IImages.USER_PARAM, "icons/User.png");
-        registerImage(imageRegistry, IImages.API_PARAM, "icons/APIState.png");
+        registerImage(imageRegistry, IImages.API_PARAM, "icons/obj/facet_api_state.png", "com.sap.adt.ris.search.ui");
         registerImage(imageRegistry, IImages.SELECT_FROM_PARAM, "icons/SelectFromSource.png");
         registerImage(imageRegistry, IImages.FIELD_PARAM, "icons/Column.png");
         registerImage(imageRegistry, IImages.ANNOTATION_PARAM, "icons/Annotation.png");
