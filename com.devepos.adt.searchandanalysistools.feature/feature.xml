@@ -3,7 +3,7 @@
       id="com.devepos.adt.searchandanalysistools"
       label="ABAP Search and Analysis Tools"
       version="1.3.4.qualifier"
-      provider-name="DEVEPOS">
+      provider-name="DevEpos">
 
    <description>
       Provides Tools for extended ABAP Object search.
