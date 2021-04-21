@@ -3,7 +3,8 @@
       id="com.devepos.adt.searchandanalysistools"
       label="ABAP Search and Analysis Tools"
       version="1.3.4.qualifier"
-      provider-name="DevEpos">
+      provider-name="DevEpos"
+      plugin="com.devepos.adt.branding">
 
    <description>
       Provides Tools for extended ABAP Object search.
@@ -71,6 +72,13 @@ SOFTWARE.
 
    <plugin
          id="com.devepos.adt.base.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="com.devepos.adt.branding"
          download-size="0"
          install-size="0"
          version="0.0.0"
