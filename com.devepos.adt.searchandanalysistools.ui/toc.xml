@@ -16,4 +16,14 @@
       <topic href="html/additional_features.html" label="Additional Features">
       </topic>
    </topic>
+   <topic href="html/changelog/overview.html" label="What&apos;s New">
+      <topic href="html/changelog/v1_4_0.html" label="Version 1.4.0">
+      </topic>
+      <topic href="html/changelog/v1_2_0.html" label="Version 1.2.0">
+      </topic>
+      <topic href="html/changelog/v1_1_0.html" label="Version 1.1.0">
+      </topic>
+      <topic href="html/changelog/v1_0_0.html" label="Version 1.0.0">
+      </topic>
+   </topic>
 </toc>
