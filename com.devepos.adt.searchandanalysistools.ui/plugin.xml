@@ -313,17 +313,22 @@
 	    <extension
          point="org.eclipse.help.toc">
       <toc
-            file="help-docs/toc.xml">
+            file="toc.xml">
       </toc>
       <toc
-            file="help-docs/primaryToc.xml"
+            file="primaryToc.xml"
             primary="true">
       </toc>
+      <tocIcon
+            closedIcon="icons/toc/toc_closed.gif"
+            id="com.devepos.adt.saat.ui.tocIcon"
+            openIcon="icons/toc/toc_open.gif">
+      </tocIcon>
    </extension>
      <extension
            point="org.eclipse.help.contexts">
         <contexts
-              file="help-docs/contexts.xml"
+              file="contexts.xml"
               plugin="com.devepos.adt.searchandanalysistools.ui">
         </contexts>
      </extension>
