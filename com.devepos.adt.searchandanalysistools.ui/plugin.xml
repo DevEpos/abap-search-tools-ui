@@ -313,17 +313,17 @@
 	    <extension
          point="org.eclipse.help.toc">
       <toc
-            file="toc.xml">
+            file="help-docs/toc.xml">
       </toc>
       <toc
-            file="primaryToc.xml"
+            file="help-docs/primaryToc.xml"
             primary="true">
       </toc>
    </extension>
      <extension
            point="org.eclipse.help.contexts">
         <contexts
-              file="contexts.xml"
+              file="help-docs/contexts.xml"
               plugin="com.devepos.adt.searchandanalysistools.ui">
         </contexts>
      </extension>

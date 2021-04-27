@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<toc label="Table of Contents">
+   <topic href="help-docs/html/overview.html" label="ABAP Search and Analysis Tools">
+      <topic href="help-docs/html/object_search.html" label="ABAP Object Search +">
+         <topic href="help-docs/html/object_search/cds.html" label="CDS View">
+         </topic>
+         <topic href="help-docs/html/object_search/dbtabview.html" label="Database Table/View">
+         </topic>
+         <topic href="help-docs/html/object_search/classintf.html" label="Class / Interface">
+         </topic>
+      </topic>
+      <topic href="help-docs/html/cds_analyzer.html" label="CDS Analyzer">
+      </topic>
+      <topic href="help-docs/html/additional_features.html" label="Additional Features">
+      </topic>
+   </topic>
+</toc>

@@ -2,5 +2,5 @@
 <?NLS TYPE="org.eclipse.help.toc"?>
 
 <toc label="DevEpos - ABAP Search and Analysis Tools Guide">
-	<link toc="toc.xml" />
+	<link toc="help-docs/toc.xml" />
 </toc>

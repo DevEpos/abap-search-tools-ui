@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <contexts>
    <context id="object_search" title="Help for ABAP Object Search +">
-      <topic href="html/object_search.html" label="ABAP Object Search +"/>
+      <topic href="help-docs/html/object_search.html" label="ABAP Object Search +"/>
    </context>
    <context id="cds_analyzer" title="Help for CDS Analyzer">
-      <topic href="html/cds_analyzer.html" label="CDS Analyzer"/>
+      <topic href="help-docs/html/cds_analyzer.html" label="CDS Analyzer"/>
    </context>
 </contexts>
