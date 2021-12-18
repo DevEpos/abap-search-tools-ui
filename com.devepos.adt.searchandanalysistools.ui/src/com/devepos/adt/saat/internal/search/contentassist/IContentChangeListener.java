@@ -12,10 +12,10 @@ import org.eclipse.jface.fieldassist.IContentProposal;
  */
 public interface IContentChangeListener {
 
-    /**
-     * Notify subscribers of the content change
-     *
-     * @param resultList the list of updated content proposals
-     */
-    void notifyContentChange(List<IContentProposal> resultList);
+  /**
+   * Notify subscribers of the content change
+   *
+   * @param resultList the list of updated content proposals
+   */
+  void notifyContentChange(List<IContentProposal> resultList);
 }

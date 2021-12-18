@@ -10,20 +10,20 @@ import org.eclipse.jface.viewers.ISelection;
  */
 public class ViewUiState {
 
-    protected ISelection selection;
+  protected ISelection selection;
 
-    /**
-     * @return the selection
-     */
-    public ISelection getSelection() {
-        return selection;
-    }
+  /**
+   * @return the selection
+   */
+  public ISelection getSelection() {
+    return selection;
+  }
 
-    /**
-     * @param selection the selection to set
-     */
-    public void setSelection(final ISelection selection) {
-        this.selection = selection;
-    }
+  /**
+   * @param selection the selection to set
+   */
+  public void setSelection(final ISelection selection) {
+    this.selection = selection;
+  }
 
 }

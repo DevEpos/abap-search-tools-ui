@@ -13,36 +13,36 @@ import org.eclipse.swt.widgets.Listener;
  * @author stockbal
  */
 public class NativeColumnViewerToolTipSupport extends ColumnViewerToolTipSupport {
-    private final ColumnViewer viewer;
-    private final Listener keyDownListener;
+  private final ColumnViewer viewer;
+  private final Listener keyDownListener;
 
-    public static void enableFor(final ColumnViewer treeViewer) {
-        new NativeColumnViewerToolTipSupport(treeViewer);
-    }
+  public static void enableFor(final ColumnViewer treeViewer) {
+    new NativeColumnViewerToolTipSupport(treeViewer);
+  }
 
-    protected NativeColumnViewerToolTipSupport(final ColumnViewer viewer) {
-        super(viewer, ToolTip.NO_RECREATE, true);
-        this.viewer = viewer;
-        keyDownListener = this::handleKeyDownEvent;
-        activate();
-    }
+  protected NativeColumnViewerToolTipSupport(final ColumnViewer viewer) {
+    super(viewer, ToolTip.NO_RECREATE, true);
+    this.viewer = viewer;
+    keyDownListener = this::handleKeyDownEvent;
+    activate();
+  }
 
-    @Override
-    public void activate() {
-        super.activate();
-        viewer.getControl().addListener(SWT.KeyDown, keyDownListener);
-    }
+  @Override
+  public void activate() {
+    super.activate();
+    viewer.getControl().addListener(SWT.KeyDown, keyDownListener);
+  }
 
-    @Override
-    public void deactivate() {
-        super.deactivate();
-        if (keyDownListener != null) {
-            viewer.getControl().removeListener(SWT.KeyDown, keyDownListener);
-        }
+  @Override
+  public void deactivate() {
+    super.deactivate();
+    if (keyDownListener != null) {
+      viewer.getControl().removeListener(SWT.KeyDown, keyDownListener);
     }
+  }
 
-    private void handleKeyDownEvent(final Event event) {
-        hide();
-    }
+  private void handleKeyDownEvent(final Event event) {
+    hide();
+  }
 
 }

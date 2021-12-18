@@ -20,43 +20,43 @@ import com.sap.adt.communication.session.ISystemSession;
  */
 public class NavigationTargetService implements INavigationTargetService {
 
-    private final String destinationId;
+  private final String destinationId;
 
-    public NavigationTargetService(final String destinationId) {
-        this.destinationId = destinationId;
+  public NavigationTargetService(final String destinationId) {
+    this.destinationId = destinationId;
+  }
+
+  @Override
+  public INavigationTarget[] getTargets(final String objectName, final ObjectType objectType) {
+    if (objectName == null || objectType == null || objectType.getId() == null) {
+      return null;
+    }
+    final IAbapProjectProvider projectProvider = AbapProjectProviderAccessor
+        .getProviderForDestination(destinationId);
+    if (!projectProvider.ensureLoggedOn()) {
+      return null;
+    }
+    final IContentHandler<INavigationTarget[]> adtObjectHandler = new NavigationTargetsContentHandler();
+    final NavigationTargetsUriDiscovery uriDiscovery = new NavigationTargetsUriDiscovery(
+        projectProvider.getDestinationId());
+
+    final URI resourceUri = uriDiscovery.createNavTargetsResourceUri(objectName, objectType);
+    if (resourceUri == null) {
+      return null;
     }
 
-    @Override
-    public INavigationTarget[] getTargets(final String objectName, final ObjectType objectType) {
-        if (objectName == null || objectType == null || objectType.getId() == null) {
-            return null;
-        }
-        final IAbapProjectProvider projectProvider = AbapProjectProviderAccessor.getProviderForDestination(
-            destinationId);
-        if (!projectProvider.ensureLoggedOn()) {
-            return null;
-        }
-        final IContentHandler<INavigationTarget[]> adtObjectHandler = new NavigationTargetsContentHandler();
-        final NavigationTargetsUriDiscovery uriDiscovery = new NavigationTargetsUriDiscovery(projectProvider
-            .getDestinationId());
+    final ISystemSession session = projectProvider.createStatelessSession();
+    final IRestResource restResource = AdtRestResourceFactory.createRestResourceFactory()
+        .createRestResource(resourceUri, session);
+    restResource.addContentHandler(adtObjectHandler);
 
-        final URI resourceUri = uriDiscovery.createNavTargetsResourceUri(objectName, objectType);
-        if (resourceUri == null) {
-            return null;
-        }
-
-        final ISystemSession session = projectProvider.createStatelessSession();
-        final IRestResource restResource = AdtRestResourceFactory.createRestResourceFactory()
-            .createRestResource(resourceUri, session);
-        restResource.addContentHandler(adtObjectHandler);
-
-        INavigationTarget[] targets = null;
-        try {
-            targets = restResource.get(null, AdtUtil.getHeaders(), INavigationTarget[].class);
-        } catch (final ResourceException exc) {
-            exc.printStackTrace();
-        }
-        return targets;
+    INavigationTarget[] targets = null;
+    try {
+      targets = restResource.get(null, AdtUtil.getHeaders(), INavigationTarget[].class);
+    } catch (final ResourceException exc) {
+      exc.printStackTrace();
     }
+    return targets;
+  }
 
 }

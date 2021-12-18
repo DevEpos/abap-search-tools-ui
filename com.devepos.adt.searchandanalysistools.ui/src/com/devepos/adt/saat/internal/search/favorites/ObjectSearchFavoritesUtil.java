@@ -10,18 +10,18 @@ import com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavorite;
  */
 public final class ObjectSearchFavoritesUtil {
 
-    /**
-     * Returns a display for the given favorite, which can be used in Menus or
-     * dialogues
-     *
-     * @param favorite a object search favorite
-     * @return a display for the given favorite, which can be used in Menus or
-     *         dialogues
-     */
-    public static String getFavoriteDisplayName(final IObjectSearchFavorite favorite) {
-        final String systemId = String.format("[%s] ", favorite.isProjectIndependent() ? "?"
-            : DestinationUtil.getSystemId(favorite.getDestinationId()));
-        return String.format("%s%s - '%s'", systemId, favorite.getDescription(), String.format("%s %s", favorite
-            .getObjectName(), favorite.getSearchFilter()).trim());
-    }
+  /**
+   * Returns a display for the given favorite, which can be used in Menus or
+   * dialogues
+   *
+   * @param favorite a object search favorite
+   * @return a display for the given favorite, which can be used in Menus or
+   *         dialogues
+   */
+  public static String getFavoriteDisplayName(final IObjectSearchFavorite favorite) {
+    final String systemId = String.format("[%s] ", favorite.isProjectIndependent() ? "?"
+        : DestinationUtil.getSystemId(favorite.getDestinationId()));
+    return String.format("%s%s - '%s'", systemId, favorite.getDescription(), String.format("%s %s",
+        favorite.getObjectName(), favorite.getSearchFilter()).trim());
+  }
 }

@@ -27,80 +27,84 @@ import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
  * @author stockbal
  */
 class DdicRepositoryAccess implements IDdicRepositoryAccess {
-    private static final String KEY_PROP = "ddicIsKey"; //$NON-NLS-1$
+  private static final String KEY_PROP = "ddicIsKey"; //$NON-NLS-1$
 
-    @Override
-    public List<IElementInfo> getElementColumnInformation(final String destinationId, final String objectUri) {
+  @Override
+  public List<IElementInfo> getElementColumnInformation(final String destinationId,
+      final String objectUri) {
 
-        final IAbapProjectProvider projectProvider = AbapProjectProviderAccessor.getProviderForDestination(
-            destinationId);
-        if (projectProvider == null || !projectProvider.ensureLoggedOn()) {
-            return null;
-        }
-        final IElementInfoCollection ddicInfo = accessDdicInformation(destinationId, "getColumns", objectUri, null, //$NON-NLS-1$
-            Arrays.asList("noClientCols:X"), projectProvider); //$NON-NLS-1$
-
-        return filterColumns(ddicInfo);
+    final IAbapProjectProvider projectProvider = AbapProjectProviderAccessor
+        .getProviderForDestination(destinationId);
+    if (projectProvider == null || !projectProvider.ensureLoggedOn()) {
+      return null;
     }
+    final IElementInfoCollection ddicInfo = accessDdicInformation(destinationId, "getColumns", //$NON-NLS-1$
+        objectUri, null, Arrays.asList("noClientCols:X"), projectProvider); //$NON-NLS-1$
 
-    private List<IElementInfo> filterColumns(final IElementInfoCollection ddicInfo) {
-        final List<IElementInfo> columns = ddicInfo != null ? ddicInfo.getChildren() : null;
-        if (columns == null || columns.isEmpty()) {
-            return null;
-        }
-        final Iterator<IElementInfo> columnIter = columns.iterator();
-        while (columnIter.hasNext()) {
-            final IElementInfo columnInfo = columnIter.next();
-            final String isKeyProp = columnInfo.getPropertyValue(KEY_PROP);
-            if ("X".equalsIgnoreCase(isKeyProp)) { //$NON-NLS-1$
-                columnInfo.setImage(SearchAndAnalysisPlugin.getDefault().getImage(IImages.KEY_COLUMN));
-            } else {
-                columnInfo.setImage(SearchAndAnalysisPlugin.getDefault().getImage(IImages.COLUMN));
-            }
-        }
-        return columns;
+    return filterColumns(ddicInfo);
+  }
+
+  private List<IElementInfo> filterColumns(final IElementInfoCollection ddicInfo) {
+    final List<IElementInfo> columns = ddicInfo != null ? ddicInfo.getChildren() : null;
+    if (columns == null || columns.isEmpty()) {
+      return null;
     }
-
-    @Override
-    public IAdtObjectReference getColumnUri(final String destinationId, final String objectName, final String column) {
-        final IAbapProjectProvider projectProvider = AbapProjectProviderAccessor.getProviderForDestination(
-            destinationId);
-        if (projectProvider == null || !projectProvider.ensureLoggedOn()) {
-            return null;
-        }
-        final IElementInfoCollection ddicInfo = accessDdicInformation(destinationId, "getUriForPaths", null, //$NON-NLS-1$
-            Arrays.asList(String.format("%s.%s", objectName, column)), null, projectProvider); //$NON-NLS-1$
-        if (ddicInfo != null && ddicInfo.hasChildren()) {
-            final IElementInfo firstInfo = ddicInfo.getChildren().get(0);
-            return firstInfo instanceof IAdtObjectReferenceElementInfo ? ((IAdtObjectReferenceElementInfo) firstInfo)
-                .getAdtObjectReference() : null;
-        }
-        return null;
+    final Iterator<IElementInfo> columnIter = columns.iterator();
+    while (columnIter.hasNext()) {
+      final IElementInfo columnInfo = columnIter.next();
+      final String isKeyProp = columnInfo.getPropertyValue(KEY_PROP);
+      if ("X".equalsIgnoreCase(isKeyProp)) { //$NON-NLS-1$
+        columnInfo.setImage(SearchAndAnalysisPlugin.getDefault().getImage(IImages.KEY_COLUMN));
+      } else {
+        columnInfo.setImage(SearchAndAnalysisPlugin.getDefault().getImage(IImages.COLUMN));
+      }
     }
+    return columns;
+  }
 
-    /*
-     * Retrieves DDIC information
-     */
-    private IElementInfoCollection accessDdicInformation(final String destinationId, final String accessMode,
-        final String objectUri, final List<String> paths, final List<String> filters,
-        final IAbapProjectProvider projectProvider) {
-        IElementInfoCollection ddicInfo = null;
-
-        final IContentHandler<IElementInfoCollection> handler = new ElementInfoCollectionContentHandler(destinationId);
-        final URI resourceUri = new DdicRepositoryAccessUriDiscovery(projectProvider.getDestinationId())
-            .createDdicAccessResource(accessMode, objectUri, paths, filters);
-
-        final ISystemSession session = projectProvider.createStatelessSession();
-        final IRestResource restResource = AdtRestResourceFactory.createRestResourceFactory()
-            .createRestResource(resourceUri, session);
-        restResource.addContentHandler(handler);
-
-        try {
-            ddicInfo = restResource.get(null, AdtUtil.getHeaders(), IElementInfoCollection.class);
-        } catch (final ResourceException exc) {
-            exc.printStackTrace();
-        }
-        return ddicInfo;
+  @Override
+  public IAdtObjectReference getColumnUri(final String destinationId, final String objectName,
+      final String column) {
+    final IAbapProjectProvider projectProvider = AbapProjectProviderAccessor
+        .getProviderForDestination(destinationId);
+    if (projectProvider == null || !projectProvider.ensureLoggedOn()) {
+      return null;
     }
+    final IElementInfoCollection ddicInfo = accessDdicInformation(destinationId, "getUriForPaths", //$NON-NLS-1$
+        null, Arrays.asList(String.format("%s.%s", objectName, column)), null, projectProvider); //$NON-NLS-1$
+    if (ddicInfo != null && ddicInfo.hasChildren()) {
+      final IElementInfo firstInfo = ddicInfo.getChildren().get(0);
+      return firstInfo instanceof IAdtObjectReferenceElementInfo
+          ? ((IAdtObjectReferenceElementInfo) firstInfo).getAdtObjectReference()
+          : null;
+    }
+    return null;
+  }
+
+  /*
+   * Retrieves DDIC information
+   */
+  private IElementInfoCollection accessDdicInformation(final String destinationId,
+      final String accessMode, final String objectUri, final List<String> paths,
+      final List<String> filters, final IAbapProjectProvider projectProvider) {
+    IElementInfoCollection ddicInfo = null;
+
+    final IContentHandler<IElementInfoCollection> handler = new ElementInfoCollectionContentHandler(
+        destinationId);
+    final URI resourceUri = new DdicRepositoryAccessUriDiscovery(projectProvider.getDestinationId())
+        .createDdicAccessResource(accessMode, objectUri, paths, filters);
+
+    final ISystemSession session = projectProvider.createStatelessSession();
+    final IRestResource restResource = AdtRestResourceFactory.createRestResourceFactory()
+        .createRestResource(resourceUri, session);
+    restResource.addContentHandler(handler);
+
+    try {
+      ddicInfo = restResource.get(null, AdtUtil.getHeaders(), IElementInfoCollection.class);
+    } catch (final ResourceException exc) {
+      exc.printStackTrace();
+    }
+    return ddicInfo;
+  }
 
 }

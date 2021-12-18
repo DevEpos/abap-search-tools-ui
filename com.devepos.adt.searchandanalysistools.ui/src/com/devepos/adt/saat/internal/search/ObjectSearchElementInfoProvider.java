@@ -18,28 +18,31 @@ import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
  * @author stockbal
  */
 public class ObjectSearchElementInfoProvider implements IElementInfoProvider {
-    private final IAdtObjectReference adtObjectRef;
-    private final String destinationId;
+  private final IAdtObjectReference adtObjectRef;
+  private final String destinationId;
 
-    public ObjectSearchElementInfoProvider(final String destinationId, final IAdtObjectReference adtObjectRef) {
-        this.adtObjectRef = adtObjectRef;
-        this.destinationId = destinationId;
+  public ObjectSearchElementInfoProvider(final String destinationId,
+      final IAdtObjectReference adtObjectRef) {
+    this.adtObjectRef = adtObjectRef;
+    this.destinationId = destinationId;
+  }
+
+  @Override
+  public List<IElementInfo> getElements() {
+    final IAdtObjectReferenceElementInfo elementInfo = ElementInfoRetrievalServiceFactory
+        .createService()
+        .retrieveElementInformation(destinationId, adtObjectRef);
+
+    if (elementInfo != null) {
+      return elementInfo.getChildren();
     }
+    return null;
+  }
 
-    @Override
-    public List<IElementInfo> getElements() {
-        final IAdtObjectReferenceElementInfo elementInfo = ElementInfoRetrievalServiceFactory.createService()
-            .retrieveElementInformation(destinationId, adtObjectRef);
-
-        if (elementInfo != null) {
-            return elementInfo.getChildren();
-        }
-        return null;
-    }
-
-    @Override
-    public String getProviderDescription() {
-        return NLS.bind(Messages.ElementInfoProvider_RetrievingElementInfoDescription_xmsg, adtObjectRef.getName());
-    }
+  @Override
+  public String getProviderDescription() {
+    return NLS.bind(Messages.ElementInfoProvider_RetrievingElementInfoDescription_xmsg, adtObjectRef
+        .getName());
+  }
 
 }

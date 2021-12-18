@@ -14,42 +14,43 @@ import org.eclipse.jface.viewers.Viewer;
  * @author stockbal
  */
 public class SelectionProviderAdapter implements ISelectionProvider, ISelectionChangedListener {
-    private Viewer viewer;
-    private final ArrayList<ISelectionChangedListener> fListeners = new ArrayList<>(5);
+  private Viewer viewer;
+  private final ArrayList<ISelectionChangedListener> fListeners = new ArrayList<>(5);
 
-    public void setViewer(final Viewer viewer) {
-        this.viewer = viewer;
-    }
+  public void setViewer(final Viewer viewer) {
+    this.viewer = viewer;
+  }
 
-    @Override
-    public void addSelectionChangedListener(final ISelectionChangedListener listener) {
-        fListeners.add(listener);
-    }
+  @Override
+  public void addSelectionChangedListener(final ISelectionChangedListener listener) {
+    fListeners.add(listener);
+  }
 
-    @Override
-    public ISelection getSelection() {
-        return viewer != null ? viewer.getSelection() : null;
-    }
+  @Override
+  public ISelection getSelection() {
+    return viewer != null ? viewer.getSelection() : null;
+  }
 
-    @Override
-    public void removeSelectionChangedListener(final ISelectionChangedListener listener) {
-        fListeners.remove(listener);
-    }
+  @Override
+  public void removeSelectionChangedListener(final ISelectionChangedListener listener) {
+    fListeners.remove(listener);
+  }
 
-    @Override
-    public void setSelection(final ISelection selection) {
-        if (viewer != null) {
-            viewer.setSelection(selection);
-        }
+  @Override
+  public void setSelection(final ISelection selection) {
+    if (viewer != null) {
+      viewer.setSelection(selection);
     }
+  }
 
-    @Override
-    public void selectionChanged(final SelectionChangedEvent event) {
-        // forward to my listeners
-        final SelectionChangedEvent wrappedEvent = new SelectionChangedEvent(this, event.getSelection());
-        for (final ISelectionChangedListener listener : fListeners) {
-            listener.selectionChanged(wrappedEvent);
-        }
+  @Override
+  public void selectionChanged(final SelectionChangedEvent event) {
+    // forward to my listeners
+    final SelectionChangedEvent wrappedEvent = new SelectionChangedEvent(this, event
+        .getSelection());
+    for (final ISelectionChangedListener listener : fListeners) {
+      listener.selectionChanged(wrappedEvent);
     }
+  }
 
 }

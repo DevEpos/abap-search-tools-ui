@@ -30,151 +30,159 @@ import com.devepos.adt.saat.internal.search.SearchType;
  *
  * @author stockbal
  */
-public class MainPreferencePage extends PreferencePage implements IWorkbenchPreferencePage, IPropertyChangeListener {
-    private final List<FieldEditor> fields = new ArrayList<>();
+public class MainPreferencePage extends PreferencePage implements IWorkbenchPreferencePage,
+    IPropertyChangeListener {
+  private final List<FieldEditor> fields = new ArrayList<>();
 
-    @Override
-    public void init(final IWorkbench workbench) {
-    }
+  @Override
+  public void init(final IWorkbench workbench) {
+  }
 
-    @Override
-    protected IPreferenceStore doGetPreferenceStore() {
-        return SearchAndAnalysisPlugin.getDefault().getPreferenceStore();
-    }
+  @Override
+  protected IPreferenceStore doGetPreferenceStore() {
+    return SearchAndAnalysisPlugin.getDefault().getPreferenceStore();
+  }
 
-    @Override
-    protected Control createContents(final Composite parent) {
-        final Composite composite = new Composite(parent, SWT.NONE);
-        GridDataFactory.fillDefaults().grab(true, true).applyTo(composite);
-        GridLayoutFactory.fillDefaults().applyTo(composite);
+  @Override
+  protected Control createContents(final Composite parent) {
+    final Composite composite = new Composite(parent, SWT.NONE);
+    GridDataFactory.fillDefaults().grab(true, true).applyTo(composite);
+    GridLayoutFactory.fillDefaults().applyTo(composite);
 
 //		createGlobalSettings(composite);
-        createSearchSettings(composite);
+    createSearchSettings(composite);
 
-        initFields();
+    initFields();
 
-        applyDialogFont(composite);
-        return composite;
+    applyDialogFont(composite);
+    return composite;
+  }
+
+  private void initFields() {
+    for (final FieldEditor field : fields) {
+      field.setPage(this);
+      field.setPreferenceStore(getPreferenceStore());
+      field.load();
+      field.setPropertyChangeListener(this);
     }
+  }
 
-    private void initFields() {
-        for (final FieldEditor field : fields) {
-            field.setPage(this);
-            field.setPreferenceStore(getPreferenceStore());
-            field.load();
-            field.setPropertyChangeListener(this);
-        }
-    }
+  /**
+   * Creates group with search settings
+   *
+   * @param composite
+   */
+  private void createSearchSettings(final Composite composite) {
+    final Group searchGroup = new Group(composite, SWT.NONE);
+    searchGroup.setText(Messages.MainPreferencePage_SearchSettings_xgrp);
 
-    /**
-     * Creates group with search settings
-     *
-     * @param composite
+    GridDataFactory.fillDefaults().grab(true, false).applyTo(searchGroup);
+
+    final FieldEditor maxSearchResultsEditor = new IntegerFieldEditor(
+        IPreferences.MAX_SEARCH_RESULTS, Messages.MainPreferencePage_MaxResultsSetting_xfld,
+        searchGroup, 4);
+    fields.add(maxSearchResultsEditor);
+
+    // create combo editor for default search type
+    final FieldEditor defaultSearchTypeEditor = new ComboFieldEditor(
+        IPreferences.DEFAULT_SEARCH_TYPE, Messages.MainPreferencePage_DefaultSearchTypeSetting_xfld,
+        SearchType.toNamesAndKeys(), searchGroup);
+    fields.add(defaultSearchTypeEditor);
+
+    addBooleanEditor(IPreferences.CURSOR_AT_END_OF_SEARCH_INPUT,
+        Messages.MainPreferencePage_CursorAtEndSetting_xfld, searchGroup);
+    addBooleanEditor(IPreferences.FOCUS_ON_SEARCH_TYPE,
+        Messages.MainPreferencePage_FocusOnSearchType_xfld, searchGroup);
+    addBooleanEditor(IPreferences.TAKE_TEXT_SELECTION_INTO_SEARCH,
+        Messages.MainPreferencePage_UseCurrentTextSelectionForObjName_xfld, searchGroup);
+    addBooleanEditor(IPreferences.OVERWRITE_OPENED_SEARCH_QUERY,
+        Messages.MainPreferencePage_OverwriteSearchQuerySetting_xfld, searchGroup);
+
+    /*
+     * Layout of group needs to be set at last as the field editors will change it
+     * final during their creation
      */
-    private void createSearchSettings(final Composite composite) {
-        final Group searchGroup = new Group(composite, SWT.NONE);
-        searchGroup.setText(Messages.MainPreferencePage_SearchSettings_xgrp);
+    GridLayoutFactory.swtDefaults().numColumns(2).applyTo(searchGroup);
 
-        GridDataFactory.fillDefaults().grab(true, false).applyTo(searchGroup);
+    createCDSSearchSettings(searchGroup);
+    // reset group margins because of field editors
+    adjustMargins(searchGroup);
+  }
 
-        final FieldEditor maxSearchResultsEditor = new IntegerFieldEditor(IPreferences.MAX_SEARCH_RESULTS,
-            Messages.MainPreferencePage_MaxResultsSetting_xfld, searchGroup, 4);
-        fields.add(maxSearchResultsEditor);
+  /**
+   * Create special CDS search settings to control which sub folders should be
+   * loaded when a CDS view is expanded
+   *
+   * @param composite the parent control
+   */
+  private void createCDSSearchSettings(final Composite composite) {
+    final Group cdsSettingsGroup = new Group(composite, SWT.NONE);
+    cdsSettingsGroup.setText(Messages.MainPreferencePage_CdsViewSettings_xgrp);
+    GridDataFactory.fillDefaults()
+        .grab(true, false)
+        .indent(0, 10)
+        .span(2, 1)
+        .applyTo(cdsSettingsGroup);
+    GridLayoutFactory.swtDefaults().numColumns(2).applyTo(cdsSettingsGroup);
 
-        // create combo editor for default search type
-        final FieldEditor defaultSearchTypeEditor = new ComboFieldEditor(IPreferences.DEFAULT_SEARCH_TYPE,
-            Messages.MainPreferencePage_DefaultSearchTypeSetting_xfld, SearchType.toNamesAndKeys(), searchGroup);
-        fields.add(defaultSearchTypeEditor);
+    addBooleanEditor(IPreferences.SHOW_FULL_ASSOCIATION_NAME,
+        Messages.MainPreferencePage_DisplayAssociationName_xckl, cdsSettingsGroup);
 
-        addBooleanEditor(IPreferences.CURSOR_AT_END_OF_SEARCH_INPUT,
-            Messages.MainPreferencePage_CursorAtEndSetting_xfld, searchGroup);
-        addBooleanEditor(IPreferences.FOCUS_ON_SEARCH_TYPE, Messages.MainPreferencePage_FocusOnSearchType_xfld,
-            searchGroup);
-        addBooleanEditor(IPreferences.TAKE_TEXT_SELECTION_INTO_SEARCH,
-            Messages.MainPreferencePage_UseCurrentTextSelectionForObjName_xfld, searchGroup);
-        addBooleanEditor(IPreferences.OVERWRITE_OPENED_SEARCH_QUERY,
-            Messages.MainPreferencePage_OverwriteSearchQuerySetting_xfld, searchGroup);
+    adjustMargins(cdsSettingsGroup);
+  }
 
-        /*
-         * Layout of group needs to be set at last as the field editors will change it
-         * final during their creation
-         */
-        GridLayoutFactory.swtDefaults().numColumns(2).applyTo(searchGroup);
+  private void adjustMargins(final Composite composite) {
+    final GridLayout layout = (GridLayout) composite.getLayout();
+    layout.marginLeft = 5;
+    layout.marginTop = 5;
+    layout.marginRight = 5;
+    layout.marginBottom = 5;
 
-        createCDSSearchSettings(searchGroup);
-        // reset group margins because of field editors
-        adjustMargins(searchGroup);
+  }
+
+  private BooleanFieldEditor addBooleanEditor(final String preferenceId, final String labelText,
+      final Composite parent) {
+    final BooleanFieldEditor booleanEditor = new BooleanFieldEditor(preferenceId, labelText,
+        parent);
+    fields.add(booleanEditor);
+
+    // adjust control layouts
+    GridDataFactory.fillDefaults().span(2, 1).applyTo(booleanEditor.getDescriptionControl(parent));
+
+    return booleanEditor;
+  }
+
+  @Override
+  protected void performDefaults() {
+    for (final FieldEditor field : fields) {
+      field.loadDefault();
     }
+    super.performDefaults();
+  }
 
-    /**
-     * Create special CDS search settings to control which sub folders should be
-     * loaded when a CDS view is expanded
-     *
-     * @param composite the parent control
-     */
-    private void createCDSSearchSettings(final Composite composite) {
-        final Group cdsSettingsGroup = new Group(composite, SWT.NONE);
-        cdsSettingsGroup.setText(Messages.MainPreferencePage_CdsViewSettings_xgrp);
-        GridDataFactory.fillDefaults().grab(true, false).indent(0, 10).span(2, 1).applyTo(cdsSettingsGroup);
-        GridLayoutFactory.swtDefaults().numColumns(2).applyTo(cdsSettingsGroup);
-
-        addBooleanEditor(IPreferences.SHOW_FULL_ASSOCIATION_NAME,
-            Messages.MainPreferencePage_DisplayAssociationName_xckl, cdsSettingsGroup);
-
-        adjustMargins(cdsSettingsGroup);
+  @Override
+  public boolean performOk() {
+    for (final FieldEditor field : fields) {
+      field.store();
     }
+    return super.performOk();
+  }
 
-    private void adjustMargins(final Composite composite) {
-        final GridLayout layout = (GridLayout) composite.getLayout();
-        layout.marginLeft = 5;
-        layout.marginTop = 5;
-        layout.marginRight = 5;
-        layout.marginBottom = 5;
-
-    }
-
-    private BooleanFieldEditor addBooleanEditor(final String preferenceId, final String labelText,
-        final Composite parent) {
-        final BooleanFieldEditor booleanEditor = new BooleanFieldEditor(preferenceId, labelText, parent);
-        fields.add(booleanEditor);
-
-        // adjust control layouts
-        GridDataFactory.fillDefaults().span(2, 1).applyTo(booleanEditor.getDescriptionControl(parent));
-
-        return booleanEditor;
-    }
-
-    @Override
-    protected void performDefaults() {
+  @Override
+  public void propertyChange(final PropertyChangeEvent event) {
+    if (event.getProperty() == FieldEditor.IS_VALID) {
+      final boolean isValid = (Boolean) event.getNewValue();
+      if (isValid) {
         for (final FieldEditor field : fields) {
-            field.loadDefault();
+          if (!field.isValid()) {
+            setValid(false);
+            return;
+          }
         }
-        super.performDefaults();
+        setValid(true);
+      } else {
+        setValid(false);
+      }
     }
-
-    @Override
-    public boolean performOk() {
-        for (final FieldEditor field : fields) {
-            field.store();
-        }
-        return super.performOk();
-    }
-
-    @Override
-    public void propertyChange(final PropertyChangeEvent event) {
-        if (event.getProperty() == FieldEditor.IS_VALID) {
-            final boolean isValid = (Boolean) event.getNewValue();
-            if (isValid) {
-                for (final FieldEditor field : fields) {
-                    if (!field.isValid()) {
-                        setValid(false);
-                        return;
-                    }
-                }
-                setValid(true);
-            } else {
-                setValid(false);
-            }
-        }
-    }
+  }
 }

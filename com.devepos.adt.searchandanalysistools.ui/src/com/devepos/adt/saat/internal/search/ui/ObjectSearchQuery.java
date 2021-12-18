@@ -33,135 +33,139 @@ import com.sap.adt.communication.session.ISystemSession;
  * @author stockbal
  */
 public class ObjectSearchQuery implements ISearchQuery {
-    private static final String TRUE = "X"; //$NON-NLS-1$
-    private ObjectSearchRequest searchRequest;
-    private final ObjectSearchResult searchResult;
+  private static final String TRUE = "X"; //$NON-NLS-1$
+  private ObjectSearchRequest searchRequest;
+  private final ObjectSearchResult searchResult;
 
-    /**
-     * Creates a new Object Search Query from the given search request. The
-     * {@link ObjectSearchRequest} holds all the data needed to execute this query
-     *
-     * @param searchRequest the search request of this query
-     */
-    public ObjectSearchQuery(final ObjectSearchRequest searchRequest) {
-        this.searchRequest = searchRequest;
-        searchResult = new ObjectSearchResult(this);
+  /**
+   * Creates a new Object Search Query from the given search request. The
+   * {@link ObjectSearchRequest} holds all the data needed to execute this query
+   *
+   * @param searchRequest the search request of this query
+   */
+  public ObjectSearchQuery(final ObjectSearchRequest searchRequest) {
+    this.searchRequest = searchRequest;
+    searchResult = new ObjectSearchResult(this);
+  }
+
+  /**
+   * Sets the search request for this query
+   *
+   * @param searchRequest the new search request
+   */
+  public void setSearchRequest(final ObjectSearchRequest searchRequest) {
+    this.searchRequest = searchRequest;
+  }
+
+  @Override
+  public IStatus run(final IProgressMonitor monitor) throws OperationCanceledException {
+    searchResult.cleanup();
+
+    // perform object search
+    final String destinationId = searchRequest.getDestinationId();
+    IAbapProjectProvider projectProvider = searchRequest.getProjectProvider();
+    if (projectProvider == null) {
+      projectProvider = AbapProjectProviderAccessor.getProviderForDestination(destinationId);
+      searchRequest.setProjectProvider(projectProvider);
+    }
+    if (projectProvider == null) {
+      return new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, NLS.bind(
+          "Destination Id ''{0}'' is not valid", destinationId));
+    }
+    if (!projectProvider.ensureLoggedOn()) {
+      return new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, NLS.bind(
+          Messages.ObjectSearch_ProjectLogonFailed_xmsg, projectProvider.getProjectName()));
+    }
+    final ObjectSearchUriDiscovery uriDiscovery = new ObjectSearchUriDiscovery(destinationId);
+
+    final Map<String, Object> parameterMap = searchRequest.getParameters();
+    // add hidden parameters to search query
+    if (searchRequest.isAndSearchActive()) {
+      parameterMap.put(QueryParameterName.AND_FILTER.toString(), TRUE);
+    }
+    if (searchRequest.isReadPackageHierarchy()) {
+      parameterMap.put(QueryParameterName.WITH_PACKAGE_HIERARCHY.toString(), TRUE);
+    }
+    if (searchRequest.shouldReadApiState()) {
+      parameterMap.put(QueryParameterName.WITH_API_STATE.toString(), TRUE);
+    }
+    if (searchRequest.shouldReadAllEntries()) {
+      parameterMap.put(QueryParameterName.GET_ALL_RESULTS.toString(), TRUE);
+      parameterMap.remove(QueryParameterName.MAX_ROWS.toString());
+    } else {
+      parameterMap.put(QueryParameterName.MAX_ROWS.toString(), searchRequest.getMaxResults());
+    }
+    final String searchTerm = searchRequest.getSearchTerm();
+    parameterMap.put(QueryParameterName.OBJECT_NAME.toString(), searchTerm != null ? searchTerm
+        : "");
+    final URI objectSearchUri = uriDiscovery.createResourceUriFromTemplate(searchRequest
+        .getSearchType(), parameterMap);
+    if (objectSearchUri == null) {
+      return new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, NLS.bind(
+          Messages.ObjectSearch_SearchNotSupportedInProject_xmsg, projectProvider
+              .getProjectName()));
     }
 
-    /**
-     * Sets the search request for this query
-     *
-     * @param searchRequest the new search request
-     */
-    public void setSearchRequest(final ObjectSearchRequest searchRequest) {
-        this.searchRequest = searchRequest;
+    monitor.beginTask(Messages.ObjectSearch_SearchJobProgressText_xmsg, 1);
+
+    final ISystemSession session = projectProvider.createStatelessSession();
+
+    final IRestResource restResource = AdtRestResourceFactory.createRestResourceFactory()
+        .createRestResource(objectSearchUri, session);
+    restResource.addContentHandler(new ObjectSearchContentHandler(projectProvider
+        .getDestinationId()));
+
+    try {
+      final com.devepos.adt.saat.internal.search.ObjectSearchResult searchResult = restResource.get(
+          monitor, AdtUtil.getHeaders(),
+          com.devepos.adt.saat.internal.search.ObjectSearchResult.class);
+
+      final List<IAdtObjectReferenceElementInfo> rawResult = searchResult.getRawResult();
+      if (rawResult != null && !searchRequest.shouldReadAllEntries() && rawResult
+          .size() > searchRequest.getMaxResults()) {
+        this.searchResult.setHasMoreResults(true);
+      }
+      this.searchResult.addSearchResult(rawResult, searchResult.getPackageResult());
+      monitor.worked(1);
+      monitor.done();
+      return Status.OK_STATUS;
+    } catch (final ResourceException exc) {
+      final String localizedMessage = exc.getLocalizedMessage();
+      return new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, localizedMessage != null
+          ? localizedMessage
+          : Messages.ObjectSearch_GeneralError_xmsg);
     }
+  }
 
-    @Override
-    public IStatus run(final IProgressMonitor monitor) throws OperationCanceledException {
-        searchResult.cleanup();
+  @Override
+  public String getLabel() {
+    return searchRequest != null ? Messages.ObjectSearch_SearchQueryLabel_xmsg : "";
+  }
 
-        // perform object search
-        final String destinationId = searchRequest.getDestinationId();
-        IAbapProjectProvider projectProvider = searchRequest.getProjectProvider();
-        if (projectProvider == null) {
-            projectProvider = AbapProjectProviderAccessor.getProviderForDestination(destinationId);
-            searchRequest.setProjectProvider(projectProvider);
-        }
-        if (projectProvider == null) {
-            return new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, NLS.bind(
-                "Destination Id ''{0}'' is not valid", destinationId));
-        }
-        if (!projectProvider.ensureLoggedOn()) {
-            return new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, NLS.bind(
-                Messages.ObjectSearch_ProjectLogonFailed_xmsg, projectProvider.getProjectName()));
-        }
-        final ObjectSearchUriDiscovery uriDiscovery = new ObjectSearchUriDiscovery(destinationId);
+  @Override
+  public boolean canRerun() {
+    return true;
+  }
 
-        final Map<String, Object> parameterMap = searchRequest.getParameters();
-        // add hidden parameters to search query
-        if (searchRequest.isAndSearchActive()) {
-            parameterMap.put(QueryParameterName.AND_FILTER.toString(), TRUE);
-        }
-        if (searchRequest.isReadPackageHierarchy()) {
-            parameterMap.put(QueryParameterName.WITH_PACKAGE_HIERARCHY.toString(), TRUE);
-        }
-        if (searchRequest.shouldReadApiState()) {
-            parameterMap.put(QueryParameterName.WITH_API_STATE.toString(), TRUE);
-        }
-        if (searchRequest.shouldReadAllEntries()) {
-            parameterMap.put(QueryParameterName.GET_ALL_RESULTS.toString(), TRUE);
-            parameterMap.remove(QueryParameterName.MAX_ROWS.toString());
-        } else {
-            parameterMap.put(QueryParameterName.MAX_ROWS.toString(), searchRequest.getMaxResults());
-        }
-        final String searchTerm = searchRequest.getSearchTerm();
-        parameterMap.put(QueryParameterName.OBJECT_NAME.toString(), searchTerm != null ? searchTerm : "");
-        final URI objectSearchUri = uriDiscovery.createResourceUriFromTemplate(searchRequest.getSearchType(),
-            parameterMap);
-        if (objectSearchUri == null) {
-            return new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, NLS.bind(
-                Messages.ObjectSearch_SearchNotSupportedInProject_xmsg, projectProvider.getProjectName()));
-        }
+  @Override
+  public boolean canRunInBackground() {
+    return true;
+  }
 
-        monitor.beginTask(Messages.ObjectSearch_SearchJobProgressText_xmsg, 1);
+  public IAbapProjectProvider getProjectProvider() {
+    return searchRequest != null ? searchRequest.getProjectProvider() : null;
+  }
 
-        final ISystemSession session = projectProvider.createStatelessSession();
+  @Override
+  public ISearchResult getSearchResult() {
+    return searchResult;
+  }
 
-        final IRestResource restResource = AdtRestResourceFactory.createRestResourceFactory()
-            .createRestResource(objectSearchUri, session);
-        restResource.addContentHandler(new ObjectSearchContentHandler(projectProvider.getDestinationId()));
-
-        try {
-            final com.devepos.adt.saat.internal.search.ObjectSearchResult searchResult = restResource.get(monitor,
-                AdtUtil.getHeaders(), com.devepos.adt.saat.internal.search.ObjectSearchResult.class);
-
-            final List<IAdtObjectReferenceElementInfo> rawResult = searchResult.getRawResult();
-            if (rawResult != null && !searchRequest.shouldReadAllEntries() && rawResult.size() > searchRequest
-                .getMaxResults()) {
-                this.searchResult.setHasMoreResults(true);
-            }
-            this.searchResult.addSearchResult(rawResult, searchResult.getPackageResult());
-            monitor.worked(1);
-            monitor.done();
-            return Status.OK_STATUS;
-        } catch (final ResourceException exc) {
-            final String localizedMessage = exc.getLocalizedMessage();
-            return new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, localizedMessage != null
-                ? localizedMessage
-                : Messages.ObjectSearch_GeneralError_xmsg);
-        }
-    }
-
-    @Override
-    public String getLabel() {
-        return searchRequest != null ? Messages.ObjectSearch_SearchQueryLabel_xmsg : "";
-    }
-
-    @Override
-    public boolean canRerun() {
-        return true;
-    }
-
-    @Override
-    public boolean canRunInBackground() {
-        return true;
-    }
-
-    public IAbapProjectProvider getProjectProvider() {
-        return searchRequest != null ? searchRequest.getProjectProvider() : null;
-    }
-
-    @Override
-    public ISearchResult getSearchResult() {
-        return searchResult;
-    }
-
-    /**
-     * @return the searchRequest of the search query
-     */
-    public ObjectSearchRequest getSearchRequest() {
-        return searchRequest;
-    }
+  /**
+   * @return the searchRequest of the search query
+   */
+  public ObjectSearchRequest getSearchRequest() {
+    return searchRequest;
+  }
 
 }

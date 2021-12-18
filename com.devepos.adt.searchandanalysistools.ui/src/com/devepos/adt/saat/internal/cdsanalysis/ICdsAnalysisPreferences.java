@@ -13,12 +13,12 @@ import com.devepos.adt.saat.internal.cdsanalysis.ui.CdsUsageAnalysisView;
  * @author stockbal
  */
 public interface ICdsAnalysisPreferences {
-    /**
-     * Preference for loading Associations in CDS Top down analysis
-     */
-    String TOP_DOWN_LOAD_ASSOCIATIONS = "com.devepos.adt.saat.cdstopdownanalysis.loadAssociations"; //$NON-NLS-1$
-    /**
-     * Preference for showing only usages in released CDS Views
-     */
-    String WHERE_USED_ONLY_RELEASED_USAGES = "com.devepos.adt.saat.whereusedincds.onlyReleasedUsages"; //$NON-NLS-1$
+  /**
+   * Preference for loading Associations in CDS Top down analysis
+   */
+  String TOP_DOWN_LOAD_ASSOCIATIONS = "com.devepos.adt.saat.cdstopdownanalysis.loadAssociations"; //$NON-NLS-1$
+  /**
+   * Preference for showing only usages in released CDS Views
+   */
+  String WHERE_USED_ONLY_RELEASED_USAGES = "com.devepos.adt.saat.whereusedincds.onlyReleasedUsages"; //$NON-NLS-1$
 }

@@ -49,252 +49,260 @@ import com.devepos.adt.saat.internal.util.NavigationUtil;
  */
 public class FieldAnalysisView extends CdsAnalysisPage<FieldAnalysis> {
 
-    static final String SEARCH_DB_VIEWS_WHERE_USED_PREF_KEY = "com.devepos.adt.saat.fieldanalysis.searchDbViewUsages"; //$NON-NLS-1$
-    private static final String VIEW_LAYOUT_PREF_KEY = "com.devepos.adt.saat.fieldanalysis.viewLayout"; //$NON-NLS-1$
-    private SashForm fieldsHierarchySplitter;
-    private FilterableComposite<TreeViewer, Tree> fieldsTree;
-    private ViewForm fieldsViewerViewForm;
-    private FieldHierarchyView hierarchyView;
-    private String currentEntity;
-    private IDestinationProvider destProvider;
-    private PreferenceToggleAction searchDbViewUsages;
-    FieldAnalysisUriDiscovery uriDiscovery;
-    private ToggleViewLayoutAction viewLayoutToggleAction;
+  static final String SEARCH_DB_VIEWS_WHERE_USED_PREF_KEY = "com.devepos.adt.saat.fieldanalysis.searchDbViewUsages"; //$NON-NLS-1$
+  private static final String VIEW_LAYOUT_PREF_KEY = "com.devepos.adt.saat.fieldanalysis.viewLayout"; //$NON-NLS-1$
+  private SashForm fieldsHierarchySplitter;
+  private FilterableComposite<TreeViewer, Tree> fieldsTree;
+  private ViewForm fieldsViewerViewForm;
+  private FieldHierarchyView hierarchyView;
+  private String currentEntity;
+  private IDestinationProvider destProvider;
+  private PreferenceToggleAction searchDbViewUsages;
+  FieldAnalysisUriDiscovery uriDiscovery;
+  private ToggleViewLayoutAction viewLayoutToggleAction;
 
-    public FieldAnalysisView(final CdsAnalysisView viewPart) {
-        super(viewPart);
+  public FieldAnalysisView(final CdsAnalysisView viewPart) {
+    super(viewPart);
+  }
+
+  @Override
+  public void createControl(final Composite parent) {
+    super.createControl(parent);
+    SearchAndAnalysisPlugin.getDefault()
+        .getPreferenceStore()
+        .setDefault(VIEW_LAYOUT_PREF_KEY, ViewLayoutOrientation.AUTOMATIC.name());
+    registerViewerToClipboardAction(hierarchyView.getViewer());
+    /*
+     * Workaround for activated DevStyle theme so that the field tree is snapped to
+     * the top. As it may not only be the DevStyle theme which causes this problem a
+     * precondition check on the current workbench theme is not done
+     */
+    Display.getDefault().asyncExec(() -> {
+      Control control = getControl();
+      if (control != null) {
+        control.pack(true);
+        control.requestLayout();
+      }
+    });
+  }
+
+  @Override
+  protected void fillContextMenu(final IMenuManager mgr,
+      final CommandPossibleChecker commandPossibleChecker) {
+    super.fillContextMenu(mgr, commandPossibleChecker);
+    if (commandPossibleChecker.canCommandBeEnabled(ICommandConstants.CDS_TOP_DOWN_ANALYSIS)) {
+      SaatMenuItemFactory.addCdsAnalyzerCommandItem(mgr, IContextMenuConstants.GROUP_CDS_ANALYSIS,
+          ICommandConstants.CDS_TOP_DOWN_ANALYSIS);
     }
-
-    @Override
-    public void createControl(final Composite parent) {
-        super.createControl(parent);
-        SearchAndAnalysisPlugin.getDefault()
-            .getPreferenceStore()
-            .setDefault(VIEW_LAYOUT_PREF_KEY, ViewLayoutOrientation.AUTOMATIC.name());
-        registerViewerToClipboardAction(hierarchyView.getViewer());
-        /*
-         * Workaround for activated DevStyle theme so that the field tree is snapped to
-         * the top. As it may not only be the DevStyle theme which causes this problem a
-         * precondition check on the current workbench theme is not done
-         */
-        Display.getDefault().asyncExec(() -> {
-            Control control = getControl();
-            if (control != null) {
-                control.pack(true);
-                control.requestLayout();
-            }
-        });
+    if (commandPossibleChecker.canCommandBeEnabled(ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS)) {
+      SaatMenuItemFactory.addCdsAnalyzerCommandItem(mgr, IContextMenuConstants.GROUP_CDS_ANALYSIS,
+          ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS);
     }
-
-    @Override
-    protected void fillContextMenu(final IMenuManager mgr, final CommandPossibleChecker commandPossibleChecker) {
-        super.fillContextMenu(mgr, commandPossibleChecker);
-        if (commandPossibleChecker.canCommandBeEnabled(ICommandConstants.CDS_TOP_DOWN_ANALYSIS)) {
-            SaatMenuItemFactory.addCdsAnalyzerCommandItem(mgr, IContextMenuConstants.GROUP_CDS_ANALYSIS,
-                ICommandConstants.CDS_TOP_DOWN_ANALYSIS);
-        }
-        if (commandPossibleChecker.canCommandBeEnabled(ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS)) {
-            SaatMenuItemFactory.addCdsAnalyzerCommandItem(mgr, IContextMenuConstants.GROUP_CDS_ANALYSIS,
-                ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS);
-        }
-        if (commandPossibleChecker.canCommandBeEnabled(ICommandConstants.USED_ENTITIES_ANALYSIS)) {
-            SaatMenuItemFactory.addCdsAnalyzerCommandItem(mgr, IContextMenuConstants.GROUP_CDS_ANALYSIS,
-                ICommandConstants.USED_ENTITIES_ANALYSIS);
-        }
+    if (commandPossibleChecker.canCommandBeEnabled(ICommandConstants.USED_ENTITIES_ANALYSIS)) {
+      SaatMenuItemFactory.addCdsAnalyzerCommandItem(mgr, IContextMenuConstants.GROUP_CDS_ANALYSIS,
+          ICommandConstants.USED_ENTITIES_ANALYSIS);
     }
+  }
 
-    @Override
-    public void setActionBars(final IActionBars actionBars) {
-        super.setActionBars(actionBars);
-        final IMenuManager menu = actionBars.getMenuManager();
-        menu.add(searchDbViewUsages);
-        menu.add(new Separator());
-        menu.add(viewLayoutToggleAction);
-    }
+  @Override
+  public void setActionBars(final IActionBars actionBars) {
+    super.setActionBars(actionBars);
+    final IMenuManager menu = actionBars.getMenuManager();
+    menu.add(searchDbViewUsages);
+    menu.add(new Separator());
+    menu.add(viewLayoutToggleAction);
+  }
 
-    @Override
-    protected void createActions() {
-        super.createActions();
-        final IPreferenceStore prefStore = SearchAndAnalysisPlugin.getDefault().getPreferenceStore();
-        searchDbViewUsages = new PreferenceToggleAction(Messages.FieldAnalysisView_SearchDbViewsInWhereUsed_xmit, null,
-            SEARCH_DB_VIEWS_WHERE_USED_PREF_KEY, false, prefStore);
-        viewLayoutToggleAction = new ToggleViewLayoutAction(fieldsHierarchySplitter, getControl(), prefStore,
-            VIEW_LAYOUT_PREF_KEY, true, true, true);
-    }
+  @Override
+  protected void createActions() {
+    super.createActions();
+    final IPreferenceStore prefStore = SearchAndAnalysisPlugin.getDefault().getPreferenceStore();
+    searchDbViewUsages = new PreferenceToggleAction(
+        Messages.FieldAnalysisView_SearchDbViewsInWhereUsed_xmit, null,
+        SEARCH_DB_VIEWS_WHERE_USED_PREF_KEY, false, prefStore);
+    viewLayoutToggleAction = new ToggleViewLayoutAction(fieldsHierarchySplitter, getControl(),
+        prefStore, VIEW_LAYOUT_PREF_KEY, true, true, true);
+  }
 
-    @Override
-    protected TreeViewer createTreeViewer(final Composite parent) {
-        // just returns the viewer of the filtered tree
-        return fieldsTree.getViewer();
-    }
+  @Override
+  protected TreeViewer createTreeViewer(final Composite parent) {
+    // just returns the viewer of the filtered tree
+    return fieldsTree.getViewer();
+  }
 
-    @Override
-    protected Composite createTreeViewerComposite(final Composite parent) {
+  @Override
+  protected Composite createTreeViewerComposite(final Composite parent) {
 
-        fieldsHierarchySplitter = new SashForm(parent, SWT.VERTICAL);
+    fieldsHierarchySplitter = new SashForm(parent, SWT.VERTICAL);
 
-        fieldsViewerViewForm = new ViewForm(fieldsHierarchySplitter, SWT.NONE);
-        fieldsTree = createFilteredTree(fieldsViewerViewForm);
-        fieldsViewerViewForm.setContent(fieldsTree);
+    fieldsViewerViewForm = new ViewForm(fieldsHierarchySplitter, SWT.NONE);
+    fieldsTree = createFilteredTree(fieldsViewerViewForm);
+    fieldsViewerViewForm.setContent(fieldsTree);
 
-        hierarchyView = new FieldHierarchyView(this, fieldsHierarchySplitter);
-        // Register hierarchy viewer
-        getSelectionAdapter().addViewer(hierarchyView.getViewer());
-
-        /*
-         * initially the detail part is not visible at startup as the fields be loaded
-         * dynamically
-         */
-        hierarchyView.setVisible(false);
-        return fieldsHierarchySplitter;
-    }
-
-    @Override
-    protected ViewUiState getUiState() {
-        final UiState state = new UiState();
-        state.setFromTreeViewer((TreeViewer) getViewer());
-        return state;
-    }
-
-    @Override
-    protected void clearViewerInput() {
-        super.clearViewerInput();
-        hierarchyView.clearInputCache();
-    }
-
-    @Override
-    protected void loadInput(final ViewUiState uiState) {
-        final IAdtObjectReferenceElementInfo adtObjectInfo = analysisResult.getAdtObjectInfo();
-        final IDestinationProvider destProvider = adtObjectInfo.getAdapter(IDestinationProvider.class);
-        final ObjectType type = ObjectType.getFromAdtType(adtObjectInfo.getAdtObjectReference().getType());
-        uriDiscovery = new FieldAnalysisUriDiscovery(destProvider.getDestinationId());
-        currentEntity = adtObjectInfo.getDisplayName();
-        this.destProvider = destProvider;
-        hierarchyView.setEntityInformation(adtObjectInfo.getDisplayName(), destProvider, type);
-
-        final TreeViewer viewer = (TreeViewer) getViewer();
-        viewer.setInput(analysisResult.getResult());
-        if (analysisResult.isResultLoaded()) {
-            // update ui state
-            if (uiState instanceof UiState) {
-                ((TreeViewUiState) uiState).applyToTreeViewer(viewer);
-            } else {
-                viewer.expandAll();
-            }
-        } else {
-            analysisResult.setResultLoaded(true);
-            viewer.expandAll();
-        }
-    }
-
-    @Override
-    protected void refreshAnalysis() {
-        final Object[] nodes = (Object[]) fieldsTree.getViewer().getInput();
-        if (nodes == null) {
-            return;
-        }
-        boolean refreshFieldsTree = true;
-        final IStructuredSelection selection = (IStructuredSelection) fieldsTree.getViewer().getSelection();
-        if (selection != null && !selection.isEmpty() && !(selection
-            .getFirstElement() instanceof IAdtObjectReferenceNode)) {
-            refreshFieldsTree = false;
-        }
-        if (refreshFieldsTree) {
-            // refresh complete field tree
-            fieldsTree.resetFilter();
-            hierarchyView.clearInputCache();
-            analysisResult.refreshAnalysis();
-            getViewPart().updateLabel();
-            getViewer().refresh();
-        } else {
-            hierarchyView.reloadFieldInput();
-        }
-    }
-
-    @Override
-    protected void configureTreeViewer(final TreeViewer treeViewer) {
-        treeViewer.setContentProvider(new LazyLoadingTreeContentProvider());
-        treeViewer.setUseHashlookup(true);
-        treeViewer.setLabelProvider(new DelegatingStyledCellLabelProvider(new TreeViewerLabelProvider()));
-        treeViewer.addDoubleClickListener(event -> {
-            final IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-            if (selection.isEmpty()) {
-                return;
-            }
-            final Object selectedObj = selection.getFirstElement();
-            if (selectedObj instanceof SimpleInfoTreeNode) {
-                NavigationUtil.navigateToEntityColumn(currentEntity, ((SimpleInfoTreeNode) selectedObj)
-                    .getDisplayName(), destProvider.getDestinationId());
-            }
-        });
-        treeViewer.addSelectionChangedListener(event -> {
-            boolean hierarchyVisible = false;
-            final IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-            if (!selection.isEmpty()) {
-                final Object selected = selection.getFirstElement();
-                if (selected instanceof SimpleInfoTreeNode) {
-                    final SimpleInfoTreeNode fieldNode = (SimpleInfoTreeNode) selected;
-                    hierarchyView.setFieldHierarchyInput(fieldNode);
-                    hierarchyVisible = true;
-                }
-            }
-            if (hierarchyVisible != hierarchyView.isVisible()) {
-                hierarchyView.setVisible(hierarchyVisible);
-                fieldsHierarchySplitter.layout();
-            }
-        });
-
-    }
+    hierarchyView = new FieldHierarchyView(this, fieldsHierarchySplitter);
+    // Register hierarchy viewer
+    getSelectionAdapter().addViewer(hierarchyView.getViewer());
 
     /*
-     * Creates the filtered tree for the display of the fields of a database entity
+     * initially the detail part is not visible at startup as the fields be loaded
+     * dynamically
      */
-    private FilterableTree createFilteredTree(final Composite parent) {
-        final FilterableTree tree = new FilterableTree(parent, "type filter text", false) {
-            @Override
-            protected void filterStringChanged() {
-                super.filterStringChanged();
-                Display.getDefault().timerExec(500, (Runnable) () -> {
-                    String filterString = getFilterString();
-                    if (filterString == null || filterString.trim().length() == 0) {
-                        getViewer().expandAll();
-                    }
-                });
-            }
-        };
-        tree.setViewer(new TreeViewer(tree, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION));
-        tree.setElementMatcher(element -> {
-            IWordMatcher wordMatcher = tree.getWordMatcher();
-            if (element instanceof ITreeNode) {
-                final ITreeNode node = (ITreeNode) element;
-                return wordMatcher.matchesWord(node.getName()) || wordMatcher.matchesWord(node.getDisplayName())
-                    || wordMatcher.matchesWord(node.getDescription());
-            }
-            final DelegatingStyledCellLabelProvider labelProvider = (DelegatingStyledCellLabelProvider) getViewer()
-                .getLabelProvider();
-            final String labelText = labelProvider.getStyledStringProvider().getStyledText(element).getString();
-            return wordMatcher.matchesWord(labelText);
+    hierarchyView.setVisible(false);
+    return fieldsHierarchySplitter;
+  }
+
+  @Override
+  protected ViewUiState getUiState() {
+    final UiState state = new UiState();
+    state.setFromTreeViewer((TreeViewer) getViewer());
+    return state;
+  }
+
+  @Override
+  protected void clearViewerInput() {
+    super.clearViewerInput();
+    hierarchyView.clearInputCache();
+  }
+
+  @Override
+  protected void loadInput(final ViewUiState uiState) {
+    final IAdtObjectReferenceElementInfo adtObjectInfo = analysisResult.getAdtObjectInfo();
+    final IDestinationProvider destProvider = adtObjectInfo.getAdapter(IDestinationProvider.class);
+    final ObjectType type = ObjectType.getFromAdtType(adtObjectInfo.getAdtObjectReference()
+        .getType());
+    uriDiscovery = new FieldAnalysisUriDiscovery(destProvider.getDestinationId());
+    currentEntity = adtObjectInfo.getDisplayName();
+    this.destProvider = destProvider;
+    hierarchyView.setEntityInformation(adtObjectInfo.getDisplayName(), destProvider, type);
+
+    final TreeViewer viewer = (TreeViewer) getViewer();
+    viewer.setInput(analysisResult.getResult());
+    if (analysisResult.isResultLoaded()) {
+      // update ui state
+      if (uiState instanceof UiState) {
+        ((TreeViewUiState) uiState).applyToTreeViewer(viewer);
+      } else {
+        viewer.expandAll();
+      }
+    } else {
+      analysisResult.setResultLoaded(true);
+      viewer.expandAll();
+    }
+  }
+
+  @Override
+  protected void refreshAnalysis() {
+    final Object[] nodes = (Object[]) fieldsTree.getViewer().getInput();
+    if (nodes == null) {
+      return;
+    }
+    boolean refreshFieldsTree = true;
+    final IStructuredSelection selection = (IStructuredSelection) fieldsTree.getViewer()
+        .getSelection();
+    if (selection != null && !selection.isEmpty() && !(selection
+        .getFirstElement() instanceof IAdtObjectReferenceNode)) {
+      refreshFieldsTree = false;
+    }
+    if (refreshFieldsTree) {
+      // refresh complete field tree
+      fieldsTree.resetFilter();
+      hierarchyView.clearInputCache();
+      analysisResult.refreshAnalysis();
+      getViewPart().updateLabel();
+      getViewer().refresh();
+    } else {
+      hierarchyView.reloadFieldInput();
+    }
+  }
+
+  @Override
+  protected void configureTreeViewer(final TreeViewer treeViewer) {
+    treeViewer.setContentProvider(new LazyLoadingTreeContentProvider());
+    treeViewer.setUseHashlookup(true);
+    treeViewer.setLabelProvider(new DelegatingStyledCellLabelProvider(
+        new TreeViewerLabelProvider()));
+    treeViewer.addDoubleClickListener(event -> {
+      final IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+      if (selection.isEmpty()) {
+        return;
+      }
+      final Object selectedObj = selection.getFirstElement();
+      if (selectedObj instanceof SimpleInfoTreeNode) {
+        NavigationUtil.navigateToEntityColumn(currentEntity, ((SimpleInfoTreeNode) selectedObj)
+            .getDisplayName(), destProvider.getDestinationId());
+      }
+    });
+    treeViewer.addSelectionChangedListener(event -> {
+      boolean hierarchyVisible = false;
+      final IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+      if (!selection.isEmpty()) {
+        final Object selected = selection.getFirstElement();
+        if (selected instanceof SimpleInfoTreeNode) {
+          final SimpleInfoTreeNode fieldNode = (SimpleInfoTreeNode) selected;
+          hierarchyView.setFieldHierarchyInput(fieldNode);
+          hierarchyVisible = true;
+        }
+      }
+      if (hierarchyVisible != hierarchyView.isVisible()) {
+        hierarchyView.setVisible(hierarchyVisible);
+        fieldsHierarchySplitter.layout();
+      }
+    });
+
+  }
+
+  /*
+   * Creates the filtered tree for the display of the fields of a database entity
+   */
+  private FilterableTree createFilteredTree(final Composite parent) {
+    final FilterableTree tree = new FilterableTree(parent, "type filter text", false) {
+      @Override
+      protected void filterStringChanged() {
+        super.filterStringChanged();
+        Display.getDefault().timerExec(500, (Runnable) () -> {
+          String filterString = getFilterString();
+          if (filterString == null || filterString.trim().length() == 0) {
+            getViewer().expandAll();
+          }
         });
-        return tree;
+      }
+    };
+    tree.setViewer(new TreeViewer(tree, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL
+        | SWT.FULL_SELECTION));
+    tree.setElementMatcher(element -> {
+      IWordMatcher wordMatcher = tree.getWordMatcher();
+      if (element instanceof ITreeNode) {
+        final ITreeNode node = (ITreeNode) element;
+        return wordMatcher.matchesWord(node.getName()) || wordMatcher.matchesWord(node
+            .getDisplayName()) || wordMatcher.matchesWord(node.getDescription());
+      }
+      final DelegatingStyledCellLabelProvider labelProvider = (DelegatingStyledCellLabelProvider) getViewer()
+          .getLabelProvider();
+      final String labelText = labelProvider.getStyledStringProvider()
+          .getStyledText(element)
+          .getString();
+      return wordMatcher.matchesWord(labelText);
+    });
+    return tree;
+  }
+
+  private class UiState extends TreeViewUiState {
+    private Map<String, FieldHierarchyViewerInput> hierarchyInputCache;
+
+    @Override
+    public void setFromTreeViewer(final TreeViewer viewer) {
+      super.setFromTreeViewer(viewer);
+      if (hierarchyView != null) {
+        hierarchyInputCache = hierarchyView.getInputCache();
+      }
     }
 
-    private class UiState extends TreeViewUiState {
-        private Map<String, FieldHierarchyViewerInput> hierarchyInputCache;
-
-        @Override
-        public void setFromTreeViewer(final TreeViewer viewer) {
-            super.setFromTreeViewer(viewer);
-            if (hierarchyView != null) {
-                hierarchyInputCache = hierarchyView.getInputCache();
-            }
-        }
-
-        @Override
-        public void applyToTreeViewer(final TreeViewer viewer) {
-            super.applyToTreeViewer(viewer);
-            if (hierarchyView != null) {
-                hierarchyView.setInputCache(hierarchyInputCache);
-            }
-        }
+    @Override
+    public void applyToTreeViewer(final TreeViewer viewer) {
+      super.applyToTreeViewer(viewer);
+      if (hierarchyView != null) {
+        hierarchyView.setInputCache(hierarchyInputCache);
+      }
     }
+  }
 }

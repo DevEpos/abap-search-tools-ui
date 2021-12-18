@@ -22,18 +22,18 @@ import org.eclipse.emf.ecore.EObject;
  * @generated
  */
 public interface IObjectSearchFavorites extends EObject {
-    /**
-     * Returns the value of the '<em><b>Object Search Favorites</b></em>'
-     * containment reference list. The list contents are of type
-     * {@link com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavorite}.
-     * <!-- begin-user-doc --> <!-- end-user-doc -->
-     *
-     * @return the value of the '<em>Object Search Favorites</em>' containment
-     *         reference list.
-     * @see com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavoritesPackage#getObjectSearchFavorites_ObjectSearchFavorites()
-     * @model containment="true" required="true"
-     * @generated
-     */
-    EList<IObjectSearchFavorite> getObjectSearchFavorites();
+  /**
+   * Returns the value of the '<em><b>Object Search Favorites</b></em>'
+   * containment reference list. The list contents are of type
+   * {@link com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavorite}.
+   * <!-- begin-user-doc --> <!-- end-user-doc -->
+   *
+   * @return the value of the '<em>Object Search Favorites</em>' containment
+   *         reference list.
+   * @see com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavoritesPackage#getObjectSearchFavorites_ObjectSearchFavorites()
+   * @model containment="true" required="true"
+   * @generated
+   */
+  EList<IObjectSearchFavorite> getObjectSearchFavorites();
 
 } // IObjectSearchFavorites

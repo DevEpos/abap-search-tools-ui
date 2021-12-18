@@ -11,47 +11,47 @@ import com.devepos.adt.base.ui.tree.ILazyLoadingNode;
  * @author stockbal
  */
 public class FieldHierarchyViewerNode {
-    private final ILazyLoadingNode node;
-    private boolean inputLoaded;
-    private TreePath[] expandedTreePaths;
+  private final ILazyLoadingNode node;
+  private boolean inputLoaded;
+  private TreePath[] expandedTreePaths;
 
-    public FieldHierarchyViewerNode(final ILazyLoadingNode node) {
-        this.node = node;
-    }
+  public FieldHierarchyViewerNode(final ILazyLoadingNode node) {
+    this.node = node;
+  }
 
-    public Object getInput() {
-        if (!inputLoaded) {
-            inputLoaded = true;
-        }
-        return node;
+  public Object getInput() {
+    if (!inputLoaded) {
+      inputLoaded = true;
     }
+    return node;
+  }
 
-    public ILazyLoadingNode getNodeValue() {
-        return node;
-    }
+  public ILazyLoadingNode getNodeValue() {
+    return node;
+  }
 
-    public boolean isInputAlreadyLoaded() {
-        return inputLoaded;
-    }
+  public boolean isInputAlreadyLoaded() {
+    return inputLoaded;
+  }
 
-    public boolean hasContent() {
-        return node != null;
-    }
+  public boolean hasContent() {
+    return node != null;
+  }
 
-    public void setExpandedState(final TreePath[] paths) {
-        expandedTreePaths = paths;
-    }
+  public void setExpandedState(final TreePath[] paths) {
+    expandedTreePaths = paths;
+  }
 
-    public TreePath[] getExpandedState() {
-        return expandedTreePaths == null ? new TreePath[0] : expandedTreePaths;
-    }
+  public TreePath[] getExpandedState() {
+    return expandedTreePaths == null ? new TreePath[0] : expandedTreePaths;
+  }
 
-    public void refreshInput() {
-        if (node == null) {
-            return;
-        }
-        inputLoaded = false;
-        expandedTreePaths = null;
-        node.resetLoadedState();
+  public void refreshInput() {
+    if (node == null) {
+      return;
     }
+    inputLoaded = false;
+    expandedTreePaths = null;
+    node.resetLoadedState();
+  }
 }

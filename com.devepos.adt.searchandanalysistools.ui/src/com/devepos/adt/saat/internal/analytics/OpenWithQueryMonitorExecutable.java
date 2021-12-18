@@ -12,21 +12,21 @@ import com.devepos.adt.saat.internal.util.OpenInUtil;
  * @author stockbal
  */
 public class OpenWithQueryMonitorExecutable extends Executable {
-    private final String cdsViewName;
-    private final String destinationId;
+  private final String cdsViewName;
+  private final String destinationId;
 
-    public OpenWithQueryMonitorExecutable(final String destinationId, final String cdsViewName) {
-        this.destinationId = destinationId;
-        this.cdsViewName = cdsViewName;
-    }
+  public OpenWithQueryMonitorExecutable(final String destinationId, final String cdsViewName) {
+    this.destinationId = destinationId;
+    this.cdsViewName = cdsViewName;
+  }
 
-    @Override
-    public void execute() {
-        final IAbapProjectProvider projectProvider = AbapProjectProviderAccessor.getProviderForDestination(
-            destinationId);
-        if (projectProvider != null) {
-            OpenInUtil.openCDSInQueryMonitor(projectProvider.getProject(), cdsViewName);
-        }
+  @Override
+  public void execute() {
+    final IAbapProjectProvider projectProvider = AbapProjectProviderAccessor
+        .getProviderForDestination(destinationId);
+    if (projectProvider != null) {
+      OpenInUtil.openCDSInQueryMonitor(projectProvider.getProject(), cdsViewName);
     }
+  }
 
 }

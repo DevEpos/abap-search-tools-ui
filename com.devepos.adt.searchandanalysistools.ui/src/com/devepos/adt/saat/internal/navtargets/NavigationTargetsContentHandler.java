@@ -20,62 +20,63 @@ import com.sap.adt.communication.message.IMessageBody;
  * @author stockbal
  */
 public class NavigationTargetsContentHandler implements IContentHandler<INavigationTarget[]> {
-    private final List<INavigationTarget> navigationTargets = new ArrayList<>();
+  private final List<INavigationTarget> navigationTargets = new ArrayList<>();
 
-    @Override
-    public INavigationTarget[] deserialize(final IMessageBody body, final Class<? extends INavigationTarget[]> clazz) {
-        final AdtStaxContentHandlerUtility utility = new AdtStaxContentHandlerUtility();
+  @Override
+  public INavigationTarget[] deserialize(final IMessageBody body,
+      final Class<? extends INavigationTarget[]> clazz) {
+    final AdtStaxContentHandlerUtility utility = new AdtStaxContentHandlerUtility();
 
-        try {
-            deserializeNavigationTargets(utility.parseXML(body));
-            if (navigationTargets != null) {
-                return navigationTargets.toArray(new INavigationTarget[navigationTargets.size()]);
-            }
-        } catch (final Exception e) {
-        }
-        return null;
+    try {
+      deserializeNavigationTargets(utility.parseXML(body));
+      if (navigationTargets != null) {
+        return navigationTargets.toArray(new INavigationTarget[navigationTargets.size()]);
+      }
+    } catch (final Exception e) {
     }
+    return null;
+  }
 
-    private void deserializeNavigationTargets(final IXmlElement rootElement) {
-        if (!rootElement.getName().equals(IXmlTags.EL_NAV_TARGETS) || !rootElement.hasChildren()) {
-            return;
-        }
-        for (final IXmlElement navTargetEl : rootElement.getChildren()) {
-            final String name = navTargetEl.getAttributeValue("name");
-
-            if (name == null || name.isEmpty()) {
-                continue;
-            }
-            INavigationTarget target = null;
-            switch (name) {
-            case "EXCEL":
-                target = new NavigationTarget(name, Messages.ElementInformation_AnalysisForOfficeTarget_xtit,
-                    IImages.EXCEL_APPLICATION);
-                break;
-            case "QUERY_MONITOR":
-                target = new NavigationTarget(name, Messages.ElementInformation_QueryMonitorTarget_xtit,
-                    IImages.ANALYTICAL_QUERY);
-                break;
-            }
-            if (target != null) {
-                navigationTargets.add(target);
-            }
-        }
+  private void deserializeNavigationTargets(final IXmlElement rootElement) {
+    if (!rootElement.getName().equals(IXmlTags.EL_NAV_TARGETS) || !rootElement.hasChildren()) {
+      return;
     }
+    for (final IXmlElement navTargetEl : rootElement.getChildren()) {
+      final String name = navTargetEl.getAttributeValue("name");
 
-    @Override
-    public String getSupportedContentType() {
-        return AdtMediaType.APPLICATION_XML;
+      if (name == null || name.isEmpty()) {
+        continue;
+      }
+      INavigationTarget target = null;
+      switch (name) {
+      case "EXCEL":
+        target = new NavigationTarget(name,
+            Messages.ElementInformation_AnalysisForOfficeTarget_xtit, IImages.EXCEL_APPLICATION);
+        break;
+      case "QUERY_MONITOR":
+        target = new NavigationTarget(name, Messages.ElementInformation_QueryMonitorTarget_xtit,
+            IImages.ANALYTICAL_QUERY);
+        break;
+      }
+      if (target != null) {
+        navigationTargets.add(target);
+      }
     }
+  }
 
-    @Override
-    public Class<INavigationTarget[]> getSupportedDataType() {
-        return INavigationTarget[].class;
-    }
+  @Override
+  public String getSupportedContentType() {
+    return AdtMediaType.APPLICATION_XML;
+  }
 
-    @Override
-    public IMessageBody serialize(final INavigationTarget[] arg0, final Charset arg1) {
-        return null;
-    }
+  @Override
+  public Class<INavigationTarget[]> getSupportedDataType() {
+    return INavigationTarget[].class;
+  }
+
+  @Override
+  public IMessageBody serialize(final INavigationTarget[] arg0, final Charset arg1) {
+    return null;
+  }
 
 }

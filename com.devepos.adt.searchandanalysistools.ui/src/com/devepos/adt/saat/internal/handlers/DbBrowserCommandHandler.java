@@ -18,29 +18,29 @@ import com.devepos.adt.saat.internal.util.FeatureTester;
  */
 public abstract class DbBrowserCommandHandler extends AbstractHandler {
 
-    /**
-     * Returns <code>true</code> if the DB Browser feature is available
-     *
-     * @param project an ABAP project
-     * @return <code>true</code> if the DB Browser feature is available
-     */
-    protected boolean isFeatureAvailable(final IProject project) {
-        if (project == null) {
-            return false;
-        }
-        return FeatureTester.isSapGuiDbBrowserAvailable(project);
+  /**
+   * Returns <code>true</code> if the DB Browser feature is available
+   *
+   * @param project an ABAP project
+   * @return <code>true</code> if the DB Browser feature is available
+   */
+  protected boolean isFeatureAvailable(final IProject project) {
+    if (project == null) {
+      return false;
     }
+    return FeatureTester.isSapGuiDbBrowserAvailable(project);
+  }
 
-    /**
-     * Shows a message dialog to signal the User that the DB Browser Feature is not
-     * available in the given project
-     *
-     * @param project an ABAP project
-     */
-    protected void showFeatureNotAvailableDialog(final IProject project) {
-        MessageDialog.openInformation(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
-            Messages.Dialog_InfoTitle_xmsg, NLS.bind(Messages.DbBrowser_featureIsNotAvailable_xmsg, DestinationUtil
-                .getDestinationId(project)));
-    }
+  /**
+   * Shows a message dialog to signal the User that the DB Browser Feature is not
+   * available in the given project
+   *
+   * @param project an ABAP project
+   */
+  protected void showFeatureNotAvailableDialog(final IProject project) {
+    MessageDialog.openInformation(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+        Messages.Dialog_InfoTitle_xmsg, NLS.bind(Messages.DbBrowser_featureIsNotAvailable_xmsg,
+            DestinationUtil.getDestinationId(project)));
+  }
 
 }

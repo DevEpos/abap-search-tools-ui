@@ -15,10 +15,11 @@ import com.devepos.adt.saat.internal.search.ui.ObjectSearchPage;
  */
 public class OpenObjectSearchDialogHandler extends AbstractHandler {
 
-    @Override
-    public Object execute(final ExecutionEvent event) throws ExecutionException {
-        NewSearchUI.openSearchDialog(HandlerUtil.getActiveWorkbenchWindow(event), ObjectSearchPage.PAGE_ID);
-        return null;
-    }
+  @Override
+  public Object execute(final ExecutionEvent event) throws ExecutionException {
+    NewSearchUI.openSearchDialog(HandlerUtil.getActiveWorkbenchWindow(event),
+        ObjectSearchPage.PAGE_ID);
+    return null;
+  }
 
 }

@@ -12,23 +12,23 @@ import com.sap.adt.tools.core.project.IAbapProject;
 
 public class PerformCdsTopDownAnalysisHandler extends OpenInCdsAnalyzerHandler {
 
-    public PerformCdsTopDownAnalysisHandler() {
-        super(CdsAnalysisType.TOP_DOWN);
-    }
+  public PerformCdsTopDownAnalysisHandler() {
+    super(CdsAnalysisType.TOP_DOWN);
+  }
 
-    @Override
-    protected boolean isFeatureAvailable(final IProject project) {
-        final IAbapProject abapProject = project.getAdapter(IAbapProject.class);
-        return new CdsAnalysisUriDiscovery(abapProject.getDestinationId()).isTopDownAnalysisAvailable();
-    }
+  @Override
+  protected boolean isFeatureAvailable(final IProject project) {
+    final IAbapProject abapProject = project.getAdapter(IAbapProject.class);
+    return new CdsAnalysisUriDiscovery(abapProject.getDestinationId()).isTopDownAnalysisAvailable();
+  }
 
-    @Override
-    protected String getFeatureUnavailableMessage() {
-        return Messages.CdsAnalysis_TopDownAnalsysisFeatureNotAvailable;
-    }
+  @Override
+  protected String getFeatureUnavailableMessage() {
+    return Messages.CdsAnalysis_TopDownAnalsysisFeatureNotAvailable;
+  }
 
-    @Override
-    protected CdsAnalysis createTypedAnalysis(final IAdtObjectReferenceElementInfo objectRefInfo) {
-        return new CdsTopDownAnalysis(objectRefInfo);
-    }
+  @Override
+  protected CdsAnalysis createTypedAnalysis(final IAdtObjectReferenceElementInfo objectRefInfo) {
+    return new CdsTopDownAnalysis(objectRefInfo);
+  }
 }

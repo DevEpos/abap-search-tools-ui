@@ -8,8 +8,8 @@ package com.devepos.adt.saat.internal.search;
  */
 public interface ISearchParameters {
 
-    void setMaxRows(int maxRows);
+  void setMaxRows(int maxRows);
 
-    int getMaxRows();
+  int getMaxRows();
 
 }

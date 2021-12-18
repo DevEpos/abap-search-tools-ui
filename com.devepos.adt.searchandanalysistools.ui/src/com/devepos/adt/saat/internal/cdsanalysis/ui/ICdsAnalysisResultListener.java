@@ -7,8 +7,8 @@ package com.devepos.adt.saat.internal.cdsanalysis.ui;
  */
 public interface ICdsAnalysisResultListener {
 
-    /**
-     * Triggers a label update in the corresponding analysis page/view
-     */
-    void updateLabel();
+  /**
+   * Triggers a label update in the corresponding analysis page/view
+   */
+  void updateLabel();
 }

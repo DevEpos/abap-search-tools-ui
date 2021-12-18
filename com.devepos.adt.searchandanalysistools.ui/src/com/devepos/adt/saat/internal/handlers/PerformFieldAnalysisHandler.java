@@ -13,21 +13,21 @@ import com.devepos.adt.saat.internal.cdsanalysis.ui.FieldAnalysis;
  */
 public class PerformFieldAnalysisHandler extends OpenInCdsAnalyzerHandler {
 
-    public PerformFieldAnalysisHandler() {
-        super(CdsAnalysisType.FIELD_ANALYSIS);
-    }
+  public PerformFieldAnalysisHandler() {
+    super(CdsAnalysisType.FIELD_ANALYSIS);
+  }
 
-    @Override
-    protected boolean canExecute(final IAdtObject selectedObject) {
-        /*
-         * At least the "Where-Used" field analysis can be executed for every ADT Object
-         * that was successfully adapted from the current selection
-         */
-        return true;
-    }
+  @Override
+  protected boolean canExecute(final IAdtObject selectedObject) {
+    /*
+     * At least the "Where-Used" field analysis can be executed for every ADT Object
+     * that was successfully adapted from the current selection
+     */
+    return true;
+  }
 
-    @Override
-    protected CdsAnalysis createTypedAnalysis(final IAdtObjectReferenceElementInfo objectRefInfo) {
-        return new FieldAnalysis(objectRefInfo);
-    }
+  @Override
+  protected CdsAnalysis createTypedAnalysis(final IAdtObjectReferenceElementInfo objectRefInfo) {
+    return new FieldAnalysis(objectRefInfo);
+  }
 }

@@ -12,15 +12,17 @@ import com.devepos.adt.saat.internal.search.contentassist.SearchParameterProposa
  */
 public class DatabaseEntityProposalProvider extends NamedItemProposalProvider {
 
-    public DatabaseEntityProposalProvider(final IAbapProjectProvider projectProvider,
-        final QueryParameterName parameterName) {
-        super(projectProvider, parameterName, NamedItemType.DB_ENTITY);
-    }
+  public DatabaseEntityProposalProvider(final IAbapProjectProvider projectProvider,
+      final QueryParameterName parameterName) {
+    super(projectProvider, parameterName, NamedItemType.DB_ENTITY);
+  }
 
-    @Override
-    protected IContentProposal createProposalFromNamedItem(final INamedItem item, final String query) {
-        final ObjectType type = ObjectType.getFromId(item.getData());
-        return new SearchParameterProposal(item.getName(), parameterName, null, item.getDescription(), type, query);
-    }
+  @Override
+  protected IContentProposal createProposalFromNamedItem(final INamedItem item,
+      final String query) {
+    final ObjectType type = ObjectType.getFromId(item.getData());
+    return new SearchParameterProposal(item.getName(), parameterName, null, item.getDescription(),
+        type, query);
+  }
 
 }

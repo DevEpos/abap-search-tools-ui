@@ -27,64 +27,65 @@ import com.devepos.adt.saat.model.objectsearchfavorites.IObjectSearchFavorite;
  */
 public class ManageSearchFavoritesMenu extends CompoundContributionItem {
 
-    private IObjectSearchFavorites favoriteManager;
+  private IObjectSearchFavorites favoriteManager;
 
-    public ManageSearchFavoritesMenu() {
-        favoriteManager = SearchAndAnalysisPlugin.getDefault().getFavoriteManager();
-    }
+  public ManageSearchFavoritesMenu() {
+    favoriteManager = SearchAndAnalysisPlugin.getDefault().getFavoriteManager();
+  }
 
-    public ManageSearchFavoritesMenu(final String id) {
-        super(id);
-    }
+  public ManageSearchFavoritesMenu(final String id) {
+    super(id);
+  }
 
-    @Override
-    protected IContributionItem[] getContributionItems() {
-        final IContributionItem[] items = createMenuItems();
-        return items;
-    }
+  @Override
+  protected IContributionItem[] getContributionItems() {
+    final IContributionItem[] items = createMenuItems();
+    return items;
+  }
 
-    private IContributionItem[] createMenuItems() {
-        final List<IContributionItem> items = new ArrayList<>();
-        if (!favoriteManager.hasEntries()) {
-            final IAction noFavoritesAction = new Action(Messages.ObjectSearch_NoSearchFavorites_xmit) {
-            };
-            noFavoritesAction.setEnabled(false);
-            items.add(new ActionContributionItem(noFavoritesAction));
-        } else {
-            for (final IObjectSearchFavorite favorite : favoriteManager.getFavorites()) {
-                final IAction favoriteAction = new Action(ObjectSearchFavoritesUtil.getFavoriteDisplayName(favorite)) {
-                    @Override
-                    public void run() {
-                        runSearch(favorite);
-                    }
-                };
+  private IContributionItem[] createMenuItems() {
+    final List<IContributionItem> items = new ArrayList<>();
+    if (!favoriteManager.hasEntries()) {
+      final IAction noFavoritesAction = new Action(Messages.ObjectSearch_NoSearchFavorites_xmit) {
+      };
+      noFavoritesAction.setEnabled(false);
+      items.add(new ActionContributionItem(noFavoritesAction));
+    } else {
+      for (final IObjectSearchFavorite favorite : favoriteManager.getFavorites()) {
+        final IAction favoriteAction = new Action(ObjectSearchFavoritesUtil.getFavoriteDisplayName(
+            favorite)) {
+          @Override
+          public void run() {
+            runSearch(favorite);
+          }
+        };
 
-                try {
-                    final SearchType searchType = SearchType.valueOf(favorite.getSearchType());
-                    favoriteAction.setImageDescriptor(searchType.getImageDescriptor());
-                } catch (NullPointerException | IllegalArgumentException exc) {
-                }
-                items.add(new ActionContributionItem(favoriteAction));
-            }
+        try {
+          final SearchType searchType = SearchType.valueOf(favorite.getSearchType());
+          favoriteAction.setImageDescriptor(searchType.getImageDescriptor());
+        } catch (NullPointerException | IllegalArgumentException exc) {
         }
-        items.add(new Separator());
-        items.add(new ActionContributionItem(new ImportFavoritesAction()));
-        final Action exportAction = new ExportFavoritesAction();
-        exportAction.setEnabled(favoriteManager.hasEntries());
-        items.add(new ActionContributionItem(exportAction));
-
-        return items.toArray(new IContributionItem[items.size()]);
+        items.add(new ActionContributionItem(favoriteAction));
+      }
     }
+    items.add(new Separator());
+    items.add(new ActionContributionItem(new ImportFavoritesAction()));
+    final Action exportAction = new ExportFavoritesAction();
+    exportAction.setEnabled(favoriteManager.hasEntries());
+    items.add(new ActionContributionItem(exportAction));
 
-    /*
-     * Executes a new object search for the given favorite
-     */
-    private void runSearch(final IObjectSearchFavorite favorite) {
-        if (favorite.isProjectIndependent()) {
-            ObjectSearchEngine.openFavoriteInSearchDialog(favorite);
-        } else {
-            ObjectSearchEngine.runSearchFromFavorite(favorite);
-        }
+    return items.toArray(new IContributionItem[items.size()]);
+  }
+
+  /*
+   * Executes a new object search for the given favorite
+   */
+  private void runSearch(final IObjectSearchFavorite favorite) {
+    if (favorite.isProjectIndependent()) {
+      ObjectSearchEngine.openFavoriteInSearchDialog(favorite);
+    } else {
+      ObjectSearchEngine.runSearchFromFavorite(favorite);
     }
+  }
 
 }

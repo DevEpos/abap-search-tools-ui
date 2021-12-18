@@ -11,22 +11,23 @@ import com.devepos.adt.saat.internal.messages.Messages;
  * @author stockbal
  */
 public class OpenColorPreferencePageAction extends Action {
-    private static final String COLORS_AND_FONTS_PREFERENCES = "org.eclipse.ui.preferencePages.ColorsAndFonts" //$NON-NLS-1$
-    ;
-    private final String colorId;
+  private static final String COLORS_AND_FONTS_PREFERENCES = "org.eclipse.ui.preferencePages.ColorsAndFonts" //$NON-NLS-1$
+  ;
+  private final String colorId;
 
-    public OpenColorPreferencePageAction() {
-        this(null);
-    }
+  public OpenColorPreferencePageAction() {
+    this(null);
+  }
 
-    public OpenColorPreferencePageAction(final String colorId) {
-        super(Messages.OpenColorPreferencePageAction_ActionName_xtol);
-        this.colorId = colorId != null && !colorId.isEmpty() ? String.format("selectColor:%s", colorId) : null; //$NON-NLS-1$
-    }
+  public OpenColorPreferencePageAction(final String colorId) {
+    super(Messages.OpenColorPreferencePageAction_ActionName_xtol);
+    this.colorId = colorId != null && !colorId.isEmpty() ? String.format("selectColor:%s", colorId) //$NON-NLS-1$
+        : null;
+  }
 
-    @Override
-    public void run() {
-        PreferencesUtil.createPreferenceDialogOn(null, COLORS_AND_FONTS_PREFERENCES, new String[] {
-            COLORS_AND_FONTS_PREFERENCES }, colorId).open();
-    }
+  @Override
+  public void run() {
+    PreferencesUtil.createPreferenceDialogOn(null, COLORS_AND_FONTS_PREFERENCES, new String[] {
+        COLORS_AND_FONTS_PREFERENCES }, colorId).open();
+  }
 }

@@ -8,45 +8,45 @@ package com.devepos.adt.saat.internal.search;
  *
  */
 public interface INamedItem {
-    /**
-     * Returns the name of the item
-     *
-     * @return
-     */
-    String getName();
+  /**
+   * Returns the name of the item
+   *
+   * @return
+   */
+  String getName();
 
-    /**
-     * Sets the name of the item
-     *
-     * @param name
-     */
-    void setName(final String name);
+  /**
+   * Sets the name of the item
+   *
+   * @param name
+   */
+  void setName(final String name);
 
-    /**
-     * Returns the description of the item
-     *
-     * @return
-     */
-    String getDescription();
+  /**
+   * Returns the description of the item
+   *
+   * @return
+   */
+  String getDescription();
 
-    /**
-     * Sets the description of the item
-     *
-     * @param description
-     */
-    void setDescription(final String description);
+  /**
+   * Sets the description of the item
+   *
+   * @param description
+   */
+  void setDescription(final String description);
 
-    /**
-     * Retrieves the custom data of the item
-     *
-     * @return
-     */
-    String getData();
+  /**
+   * Retrieves the custom data of the item
+   *
+   * @return
+   */
+  String getData();
 
-    /**
-     * Sets the custom data of the item
-     *
-     * @param data
-     */
-    void setData(final String data);
+  /**
+   * Sets the custom data of the item
+   *
+   * @param data
+   */
+  void setData(final String data);
 }

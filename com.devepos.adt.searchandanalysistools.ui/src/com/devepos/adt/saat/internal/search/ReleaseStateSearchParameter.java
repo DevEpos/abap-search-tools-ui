@@ -19,84 +19,85 @@ import com.devepos.adt.saat.internal.util.IImages;
  *
  * @author stockbal
  */
-public class ReleaseStateSearchParameter extends NamedItemProposalProvider implements ISearchParameter,
-    ISearchProposalProvider {
-    private final Image image;
+public class ReleaseStateSearchParameter extends NamedItemProposalProvider implements
+    ISearchParameter, ISearchProposalProvider {
+  private final Image image;
 
-    public ReleaseStateSearchParameter(final IAbapProjectProvider projectProvider) {
-        super(projectProvider, QueryParameterName.RELEASE_STATE, NamedItemType.API_STATE, true);
-        image = SearchAndAnalysisPlugin.getDefault().getImage(IImages.API_PARAM);
+  public ReleaseStateSearchParameter(final IAbapProjectProvider projectProvider) {
+    super(projectProvider, QueryParameterName.RELEASE_STATE, NamedItemType.API_STATE, true);
+    image = SearchAndAnalysisPlugin.getDefault().getImage(IImages.API_PARAM);
+  }
+
+  @Override
+  public List<IContentProposal> getProposalList(final String query) throws CoreException {
+    return getProposals("*", query);
+  }
+
+  @Override
+  public QueryParameterName getParameterName() {
+    return parameterName;
+  }
+
+  @Override
+  protected IContentProposal createProposalFromNamedItem(final INamedItem item,
+      final String query) {
+    return new SearchParameterProposal(item.getName(), parameterName, item.getDescription(),
+        getDescriptionFromItem(item.getData()), null, query);
+  }
+
+  /*
+   * Retrieve long text information from description
+   */
+  private String getDescriptionFromItem(final String description) {
+    if (description == null || description.isEmpty()) {
+      return null;
+    }
+    final String[] itemDescrComponents = description.split("@@##@@"); //$NON-NLS-1$
+    if (itemDescrComponents.length < 2) {
+      return null;
     }
 
-    @Override
-    public List<IContentProposal> getProposalList(final String query) throws CoreException {
-        return getProposals("*", query);
+    final String longText = itemDescrComponents[1];
+    final String[] longTextParts = longText.split("="); //$NON-NLS-1$
+    if (longTextParts == null || longTextParts.length < 2) {
+      return null;
     }
+    return longTextParts[1];
+  }
 
-    @Override
-    public QueryParameterName getParameterName() {
-        return parameterName;
-    }
+  @Override
+  public Image getImage() {
+    return image;
+  }
 
-    @Override
-    protected IContentProposal createProposalFromNamedItem(final INamedItem item, final String query) {
-        return new SearchParameterProposal(item.getName(), parameterName, item.getDescription(), getDescriptionFromItem(
-            item.getData()), null, query);
-    }
+  @Override
+  public String getLabel() {
+    return parameterName.getLowerCaseKey();
+  }
 
-    /*
-     * Retrieve long text information from description
-     */
-    private String getDescriptionFromItem(final String description) {
-        if (description == null || description.isEmpty()) {
-            return null;
-        }
-        final String[] itemDescrComponents = description.split("@@##@@"); //$NON-NLS-1$
-        if (itemDescrComponents.length < 2) {
-            return null;
-        }
+  @Override
+  public String getDescription() {
+    return NLS.bind(Messages.SearchPatternAnalyzer_DescriptionReleaseStateParameter_xmsg,
+        new Object[] { getLabel(), "cloud" });
+  }
 
-        final String longText = itemDescrComponents[1];
-        final String[] longTextParts = longText.split("="); //$NON-NLS-1$
-        if (longTextParts == null || longTextParts.length < 2) {
-            return null;
-        }
-        return longTextParts[1];
-    }
+  @Override
+  public boolean supportsPatternValues() {
+    return false;
+  }
 
-    @Override
-    public Image getImage() {
-        return image;
-    }
+  @Override
+  public boolean isBuffered() {
+    return true;
+  }
 
-    @Override
-    public String getLabel() {
-        return parameterName.getLowerCaseKey();
-    }
+  @Override
+  public boolean supportsMultipleValues() {
+    return true;
+  }
 
-    @Override
-    public String getDescription() {
-        return NLS.bind(Messages.SearchPatternAnalyzer_DescriptionReleaseStateParameter_xmsg, new Object[] { getLabel(),
-            "cloud" });
-    }
-
-    @Override
-    public boolean supportsPatternValues() {
-        return false;
-    }
-
-    @Override
-    public boolean isBuffered() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsMultipleValues() {
-        return true;
-    }
-
-    @Override
-    public boolean supportsNegatedValues() {
-        return true;
-    }
+  @Override
+  public boolean supportsNegatedValues() {
+    return true;
+  }
 }

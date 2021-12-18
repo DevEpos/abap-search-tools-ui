@@ -8,13 +8,13 @@ package com.devepos.adt.saat.internal.search;
  */
 public class NamedItemServiceFactory {
 
-    /**
-     * Creates instance of the {@link INamedItemService}
-     *
-     * @param destination ABAP project destination
-     * @return
-     */
-    public static INamedItemService createService(final String destination) {
-        return new NamedItemService(destination);
-    }
+  /**
+   * Creates instance of the {@link INamedItemService}
+   *
+   * @param destination ABAP project destination
+   * @return
+   */
+  public static INamedItemService createService(final String destination) {
+    return new NamedItemService(destination);
+  }
 }

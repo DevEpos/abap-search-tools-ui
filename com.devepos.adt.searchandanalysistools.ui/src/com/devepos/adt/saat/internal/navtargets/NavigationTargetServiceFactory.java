@@ -12,8 +12,8 @@ import com.devepos.adt.base.destinations.DestinationUtil;
  */
 public class NavigationTargetServiceFactory {
 
-    public static INavigationTargetService createService(final IProject project) {
-        Assert.isTrue(project != null);
-        return new NavigationTargetService(DestinationUtil.getDestinationId(project));
-    }
+  public static INavigationTargetService createService(final IProject project) {
+    Assert.isTrue(project != null);
+    return new NavigationTargetService(DestinationUtil.getDestinationId(project));
+  }
 }

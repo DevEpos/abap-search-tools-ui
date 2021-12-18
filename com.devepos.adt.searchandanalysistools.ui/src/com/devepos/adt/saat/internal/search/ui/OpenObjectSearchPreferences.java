@@ -12,14 +12,14 @@ import com.devepos.adt.saat.internal.preferences.IPreferences;
  * @author stockbal
  */
 public class OpenObjectSearchPreferences extends Action {
-    public OpenObjectSearchPreferences() {
-        super(Messages.ObjectSearchOpenPreferences_xmit);
+  public OpenObjectSearchPreferences() {
+    super(Messages.ObjectSearchOpenPreferences_xmit);
 
-    }
+  }
 
-    @Override
-    public void run() {
-        PreferencesUtil.createPreferenceDialogOn(null, IPreferences.MAIN_PREF_PAGE_ID, new String[] {
-            IPreferences.MAIN_PREF_PAGE_ID }, (Object) null).open();
-    }
+  @Override
+  public void run() {
+    PreferencesUtil.createPreferenceDialogOn(null, IPreferences.MAIN_PREF_PAGE_ID, new String[] {
+        IPreferences.MAIN_PREF_PAGE_ID }, (Object) null).open();
+  }
 }

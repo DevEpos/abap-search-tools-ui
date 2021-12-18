@@ -8,10 +8,10 @@ import com.devepos.adt.base.util.UriDiscoveryBase;;
  * @author stockbal
  */
 public class DbBrowserIntegrationUriDiscovery extends UriDiscoveryBase {
-    private static final String DISCOVERY_PATH = "/devepos/adt/dbbr/integration/discovery";
+  private static final String DISCOVERY_PATH = "/devepos/adt/dbbr/integration/discovery";
 
-    public DbBrowserIntegrationUriDiscovery(final String destination) {
-        super(destination, DISCOVERY_PATH, ""); //$NON-NLS-1$
-    }
+  public DbBrowserIntegrationUriDiscovery(final String destination) {
+    super(destination, DISCOVERY_PATH, ""); //$NON-NLS-1$
+  }
 
 }
