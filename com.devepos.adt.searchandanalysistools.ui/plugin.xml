@@ -246,6 +246,7 @@
      <extension
            point="org.eclipse.ui.preferencePages">
         <page
+              category="com.devepos.adt.preferences"
               class="com.devepos.adt.saat.internal.preferences.MainPreferencePage"
               id="com.devepos.adt.saat.ui.internal.MainPreferencePage"
               name="%preferencepage.name">
@@ -260,7 +261,7 @@
      <extension
            point="org.eclipse.ui.views">
         <view
-              category="com.sap.adt.views"
+              category="com.devepos.adt"
               class="com.devepos.adt.saat.internal.cdsanalysis.ui.CdsAnalysisView"
               icon="icons/CdsAnalyzerView.png"
               id="com.devepos.adt.saat.views.cdsanalyzer"
