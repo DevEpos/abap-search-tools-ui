@@ -179,13 +179,13 @@ public class ObjectSearchResult implements ISearchResult {
             adtObjRefInfo.getName(), adtObjRefInfo.getDisplayName(), adtObjRefInfo.getDescription(),
             adtObjRefInfo.getAdtObjectReference(), null);
         lazyLoadingNode.setElementInfoProvider(adtObjRefInfo.getElementInfoProvider());
-        lazyLoadingNode.setAdditionalInfo(adtObjRefInfo.getAdditionalInfo());
+        lazyLoadingNode.setNodeValue(adtObjRefInfo.getAdditionalInfo());
         nodes.add(lazyLoadingNode);
       } else {
         final AdtObjectReferenceNode nonLazyLoadingNode = new AdtObjectReferenceNode(adtObjRefInfo
             .getName(), adtObjRefInfo.getDisplayName(), adtObjRefInfo.getDescription(),
             adtObjRefInfo.getAdtObjectReference(), null);
-        nonLazyLoadingNode.setAdditionalInfo(adtObjRefInfo.getAdditionalInfo());
+        nonLazyLoadingNode.setNodeValue(adtObjRefInfo.getAdditionalInfo());
         nodes.add(nonLazyLoadingNode);
       }
     }
@@ -204,17 +204,17 @@ public class ObjectSearchResult implements ISearchResult {
             adtObjRefInfo.getName(), adtObjRefInfo.getDisplayName(), adtObjRefInfo.getDescription(),
             adtObjRefInfo.getAdtObjectReference(), null);
         lazyLoadingNode.setElementInfoProvider(adtObjRefInfo.getElementInfoProvider());
-        lazyLoadingNode.setAdditionalInfo(adtObjRefInfo.getAdditionalInfo());
+        lazyLoadingNode.setNodeValue(adtObjRefInfo.getAdditionalInfo());
         node = lazyLoadingNode;
       } else {
         final AdtObjectReferenceNode nonLazyLoadingNode = new AdtObjectReferenceNode(adtObjRefInfo
             .getName(), adtObjRefInfo.getDisplayName(), adtObjRefInfo.getDescription(),
             adtObjRefInfo.getAdtObjectReference(), null);
-        nonLazyLoadingNode.setAdditionalInfo(adtObjRefInfo.getAdditionalInfo());
+        nonLazyLoadingNode.setNodeValue(adtObjRefInfo.getAdditionalInfo());
         node = nonLazyLoadingNode;
       }
 
-      node.setAdditionalInfo(adtObjRefInfo.getAdditionalInfo());
+      node.setNodeValue(adtObjRefInfo.getAdditionalInfo());
 
       nodeMap.put(String.format(KEY_PATTERN, adtObjRefInfo.getName(), adtObjRefInfo.getAdtType()),
           node);
@@ -227,7 +227,7 @@ public class ObjectSearchResult implements ISearchResult {
       }
       node = new PackageNode(adtObjRefInfo.getName(), adtObjRefInfo.getDescription(), adtObjRefInfo
           .getAdtObjectReference());
-      node.setAdditionalInfo(adtObjRefInfo.getAdditionalInfo());
+      node.setNodeValue(adtObjRefInfo.getAdditionalInfo());
       packageNodes.add(node);
       nodeMap.put(String.format(KEY_PATTERN, adtObjRefInfo.getName(), adtObjRefInfo.getAdtType()),
           node);

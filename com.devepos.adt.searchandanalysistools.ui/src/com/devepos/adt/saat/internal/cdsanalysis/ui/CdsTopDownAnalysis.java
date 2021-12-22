@@ -30,7 +30,7 @@ public class CdsTopDownAnalysis extends CdsAnalysis {
     node.setElementInfoProvider(new CdsTopDownElementInfoProvider(destProvider != null
         ? destProvider.getDestinationId()
         : null, cdsObjInfo.getName()));
-    node.setAdditionalInfo(cdsObjInfo.getAdditionalInfo());
+    node.setNodeValue(cdsObjInfo.getAdditionalInfo());
     cdsNode = node;
   }
 
