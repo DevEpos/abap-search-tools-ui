@@ -128,7 +128,7 @@ public class CommandPossibleChecker {
   }
 
   private boolean isSingleCdsSelection() {
-    return hasSingleSelection() && selectedAdtObjects.get(0).getObjectType() == ObjectType.CDS_VIEW;
+    return hasSingleSelection() && selectedAdtObjects.get(0).getObjectType() == ObjectType.DATA_DEFINITION;
   }
 
 }

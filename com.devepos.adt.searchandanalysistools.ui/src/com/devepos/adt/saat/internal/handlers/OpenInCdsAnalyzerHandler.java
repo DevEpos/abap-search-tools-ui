@@ -122,7 +122,7 @@ public abstract class OpenInCdsAnalyzerHandler extends AbstractHandler {
   }
 
   protected boolean canExecute(final IAdtObject selectedObject) {
-    return selectedObject.getObjectType() == ObjectType.CDS_VIEW;
+    return selectedObject.getObjectType() == ObjectType.DATA_DEFINITION;
   }
 
 }

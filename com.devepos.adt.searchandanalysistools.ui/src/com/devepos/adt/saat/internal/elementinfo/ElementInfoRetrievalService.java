@@ -49,7 +49,7 @@ class ElementInfoRetrievalService implements IElementInfoRetrievalService {
     final AnalysisForOfficeUriDiscovery anlyticsURIDiscovery = new AnalysisForOfficeUriDiscovery(
         projectProvider.getDestinationId());
 
-    if (type.equals(ObjectType.CDS_VIEW.getAdtExecutionType())) {
+    if (type.equals(ObjectType.DATA_DEFINITION.getAdtExecutionType())) {
       adtObjectHandler = new CdsViewElementInfoContentHandler(destinationId, uriDiscovery
           .getCDSSecondaryElementInfoTemplate() != null, anlyticsURIDiscovery
               .getLauncherTemplate() != null);
@@ -58,7 +58,7 @@ class ElementInfoRetrievalService implements IElementInfoRetrievalService {
           .getBoolean(IPreferences.SHOW_FULL_ASSOCIATION_NAME)) {
         paramsMap.put("showAssocName", "X"); //$NON-NLS-1$ //$NON-NLS-2$
       }
-      objectType = ObjectType.CDS_VIEW;
+      objectType = ObjectType.DATA_DEFINITION;
     } else if (type.equals(ObjectType.TABLE.getAdtExecutionType())) {
       adtObjectHandler = new TableElementInfoContentHandler(destinationId);
       objectType = ObjectType.TABLE;

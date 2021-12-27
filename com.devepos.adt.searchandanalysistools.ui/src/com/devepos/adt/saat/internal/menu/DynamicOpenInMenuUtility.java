@@ -87,7 +87,7 @@ public class DynamicOpenInMenuUtility {
         if (isDbBrowserAvailable) {
           add(new Separator());
         }
-        final boolean isCdsView = adtObjects.get(0).getObjectType() == ObjectType.CDS_VIEW;
+        final boolean isCdsView = adtObjects.get(0).getObjectType() == ObjectType.DATA_DEFINITION;
         if (isCdsView && FeatureTester.isCdsTopDownAnalysisAvailable(project)) {
           SaatMenuItemFactory.addCdsAnalyzerCommandItem(this, null,
               ICommandConstants.CDS_TOP_DOWN_ANALYSIS);

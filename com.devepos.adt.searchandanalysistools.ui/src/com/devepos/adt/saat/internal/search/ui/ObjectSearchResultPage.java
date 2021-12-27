@@ -399,7 +399,7 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage,
 
         if (selectionSize == 1) {
           singleDataPreviewObjectSelected = true;
-          singleCdsViewSelected = objRefNode.getObjectType() == ObjectType.CDS_VIEW;
+          singleCdsViewSelected = objRefNode.getObjectType() == ObjectType.DATA_DEFINITION;
         }
       }
 
@@ -550,7 +550,7 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage,
       image = searchResult.getImage();
       if (image == null && element instanceof IAdtObjectReferenceNode) {
         final IAdtObjectReferenceNode adtObjRefNode = (IAdtObjectReferenceNode) element;
-        if (adtObjRefNode.getObjectType() == ObjectType.CDS_VIEW) {
+        if (adtObjRefNode.getObjectType() == ObjectType.DATA_DEFINITION) {
           image = SearchAndAnalysisPlugin.getDefault().getImage(IImages.CDS_VIEW);
         } else {
           image = AdtTypeUtil.getInstance().getTypeImage(adtObjRefNode.getAdtObjectType());

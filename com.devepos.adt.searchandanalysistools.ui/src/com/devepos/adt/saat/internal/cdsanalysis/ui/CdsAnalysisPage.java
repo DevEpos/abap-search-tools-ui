@@ -333,9 +333,9 @@ public abstract class CdsAnalysisPage<T extends CdsAnalysis> extends Page {
 
       if (element instanceof IAdtObjectReferenceNode) {
         final IAdtObjectReferenceNode adtObjRefNode = (IAdtObjectReferenceNode) element;
-        if (adtObjRefNode.getObjectType() == ObjectType.CDS_VIEW) {
+        if (adtObjRefNode.getObjectType() == ObjectType.DATA_DEFINITION) {
           image = AdtTypeUtil.getInstance()
-              .getTypeImage(IAdtObjectTypeConstants.CDS_VIEW_DEFINITION_TYPE);
+              .getTypeImage(IAdtObjectTypeConstants.CDS_VIEW_GWT);
         } else {
           image = AdtTypeUtil.getInstance().getTypeImage(adtObjRefNode.getAdtObjectType());
         }

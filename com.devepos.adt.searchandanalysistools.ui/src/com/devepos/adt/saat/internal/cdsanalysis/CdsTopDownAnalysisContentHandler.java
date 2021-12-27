@@ -61,7 +61,7 @@ public class CdsTopDownAnalysisContentHandler extends AdtObjectElementInfoConten
       adtObjectRef.setPackageName(packageName);
       adtObjRefInfo.setAdtObjectReference(adtObjectRef);
       final ObjectType objectType = ObjectType.getFromAdtType(adtObjectRef.getType());
-      if (objectType != null && objectType != ObjectType.CDS_VIEW) {
+      if (objectType != null && objectType != ObjectType.DATA_DEFINITION) {
         adtObjRefInfo.setLazyLoadingSupport(false);
       } else {
         adtObjRefInfo.setElementInfoProvider(new CdsTopDownElementInfoProvider(destinationId,

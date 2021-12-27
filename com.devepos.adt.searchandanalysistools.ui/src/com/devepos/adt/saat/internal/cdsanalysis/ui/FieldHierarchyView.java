@@ -175,7 +175,7 @@ public class FieldHierarchyView implements IDestinationProvider {
       // create new input
       LazyLoadingFolderNode topDownNode = null;
       if (parentView.uriDiscovery.isHierarchyAnalysisAvailable()
-          && currentInputObjectType == ObjectType.CDS_VIEW) {
+          && currentInputObjectType == ObjectType.DATA_DEFINITION) {
         topDownNode = new LazyLoadingFolderNode(currentEntityName, currentEntityName,
             new CdsFieldTopDownElementInfoProvider(getDestinationId(), currentEntityName,
                 fieldName), node.getParent().getImage(), null, null);
@@ -292,7 +292,7 @@ public class FieldHierarchyView implements IDestinationProvider {
   private void updateToolbarLabel(final boolean topDown) {
     hierarchyViewerPaneLabel.setImage(fieldNode.getImage());
     final StringBuilder infoLabelText = new StringBuilder(
-        currentInputObjectType != ObjectType.CDS_VIEW ? fieldNode.getDisplayName().toUpperCase()
+        currentInputObjectType != ObjectType.DATA_DEFINITION ? fieldNode.getDisplayName().toUpperCase()
             : fieldNode.getDisplayName());
     infoLabelText.append("   ["); //$NON-NLS-1$
     if (topDown) {

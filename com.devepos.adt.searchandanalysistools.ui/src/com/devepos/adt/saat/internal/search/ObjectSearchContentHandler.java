@@ -92,8 +92,8 @@ public class ObjectSearchContentHandler implements IContentHandler<ObjectSearchR
             destinationId, name, type, uri);
         adtObjectRef.setPackageName(packageName);
         elementInfo.setAdtObjectReference(adtObjectRef);
-        if (IAdtObjectTypeConstants.CLASS_DEFINITION_TYPE.equals(type)
-            || IAdtObjectTypeConstants.INTERFACE_DEFINITION.equals(type)) {
+        if (IAdtObjectTypeConstants.CLASS_GWT.equals(type)
+            || IAdtObjectTypeConstants.INTERFACE_GWT.equals(type)) {
           elementInfo.setLazyLoadingSupport(false);
         } else {
           elementInfo.setElementInfoProvider(new ObjectSearchElementInfoProvider(destinationId,

@@ -85,7 +85,7 @@ public class LabelProvider extends org.eclipse.jface.viewers.LabelProvider {
       return null;
     }
     switch (objectType) {
-    case CDS_VIEW:
+    case DATA_DEFINITION:
       return getImage(IImages.CDS_VIEW);
     case TABLE:
       return getImage(IImages.TABLE_DEFINITION);

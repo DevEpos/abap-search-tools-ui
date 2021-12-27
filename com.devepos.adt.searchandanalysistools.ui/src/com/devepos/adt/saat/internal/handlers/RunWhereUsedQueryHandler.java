@@ -54,8 +54,8 @@ public class RunWhereUsedQueryHandler extends AbstractHandler {
     final String adtObjectUri = selectedAdtObjRef.getUri();
     final String adtObjectType = selectedAdtObjRef.getType();
 
-    if (IAdtObjectTypeConstants.DDLS_DEFINITION_TYPE.equals(adtObjectType)
-        || IAdtObjectTypeConstants.CDS_VIEW_DEFINITION_TYPE.equals(adtObjectType)) {
+    if (IAdtObjectTypeConstants.DATA_DEFINITION_GWT.equals(adtObjectType)
+        || IAdtObjectTypeConstants.CDS_VIEW_GWT.equals(adtObjectType)) {
       runWhereUsedForDdls(event, project, selectedAdtObjRef);
     } else {
       runWhereUsed(project, adtObjectUri);
@@ -76,7 +76,7 @@ public class RunWhereUsedQueryHandler extends AbstractHandler {
           final IAdtObjectReferenceElementInfo ddlsObjectInfo = ElementInfoRetrievalServiceFactory
               .createService()
               .retrieveBasicElementInformation(DestinationUtil.getDestinationId(project),
-                  adtObjectRef.getName(), ObjectType.CDS_VIEW);
+                  adtObjectRef.getName(), ObjectType.DATA_DEFINITION);
           if (ddlsObjectInfo != null) {
             ddlsUri = ddlsObjectInfo.getUri();
           }
