@@ -11,7 +11,7 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.emf.ecore;visibility:=reexport,
  org.eclipse.emf.ecore.xmi;visibility:=reexport
-Bundle-RequiredExecutionEnvironment: JavaSE-1.8
+Bundle-RequiredExecutionEnvironment: JavaSE-11
 Export-Package: com.devepos.adt.saat.model.objectsearchfavorites;x-friends:="com.devepos.adt.searchandanalysistools.ui",
  com.devepos.adt.saat.model.objectsearchfavorites.impl;x-internal:=true,
  com.devepos.adt.saat.model.objectsearchfavorites.util;x-friends:="com.devepos.adt.searchandanalysistools.ui"

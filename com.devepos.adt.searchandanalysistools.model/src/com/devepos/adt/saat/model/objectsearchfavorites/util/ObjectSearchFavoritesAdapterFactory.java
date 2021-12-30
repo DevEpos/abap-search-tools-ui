@@ -65,7 +65,7 @@ public class ObjectSearchFavoritesAdapterFactory extends AdapterFactoryImpl {
    *
    * @generated
    */
-  protected ObjectSearchFavoritesSwitch<Adapter> modelSwitch = new ObjectSearchFavoritesSwitch<Adapter>() {
+  protected ObjectSearchFavoritesSwitch<Adapter> modelSwitch = new ObjectSearchFavoritesSwitch<>() {
     @Override
     public Adapter caseObjectSearchFavorites(final IObjectSearchFavorites object) {
       return createObjectSearchFavoritesAdapter();
