@@ -197,7 +197,7 @@ public class FieldHierarchyViewer extends TreeViewer {
       if (image == null && adtObjectRefNode != null) {
         image = AdtTypeUtil.getInstance()
             .getTypeImage(adtObjectRefNode.getObjectType() == ObjectType.DATA_DEFINITION
-                ? IAdtObjectTypeConstants.CDS_VIEW_GWT
+                ? IAdtObjectTypeConstants.CDS_VIEW
                 : adtObjectRefNode.getAdtObjectType());
       }
       if (image == null) {

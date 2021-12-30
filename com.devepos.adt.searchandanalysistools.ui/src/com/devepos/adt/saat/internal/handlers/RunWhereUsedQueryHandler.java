@@ -54,8 +54,8 @@ public class RunWhereUsedQueryHandler extends AbstractHandler {
     final String adtObjectUri = selectedAdtObjRef.getUri();
     final String adtObjectType = selectedAdtObjRef.getType();
 
-    if (IAdtObjectTypeConstants.DATA_DEFINITION_GWT.equals(adtObjectType)
-        || IAdtObjectTypeConstants.CDS_VIEW_GWT.equals(adtObjectType)) {
+    if (IAdtObjectTypeConstants.DATA_DEFINITION.equals(adtObjectType)
+        || IAdtObjectTypeConstants.CDS_VIEW.equals(adtObjectType)) {
       runWhereUsedForDdls(event, project, selectedAdtObjRef);
     } else {
       runWhereUsed(project, adtObjectUri);
