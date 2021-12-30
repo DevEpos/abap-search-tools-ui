@@ -51,7 +51,7 @@ public class DynamicOpenInMenuUtility {
       return null;
     }
     final IProject project = adtObjects.get(0).getProject();
-    if ((project == null) || !FeatureTester.isObjectSearchAvailable(project)) {
+    if (project == null || !FeatureTester.isObjectSearchAvailable(project)) {
       return null;
     }
     return new DynamicOpenInMenuManager(adtObjects, project);

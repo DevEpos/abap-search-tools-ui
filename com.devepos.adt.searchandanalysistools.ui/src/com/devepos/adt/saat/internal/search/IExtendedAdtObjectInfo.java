@@ -21,8 +21,8 @@ public interface IExtendedAdtObjectInfo {
 
   /**
    * Returns the source type of the object search result <br>
-   * This is only relevant for objects of type {@link ObjectType#DATA_DEFINITION} at the
-   * moment
+   * This is only relevant for objects of type {@link ObjectType#DATA_DEFINITION}
+   * at the moment
    *
    * @return
    */

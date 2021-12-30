@@ -28,7 +28,7 @@ public class CdsAnalysisKey {
 
   @Override
   public boolean equals(final Object obj) {
-    if ((obj == null) || !(obj instanceof CdsAnalysisKey)) {
+    if (obj == null || !(obj instanceof CdsAnalysisKey)) {
       return false;
     }
     final CdsAnalysisKey other = (CdsAnalysisKey) obj;

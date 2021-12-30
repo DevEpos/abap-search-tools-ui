@@ -292,8 +292,8 @@ public class FieldHierarchyView implements IDestinationProvider {
   private void updateToolbarLabel(final boolean topDown) {
     hierarchyViewerPaneLabel.setImage(fieldNode.getImage());
     final StringBuilder infoLabelText = new StringBuilder(
-        currentInputObjectType != ObjectType.DATA_DEFINITION ? fieldNode.getDisplayName().toUpperCase()
-            : fieldNode.getDisplayName());
+        currentInputObjectType != ObjectType.DATA_DEFINITION ? fieldNode.getDisplayName()
+            .toUpperCase() : fieldNode.getDisplayName());
     infoLabelText.append("   ["); //$NON-NLS-1$
     if (topDown) {
       infoLabelText.append(Messages.FieldHierarchyView_FieldOriginModeHeading_xfld);

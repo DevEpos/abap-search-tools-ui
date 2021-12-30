@@ -143,7 +143,8 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage,
 
   @Override
   public boolean performAction() {
-    if ((currentStatus != null && currentStatus.getSeverity() == IStatus.ERROR) || !isValidSearchData()) {
+    if (currentStatus != null && currentStatus.getSeverity() == IStatus.ERROR
+        || !isValidSearchData()) {
       return false;
     }
     // save current project in preferences
@@ -314,7 +315,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage,
       updateOKStatus();
     });
 
-    final ControlDecoration decorator = new ControlDecoration(searchInput, 16512);
+    final ControlDecoration decorator = new ControlDecoration(searchInput, SWT.TOP | SWT.LEFT);
     final Image decoratorImage = FieldDecorationRegistry.getDefault()
         .getFieldDecoration("DEC_INFORMATION")
         .getImage();
@@ -568,7 +569,8 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage,
   }
 
   private boolean isValidSearchData() {
-    if (searchRequest.getQuery() == null || searchRequest.getQuery().isEmpty() || !projectProvider.hasProject()) {
+    if (searchRequest.getQuery() == null || searchRequest.getQuery().isEmpty() || !projectProvider
+        .hasProject()) {
       return false;
     }
 
@@ -619,7 +621,7 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage,
     if (status == null) {
       status = Status.OK_STATUS;
     }
-    if ((currentStatus == null) || (status.getCode() == currentStatus.getCode())) {
+    if (currentStatus == null || status.getCode() == currentStatus.getCode()) {
       return status;
     }
     return status;

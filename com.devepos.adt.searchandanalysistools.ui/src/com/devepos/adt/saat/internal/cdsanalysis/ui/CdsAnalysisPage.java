@@ -264,7 +264,7 @@ public abstract class CdsAnalysisPage<T extends CdsAnalysis> extends Page {
    * @param viewer the viewer to be registered
    */
   protected final void registerViewerToClipboardAction(final StructuredViewer viewer) {
-    if ((this.copyToClipBoardAction == null) || (viewer == null)) {
+    if (this.copyToClipBoardAction == null || viewer == null) {
       return;
     }
     this.copyToClipBoardAction.registerViewer(viewer);
