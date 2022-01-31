@@ -291,9 +291,6 @@
         </viewPage>
      </extension>
      <extension
-           point="org.eclipse.ui.bindings">
-     </extension>
-     <extension
            point="org.eclipse.ui.themes">
         <colorDefinition
               categoryId="com.devepos.adt.saat.cdsAnalysis"
