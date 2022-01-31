@@ -20,6 +20,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.search.ui.ISearchPage;
 import org.eclipse.search.ui.ISearchPageContainer;
+import org.eclipse.search.ui.ISearchResultViewPart;
 import org.eclipse.search.ui.NewSearchUI;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -147,17 +148,19 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage,
         || !isValidSearchData()) {
       return false;
     }
+    ISearchResultViewPart activeSearchView = null;
     // save current project in preferences
     prefStore.putValue(LAST_PROJECT_PREF, projectProvider.getProjectName());
     ObjectSearchQuery query = null;
     if (previousQuery != null) {
       query = previousQuery;
       query.setSearchRequest(searchRequest);
+      activeSearchView = NewSearchUI.getSearchResultView();
     } else {
       query = new ObjectSearchQuery(searchRequest);
     }
 
-    NewSearchUI.runQueryInBackground(query);
+    NewSearchUI.runQueryInBackground(query, activeSearchView);
 
     return true;
   }
