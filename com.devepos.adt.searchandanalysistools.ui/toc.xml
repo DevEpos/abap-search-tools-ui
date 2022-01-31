@@ -3,7 +3,7 @@
    <topic href="html/overview.html" label="About ABAP Search and Analysis Tools">
    </topic>
    <topic label="Concepts">
-      <topic href="html/object_search.html" label="ABAP Object Search +">
+      <topic href="html/object_search.html" label="ABAP Object Search">
          <topic href="html/object_search/cds.html" label="CDS View">
          </topic>
          <topic href="html/object_search/dbtabview.html" label="Database Table/View">
