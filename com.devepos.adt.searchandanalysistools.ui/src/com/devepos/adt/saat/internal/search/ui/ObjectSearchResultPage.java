@@ -75,6 +75,8 @@ import com.devepos.adt.base.ui.util.WorkbenchUtil;
 import com.devepos.adt.saat.internal.ICommandConstants;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.cdsanalysis.CdsAnalysisUriDiscovery;
+import com.devepos.adt.saat.internal.help.HelpContexts;
+import com.devepos.adt.saat.internal.help.HelpUtil;
 import com.devepos.adt.saat.internal.menu.SaatMenuItemFactory;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.search.IExtendedAdtObjectInfo;
@@ -135,6 +137,8 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage,
   @Override
   public void createControl(final Composite parent) {
     mainComposite = createTreeViewerComposite(parent);
+
+    HelpUtil.setHelp(mainComposite, HelpContexts.OBJECT_SEARCH);
     createResultTree(mainComposite);
     initializeActions();
     hookContextMenu();
