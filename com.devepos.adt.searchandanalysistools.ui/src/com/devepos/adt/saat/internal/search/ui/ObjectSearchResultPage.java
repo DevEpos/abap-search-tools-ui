@@ -379,6 +379,7 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage,
   private void fillContextMenu(final IMenuManager menu) {
     menu.add(new Separator(IContextMenuConstants.GROUP_NEW));
     menu.add(new Separator(IContextMenuConstants.GROUP_OPEN));
+    menu.add(new Separator(IContextMenuConstants.GROUP_SEARCH));
 
     final IStructuredSelection selection = searchResultTree.getStructuredSelection();
     if (selection == null || selection.isEmpty()) {
