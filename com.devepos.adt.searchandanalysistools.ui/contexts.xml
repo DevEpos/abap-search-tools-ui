@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <contexts>
-   <context id="object_search" title="Help for ABAP Object Search +">
-      <topic href="html/object_search.html" label="ABAP Object Search +"/>
+   <context id="object_search" title="Help for ABAP Object Search">
+      <description>ABAP Object Search (DevEpos) can be used to run detailed searches in an ABAP system for certain object types.</description>
+      <topic href="html/object_search.html" label="ABAP Object Search"/>
    </context>
    <context id="cds_analyzer" title="Help for CDS Analyzer">
+      <description>The CDS Analyzer (DevEpos) can be used to analyze CDS views in certain ways</description>
       <topic href="html/cds_analyzer.html" label="CDS Analyzer"/>
    </context>
 </contexts>

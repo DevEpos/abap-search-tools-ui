@@ -6,7 +6,8 @@ package com.devepos.adt.saat.internal.help;
  * @author stockbal
  */
 public enum HelpContexts {
-  OBJECT_SEARCH("object_search"), CDS_ANALYZER("cds_analyzer");
+  OBJECT_SEARCH("object_search"),
+  CDS_ANALYZER("cds_analyzer");
 
   private String helpContextId;
 
