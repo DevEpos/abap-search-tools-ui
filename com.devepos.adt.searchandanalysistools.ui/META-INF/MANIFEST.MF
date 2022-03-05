@@ -2,13 +2,14 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: com.devepos.adt.searchandanalysistools.ui;singleton:=true
-Bundle-Version: 1.4.0.qualifier
+Bundle-Version: 1.5.0.qualifier
 Bundle-ClassPath: .
 Bundle-Activator: com.devepos.adt.saat.internal.SearchAndAnalysisPlugin
 Bundle-Vendor: %providerName
 Bundle-Localization: OSGI-INF/l10n/bundle
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.expressions,
+ org.eclipse.core.databinding,
  org.eclipse.core.resources,
  org.eclipse.core.runtime,
  org.eclipse.emf.common,
