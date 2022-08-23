@@ -330,4 +330,10 @@
               plugin="com.devepos.adt.searchandanalysistools.ui">
         </contexts>
      </extension>
+     <extension
+           point="com.sap.adt.activation.ui.activationSuccessListener">
+        <onActivationSuccess
+            class="com.devepos.adt.saat.internal.activation.CdsActivationSuccessListener">
+        </onActivationSuccess>
+     </extension>
 </plugin>
