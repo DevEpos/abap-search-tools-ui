@@ -10,11 +10,13 @@ import com.devepos.adt.saat.internal.util.IImages;
  * @author stockbal
  */
 public enum CdsSourceType implements IDataSourceType {
-  NORMAL("V", null),
+  VIEW("V", null),
+  VIEW_ENTITY("W", null),
   CUSTOM("Q", IImages.SOURCE_TYPE_CUSTOM_ENTITY_OVR),
   ABSTRACT("A", IImages.SOURCE_TYPE_ABSTRACT_ENTITY_OVR),
   FUNCTION("F", IImages.SOURCE_TYPE_FUNCTION_OVR),
-  EXTEND("E", null);
+  EXTEND("E", null),
+  EXTEND2("X", null);
 
   private String imageId;
   private String id;
