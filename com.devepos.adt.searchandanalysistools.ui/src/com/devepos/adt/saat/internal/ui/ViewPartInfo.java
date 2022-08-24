@@ -51,6 +51,11 @@ public abstract class ViewPartInfo extends ScrolledComposite {
   public ViewPartInfo(final Composite parent, final String title) {
     super(parent, SWT.V_SCROLL | SWT.H_SCROLL);
     this.title = title;
+    /*
+     * hack to fix background problem of StyledText in Dark mode (see
+     * com.sap.adt.util.ui.controls.AdtViewTextPage)
+     */
+    setData("org.eclipse.e4.ui.css.id", "AdtViewTextPage");
     init();
     createInformationText();
   }
