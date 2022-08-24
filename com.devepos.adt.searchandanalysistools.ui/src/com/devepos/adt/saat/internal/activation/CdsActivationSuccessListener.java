@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.jobs.Job;
 
 import com.devepos.adt.base.IAdtObjectTypeConstants;
 import com.devepos.adt.base.destinations.DestinationUtil;
@@ -56,16 +57,26 @@ public class CdsActivationSuccessListener implements IActivationSuccessListener 
     }
 
     if (resourceUri != null) {
+      Job postActionationJob = createPostActivationJob(resourceUri, payload, destinationId);
+      postActionationJob.schedule();
+    }
+  }
+
+  private Job createPostActivationJob(final URI resourceUri, final String payload,
+      final String destinationId) {
+    return Job.createSystem("Run CDS Post Activation", monitor -> { //$NON-NLS-1$
       final ISystemSession session = AdtSystemSessionFactory.createSystemSessionFactory()
           .createStatelessSession(destinationId);
 
-      final IRestResource restResource = AdtRestResourceFactory.createRestResourceFactory()
+      final IRestResource cdsPostActivationResource = AdtRestResourceFactory
+          .createRestResourceFactory()
           .createRestResource(resourceUri, session);
       if (payload != null) {
-        restResource.addContentHandler(new PlainTextContentHandler());
+        cdsPostActivationResource.addContentHandler(new PlainTextContentHandler());
       }
-      restResource.post(new NullProgressMonitor(), String.class, payload);
-    }
+      cdsPostActivationResource.post(new NullProgressMonitor(), String.class, payload);
+      monitor.done();
+    });
   }
 
 }
