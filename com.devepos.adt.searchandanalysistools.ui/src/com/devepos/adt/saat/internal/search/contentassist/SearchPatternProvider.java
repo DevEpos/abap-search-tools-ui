@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.swt.widgets.Text;
 
-import com.devepos.adt.base.ui.project.IAbapProjectProvider;
+import com.devepos.adt.base.project.IAbapProjectProvider;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.preferences.IPreferences;
 import com.devepos.adt.saat.internal.search.AnnotationSearchParameter;

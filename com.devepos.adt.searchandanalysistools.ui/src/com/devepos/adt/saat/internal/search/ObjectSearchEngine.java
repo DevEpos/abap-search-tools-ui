@@ -10,8 +10,8 @@ import org.eclipse.search2.internal.ui.SearchView;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
+import com.devepos.adt.base.project.IAbapProjectProvider;
 import com.devepos.adt.base.ui.project.AbapProjectProviderAccessor;
-import com.devepos.adt.base.ui.project.IAbapProjectProvider;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.search.contentassist.SearchPatternProvider;
 import com.devepos.adt.saat.internal.search.ui.ObjectSearchPage;

@@ -39,8 +39,8 @@ import org.eclipse.swt.widgets.Scale;
 import org.eclipse.swt.widgets.Text;
 
 import com.devepos.adt.base.destinations.DestinationUtil;
+import com.devepos.adt.base.project.IAbapProjectProvider;
 import com.devepos.adt.base.ui.project.AbapProjectProxy;
-import com.devepos.adt.base.ui.project.IAbapProjectProvider;
 import com.devepos.adt.base.ui.project.ProjectInput;
 import com.devepos.adt.base.ui.project.ProjectUtil;
 import com.devepos.adt.base.ui.search.IChangeableSearchPage;

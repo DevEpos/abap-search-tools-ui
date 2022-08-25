@@ -16,8 +16,8 @@ import org.eclipse.swt.program.Program;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.part.WorkbenchPart;
 
+import com.devepos.adt.base.project.IAbapProjectProvider;
 import com.devepos.adt.base.ui.project.AbapProjectProxy;
-import com.devepos.adt.base.ui.project.IAbapProjectProvider;
 import com.devepos.adt.base.ui.util.AdtUIUtil;
 import com.devepos.adt.base.util.AdtUtil;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;

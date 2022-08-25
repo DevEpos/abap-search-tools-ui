@@ -2,7 +2,7 @@ package com.devepos.adt.saat.internal.search;
 
 import java.util.List;
 
-import com.devepos.adt.base.ui.project.IAbapProjectProvider;
+import com.devepos.adt.base.project.IAbapProjectProvider;
 
 /**
  * Handles search parameters for e.g. DB Object search

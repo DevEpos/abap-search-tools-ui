@@ -1,8 +1,8 @@
 package com.devepos.adt.saat.internal.analytics;
 
+import com.devepos.adt.base.project.IAbapProjectProvider;
 import com.devepos.adt.base.ui.action.Executable;
 import com.devepos.adt.base.ui.project.AbapProjectProviderAccessor;
-import com.devepos.adt.base.ui.project.IAbapProjectProvider;
 import com.devepos.adt.saat.internal.util.OpenInUtil;
 
 /**
