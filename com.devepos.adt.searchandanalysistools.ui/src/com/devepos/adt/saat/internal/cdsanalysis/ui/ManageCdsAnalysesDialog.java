@@ -143,7 +143,7 @@ public class ManageCdsAnalysesDialog extends StatusDialog {
   @Override
   protected void createButtonsForButtonBar(final Composite parent) {
     createButton(parent, IDialogConstants.OPEN_ID, IDialogConstants.OPEN_LABEL, true);
-    createButton(parent, OPEN_IN_NEW, "Open in &New", false);
+    createButton(parent, OPEN_IN_NEW, Messages.ManageCdsAnalysesDialog_openInNewAction_xbtn, false);
     createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false);
     createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
   }
