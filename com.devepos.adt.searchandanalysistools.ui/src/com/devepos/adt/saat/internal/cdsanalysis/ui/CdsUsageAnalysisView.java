@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider;
 import org.eclipse.jface.viewers.StyledString;
@@ -39,141 +40,13 @@ import com.devepos.adt.saat.internal.util.CommandPossibleChecker;
  * @author stockbal
  */
 public class CdsUsageAnalysisView extends CdsAnalysisPage<CdsUsedEntitiesAnalysis> {
-  private enum Column {
-    OBJECT_NAME(400, Messages.CdsUsageAnalysisView_ObjectNameColumn_xfld),
-    OCCURRENCES(80, Messages.CdsUsageAnalysisView_OccurrencesColumn_xfld),
-    USED_ENTITY_COUNT(60, Messages.CdsUsageAnalysisView_EntitiesColumn_xfld,
-        Messages.CdsUsageAnalysisView_EntitiesColumn_xtol),
-    USED_JOIN_COUNT(60, Messages.CdsUsageAnalysisView_JoinsColumn_xfld,
-        Messages.CdsUsageAnalysisView_JoinsColumn_xtol),
-    USED_UNION_COUNT(60, Messages.CdsUsageAnalysisView_UnionsColumn_xfld,
-        Messages.CdsUsageAnalysisView_UnionsColumn_xtol);
-
-    private static final Map<Integer, Column> COLUMNS;
-
-    static {
-      COLUMNS = new HashMap<>();
-      for (final Column col : Column.values()) {
-        COLUMNS.put(col.ordinal(), col);
-      }
-    }
-
-    Column(final int width, final String headerText) {
-      this(width, headerText, headerText);
-    }
-
-    Column(final int width, final String headerText, final String tooltip) {
-      defaultWidth = width;
-      this.headerText = headerText;
-      this.tooltip = tooltip;
-    }
-
-    public static Column valueOf(final int ordinal) {
-      return COLUMNS.get(ordinal);
-    }
-
-    public final int defaultWidth;
-    public final String tooltip;
-    public final String headerText;
-
-  }
-
   private final List<Column> columns;
+
   private SortListener sortListener;
 
   public CdsUsageAnalysisView(final CdsAnalysisView parentView) {
     super(parentView);
     columns = Arrays.asList(Column.values());
-  }
-
-  @Override
-  protected void fillContextMenu(final IMenuManager mgr,
-      final CommandPossibleChecker commandPossibleChecker) {
-    super.fillContextMenu(mgr, commandPossibleChecker);
-    if (commandPossibleChecker.canCommandBeEnabled(ICommandConstants.CDS_TOP_DOWN_ANALYSIS)) {
-      SaatMenuItemFactory.addCdsAnalyzerCommandItem(mgr, IContextMenuConstants.GROUP_CDS_ANALYSIS,
-          ICommandConstants.CDS_TOP_DOWN_ANALYSIS);
-    }
-    if (commandPossibleChecker.canCommandBeEnabled(ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS)) {
-      SaatMenuItemFactory.addCdsAnalyzerCommandItem(mgr, IContextMenuConstants.GROUP_CDS_ANALYSIS,
-          ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS);
-    }
-    if (commandPossibleChecker.canCommandBeEnabled(ICommandConstants.FIELD_ANALYSIS)) {
-      SaatMenuItemFactory.addCdsAnalyzerCommandItem(mgr, IContextMenuConstants.GROUP_CDS_ANALYSIS,
-          ICommandConstants.FIELD_ANALYSIS);
-    }
-  }
-
-  @Override
-  protected ViewUiState getUiState() {
-    final TreeViewUiState uiState = new TreeViewUiState();
-    uiState.setFromTreeViewer((TreeViewer) getViewer());
-    return uiState;
-  }
-
-  @Override
-  protected void loadInput(final ViewUiState uiState) {
-    final TreeViewer viewer = (TreeViewer) getViewer();
-    viewer.setInput(analysisResult.getResult());
-
-    if (analysisResult.isResultLoaded()) {
-      // update ui state
-      if (uiState instanceof TreeViewUiState) {
-        ((TreeViewUiState) uiState).applyToTreeViewer(viewer);
-      }
-    } else {
-      analysisResult.setResultLoaded(true);
-    }
-  }
-
-  @Override
-  protected void refreshAnalysis() {
-    ((ILazyLoadingNode) getViewer().getInput()).resetLoadedState();
-    getViewer().refresh();
-  }
-
-  @Override
-  protected void configureTreeViewer(final TreeViewer treeViewer) {
-    sortListener = new SortListener(treeViewer, SWT.DOWN);
-    final Tree tree = treeViewer.getTree();
-    treeViewer.setComparator(new TreeSorter());
-    treeViewer.setContentProvider(new ContentProvider());
-    treeViewer.getTree().setHeaderVisible(true);
-    treeViewer.setUseHashlookup(true);
-    createColumns(treeViewer);
-
-    tree.setSortColumn(tree.getColumn(Column.USED_ENTITY_COUNT.ordinal()));
-    tree.setSortDirection(SWT.DOWN);
-  }
-
-  private void createColumns(final TreeViewer treeViewer) {
-    for (final Column column : columns) {
-      createColumn(treeViewer, column);
-    }
-  }
-
-  private void createColumn(final TreeViewer treeViewer, final Column column) {
-    final TreeViewerColumn viewerColumn = new TreeViewerColumn(treeViewer, SWT.NONE);
-    viewerColumn.getColumn().setText(column.headerText);
-    viewerColumn.getColumn().setToolTipText(column.tooltip);
-    viewerColumn.setLabelProvider(new DelegatingStyledCellLabelProvider(new ColumnLabelProvider(
-        column)));
-    viewerColumn.getColumn().setWidth(column.defaultWidth);
-    viewerColumn.getColumn().setMoveable(true);
-    viewerColumn.getColumn().addListener(SWT.Selection, sortListener);
-  }
-
-  private class ContentProvider extends LazyLoadingTreeContentProvider {
-
-    @Override
-    public Object[] getElements(final Object inputElement) {
-      final Object[] nodes = getChildren(inputElement);
-      if (nodes != null) {
-        return nodes;
-      }
-      return new Object[0];
-    }
-
   }
 
   /**
@@ -188,6 +61,15 @@ public class CdsUsageAnalysisView extends CdsAnalysisPage<CdsUsedEntitiesAnalysi
 
     public ColumnLabelProvider(final Column column) {
       this.column = column;
+    }
+
+    @Override
+    public Image getImage(final Object element) {
+      Image image = null;
+      if (column == Column.OBJECT_NAME) {
+        image = getTreeNodeImage(element);
+      }
+      return image;
     }
 
     @Override
@@ -225,17 +107,62 @@ public class CdsUsageAnalysisView extends CdsAnalysisPage<CdsUsedEntitiesAnalysi
     }
 
     @Override
-    public Image getImage(final Object element) {
-      Image image = null;
-      if (column == Column.OBJECT_NAME) {
-        image = getTreeNodeImage(element);
-      }
-      return image;
-    }
-
-    @Override
     public void update(final ViewerCell cell) {
     }
+  }
+
+  private enum Column {
+    OBJECT_NAME(400, Messages.CdsUsageAnalysisView_ObjectNameColumn_xfld),
+    OCCURRENCES(80, Messages.CdsUsageAnalysisView_OccurrencesColumn_xfld),
+    USED_ENTITY_COUNT(60, Messages.CdsUsageAnalysisView_EntitiesColumn_xfld,
+        Messages.CdsUsageAnalysisView_EntitiesColumn_xtol),
+    USED_JOIN_COUNT(60, Messages.CdsUsageAnalysisView_JoinsColumn_xfld,
+        Messages.CdsUsageAnalysisView_JoinsColumn_xtol),
+    USED_UNION_COUNT(60, Messages.CdsUsageAnalysisView_UnionsColumn_xfld,
+        Messages.CdsUsageAnalysisView_UnionsColumn_xtol);
+
+    private static final Map<Integer, Column> COLUMNS;
+
+    static {
+      COLUMNS = new HashMap<>();
+      for (final Column col : Column.values()) {
+        COLUMNS.put(col.ordinal(), col);
+      }
+    }
+
+    public final int defaultWidth;
+
+    public final String tooltip;
+
+    public final String headerText;
+
+    Column(final int width, final String headerText) {
+      this(width, headerText, headerText);
+    }
+
+    Column(final int width, final String headerText, final String tooltip) {
+      defaultWidth = width;
+      this.headerText = headerText;
+      this.tooltip = tooltip;
+    }
+
+    public static Column valueOf(final int ordinal) {
+      return COLUMNS.get(ordinal);
+    }
+
+  }
+
+  private class ContentProvider extends LazyLoadingTreeContentProvider {
+
+    @Override
+    public Object[] getElements(final Object inputElement) {
+      final Object[] nodes = getChildren(inputElement);
+      if (nodes != null) {
+        return nodes;
+      }
+      return new Object[0];
+    }
+
   }
 
   private static class TreeSorter extends ViewerComparator {
@@ -290,5 +217,86 @@ public class CdsUsageAnalysisView extends CdsAnalysisPage<CdsUsedEntitiesAnalysi
       return c2.compareTo(c1);
     }
 
+  }
+
+  @Override
+  protected void configureTreeViewer(final TreeViewer treeViewer) {
+    sortListener = new SortListener(treeViewer, SWT.DOWN);
+    final Tree tree = treeViewer.getTree();
+    treeViewer.setComparator(new TreeSorter());
+    treeViewer.setContentProvider(new ContentProvider());
+    treeViewer.getTree().setHeaderVisible(true);
+    treeViewer.setUseHashlookup(true);
+    createColumns(treeViewer);
+
+    tree.setSortColumn(tree.getColumn(Column.USED_ENTITY_COUNT.ordinal()));
+    tree.setSortDirection(SWT.DOWN);
+  }
+
+  @Override
+  protected void fillContextMenu(final IMenuManager mgr,
+      final CommandPossibleChecker commandPossibleChecker) {
+    super.fillContextMenu(mgr, commandPossibleChecker);
+    if (commandPossibleChecker.canCommandBeEnabled(ICommandConstants.CDS_TOP_DOWN_ANALYSIS)) {
+      SaatMenuItemFactory.addCdsAnalyzerCommandItem(mgr, IContextMenuConstants.GROUP_CDS_ANALYSIS,
+          ICommandConstants.CDS_TOP_DOWN_ANALYSIS);
+    }
+    if (commandPossibleChecker.canCommandBeEnabled(ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS)) {
+      SaatMenuItemFactory.addCdsAnalyzerCommandItem(mgr, IContextMenuConstants.GROUP_CDS_ANALYSIS,
+          ICommandConstants.WHERE_USED_IN_CDS_ANALYSIS);
+    }
+    if (commandPossibleChecker.canCommandBeEnabled(ICommandConstants.FIELD_ANALYSIS)) {
+      SaatMenuItemFactory.addCdsAnalyzerCommandItem(mgr, IContextMenuConstants.GROUP_CDS_ANALYSIS,
+          ICommandConstants.FIELD_ANALYSIS);
+    }
+  }
+
+  @Override
+  protected void fillToolbar(final IToolBarManager tbm) {
+  }
+
+  @Override
+  protected ViewUiState getUiState() {
+    final TreeViewUiState uiState = new TreeViewUiState();
+    uiState.setFromTreeViewer((TreeViewer) getViewer());
+    return uiState;
+  }
+
+  @Override
+  protected void loadInput(final ViewUiState uiState) {
+    final TreeViewer viewer = (TreeViewer) getViewer();
+    viewer.setInput(analysisResult.getResult());
+
+    if (analysisResult.isResultLoaded()) {
+      // update ui state
+      if (uiState instanceof TreeViewUiState) {
+        ((TreeViewUiState) uiState).applyToTreeViewer(viewer);
+      }
+    } else {
+      analysisResult.setResultLoaded(true);
+    }
+  }
+
+  @Override
+  protected void refreshAnalysis() {
+    ((ILazyLoadingNode) getViewer().getInput()).resetLoadedState();
+    getViewer().refresh();
+  }
+
+  private void createColumn(final TreeViewer treeViewer, final Column column) {
+    final TreeViewerColumn viewerColumn = new TreeViewerColumn(treeViewer, SWT.NONE);
+    viewerColumn.getColumn().setText(column.headerText);
+    viewerColumn.getColumn().setToolTipText(column.tooltip);
+    viewerColumn.setLabelProvider(new DelegatingStyledCellLabelProvider(new ColumnLabelProvider(
+        column)));
+    viewerColumn.getColumn().setWidth(column.defaultWidth);
+    viewerColumn.getColumn().setMoveable(true);
+    viewerColumn.getColumn().addListener(SWT.Selection, sortListener);
+  }
+
+  private void createColumns(final TreeViewer treeViewer) {
+    for (final Column column : columns) {
+      createColumn(treeViewer, column);
+    }
   }
 }

@@ -45,6 +45,7 @@ import com.devepos.adt.saat.internal.util.IImages;
 public class ManageCdsAnalysesDialog extends StatusDialog {
 
   private static final int REMOVE_ID = IDialogConstants.CLIENT_ID + 1;
+  private static final int OPEN_IN_NEW = IDialogConstants.CLIENT_ID + 2;
   private static final int WIDTH_IN_CHARACTERS = 55;
   private static final int BUTTON_CHAR_WIDTH = 15;
 
@@ -56,6 +57,7 @@ public class ManageCdsAnalysesDialog extends StatusDialog {
   private final IPreferenceStore prefStore;
   private Text maxHistorySizeText;
   private CdsAnalysis result;
+  private boolean isOpenInNew;
 
   public ManageCdsAnalysesDialog(final List<CdsAnalysis> analyses, final Shell parent) {
     super(parent);
@@ -64,6 +66,19 @@ public class ManageCdsAnalysesDialog extends StatusDialog {
     removedEntries = new ArrayList<>();
     prefStore = SearchAndAnalysisPlugin.getDefault().getPreferenceStore();
     setHelpAvailable(false);
+  }
+
+  private static final class CdsAnalysisLabelProvider extends LabelProvider {
+
+    @Override
+    public Image getImage(final Object element) {
+      return ((CdsAnalysis) element).getImage();
+    }
+
+    @Override
+    public String getText(final Object element) {
+      return ((CdsAnalysis) element).getLabel();
+    }
   }
 
   @Override
@@ -77,37 +92,8 @@ public class ManageCdsAnalysesDialog extends StatusDialog {
     validateDialogState();
   }
 
-  @Override
-  protected boolean isResizable() {
-    return true;
-  }
-
   public List<CdsAnalysis> getDeletedAnalyses() {
     return removedEntries;
-  }
-
-  @Override
-  protected IDialogSettings getDialogBoundsSettings() {
-    return SearchAndAnalysisPlugin.getDefault()
-        .getDialogSettingsSection("DialogBounds_ManageCdsAnalysisHistoryDialog"); //$NON-NLS-1$
-  }
-
-  @Override
-  protected int getDialogBoundsStrategy() {
-    return DIALOG_PERSISTSIZE;
-  }
-
-  protected Label createMessageArea(final Composite composite) {
-    final Composite parent = new Composite(composite, SWT.NONE);
-    GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(parent);
-    GridDataFactory.fillDefaults().span(2, 1).applyTo(parent);
-
-    final Label label = new Label(parent, SWT.WRAP);
-    label.setText(Messages.CdsAnalysis_ManageCdsAnalysisPagesTableHeader_xfld);
-    GridDataFactory.fillDefaults().span(2, 1).applyTo(label);
-
-    applyDialogFont(label);
-    return label;
   }
 
   /**
@@ -117,6 +103,49 @@ public class ManageCdsAnalysesDialog extends StatusDialog {
    */
   public CdsAnalysis getSelectedAnalysis() {
     return result;
+  }
+
+  public boolean isOpenInNew() {
+    return isOpenInNew;
+  }
+
+  @Override
+  protected void buttonPressed(final int buttonId) {
+    if (buttonId == REMOVE_ID) {
+      final IStructuredSelection selection = viewer.getStructuredSelection();
+      final Iterator<?> analysis = selection.iterator();
+      while (analysis.hasNext()) {
+        final CdsAnalysis current = (CdsAnalysis) analysis.next();
+        removedEntries.add(current);
+        input.remove(current);
+        viewer.remove(current);
+      }
+      if (viewer.getSelection().isEmpty() && !input.isEmpty()) {
+        viewer.setSelection(new StructuredSelection(input.get(0)));
+      }
+      return;
+    }
+    if (buttonId == IDialogConstants.OPEN_ID || buttonId == IDialogConstants.OK_ID
+        || buttonId == OPEN_IN_NEW) {
+      // Build a list of selected children.
+      final ISelection selection = viewer.getSelection();
+      if (selection instanceof IStructuredSelection) {
+        result = (CdsAnalysis) viewer.getStructuredSelection().getFirstElement();
+      }
+      prefStore.setValue(IPreferences.MAX_CDS_ANALYZER_HISTORY, maxHistorySizeText.getText());
+      isOpenInNew = buttonId == OPEN_IN_NEW;
+      okPressed();
+      return;
+    }
+    super.buttonPressed(buttonId);
+  }
+
+  @Override
+  protected void createButtonsForButtonBar(final Composite parent) {
+    createButton(parent, IDialogConstants.OPEN_ID, IDialogConstants.OPEN_LABEL, true);
+    createButton(parent, OPEN_IN_NEW, "Open in &New", false);
+    createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false);
+    createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
   }
 
   /*
@@ -196,21 +225,33 @@ public class ManageCdsAnalysesDialog extends StatusDialog {
     return ancestor;
   }
 
-  private boolean validateHistorySize() {
-    IStatus status = null;
-    try {
-      final String historySize = maxHistorySizeText.getText();
-      final int size = Integer.parseInt(historySize);
-      if (size < 1 || size > 30) {
-        status = new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, IStatus.ERROR,
-            Messages.CdsAnalysis_HistoryNumberInvalid_xmsg, null);
-      }
-    } catch (final NumberFormatException e) {
-      status = new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, IStatus.ERROR,
-          Messages.CdsAnalysis_HistoryNumberInvalid_xmsg, null);
-    }
-    updateStatus(status);
-    return status == null || !status.matches(IStatus.ERROR);
+  protected Label createMessageArea(final Composite composite) {
+    final Composite parent = new Composite(composite, SWT.NONE);
+    GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(parent);
+    GridDataFactory.fillDefaults().span(2, 1).applyTo(parent);
+
+    final Label label = new Label(parent, SWT.WRAP);
+    label.setText(Messages.CdsAnalysis_ManageCdsAnalysisPagesTableHeader_xfld);
+    GridDataFactory.fillDefaults().span(2, 1).applyTo(label);
+
+    applyDialogFont(label);
+    return label;
+  }
+
+  @Override
+  protected IDialogSettings getDialogBoundsSettings() {
+    return SearchAndAnalysisPlugin.getDefault()
+        .getDialogSettingsSection("DialogBounds_ManageCdsAnalysisHistoryDialog"); //$NON-NLS-1$
+  }
+
+  @Override
+  protected int getDialogBoundsStrategy() {
+    return DIALOG_PERSISTSIZE;
+  }
+
+  @Override
+  protected boolean isResizable() {
+    return true;
   }
 
   protected final void validateDialogState() {
@@ -228,54 +269,26 @@ public class ManageCdsAnalysesDialog extends StatusDialog {
     if (okButton != null) {
       okButton.setEnabled(historySizeValid);
     }
+    final Button openInNewButton = getButton(OPEN_IN_NEW);
+    if (openInNewButton != null) {
+      openInNewButton.setEnabled(elementsSelected == 1 && historySizeValid);
+    }
   }
 
-  @Override
-  protected void createButtonsForButtonBar(final Composite parent) {
-    createButton(parent, IDialogConstants.OPEN_ID, IDialogConstants.OPEN_LABEL, true);
-    createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, false);
-    createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
-  }
-
-  @Override
-  protected void buttonPressed(final int buttonId) {
-    if (buttonId == REMOVE_ID) {
-      final IStructuredSelection selection = viewer.getStructuredSelection();
-      final Iterator<?> analysis = selection.iterator();
-      while (analysis.hasNext()) {
-        final CdsAnalysis current = (CdsAnalysis) analysis.next();
-        removedEntries.add(current);
-        input.remove(current);
-        viewer.remove(current);
+  private boolean validateHistorySize() {
+    IStatus status = null;
+    try {
+      final String historySize = maxHistorySizeText.getText();
+      final int size = Integer.parseInt(historySize);
+      if (size < 1 || size > 30) {
+        status = new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, IStatus.ERROR,
+            Messages.CdsAnalysis_HistoryNumberInvalid_xmsg, null);
       }
-      if (viewer.getSelection().isEmpty() && !input.isEmpty()) {
-        viewer.setSelection(new StructuredSelection(input.get(0)));
-      }
-      return;
+    } catch (final NumberFormatException e) {
+      status = new Status(IStatus.ERROR, SearchAndAnalysisPlugin.PLUGIN_ID, IStatus.ERROR,
+          Messages.CdsAnalysis_HistoryNumberInvalid_xmsg, null);
     }
-    if (buttonId == IDialogConstants.OPEN_ID || buttonId == IDialogConstants.OK_ID) {
-      // Build a list of selected children.
-      final ISelection selection = viewer.getSelection();
-      if (selection instanceof IStructuredSelection) {
-        result = (CdsAnalysis) viewer.getStructuredSelection().getFirstElement();
-      }
-      prefStore.setValue(IPreferences.MAX_CDS_ANALYZER_HISTORY, maxHistorySizeText.getText());
-      okPressed();
-      return;
-    }
-    super.buttonPressed(buttonId);
-  }
-
-  private static final class CdsAnalysisLabelProvider extends LabelProvider {
-
-    @Override
-    public String getText(final Object element) {
-      return ((CdsAnalysis) element).getLabel();
-    }
-
-    @Override
-    public Image getImage(final Object element) {
-      return ((CdsAnalysis) element).getImage();
-    }
+    updateStatus(status);
+    return status == null || !status.matches(IStatus.ERROR);
   }
 }

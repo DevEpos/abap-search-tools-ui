@@ -70,33 +70,8 @@ public abstract class OpenInCdsAnalyzerHandler extends AbstractHandler {
 
   }
 
-  private void analyzeObject(final IAdtObjectReference objectRef, final String destinationId) {
-    final CdsAnalysisManager analysisManager = CdsAnalysisManager.getInstance();
-    final CdsAnalysisKey analysisKey = new CdsAnalysisKey(mode, objectRef.getUri(), destinationId);
-    final CdsAnalysis existing = analysisManager.getExistingAnalysis(analysisKey);
-    if (existing == null) {
-      // determine ADT information about CDS view
-      final Job adtObjectRetrievalJob = Job.create(Messages.CdsAnalysis_LoadAdtObjectJobName_xmsg,
-          (ICoreRunnable) monitor -> {
-            // check if search is possible in selected project
-            final IAdtObjectReferenceElementInfo adtObjectRefElemInfo = ElementInfoRetrievalServiceFactory
-                .createService()
-                .retrieveBasicElementInformation(destinationId, objectRef.getUri());
-            if (adtObjectRefElemInfo != null) {
-              final CdsAnalysis newAnalysis = createTypedAnalysis(adtObjectRefElemInfo);
-              PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
-                analysisManager.addAnalysis(newAnalysis);
-                analysisManager.registerAnalysis(analysisKey, newAnalysis);
-                analysisManager.showAnalysis(newAnalysis);
-              });
-            }
-          });
-      adtObjectRetrievalJob.schedule();
-
-    } else {
-      analysisManager.showAnalysis(existing);
-    }
-
+  protected boolean canExecute(final IAdtObject selectedObject) {
+    return selectedObject.getObjectType() == ObjectType.DATA_DEFINITION;
   }
 
   /**
@@ -121,8 +96,33 @@ public abstract class OpenInCdsAnalyzerHandler extends AbstractHandler {
     return FeatureTester.isCdsAnalysisAvailable(project);
   }
 
-  protected boolean canExecute(final IAdtObject selectedObject) {
-    return selectedObject.getObjectType() == ObjectType.DATA_DEFINITION;
+  private void analyzeObject(final IAdtObjectReference objectRef, final String destinationId) {
+    final CdsAnalysisManager analysisManager = CdsAnalysisManager.getInstance();
+    final CdsAnalysisKey analysisKey = new CdsAnalysisKey(mode, objectRef.getUri(), destinationId);
+    final CdsAnalysis existing = analysisManager.getExistingAnalysis(analysisKey);
+    if (existing == null) {
+      // determine ADT information about CDS view
+      final Job adtObjectRetrievalJob = Job.create(Messages.CdsAnalysis_LoadAdtObjectJobName_xmsg,
+          (ICoreRunnable) monitor -> {
+            // check if search is possible in selected project
+            final IAdtObjectReferenceElementInfo adtObjectRefElemInfo = ElementInfoRetrievalServiceFactory
+                .createService()
+                .retrieveBasicElementInformation(destinationId, objectRef.getUri());
+            if (adtObjectRefElemInfo != null) {
+              final CdsAnalysis newAnalysis = createTypedAnalysis(adtObjectRefElemInfo);
+              PlatformUI.getWorkbench().getDisplay().asyncExec(() -> {
+                analysisManager.addAnalysis(newAnalysis);
+                analysisManager.registerAnalysis(analysisKey, newAnalysis);
+                analysisManager.showAnalysis(newAnalysis, false);
+              });
+            }
+          });
+      adtObjectRetrievalJob.schedule();
+
+    } else {
+      analysisManager.showAnalysis(existing, false);
+    }
+
   }
 
 }

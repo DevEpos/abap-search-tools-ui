@@ -9,6 +9,7 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IMenuCreator;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.window.Window;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Menu;
@@ -104,7 +105,7 @@ class CdsAnalysisHistoryDropDownAction extends Action implements IMenuCreator {
     if (dialog.open() == Window.OK) {
       final CdsAnalysis selectedAnalysis = dialog.getSelectedAnalysis();
       if (selectedAnalysis != null) {
-        analysisManager.showAnalysis(selectedAnalysis);
+        analysisManager.showAnalysis(selectedAnalysis, dialog.isOpenInNew());
       }
       final List<CdsAnalysis> removedAnalyses = dialog.getDeletedAnalyses();
       if (removedAnalyses != null && !removedAnalyses.isEmpty()) {
@@ -134,9 +135,17 @@ class CdsAnalysisHistoryDropDownAction extends Action implements IMenuCreator {
 
     @Override
     public void runWithEvent(final Event event) {
-      if (isChecked()) {
-        CdsAnalysisManager.getInstance().showAnalysis(analysis);
-      }
+      runIfChecked(event.stateMask == SWT.CTRL);
+    }
+
+    @Override
+    public void run() {
+      runIfChecked(false);
+    }
+
+    private void runIfChecked(boolean openNewAnalysisView) {
+      if (isChecked())
+        CdsAnalysisManager.getInstance().showAnalysis(analysis, openNewAnalysisView);
     }
   }
 }
