@@ -29,11 +29,28 @@
 			Table/View in the Search View (if ABAP Object Search + was used)</li>
 	</ol>
 
-	<h3 class="heading" id="top_down">Top-Down Analysis</h3>
+	<h3 class="heading">General View Options</h3>
+	<h4 class="heading">Toolbar</h4>
 	<figure id="figure1">
+		<img src="../images/CdsAnalyzer-Toolbar.png">
+		<figcaption>
+			<strong>Figure 1:</strong> Toolbar of CDS Analyzer
+		</figcaption>
+	</figure>
+	<ul>
+		<li>Collapse all nodes</li>
+		<li>Refresh the current Analysis</li>
+		<li>Select an already executed Analysis from the history (via
+			dropdown or dialog)</li>
+		<li>Pins the view to prevent new analyses to be opened in the
+			pinned view</li>
+	</ul>
+
+	<h3 class="heading" id="top_down">Top-Down Analysis</h3>
+	<figure id="figure2">
 		<img src="../images/CdsAnalyzer-TopDownAnalysis.png">
 		<figcaption>
-			<strong>Figure 1:</strong> Example of <i>Top-Down Analysis</i>
+			<strong>Figure 2:</strong> Example of <i>Top-Down Analysis</i>
 		</figcaption>
 	</figure>
 	<p>The Top-Down Analysis allows you to navigate the whole
@@ -41,10 +58,10 @@
 		CDS View node in the tree will result in the loading of that CDS Views
 		used entities</p>
 	<h3 class="heading" id="where_used">Where-Used Analysis</h3>
-	<figure id="figure2">
+	<figure id="figure3">
 		<img src="../images/CdsAnalyzer-WhereUsedAnalysis.png">
 		<figcaption>
-			<strong>Figure 2:</strong> Example of <i>Where-Used Analysis</i>
+			<strong>Figure 3:</strong> Example of <i>Where-Used Analysis</i>
 		</figcaption>
 	</figure>
 	<p>
@@ -55,10 +72,10 @@
 	<p>There are several options which you can use to control the
 		analysis</p>
 
-	<figure id="figure3">
+	<figure id="figure4">
 		<img src="../images/CdsAnalyzer-WhereUsedAnalysis-Options.png">
 		<figcaption>
-			<strong>Figure 3:</strong> Options in Where-Used Analysis</i>
+			<strong>Figure 4:</strong> Options in Where-Used Analysis
 		</figcaption>
 	</figure>
 	<ol class="list">
@@ -70,26 +87,28 @@
 		</li>
 		<li>If this setting is checked only usages in CDS Views which
 			have an API state of type <i>Released</i> will be shown
-			<blockquote>
+			<div class="alert warning">
+				<div class="alert-info__text"></div>
 				This feature is only available starting from <strong>NW
 					7.50</strong>
-			</blockquote>
+			</div>
 		</li>
 		<li>This setting is only relevant if the setting <i>Show Uses
 				in Associations of CDS</i> is active. If checked, the usage is only
 			valid if the association to the triggering CDS View is defined
 			locally (i.e. not propagated)
-			<blockquote>
+			<div class="alert warning">
+				<div class="alert-info__text"></div>
 				This feature is only available starting from <strong>NW
 					7.52</strong>
-			</blockquote>
+			</div>
 		</li>
 	</ol>
 	<h3 class="heading" id="usage_analysis">Used Entities Analysis</h3>
-	<figure id="figure4">
+	<figure id="figure5">
 		<img src="../images/CdsAnalyzer-UsedEntitiesAnalysis.png">
 		<figcaption>
-			<strong>Figure 4:</strong> Example of <i>Used Entities Analysis</i>
+			<strong>Figure 5:</strong> Example of <i>Used Entities Analysis</i>
 		</figcaption>
 	</figure>
 	<p>
@@ -102,23 +121,25 @@
 	<p>The Field Analysis provides an Analysis for a Field of a CDS
 		View (or Database Table/View). You can either display the field origin
 		for a given field or show where a field is used</p>
-	<blockquote>
-		<strong>Note:</strong> The Where-Used mode only shows the usage in
-		fields. If a field is only used inside a <strong>Join
-			Condition</strong> or in the <strong>Where</strong>-Clause the CDS view will
-		not be listed as a usage
-	</blockquote>
-	<figure id="figure5">
+	<div class="alert info">
+		<div class="alert-info__text"></div>
+		The Where-Used mode only shows the usage in fields. If a field is only
+		used inside a <strong>Join Condition</strong> or in the <strong>Where</strong>-Clause
+		the CDS view will not be listed as a usage
+	</div>
+	<h4 class="heading">Field Origin (Top-Down)</h4>
+	<figure id="figure6">
 		<img src="../images/CdsAnalyzer-FieldAnalysis-TopDown.png">
 		<figcaption>
-			<strong>Figure 5:</strong> Example of <i>Field Analysis
+			<strong>Figure 6:</strong> Example of <i>Field Analysis
 				(Top-Down)</i>
 		</figcaption>
 	</figure>
-	<figure id="figure6">
+	<h4 class="heading">Usages in Fields (Bottom-Up)</h4>
+	<figure id="figure7">
 		<img src="../images/CdsAnalyzer-FieldAnalysis-WhereUsed.png">
 		<figcaption>
-			<strong>Figure 6:</strong> Example of <i>Field Analysis
+			<strong>Figure 7:</strong> Example of <i>Field Analysis
 				(Where-Used)</i>
 		</figcaption>
 	</figure>

@@ -38,21 +38,55 @@ li {
 }
 
 figure {
-	text-align: center;
+	text-align: left;
 	display: block;
 }
 
-blockquote {
-	position: relative;
-	font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
-		sans-serif !important;
-	font-style: italic;
-	font-size: 14px;
-	padding: 5px 16px;
-	border-left: 5px solid rgba(0, 0, 0, .2);
-	background: rgba(0, 0, 0, .05);
-	margin: 13px 10px 13px 0;
-	color: #333;
+.alert {
+    position: relative;
+    font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+        sans-serif !important;
+    font-style: italic;
+    font-size: 14px;
+    padding: 5px 16px;
+    border-radius: 5px;
+    margin: 13px 10px 13px 0;
+    color: #333;
+}
+
+.alert.default {
+    border-left: 5px solid rgba(0, 0, 0, .2);
+    background: rgba(0, 0, 0, .05);
+}
+
+.alert.info {
+    border-left: 5px solid rgb(133, 165, 205);
+    background: rgba(63, 117, 215, 0.15);
+}
+
+.alert.warning {
+    border-left: 5px solid rgb(255, 198, 95);
+    background: rgba(255, 177, 0, 0.12);
+}
+
+.alert-tip__text::after {
+    content: 'TIP';
+    font-weight: bold;
+}
+
+.alert-warning__text::after {
+    content: 'WARNING';
+    font-weight: bold;
+}
+
+.alert-info__text::after {
+    content: 'INFO';
+    font-weight: bold;
+}
+
+.alert-attention__text::after {
+    content: 'ATTENTION';
+    font-weight: bold;
 }
 
 figure figcaption {
