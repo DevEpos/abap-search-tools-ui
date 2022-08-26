@@ -88,8 +88,7 @@ public class NamedItemService implements INamedItemService {
    * @return
    */
   private IAdtUriTemplate getNamedItemTemplate(final NamedItemType type) {
-    return new ObjectSearchUriDiscovery(destination).getTemplateByDiscoveryTerm(type
-        .getDiscoveryTerm());
+    return new ObjectSearchUriDiscovery(destination).getNamedItemTemplate(type.getDiscoveryTerm());
   }
 
 }

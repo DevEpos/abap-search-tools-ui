@@ -9,7 +9,6 @@ import java.util.stream.Stream;
 
 import com.devepos.adt.base.util.UriDiscoveryBase;
 import com.devepos.adt.saat.internal.util.IUriDiscoveryPaths;
-import com.sap.adt.compatibility.uritemplate.AdtUriTemplateFactory;
 import com.sap.adt.compatibility.uritemplate.IAdtUriTemplate;
 
 /**
@@ -21,7 +20,6 @@ public class ObjectSearchUriDiscovery extends UriDiscoveryBase {
   private static final String DISCOVERY_SCHEME = "http://www.devepos.com/adt/saat/objectsearch";
   private static final String DISCOVERY_RELATION_SEARCH = "http://www.devepos.com/adt/relations/saat/objectsearch";
   private static final String DISCOVERY_TERM_OBJECT_SEARCH = "search";
-  private static final String NAMED_ITEM_TEMPLATE = "{?maxItemCount,name,description,data}";
 
   /**
    * Creates new URI discovery for the Object Search services
@@ -30,6 +28,51 @@ public class ObjectSearchUriDiscovery extends UriDiscoveryBase {
    */
   public ObjectSearchUriDiscovery(final String destination) {
     super(destination, IUriDiscoveryPaths.OBJECT_SEARCH_DISOCOVERY_PATH, DISCOVERY_SCHEME);
+  }
+
+  /**
+   * Creates a valid REST resource URI from the given map of parameter values and
+   * the given query string
+   *
+   * @param parameters map of parameter key and their corresponding values
+   * @param query
+   * @return REST resource URI
+   */
+  public URI createResourceUriFromTemplate(final SearchType searchType,
+      final Map<String, Object> parameterMap) {
+    final IAdtUriTemplate template = getObjectSearchTemplate(searchType);
+    URI uri = null;
+    if (template != null) {
+      for (final String paramKey : parameterMap.keySet()) {
+        if (template.containsVariable(paramKey)) {
+          final Object paramValue = parameterMap.get(paramKey);
+          if (paramValue != null) {
+            template.set(paramKey, paramValue);
+          }
+        }
+      }
+      uri = URI.create(template.expand());
+    }
+    return uri;
+  }
+
+  /**
+   * Retrieve URI template for the object search
+   *
+   * @return
+   */
+  public IAdtUriTemplate getObjectSearchTemplate(final SearchType searchType) {
+    return getTemplate(DISCOVERY_TERM_OBJECT_SEARCH, DISCOVERY_RELATION_SEARCH + "/" + searchType
+        .getUriTerm());
+  }
+
+  /**
+   * Retrieves Resource URI for the DB object search
+   *
+   * @return
+   */
+  public URI getObjectSearchUri() {
+    return getUriFromCollectionMember(DISCOVERY_TERM_OBJECT_SEARCH);
   }
 
   /**
@@ -63,63 +106,4 @@ public class ObjectSearchUriDiscovery extends UriDiscoveryBase {
     }
     return searchUriTemplate.containsVariable(parameter.toString());
   }
-
-  /**
-   * Creates a valid REST resource URI from the given map of parameter values and
-   * the given query string
-   *
-   * @param parameters map of parameter key and their corresponding values
-   * @param query
-   * @return REST resource URI
-   */
-  public URI createResourceUriFromTemplate(final SearchType searchType,
-      final Map<String, Object> parameterMap) {
-    final IAdtUriTemplate template = getObjectSearchTemplate(searchType);
-    URI uri = null;
-    if (template != null) {
-      for (final String paramKey : parameterMap.keySet()) {
-        if (template.containsVariable(paramKey)) {
-          final Object paramValue = parameterMap.get(paramKey);
-          if (paramValue != null) {
-            template.set(paramKey, paramValue);
-          }
-        }
-      }
-      uri = URI.create(template.expand());
-    }
-    return uri;
-  }
-
-  public IAdtUriTemplate getTemplateByDiscoveryTerm(final String discoveryTerm) {
-    final URI uri = getUriFromCollectionMember(discoveryTerm);
-    return uri != null ? getNamedItemTemplateForUri(uri) : null;
-  }
-
-  /**
-   * Retrieves Resource URI for the DB object search
-   *
-   * @return
-   */
-  public URI getObjectSearchUri() {
-    return getUriFromCollectionMember(DISCOVERY_TERM_OBJECT_SEARCH);
-  }
-
-  /**
-   * Retrieve URI template for the object search
-   *
-   * @return
-   */
-  public IAdtUriTemplate getObjectSearchTemplate(final SearchType searchType) {
-    return getTemplate(DISCOVERY_TERM_OBJECT_SEARCH, DISCOVERY_RELATION_SEARCH + "/" + searchType
-        .getUriTerm());
-  }
-
-  private IAdtUriTemplate getNamedItemTemplateForUri(final URI uri) {
-    IAdtUriTemplate uriTemplate = null;
-    if (uri != null) {
-      uriTemplate = AdtUriTemplateFactory.createUriTemplate(uri.toString() + NAMED_ITEM_TEMPLATE);
-    }
-    return uriTemplate;
-  }
-
 }
