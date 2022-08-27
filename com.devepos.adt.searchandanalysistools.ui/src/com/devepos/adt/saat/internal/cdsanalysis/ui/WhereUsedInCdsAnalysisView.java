@@ -64,6 +64,9 @@ public class WhereUsedInCdsAnalysisView extends CdsAnalysisPage<WhereUsedInCdsAn
     };
 
     propertyChangeListener = event -> {
+      if (analysisResult == null) {
+        return;
+      }
       final String propertyName = event.getProperty();
       final boolean showFromUsesChanged = USES_IN_SELECT_PREF_KEY.equals(propertyName);
       final boolean showAssocUsesChanged = USES_IN_ASSOC_PREF_KEY.equals(propertyName);
