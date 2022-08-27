@@ -128,6 +128,10 @@ public class Messages extends NLS {
   public static String CdsAnalysis_SqlRelationLeftOuterJoin;
   public static String CdsAnalysis_SqlRelationRightOuterJoin;
   public static String CdsAnalysis_SwitchAnalysisPages_xtol;
+  public static String CdsAnalysisType_fieldAnalysis_xlbl;
+  public static String CdsAnalysisType_topDownAnalysis_xlbl;
+  public static String CdsAnalysisType_usedEntitiesAnalysis_xlbl;
+  public static String CdsAnalysisType_whereUsedInCdsAnalysis_xlbl;
   public static String CdsAnalysisWelcome_HelpSuffix_xlnk;
   public static String CdsAnalysisWelcome_Option1_xmsg;
   public static String CdsAnalysisWelcome_Option2_xmsg;
@@ -219,6 +223,14 @@ public class Messages extends NLS {
   public static String NewSearchFavoriteDialog_SearchFilter_xlfd;
   public static String NewSearchFavoriteDialog_SearchType_xfld;
   public static String NewSearchFavoriteDialog_Title_xtit;
+  public static String RunNewCdsAnalysisDialog_analysisType_xlbl;
+  public static String RunNewCdsAnalysisDialog_dialog_xtit;
+  public static String RunNewCdsAnalysisDialog_noObjectSelectedStatus_xmsg;
+  public static String RunNewCdsAnalysisDialog_run_xbtn;
+  public static String RunNewCdsAnalysisDialog_runInNew_xbt;
+  public static String RunNewCdsAnalysisDialog_selectedObject_xlbl;
+  public static String RunNewCdsAnalysisDialog_selectObject_xbtn;
+  public static String RunNewCdsAnalysisDialog_selectObjectDialog_xtit;
   public static String RunWhereUsedQueryHandler_openObjectDialog_xtit;
   public static String SearchPatternAnalyzer_ErrorInvalidSearchParameter_xmsg;
   public static String SearchPatternAnalyzer_ErrorIncompleteSearchParameter_xmsg;
