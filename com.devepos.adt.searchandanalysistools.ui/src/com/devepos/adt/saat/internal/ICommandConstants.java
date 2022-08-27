@@ -30,4 +30,8 @@ public interface ICommandConstants {
    * Command id to execute the Field Analysis
    */
   String FIELD_ANALYSIS = "com.devepos.adt.saat.cdsanalysis.command.performFieldAnalysis";
+  /**
+   * Command id to run a new CDS analysis via dialog selection
+   */
+  String RUN_CDS_ANALYSIS = "com.devepos.adt.saat.cdsanalysis.command.runCdsAnalysis";
 }

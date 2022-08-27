@@ -232,8 +232,9 @@ public class RunNewCdsAnalysisDialog extends StatusDialog {
     GridDataFactory.fillDefaults()
         .align(SWT.FILL, SWT.CENTER)
         .grab(true, false)
+        .hint(convertWidthInCharsToPixels(40), SWT.DEFAULT)
         .applyTo(selectObjectText);
-    selectObjectText.setEnabled(false);
+    selectObjectText.setEditable(false);
 
     browseObjectsButton = new Button(parent, SWT.PUSH);
     GridDataFactory.fillDefaults().align(SWT.FILL, SWT.CENTER).applyTo(browseObjectsButton);
@@ -256,6 +257,7 @@ public class RunNewCdsAnalysisDialog extends StatusDialog {
       if (!IAdtObjectTypeConstants.DATA_DEFINITION.equals(selectedObject.getType())) {
         validTypesForObject.clear();
         validTypesForObject.add(CdsAnalysisType.WHERE_USED);
+        validTypesForObject.add(CdsAnalysisType.FIELD_ANALYSIS);
       } else {
         validTypesForObject.addAll(validTypesForProject);
       }

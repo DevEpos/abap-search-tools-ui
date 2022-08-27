@@ -294,4 +294,8 @@ public interface IImages {
    * Image id for "Enabled Checkbox"
    */
   String ENABLED_CHECKBOX = "IMG_ENABLED_CHECKBOX";
+  /**
+   * Image id for running a new CDS analysis
+   */
+  String RUN_NEW_ANALYSIS = "IMG_RUN_NEW_ANALYSIS";
 }

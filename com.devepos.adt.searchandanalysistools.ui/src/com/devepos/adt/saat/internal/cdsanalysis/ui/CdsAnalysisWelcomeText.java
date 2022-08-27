@@ -26,9 +26,11 @@ public class CdsAnalysisWelcomeText extends ViewPartInfo {
     final StyledText option1 = addStyledText(Messages.CdsAnalysisWelcome_Option1_xmsg);
     final StyledText option2 = addStyledText(Messages.CdsAnalysisWelcome_Option2_xmsg);
     final StyledText option3 = addStyledText(Messages.CdsAnalysisWelcome_Option3_xmsg);
+    final StyledText option4 = addStyledText(Messages.CdsAnalysisWelcome_Option4_xmsg);
+    final StyledText option5 = addStyledText(Messages.CdsAnalysisWelcome_Option5_xmsg);
 
-    setWrappingLayoutData(startingInfo, option1, option2, option3);
-    setLineBulletToStyledTexts(option1, option2, option3);
+    setWrappingLayoutData(startingInfo, option1, option2, option3, option4, option5);
+    setLineBulletToStyledTexts(option1, option2, option3, option4, option5);
   }
 
   @Override

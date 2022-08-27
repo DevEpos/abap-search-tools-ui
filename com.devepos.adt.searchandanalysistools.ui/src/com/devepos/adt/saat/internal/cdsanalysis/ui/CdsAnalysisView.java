@@ -37,7 +37,9 @@ import com.devepos.adt.base.ui.DummyPart;
 import com.devepos.adt.base.ui.IAdtBaseImages;
 import com.devepos.adt.base.ui.IGeneralMenuConstants;
 import com.devepos.adt.base.ui.IPinnableView;
+import com.devepos.adt.base.ui.action.CommandFactory;
 import com.devepos.adt.base.ui.action.PinViewAction;
+import com.devepos.adt.saat.internal.ICommandConstants;
 import com.devepos.adt.saat.internal.IContextMenuConstants;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.help.HelpContexts;
@@ -45,6 +47,7 @@ import com.devepos.adt.saat.internal.help.HelpUtil;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.preferences.IPreferences;
 import com.devepos.adt.saat.internal.ui.ViewUiState;
+import com.devepos.adt.saat.internal.util.IImages;
 
 /**
  * A view which is to be used to analyse a selected CDS view (either from the
@@ -167,6 +170,7 @@ public class CdsAnalysisView extends PageBookView implements ICdsAnalysisListene
    * @param toolbar the toolbar
    */
   public static void createToolBarGroups(final IToolBarManager toolbar) {
+    toolbar.add(new Separator(IGeneralMenuConstants.GROUP_NEW));
     toolbar.add(new Separator(IGeneralMenuConstants.GROUP_EDIT));
     toolbar.add(new Separator(IGeneralMenuConstants.GROUP_NODE_ACTIONS));
     toolbar.add(new Separator(IGeneralMenuConstants.GROUP_SEARCH));
@@ -455,6 +459,9 @@ public class CdsAnalysisView extends PageBookView implements ICdsAnalysisListene
     final IActionBars actionBars = getViewSite().getActionBars();
     final IToolBarManager tbm = actionBars.getToolBarManager();
     createToolBarGroups(tbm);
+    tbm.appendToGroup(IGeneralMenuConstants.GROUP_NEW, CommandFactory.createContribItem(
+        ICommandConstants.RUN_CDS_ANALYSIS, SearchAndAnalysisPlugin.getDefault()
+            .getImageDescriptor(IImages.RUN_NEW_ANALYSIS), null, null));
     tbm.appendToGroup(IGeneralMenuConstants.GROUP_SEARCH, refreshAnalysisAction);
     tbm.appendToGroup(IGeneralMenuConstants.GROUP_GOTO, analysesHistoryAction);
     tbm.appendToGroup(IGeneralMenuConstants.GROUP_ADDITIONS, pinViewAction);

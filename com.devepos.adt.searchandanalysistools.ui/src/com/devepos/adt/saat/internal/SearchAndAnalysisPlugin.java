@@ -141,5 +141,6 @@ public class SearchAndAnalysisPlugin extends AbstractAdtUIPlugin {
     registerImage(imageRegistry, IImages.TYPE_PARAM, "icons/TypeFolder.png");
     registerImage(imageRegistry, IImages.ABAP_TYPE, "icons/TypeGroup.png");
     registerImage(imageRegistry, IImages.EXTENSION, "icons/ExtensionPoint.png");
+    registerImage(imageRegistry, IImages.RUN_NEW_ANALYSIS, "icons/RunCdsAnalysis.png");
   }
 }
