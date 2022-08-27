@@ -382,11 +382,8 @@ public class ObjectSearchPage extends DialogPage implements ISearchPage,
   private void createProjectInput(final Composite parent) {
     projectInput = new ProjectInput(projectProvider, true);
 
-    Composite projectComposite = new Composite(parent, SWT.NONE);
-    GridLayoutFactory.swtDefaults().margins(0, 0).applyTo(projectComposite);
-    GridDataFactory.fillDefaults().span(3, 1).grab(true, false).applyTo(projectComposite);
-
-    projectInput.createControl(projectComposite);
+    projectInput.setUseDedicatedComposite(false);
+    projectInput.createControl(parent);
 
     projectInput.addProjectValidator(project -> {
       uriDiscovery = new ObjectSearchUriDiscovery(DestinationUtil.getDestinationId(project));
