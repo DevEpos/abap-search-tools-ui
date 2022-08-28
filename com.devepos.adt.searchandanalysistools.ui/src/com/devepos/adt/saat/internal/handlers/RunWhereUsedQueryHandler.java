@@ -42,7 +42,7 @@ public class RunWhereUsedQueryHandler extends AbstractHandler {
   public Object execute(final ExecutionEvent event) throws ExecutionException {
     // open search dialog to choose ABAP Development object
     final IAdtRisSearchResultProxy result = AdtRisSearchUtil.searchAdtObjectViaDialog(
-        Messages.RunWhereUsedQueryHandler_openObjectDialog_xtit, false, null);
+        Messages.RunWhereUsedQueryHandler_openObjectDialog_xtit, null, false, null);
 
     if (result == null) {
       return null;

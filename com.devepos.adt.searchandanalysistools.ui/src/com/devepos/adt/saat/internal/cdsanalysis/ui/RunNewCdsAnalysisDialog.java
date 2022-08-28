@@ -243,8 +243,9 @@ public class RunNewCdsAnalysisDialog extends StatusDialog {
 
     browseObjectsButton.addSelectionListener(widgetSelectedAdapter(e -> {
       final IAdtRisSearchResultProxy result = AdtRisSearchUtil.searchAdtObjectViaDialog(parent
-          .getShell(), Messages.RunNewCdsAnalysisDialog_selectObjectDialog_xtit, false, Arrays
-              .asList(IAdtObjectTypeConstants.DATA_DEFINITION,
+          .getShell(), Messages.RunNewCdsAnalysisDialog_selectObjectDialog_xtit, this.getClass()
+              .getCanonicalName() + ".dialog", false, Arrays.asList(
+                  IAdtObjectTypeConstants.DATA_DEFINITION,
                   IAdtObjectTypeConstants.TABLE_DEFINITION_TYPE,
                   IAdtObjectTypeConstants.VIEW_DEFINITION_TYPE), projectProvider.getProject());
       if (result == null) {
