@@ -2,7 +2,7 @@
 <feature
       id="com.devepos.adt.searchandanalysistools"
       label="ABAP Search and Analysis Tools"
-      version="1.5.0.qualifier"
+      version="1.6.0.qualifier"
       provider-name="DevEpos"
       plugin="com.devepos.adt.branding">
 

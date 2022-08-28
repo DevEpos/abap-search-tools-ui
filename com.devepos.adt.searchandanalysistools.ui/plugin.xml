@@ -66,6 +66,11 @@
             id="com.devepos.adt.saat.objectsearch.command.manageFavorites"
             name="%command.objectsearch.showFavorites.name">
       </command>
+      <command
+            categoryId="com.devepos.adt.saat.cdsanalysis.commands.category"
+            id="com.devepos.adt.saat.cdsanalysis.command.runCdsAnalysis"
+            name="%command.runCdsAnalysis.name">
+      </command>
    </extension>
    <extension
          id="com.devepos.adt.saat.search.command.runWhereUsedForObject"
@@ -105,6 +110,10 @@
       <handler
             class="com.devepos.adt.saat.internal.handlers.OpenObjectSearchFavoritesHandler"
             commandId="com.devepos.adt.saat.objectsearch.command.manageFavorites">
+      </handler>
+      <handler
+            class="com.devepos.adt.saat.internal.handlers.RunCdsAnalysisHandler"
+            commandId="com.devepos.adt.saat.cdsanalysis.command.runCdsAnalysis">
       </handler>
    </extension>
    <extension
@@ -217,6 +226,18 @@
                   icon="icons/ABAPSearchFavorites.png"
                   label="%command.objectsearch.showFavorites.name"
                   style="pulldown">
+               <visibleWhen
+                     checkEnabled="false">
+                  <reference
+                        definitionId="com.sap.adt.tools.core.ui.toolsActive">
+                  </reference>
+               </visibleWhen>
+            </command>
+            <command
+                  commandId="com.devepos.adt.saat.cdsanalysis.command.runCdsAnalysis"
+                  icon="icons/RunCdsAnalysis.png"
+                  label="%command.runCdsAnalysis.name"
+                  style="push">
                <visibleWhen
                      checkEnabled="false">
                   <reference

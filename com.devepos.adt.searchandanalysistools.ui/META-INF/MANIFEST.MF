@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %pluginName
 Bundle-SymbolicName: com.devepos.adt.searchandanalysistools.ui;singleton:=true
-Bundle-Version: 1.5.0.qualifier
+Bundle-Version: 1.6.0.qualifier
 Bundle-ClassPath: .
 Bundle-Activator: com.devepos.adt.saat.internal.SearchAndAnalysisPlugin
 Bundle-Vendor: %providerName
@@ -23,8 +23,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.search,
  org.eclipse.text,
  com.devepos.adt.searchandanalysistools.model,
- com.devepos.adt.base;bundle-version="[1.3.0,2.0.0)",
- com.devepos.adt.base.ui;bundle-version="[1.3.0,2.0.0)",
+ com.devepos.adt.base;bundle-version="[1.4.0,2.0.0)",
+ com.devepos.adt.base.ui;bundle-version="[1.4.0,2.0.0)",
  com.sap.adt.tools.abapsource,
  com.sap.adt.cds.ddl.ui,
  com.sap.adt.tools.core.base,
