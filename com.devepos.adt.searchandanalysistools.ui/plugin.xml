@@ -269,8 +269,20 @@
         <page
               category="com.devepos.adt.preferences"
               class="com.devepos.adt.saat.internal.preferences.MainPreferencePage"
-              id="com.devepos.adt.saat.ui.internal.MainPreferencePage"
-              name="%preferencepage.name">
+              id="com.devepos.adt.saat.ui.prefs.MainPreferences"
+              name="%preferencepage.main.name">
+        </page>
+        <page
+              category="com.devepos.adt.saat.ui.prefs.MainPreferences"
+              class="com.devepos.adt.saat.internal.preferences.ObjectSearchPreferencePage"
+              id="com.devepos.adt.saat.ui.prefs.ObjectSearchPreferences"
+              name="%preferencepage.search.name">
+        </page>
+        <page
+              category="com.devepos.adt.saat.ui.prefs.MainPreferences"
+              class="com.devepos.adt.saat.internal.preferences.CdsAnalysisPreferencePage"
+              id="com.devepos.adt.saat.ui.prefs.CdsAnalysisPreferences"
+              name="%preferencepage.cdsanalysis.name">
         </page>
      </extension>
      <extension
