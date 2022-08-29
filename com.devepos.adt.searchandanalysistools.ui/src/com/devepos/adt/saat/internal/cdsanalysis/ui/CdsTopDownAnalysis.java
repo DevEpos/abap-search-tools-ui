@@ -19,19 +19,24 @@ import com.devepos.adt.saat.internal.util.IImages;
  */
 public class CdsTopDownAnalysis extends CdsAnalysis {
 
-  private final LazyLoadingAdtObjectReferenceNode cdsNode;
+  private LazyLoadingAdtObjectReferenceNode cdsNode;
+  private ICdsTopDownSettingsUi settings;
 
   public CdsTopDownAnalysis(final IAdtObjectReferenceElementInfo cdsObjInfo) {
     super(cdsObjInfo);
     final LazyLoadingAdtObjectReferenceNode node = new LazyLoadingAdtObjectReferenceNode(cdsObjInfo
         .getName(), cdsObjInfo.getDisplayName(), cdsObjInfo.getDescription(), cdsObjInfo
             .getAdtObjectReference(), null);
-    final IDestinationProvider destProvider = cdsObjInfo.getAdapter(IDestinationProvider.class);
-    node.setElementInfoProvider(new CdsTopDownElementInfoProvider(destProvider != null
-        ? destProvider.getDestinationId()
-        : null, cdsObjInfo.getName()));
-    node.setNodeValue(cdsObjInfo.getAdditionalInfo());
     cdsNode = node;
+    settings = CdsAnalysisSettingsFactory.createCdsTopDownSettings();
+  }
+
+  public void createElementInfoProvider() {
+    final IDestinationProvider destProvider = adtObjectInfo.getAdapter(IDestinationProvider.class);
+    cdsNode.setElementInfoProvider(new CdsTopDownElementInfoProvider(destProvider != null
+        ? destProvider.getDestinationId()
+        : null, adtObjectInfo.getName(), settings));
+    cdsNode.setNodeValue(adtObjectInfo.getAdditionalInfo());
   }
 
   @Override
@@ -50,13 +55,20 @@ public class CdsTopDownAnalysis extends CdsAnalysis {
   }
 
   @Override
-  public CdsAnalysisType getType() {
-    return CdsAnalysisType.TOP_DOWN;
+  public Object getResult() {
+    return new Object[] { cdsNode };
+  }
+
+  /**
+   * @return the settings for top down analysis
+   */
+  public ICdsTopDownSettingsUi getSettings() {
+    return settings;
   }
 
   @Override
-  public Object getResult() {
-    return new Object[] { cdsNode };
+  public CdsAnalysisType getType() {
+    return CdsAnalysisType.TOP_DOWN;
   }
 
   @Override

@@ -7,25 +7,24 @@ import org.eclipse.osgi.util.NLS;
 import com.devepos.adt.base.elementinfo.IElementInfo;
 import com.devepos.adt.base.elementinfo.IElementInfoCollection;
 import com.devepos.adt.base.elementinfo.IElementInfoProvider;
-import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.messages.Messages;
 
 public class CdsTopDownElementInfoProvider implements IElementInfoProvider {
   private final String cdsViewName;
   private final String destinationId;
+  private ICdsTopDownSettings settings;
 
-  public CdsTopDownElementInfoProvider(final String destinationId, final String cdsViewName) {
+  public CdsTopDownElementInfoProvider(final String destinationId, final String cdsViewName,
+      ICdsTopDownSettings settings) {
     this.cdsViewName = cdsViewName;
     this.destinationId = destinationId;
+    this.settings = settings;
   }
 
   @Override
   public List<IElementInfo> getElements() {
-    final boolean loadAssociations = SearchAndAnalysisPlugin.getDefault()
-        .getPreferenceStore()
-        .getBoolean(ICdsAnalysisPreferences.TOP_DOWN_LOAD_ASSOCIATIONS);
     final IElementInfo cdsTopDownInfo = CdsAnalysisServiceFactory.createCdsAnalysisService()
-        .loadTopDownAnalysis(cdsViewName, loadAssociations, destinationId);
+        .loadTopDownAnalysis(cdsViewName, settings, destinationId);
     if (cdsTopDownInfo != null) {
       return ((IElementInfoCollection) cdsTopDownInfo).getChildren();
     }

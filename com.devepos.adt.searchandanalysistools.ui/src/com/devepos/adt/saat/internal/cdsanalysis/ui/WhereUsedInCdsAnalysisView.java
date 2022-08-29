@@ -1,9 +1,9 @@
 package com.devepos.adt.saat.internal.cdsanalysis.ui;
 
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.JFacePreferences;
-import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.viewers.DelegatingStyledCellLabelProvider;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.StyledString;
@@ -16,7 +16,7 @@ import com.devepos.adt.base.destinations.IDestinationProvider;
 import com.devepos.adt.base.elementinfo.IAdtObjectReferenceElementInfo;
 import com.devepos.adt.base.ui.IGeneralMenuConstants;
 import com.devepos.adt.base.ui.StylerFactory;
-import com.devepos.adt.base.ui.action.PreferenceToggleAction;
+import com.devepos.adt.base.ui.action.ActionFactory;
 import com.devepos.adt.base.ui.tree.ICollectionTreeNode;
 import com.devepos.adt.base.ui.tree.ILazyLoadingListener;
 import com.devepos.adt.base.ui.tree.IStyledTreeNode;
@@ -27,6 +27,7 @@ import com.devepos.adt.saat.internal.ICommandConstants;
 import com.devepos.adt.saat.internal.IContextMenuConstants;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.cdsanalysis.ICdsAnalysisPreferences;
+import com.devepos.adt.saat.internal.cdsanalysis.IWhereUsedInCdsSettings;
 import com.devepos.adt.saat.internal.menu.SaatMenuItemFactory;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.search.ObjectSearchUriDiscovery;
@@ -45,15 +46,11 @@ import com.devepos.adt.saat.internal.util.IImages;
  */
 public class WhereUsedInCdsAnalysisView extends CdsAnalysisPage<WhereUsedInCdsAnalysis> {
   private final ILazyLoadingListener lazyLoadingListener;
-  private PreferenceToggleAction showFromUses;
-  private PreferenceToggleAction showAssocUses;
-  private PreferenceToggleAction releasedUsagesOnly;
-  private PreferenceToggleAction localAssociationsOnly;
+  private Action showFromUses;
+  private Action showAssocUses;
+  private Action releasedUsagesOnly;
+  private Action localAssociationsOnly;
   private boolean isLocalAssocOnlyFeatureAvailable;
-  private static final String USES_IN_SELECT_PREF_KEY = "com.devepos.adt.saat.whereusedincds.showReferencesInSelectPartOfCds"; //$NON-NLS-1$
-  private static final String USES_IN_ASSOC_PREF_KEY = "com.devepos.adt.saat.whereusedincds.showReferencesInAssocPartOfCds"; //$NON-NLS-1$
-  private static final String LOCAL_ASSOCIATIONS_ONLY_PREF_KEY = "com.devepos.adt.saat.whereusedincds.onlyLocalDefinedAssociation"; //$NON-NLS-1$
-  private final IPropertyChangeListener propertyChangeListener;
 
   public WhereUsedInCdsAnalysisView(final CdsAnalysisView parentView) {
     super(parentView);
@@ -62,76 +59,21 @@ public class WhereUsedInCdsAnalysisView extends CdsAnalysisPage<WhereUsedInCdsAn
         parentView.updateLabel();
       });
     };
-
-    propertyChangeListener = event -> {
-      if (analysisResult == null) {
-        return;
-      }
-      final String propertyName = event.getProperty();
-      final boolean showFromUsesChanged = USES_IN_SELECT_PREF_KEY.equals(propertyName);
-      final boolean showAssocUsesChanged = USES_IN_ASSOC_PREF_KEY.equals(propertyName);
-      final boolean localAssocsOnlyChanged = LOCAL_ASSOCIATIONS_ONLY_PREF_KEY.equals(propertyName);
-      final boolean releasedUsagesOnlyChanged = ICdsAnalysisPreferences.WHERE_USED_ONLY_RELEASED_USAGES
-          .equals(propertyName);
-
-      if (!showFromUsesChanged && !showAssocUsesChanged && !releasedUsagesOnlyChanged
-          && !localAssocsOnlyChanged) {
-        return;
-      }
-      // trigger refresh of where used analysis
-      analysisResult.updateWhereUsedProvider(showFromUses.isChecked(), showAssocUses.isChecked());
-      analysisResult.setLocalAssociationsOnly(localAssociationsOnly.isChecked());
-      if (localAssocsOnlyChanged) {
-        if (showAssocUses.isChecked()) {
-          refreshAnalysis();
-        }
-      } else {
-        refreshAnalysis();
-      }
-    };
-    SearchAndAnalysisPlugin.getDefault()
-        .getPreferenceStore()
-        .addPropertyChangeListener(propertyChangeListener);
   }
 
   @Override
   public void dispose() {
     super.dispose();
-    SearchAndAnalysisPlugin.getDefault()
-        .getPreferenceStore()
-        .removePropertyChangeListener(propertyChangeListener);
   }
 
   @Override
-  protected void createActions() {
-    super.createActions();
-    final IPreferenceStore prefStore = SearchAndAnalysisPlugin.getDefault().getPreferenceStore();
-    showFromUses = new PreferenceToggleAction(
-        Messages.WhereUsedInCdsAnalysisView_ShowUsesInSelectPartAction_xmit, SearchAndAnalysisPlugin
-            .getDefault()
-            .getImageDescriptor(IImages.DATA_SOURCE), USES_IN_SELECT_PREF_KEY, true, prefStore);
-    showAssocUses = new PreferenceToggleAction(
-        Messages.WhereUsedInCdsAnalysisView_ShowUsesInAssociationsAction_xmit,
-        SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.ASSOCIATION),
-        USES_IN_ASSOC_PREF_KEY, false, prefStore);
-    localAssociationsOnly = new PreferenceToggleAction(
-        Messages.WhereUsedInCdsAnalysisView_OnlyLocallyDefinedAssocUsages_xmit, null,
-        LOCAL_ASSOCIATIONS_ONLY_PREF_KEY, false, prefStore);
-    releasedUsagesOnly = new PreferenceToggleAction(
-        Messages.WhereUsedInCdsAnalysisView_OnlyUsagesInReleasedEntities_xmit, null,
-        ICdsAnalysisPreferences.WHERE_USED_ONLY_RELEASED_USAGES, false, prefStore);
-    showAssocUses.addPropertyChangeListener(event -> {
-      localAssociationsOnly.setEnabled(showAssocUses.isChecked()
-          && isLocalAssocOnlyFeatureAvailable);
-      if (!showAssocUses.isChecked()) {
-        showFromUses.setChecked(true);
-      }
-    });
-    showFromUses.addPropertyChangeListener(event -> {
-      if (!showFromUses.isChecked()) {
-        showAssocUses.setChecked(true);
-      }
-    });
+  public void setActionBars(final IActionBars actionBars) {
+    super.setActionBars(actionBars);
+    final IMenuManager menu = actionBars.getMenuManager();
+    menu.appendToGroup(IGeneralMenuConstants.GROUP_FILTERING, showFromUses);
+    menu.appendToGroup(IGeneralMenuConstants.GROUP_FILTERING, showAssocUses);
+    menu.appendToGroup(IGeneralMenuConstants.GROUP_ADDITIONS, releasedUsagesOnly);
+    menu.appendToGroup(IGeneralMenuConstants.GROUP_ADDITIONS, localAssociationsOnly);
   }
 
   @Override
@@ -140,6 +82,57 @@ public class WhereUsedInCdsAnalysisView extends CdsAnalysisPage<WhereUsedInCdsAn
     treeViewer.setUseHashlookup(true);
     treeViewer.setLabelProvider(new DelegatingStyledCellLabelProvider(
         new TreeViewerLabelProvider()));
+  }
+
+  @Override
+  protected void createActions() {
+    super.createActions();
+    showFromUses = ActionFactory.createAction(
+        Messages.WhereUsedInCdsAnalysisView_ShowUsesInSelectPartAction_xmit, SearchAndAnalysisPlugin
+            .getDefault()
+            .getImageDescriptor(IImages.DATA_SOURCE), Action.AS_CHECK_BOX, () -> {
+              analysisResult.getSettings().setSearchFromPart(showFromUses.isChecked());
+              analysisResult.updateWhereUsedProvider();
+              refreshAnalysis();
+            });
+
+    showAssocUses = ActionFactory.createAction(
+        Messages.WhereUsedInCdsAnalysisView_ShowUsesInAssociationsAction_xmit,
+        SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.ASSOCIATION),
+        Action.AS_CHECK_BOX, () -> {
+          analysisResult.getSettings().setSearchAssociation(showAssocUses.isChecked());
+          analysisResult.updateWhereUsedProvider();
+          refreshAnalysis();
+        });
+
+    localAssociationsOnly = ActionFactory.createAction(
+        Messages.WhereUsedInCdsAnalysisView_OnlyLocallyDefinedAssocUsages_xmit, null,
+        Action.AS_CHECK_BOX, () -> {
+          analysisResult.getSettings().setLocalAssociationsOnly(localAssociationsOnly.isChecked());
+          analysisResult.updateWhereUsedProvider();
+          refreshAnalysis();
+        });
+    localAssociationsOnly.setEnabled(false);
+
+    releasedUsagesOnly = ActionFactory.createAction(
+        Messages.WhereUsedInCdsAnalysisView_OnlyUsagesInReleasedEntities_xmit, null,
+        Action.AS_CHECK_BOX, () -> {
+          analysisResult.getSettings().setReleasedUsagesOnly(releasedUsagesOnly.isChecked());
+          analysisResult.updateWhereUsedProvider();
+          refreshAnalysis();
+        });
+    showAssocUses.addPropertyChangeListener(event -> {
+      if (!showAssocUses.isChecked()) {
+        showFromUses.setChecked(true);
+        analysisResult.getSettings().setSearchFromPart(true);
+      }
+    });
+    showFromUses.addPropertyChangeListener(event -> {
+      if (!showFromUses.isChecked()) {
+        showAssocUses.setChecked(true);
+        analysisResult.getSettings().setSearchAssociation(true);
+      }
+    });
   }
 
   @Override
@@ -158,57 +151,6 @@ public class WhereUsedInCdsAnalysisView extends CdsAnalysisPage<WhereUsedInCdsAn
       SaatMenuItemFactory.addCdsAnalyzerCommandItem(mgr, IContextMenuConstants.GROUP_CDS_ANALYSIS,
           ICommandConstants.FIELD_ANALYSIS);
     }
-  }
-
-  @Override
-  protected ViewUiState getUiState() {
-    final TreeViewUiState uiState = new TreeViewUiState();
-    uiState.setFromTreeViewer((TreeViewer) getViewer());
-    return uiState;
-  }
-
-  @Override
-  protected void loadInput(final ViewUiState uiState) {
-    checkFeatureState();
-    final TreeViewer viewer = (TreeViewer) getViewer();
-    if (analysisResult.isResultLoaded()) {
-      viewer.setInput(analysisResult.getResult());
-      analysisResult.updateWhereUsedProvider(showFromUses.isChecked(), showAssocUses.isChecked());
-      analysisResult.setLocalAssociationsOnly(localAssociationsOnly.isChecked());
-      if (uiState instanceof TreeViewUiState) {
-        ((TreeViewUiState) uiState).applyToTreeViewer(viewer);
-      } else {
-        final Object[] input = (Object[]) viewer.getInput();
-        if (input != null && input.length >= 1) {
-          viewer.expandToLevel(input[0], 1);
-          viewer.setSelection(new StructuredSelection(input[0]));
-        }
-      }
-    } else {
-      analysisResult.createResult(lazyLoadingListener);
-      analysisResult.updateWhereUsedProvider(showFromUses.isChecked(), showAssocUses.isChecked());
-      analysisResult.setLocalAssociationsOnly(localAssociationsOnly.isChecked());
-      viewer.setInput(analysisResult.getResult());
-      analysisResult.setResultLoaded(true);
-      viewer.expandAll();
-    }
-  }
-
-  @Override
-  public void setActionBars(final IActionBars actionBars) {
-    super.setActionBars(actionBars);
-    final IMenuManager menu = actionBars.getMenuManager();
-    menu.appendToGroup(IGeneralMenuConstants.GROUP_FILTERING, showFromUses);
-    menu.appendToGroup(IGeneralMenuConstants.GROUP_FILTERING, showAssocUses);
-    menu.appendToGroup(IGeneralMenuConstants.GROUP_ADDITIONS, releasedUsagesOnly);
-    menu.appendToGroup(IGeneralMenuConstants.GROUP_ADDITIONS, localAssociationsOnly);
-  }
-
-  @Override
-  protected void refreshAnalysis() {
-    analysisResult.refreshAnalysis();
-    getViewPart().updateLabel();
-    getViewer().refresh();
   }
 
   @Override
@@ -243,6 +185,45 @@ public class WhereUsedInCdsAnalysisView extends CdsAnalysisPage<WhereUsedInCdsAn
     return text;
   }
 
+  @Override
+  protected ViewUiState getUiState() {
+    final TreeViewUiState uiState = new TreeViewUiState();
+    uiState.setFromTreeViewer((TreeViewer) getViewer());
+    return uiState;
+  }
+
+  @Override
+  protected void loadInput(final ViewUiState uiState) {
+    checkFeatureState();
+    final TreeViewer viewer = (TreeViewer) getViewer();
+    if (analysisResult.isResultLoaded()) {
+      setActionStateFromSettings();
+      viewer.setInput(analysisResult.getResult());
+      if (uiState instanceof TreeViewUiState) {
+        ((TreeViewUiState) uiState).applyToTreeViewer(viewer);
+      } else {
+        final Object[] input = (Object[]) viewer.getInput();
+        if (input != null && input.length >= 1) {
+          viewer.expandToLevel(input[0], 1);
+          viewer.setSelection(new StructuredSelection(input[0]));
+        }
+      }
+    } else {
+      initActionState();
+      analysisResult.createResult(lazyLoadingListener);
+      viewer.setInput(analysisResult.getResult());
+      analysisResult.setResultLoaded(true);
+      viewer.expandAll();
+    }
+  }
+
+  @Override
+  protected void refreshAnalysis() {
+    analysisResult.refreshAnalysis();
+    getViewPart().updateLabel();
+    getViewer().refresh();
+  }
+
   private void checkFeatureState() {
     final IAdtObjectReferenceElementInfo adtObjElemInfo = analysisResult.getAdtObjectInfo();
     final IDestinationProvider destProvider = adtObjElemInfo.getAdapter(IDestinationProvider.class);
@@ -250,8 +231,39 @@ public class WhereUsedInCdsAnalysisView extends CdsAnalysisPage<WhereUsedInCdsAn
         .getDestinationId());
     isLocalAssocOnlyFeatureAvailable = uriDiscovery.isParameterSupported(
         QueryParameterName.LOCAL_DECLARED_ASSOC_ONLY, SearchType.CDS_VIEW);
-    localAssociationsOnly.setEnabled(isLocalAssocOnlyFeatureAvailable && showAssocUses.isChecked());
+    localAssociationsOnly.setEnabled(isLocalAssocOnlyFeatureAvailable);
     releasedUsagesOnly.setEnabled(uriDiscovery.isParameterSupported(
         QueryParameterName.RELEASE_STATE, SearchType.CDS_VIEW));
+  }
+
+  private void initActionState() {
+    IPreferenceStore prefStore = SearchAndAnalysisPlugin.getDefault().getPreferenceStore();
+    boolean isSearchFrom = prefStore.getBoolean(ICdsAnalysisPreferences.WHERE_USED_USES_IN_SELECT);
+    boolean isSearchAssoc = prefStore.getBoolean(ICdsAnalysisPreferences.WHERE_USED_USES_IN_ASSOC);
+    boolean isLocalAssocOnly = prefStore.getBoolean(
+        ICdsAnalysisPreferences.WHERE_USED_LOCAL_ASSOCIATIONS_ONLY);
+    boolean isReleasedUsagesOnly = prefStore.getBoolean(
+        ICdsAnalysisPreferences.WHERE_USED_ONLY_RELEASED_USAGES);
+
+    showFromUses.setChecked(isSearchFrom);
+    showAssocUses.setChecked(isSearchAssoc);
+    releasedUsagesOnly.setChecked(isReleasedUsagesOnly);
+    localAssociationsOnly.setChecked(isReleasedUsagesOnly);
+
+    if (analysisResult != null) {
+      IWhereUsedInCdsSettings settings = analysisResult.getSettings();
+      settings.setSearchFromPart(isSearchFrom);
+      settings.setSearchAssociation(isSearchAssoc);
+      settings.setLocalAssociationsOnly(isLocalAssocOnly);
+      settings.setReleasedUsagesOnly(isReleasedUsagesOnly);
+    }
+  }
+
+  private void setActionStateFromSettings() {
+    IWhereUsedInCdsSettings analysisSettings = analysisResult.getSettings();
+    showFromUses.setChecked(analysisSettings.isSearchFromPart());
+    showAssocUses.setChecked(analysisSettings.isSearchAssociations());
+    localAssociationsOnly.setChecked(analysisSettings.isLocalAssociationsOnly());
+    releasedUsagesOnly.setChecked(analysisSettings.isReleasedUsagesOnly());
   }
 }

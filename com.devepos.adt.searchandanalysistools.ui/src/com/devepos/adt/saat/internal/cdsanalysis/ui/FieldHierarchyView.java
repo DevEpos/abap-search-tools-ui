@@ -26,6 +26,7 @@ import org.eclipse.ui.part.PageBook;
 import com.devepos.adt.base.ObjectType;
 import com.devepos.adt.base.destinations.IDestinationProvider;
 import com.devepos.adt.base.ui.IGeneralMenuConstants;
+import com.devepos.adt.base.ui.action.ActionFactory;
 import com.devepos.adt.base.ui.action.RadioActionGroup;
 import com.devepos.adt.base.ui.tree.IAdtObjectReferenceNode;
 import com.devepos.adt.base.ui.tree.ITreeNode;
@@ -35,6 +36,7 @@ import com.devepos.adt.saat.internal.IContextMenuConstants;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.cdsanalysis.CdsFieldTopDownElementInfoProvider;
 import com.devepos.adt.saat.internal.cdsanalysis.ICdsAnalysisConstants;
+import com.devepos.adt.saat.internal.cdsanalysis.ICdsFieldAnalysisSettings;
 import com.devepos.adt.saat.internal.menu.SaatMenuItemFactory;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.util.IImages;
@@ -52,21 +54,22 @@ public class FieldHierarchyView implements IDestinationProvider {
   static final String WHERE_USED_ACTION = "whereUsed"; //$NON-NLS-1$
 
   private RadioActionGroup actionToggleGroup;
-
+  private Action searchCalcFieldsAction;
   private final FieldAnalysisView parentView;
   private final ViewForm hierarchyViewerViewForm;
   private final PageBook pageBook;
   private final Composite noFieldSelectionComposite;
-  private ITreeNode fieldNode;
   private final CLabel hierarchyViewerPaneLabel;
   private FieldHierarchyViewer hierarchyTreeViewer;
-  private Map<String, FieldHierarchyViewerInput> fieldInputMap;
+
+  private ITreeNode fieldNode;
   private FieldHierarchyViewerInput currentFieldInput;
+  private Map<String, FieldHierarchyViewerInput> fieldInputMap;
   private ObjectType currentInputObjectType;
   private String currentEntityName;
-  private Action searchCalcFieldsAction;
 
   private IDestinationProvider destinationProvider;
+  private ICdsFieldAnalysisSettings settings;
 
   /**
    * Creates new instance of the {@link FieldHierarchyView}
@@ -103,6 +106,11 @@ public class FieldHierarchyView implements IDestinationProvider {
     fieldInputMap.clear();
   }
 
+  @Override
+  public String getDestinationId() {
+    return destinationProvider.getDestinationId();
+  }
+
   /**
    * Returns the current input cache
    *
@@ -112,17 +120,31 @@ public class FieldHierarchyView implements IDestinationProvider {
     return fieldInputMap;
   }
 
+  @Override
+  public String getSystemId() {
+    return destinationProvider.getSystemId();
+  }
+
+  public StructuredViewer getViewer() {
+    return hierarchyTreeViewer;
+  }
+
   /**
-   * Updates the field to hierarchy viewer input cache
+   * Returns <code>true</code> if this view is visible
    *
-   * @param inputCache the field hierarchy viewer cache
+   * @return <code>true</code> if this view is visible
    */
-  public void setInputCache(final Map<String, FieldHierarchyViewerInput> inputCache) {
-    if (inputCache == null) {
-      fieldInputMap = new HashMap<>();
-    } else {
-      fieldInputMap = inputCache;
-    }
+  public boolean isVisible() {
+    return hierarchyViewerViewForm.isVisible();
+  }
+
+  public void reloadFieldInput() {
+    hierarchyTreeViewer.reloadInput(TOP_DOWN_ACTION.equals(actionToggleGroup.getToggledActionId()));
+  }
+
+  @Override
+  public void setDestinationId(final String destinationId) {
+    destinationProvider.setDestinationId(destinationId);
   }
 
   /**
@@ -137,28 +159,6 @@ public class FieldHierarchyView implements IDestinationProvider {
     currentInputObjectType = entityType;
     currentEntityName = entityName;
     this.destinationProvider = destinationProvider;
-  }
-
-  /**
-   * Sets the visibility of the view form which holds the hierarchy viewer
-   *
-   * @param visible if <code>true</code> the view will be made visible
-   */
-  public void setVisible(final boolean visible) {
-    if (visible) {
-      pageBook.showPage(hierarchyViewerViewForm);
-    } else {
-      pageBook.showPage(noFieldSelectionComposite);
-    }
-  }
-
-  /**
-   * Returns <code>true</code> if this view is visible
-   *
-   * @return <code>true</code> if this view is visible
-   */
-  public boolean isVisible() {
-    return hierarchyViewerViewForm.isVisible();
   }
 
   /**
@@ -183,125 +183,56 @@ public class FieldHierarchyView implements IDestinationProvider {
       }
       input = new FieldHierarchyViewerInput(hierarchyTreeViewer, topDownNode, currentEntityName,
           fieldName, this);
-      input.createWhereUsedNode();
+      input.createWhereUsedNode(settings);
 
       fieldInputMap.put(fieldName, input);
     }
     currentFieldInput = input;
-    searchCalcFieldsAction.setChecked(input.isSearchCalcFieldsActive());
-    actionToggleGroup.enableAction(TOP_DOWN_ACTION, input.getTopDownNode().hasContent());
-    final boolean isTopDown = TOP_DOWN_ACTION.equals(actionToggleGroup.getToggledActionId());
+
+    boolean isTopDownPossible = input.getTopDownNode().hasContent();
+    boolean isTopDown = settings.isTopDown();
+    if (!isTopDownPossible && isTopDown) {
+      settings.setTopDown(false);
+      isTopDown = false;
+    }
+
+    searchCalcFieldsAction.setChecked(settings.isSearchInCalcFields());
+    actionToggleGroup.enableAction(TOP_DOWN_ACTION, isTopDownPossible);
+    actionToggleGroup.setActionChecked(isTopDown ? TOP_DOWN_ACTION : WHERE_USED_ACTION);
     hierarchyTreeViewer.setInput(input, isTopDown);
     searchCalcFieldsAction.setEnabled(!isTopDown);
+
     updateToolbarLabel(isTopDown);
   }
 
-  @Override
-  public void setDestinationId(final String destinationId) {
-    destinationProvider.setDestinationId(destinationId);
-  }
-
-  @Override
-  public String getDestinationId() {
-    return destinationProvider.getDestinationId();
-  }
-
-  @Override
-  public String getSystemId() {
-    return destinationProvider.getSystemId();
-  }
-
-  public StructuredViewer getViewer() {
-    return hierarchyTreeViewer;
-  }
-
-  public void reloadFieldInput() {
-    hierarchyTreeViewer.reloadInput(TOP_DOWN_ACTION.equals(actionToggleGroup.getToggledActionId()));
-  }
-
-  private void createToolbarActions() {
-    actionToggleGroup = new RadioActionGroup();
-    actionToggleGroup.addAction(TOP_DOWN_ACTION,
-        Messages.FieldHierarchyViewer_FieldOriginModeButton_xtol, SearchAndAnalysisPlugin
-            .getDefault()
-            .getImageDescriptor(IImages.FIELD_TOP_DOWN), true);
-    actionToggleGroup.addAction(WHERE_USED_ACTION,
-        Messages.FieldHierarchyViewer_FieldReferencesModeButton_xtol, SearchAndAnalysisPlugin
-            .getDefault()
-            .getImageDescriptor(IImages.FIELD_WHERE_USED), false);
-    actionToggleGroup.addActionToggledListener(actionId -> {
-      final boolean isTopDown = TOP_DOWN_ACTION.equals(actionId);
-      hierarchyTreeViewer.updateInput(isTopDown);
-      updateToolbarLabel(isTopDown);
-      searchCalcFieldsAction.setEnabled(!isTopDown);
-    });
-    searchCalcFieldsAction = new Action(Messages.FieldHierarchyView_CalculatedFieldsSearch_xtol,
-        IAction.AS_CHECK_BOX) {
-      @Override
-      public void run() {
-        if (currentFieldInput == null) {
-          return;
-        }
-        currentFieldInput.setSearchCalcFields(isChecked());
-        reloadFieldInput();
-      }
-    };
-    searchCalcFieldsAction.setImageDescriptor(SearchAndAnalysisPlugin.getDefault()
-        .getImageDescriptor(IImages.FUNCTION));
-  }
-
-  private void fillToolbar(final ToolBarManager fieldTbm) {
-    fieldTbm.add(searchCalcFieldsAction);
-    fieldTbm.add(new Separator());
-    actionToggleGroup.contributeToToolbar(fieldTbm);
-  }
-
-  /*
-   * Create composite for no selected field
+  /**
+   * Updates the field to hierarchy viewer input cache
+   *
+   * @param inputCache the field hierarchy viewer cache
    */
-  private Composite createNoFieldSelectionComposite(final PageBook pageBook) {
-    final Composite composite = new Composite(pageBook, SWT.BACKGROUND);
-    GridLayoutFactory.swtDefaults().applyTo(composite);
-
-    final Label label = new Label(composite, SWT.LEAD | SWT.TOP | SWT.WRAP);
-    label.setText(Messages.FieldHierarchyView_NoFieldSelected_xfld);
-
-    GridDataFactory.fillDefaults()
-        .align(SWT.FILL, SWT.CENTER)
-        .grab(true, false)
-        .indent(5, SWT.DEFAULT)
-        .applyTo(label);
-    return composite;
-  }
-
-  /*
-   * Create tree viewer for displaying the field hierarchy for a single field
-   */
-  private Control createHierarchyViewerControl(final Composite parent) {
-    final Composite hierarchyComposite = new Composite(parent, SWT.NONE);
-    hierarchyComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
-    hierarchyComposite.setSize(100, 100);
-    hierarchyComposite.setLayout(new FillLayout());
-    hierarchyTreeViewer = new FieldHierarchyViewer(hierarchyComposite);
-    return hierarchyComposite;
-  }
-
-  /*
-   * Updates the Tool Bar label
-   */
-  private void updateToolbarLabel(final boolean topDown) {
-    hierarchyViewerPaneLabel.setImage(fieldNode.getImage());
-    final StringBuilder infoLabelText = new StringBuilder(
-        currentInputObjectType != ObjectType.DATA_DEFINITION ? fieldNode.getDisplayName()
-            .toUpperCase() : fieldNode.getDisplayName());
-    infoLabelText.append("   ["); //$NON-NLS-1$
-    if (topDown) {
-      infoLabelText.append(Messages.FieldHierarchyView_FieldOriginModeHeading_xfld);
+  public void setInputCache(final Map<String, FieldHierarchyViewerInput> inputCache) {
+    if (inputCache == null) {
+      fieldInputMap = new HashMap<>();
     } else {
-      infoLabelText.append(Messages.FieldHierarchyView_FieldReferencesModeHeading_xfld);
+      fieldInputMap = inputCache;
     }
-    infoLabelText.append("]"); //$NON-NLS-1$
-    hierarchyViewerPaneLabel.setText(infoLabelText.toString());
+  }
+
+  public void setSettings(ICdsFieldAnalysisSettings settings) {
+    this.settings = settings;
+  }
+
+  /**
+   * Sets the visibility of the view form which holds the hierarchy viewer
+   *
+   * @param visible if <code>true</code> the view will be made visible
+   */
+  public void setVisible(final boolean visible) {
+    if (visible) {
+      pageBook.showPage(hierarchyViewerViewForm);
+    } else {
+      pageBook.showPage(noFieldSelectionComposite);
+    }
   }
 
   /*
@@ -357,6 +288,71 @@ public class FieldHierarchyView implements IDestinationProvider {
   }
 
   /*
+   * Create tree viewer for displaying the field hierarchy for a single field
+   */
+  private Control createHierarchyViewerControl(final Composite parent) {
+    final Composite hierarchyComposite = new Composite(parent, SWT.NONE);
+    hierarchyComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
+    hierarchyComposite.setSize(100, 100);
+    hierarchyComposite.setLayout(new FillLayout());
+    hierarchyTreeViewer = new FieldHierarchyViewer(hierarchyComposite);
+    return hierarchyComposite;
+  }
+
+  /*
+   * Create composite for no selected field
+   */
+  private Composite createNoFieldSelectionComposite(final PageBook pageBook) {
+    final Composite composite = new Composite(pageBook, SWT.BACKGROUND);
+    GridLayoutFactory.swtDefaults().applyTo(composite);
+
+    final Label label = new Label(composite, SWT.LEAD | SWT.TOP | SWT.WRAP);
+    label.setText(Messages.FieldHierarchyView_NoFieldSelected_xfld);
+
+    GridDataFactory.fillDefaults()
+        .align(SWT.FILL, SWT.CENTER)
+        .grab(true, false)
+        .indent(5, SWT.DEFAULT)
+        .applyTo(label);
+    return composite;
+  }
+
+  private void createToolbarActions() {
+    actionToggleGroup = new RadioActionGroup();
+    actionToggleGroup.addAction(TOP_DOWN_ACTION,
+        Messages.FieldHierarchyViewer_FieldOriginModeButton_xtol, SearchAndAnalysisPlugin
+            .getDefault()
+            .getImageDescriptor(IImages.FIELD_TOP_DOWN), true);
+    actionToggleGroup.addAction(WHERE_USED_ACTION,
+        Messages.FieldHierarchyViewer_FieldReferencesModeButton_xtol, SearchAndAnalysisPlugin
+            .getDefault()
+            .getImageDescriptor(IImages.FIELD_WHERE_USED), false);
+    actionToggleGroup.addActionToggledListener(actionId -> {
+      final boolean isTopDown = TOP_DOWN_ACTION.equals(actionId);
+      hierarchyTreeViewer.updateInput(isTopDown);
+      updateToolbarLabel(isTopDown);
+      searchCalcFieldsAction.setEnabled(!isTopDown);
+      settings.setTopDown(isTopDown);
+    });
+    searchCalcFieldsAction = ActionFactory.createAction(
+        Messages.FieldHierarchyView_CalculatedFieldsSearch_xtol, SearchAndAnalysisPlugin
+            .getDefault()
+            .getImageDescriptor(IImages.FUNCTION), IAction.AS_CHECK_BOX, () -> {
+              if (currentFieldInput == null) {
+                return;
+              }
+              settings.setSearchInCalcFields(searchCalcFieldsAction.isChecked());
+              reloadFieldInput();
+            });
+  }
+
+  private void fillToolbar(final ToolBarManager fieldTbm) {
+    fieldTbm.add(searchCalcFieldsAction);
+    fieldTbm.add(new Separator());
+    actionToggleGroup.contributeToToolbar(fieldTbm);
+  }
+
+  /*
    * Retrieves an ADT object reference node from the current selection or 'null'
    */
   private IAdtObjectReferenceNode getAdtObjRefFromSelection() {
@@ -369,5 +365,23 @@ public class FieldHierarchyView implements IDestinationProvider {
       return null;
     }
     return (IAdtObjectReferenceNode) selected;
+  }
+
+  /*
+   * Updates the Tool Bar label
+   */
+  private void updateToolbarLabel(final boolean topDown) {
+    hierarchyViewerPaneLabel.setImage(fieldNode.getImage());
+    final StringBuilder infoLabelText = new StringBuilder(
+        currentInputObjectType != ObjectType.DATA_DEFINITION ? fieldNode.getDisplayName()
+            .toUpperCase() : fieldNode.getDisplayName());
+    infoLabelText.append("   ["); //$NON-NLS-1$
+    if (topDown) {
+      infoLabelText.append(Messages.FieldHierarchyView_FieldOriginModeHeading_xfld);
+    } else {
+      infoLabelText.append(Messages.FieldHierarchyView_FieldReferencesModeHeading_xfld);
+    }
+    infoLabelText.append("]"); //$NON-NLS-1$
+    hierarchyViewerPaneLabel.setText(infoLabelText.toString());
   }
 }

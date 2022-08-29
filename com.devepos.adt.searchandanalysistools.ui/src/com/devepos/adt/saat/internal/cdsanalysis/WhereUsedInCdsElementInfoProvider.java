@@ -34,10 +34,26 @@ import com.devepos.adt.saat.internal.util.IImages;
 public class WhereUsedInCdsElementInfoProvider implements IElementInfoProvider {
   private final String destinationId;
   private final String adtObjectName;
-  private boolean searchSelectFrom;
-  private boolean searchAssocications;
   private QueryParameterName searchParameter;
-  private boolean localAssociationsOnly;
+  private IWhereUsedInCdsSettings settings;
+
+  /**
+   * Creates a new Where Used in CDS view Element info provider
+   *
+   * @param destinationId      the id of the backend destination
+   * @param adtObjectName      the name of the ADT object (can be Database table,
+   *                           Database view or a CDS view)
+   * @param searchSelectFrom   if <code>true</code> the query searches for uses of
+   *                           <code>cdsViewName</code> in Select parts of CDS
+   *                           views
+   * @param searchAssociations if <code>true</code> the query searches for uses of
+   *                           <code>cdsViewName</code> in Associations of CDS
+   *                           views
+   */
+  public WhereUsedInCdsElementInfoProvider(final String destinationId, final String adtObjectName,
+      IWhereUsedInCdsSettings settings) {
+    this(destinationId, adtObjectName, settings, null);
+  }
 
   /**
    * Creates a new Where Used in CDS view Element info provider
@@ -55,55 +71,19 @@ public class WhereUsedInCdsElementInfoProvider implements IElementInfoProvider {
    *                           search
    */
   private WhereUsedInCdsElementInfoProvider(final String destinationId, final String adtObjectName,
-      final boolean searchSelectFrom, final boolean searchAssociations,
-      final QueryParameterName searchParameter) {
+      IWhereUsedInCdsSettings settings, final QueryParameterName searchParameter) {
+    Assert.isNotNull(settings);
     this.destinationId = destinationId;
     this.adtObjectName = adtObjectName;
-    updateSearchParameters(searchSelectFrom, searchAssociations, searchParameter);
-  }
-
-  /**
-   * Creates a new Where Used in CDS view Element info provider
-   *
-   * @param destinationId      the id of the backend destination
-   * @param adtObjectName      the name of the ADT object (can be Database table,
-   *                           Database view or a CDS view)
-   * @param searchSelectFrom   if <code>true</code> the query searches for uses of
-   *                           <code>cdsViewName</code> in Select parts of CDS
-   *                           views
-   * @param searchAssociations if <code>true</code> the query searches for uses of
-   *                           <code>cdsViewName</code> in Associations of CDS
-   *                           views
-   */
-  public WhereUsedInCdsElementInfoProvider(final String destinationId, final String adtObjectName,
-      final boolean searchSelectFrom, final boolean searchAssociations) {
-    this(destinationId, adtObjectName, searchSelectFrom, searchAssociations, null);
-  }
-
-  /**
-   * Updates the search parameters for the Where-Used provider
-   *
-   * @param searchSelectFrom   if <code>true</code> the query searches for uses of
-   *                           <code>cdsViewName</code> in Select parts of CDS
-   *                           views
-   * @param searchAssociations if <code>true</code> the query searches for uses of
-   *                           <code>cdsViewName</code> in Associations of CDS
-   *                           views
-   */
-  public void updateSearchParameters(final boolean searchSelectFrom,
-      final boolean searchAssociations) {
-    updateSearchParameters(searchSelectFrom, searchAssociations, null);
-  }
-
-  public void setLocalAssociationsOnly(final boolean localAssociationsOnly) {
-    this.localAssociationsOnly = localAssociationsOnly;
+    this.settings = settings;
+    updateSearchParameters(searchParameter);
   }
 
   @Override
   public List<IElementInfo> getElements() {
     final ObjectContainer<List<IElementInfo>> elementInfoWrapper = new ObjectContainer<>(
         new ArrayList<IElementInfo>());
-    if (searchAssocications && searchSelectFrom && searchParameter == null) {
+    if (settings.isSearchAssociations() && settings.isSearchFromPart() && searchParameter == null) {
       return Arrays.asList(createLazyWhereUsedProviderElement(true),
           createLazyWhereUsedProviderElement(false));
     }
@@ -112,12 +92,10 @@ public class WhereUsedInCdsElementInfoProvider implements IElementInfoProvider {
         destinationId));
     final Map<String, Object> parameters = new HashMap<>();
     parameters.put(searchParameter.toString(), adtObjectName);
-    if (localAssociationsOnly) {
+    if (settings.isLocalAssociationsOnly()) {
       parameters.put(QueryParameterName.LOCAL_DECLARED_ASSOC_ONLY.toString(), "X"); //$NON-NLS-1$
     }
-    if (SearchAndAnalysisPlugin.getDefault()
-        .getPreferenceStore()
-        .getBoolean(ICdsAnalysisPreferences.WHERE_USED_ONLY_RELEASED_USAGES)) {
+    if (settings.isReleasedUsagesOnly()) {
       parameters.put(QueryParameterName.RELEASE_STATE.toString(), "RELEASED");
     }
     searchRequest.setParameters(parameters, null);
@@ -130,8 +108,7 @@ public class WhereUsedInCdsElementInfoProvider implements IElementInfoProvider {
           .getSearchResult()).getResult();
       for (final IAdtObjectReferenceElementInfo elementInfo : result) {
         final WhereUsedInCdsElementInfoProvider elemInfoProvider = new WhereUsedInCdsElementInfoProvider(
-            destinationId, elementInfo.getName(), searchSelectFrom, searchAssocications);
-        elemInfoProvider.setLocalAssociationsOnly(localAssociationsOnly);
+            destinationId, elementInfo.getName(), settings);
         elementInfo.setElementInfoProvider(elemInfoProvider);
         elementInfoWrapper.getObject().add(elementInfo);
       }
@@ -147,34 +124,9 @@ public class WhereUsedInCdsElementInfoProvider implements IElementInfoProvider {
 
   /**
    * Updates the search parameters for the Where-Used provider
-   *
-   * @param searchSelectFrom   if <code>true</code> the query searches for uses of
-   *                           <code>cdsViewName</code> in Select parts of CDS
-   *                           views
-   * @param searchAssociations if <code>true</code> the query searches for uses of
-   *                           <code>cdsViewName</code> in Associations of CDS
-   *                           views
-   * @param searchParameter    the concrete parameter value for a where used
-   *                           search
    */
-  private void updateSearchParameters(final boolean searchSelectFrom,
-      final boolean searchAssociations, final QueryParameterName searchParameter) {
-    Assert.isTrue(searchSelectFrom || searchAssociations);
-    this.searchSelectFrom = searchSelectFrom;
-    searchAssocications = searchAssociations;
-    if (searchParameter == null) {
-      if (!searchSelectFrom || !searchAssociations) {
-        if (searchSelectFrom) {
-          this.searchParameter = QueryParameterName.SELECT_SOURCE_IN;
-        } else {
-          this.searchParameter = QueryParameterName.ASSOCIATED_IN;
-        }
-      } else {
-        this.searchParameter = null;
-      }
-    } else {
-      this.searchParameter = searchParameter;
-    }
+  public void updateSearchParameters() {
+    updateSearchParameters(null);
   }
 
   private IElementInfo createLazyWhereUsedProviderElement(final boolean searchFrom) {
@@ -188,14 +140,33 @@ public class WhereUsedInCdsElementInfoProvider implements IElementInfoProvider {
       name = Messages.CdsAnalysis_UsesInAssociationsTreeNode_xlfd;
     }
     final WhereUsedInCdsElementInfoProvider provider = new WhereUsedInCdsElementInfoProvider(
-        destinationId, adtObjectName, searchSelectFrom, searchAssocications, searchFrom
-            ? QueryParameterName.SELECT_SOURCE_IN
+        destinationId, adtObjectName, settings, searchFrom ? QueryParameterName.SELECT_SOURCE_IN
             : QueryParameterName.ASSOCIATED_IN);
-    if (!searchFrom) {
-      provider.setLocalAssociationsOnly(localAssociationsOnly);
-    }
     return new LazyLoadingElementInfo(name, name, SearchAndAnalysisPlugin.getDefault()
         .getImage(imageId), provider);
+  }
+
+  /**
+   * Updates the search parameters for the Where-Used provider
+   *
+   * @param searchParameter the concrete parameter value for a where used
+   *                        search
+   */
+  private void updateSearchParameters(final QueryParameterName searchParameter) {
+    Assert.isTrue(settings.isSearchAssociations() || settings.isSearchFromPart());
+    if (searchParameter == null) {
+      if (!settings.isSearchAssociations() || !settings.isSearchFromPart()) {
+        if (settings.isSearchFromPart()) {
+          this.searchParameter = QueryParameterName.SELECT_SOURCE_IN;
+        } else {
+          this.searchParameter = QueryParameterName.ASSOCIATED_IN;
+        }
+      } else {
+        this.searchParameter = null;
+      }
+    } else {
+      this.searchParameter = searchParameter;
+    }
   }
 
 }

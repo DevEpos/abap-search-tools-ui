@@ -13,6 +13,7 @@ import com.devepos.adt.base.ui.tree.ILazyLoadingNode;
 import com.devepos.adt.base.ui.tree.LazyLoadingAdtObjectReferenceNode;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.cdsanalysis.CdsAnalysisType;
+import com.devepos.adt.saat.internal.cdsanalysis.IWhereUsedInCdsSettings;
 import com.devepos.adt.saat.internal.cdsanalysis.WhereUsedInCdsElementInfoProvider;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.util.IImages;
@@ -22,72 +23,12 @@ public class WhereUsedInCdsAnalysis extends CdsAnalysis {
   private String rootWhereUsedCount = INDETERMINATE_COUNT;
   private WhereUsedInCdsElementInfoProvider rootWhereUsedProvider;
   private ILazyLoadingNode cdsWhereUsedNode;
-  private boolean showSelectFromUses = true;
-  private boolean showAssocUses;
   private LazyLoadingAdtObjectReferenceNode node;
-  private boolean localAssociationsOnly;
+  private IWhereUsedInCdsSettings settings;
 
   public WhereUsedInCdsAnalysis(final IAdtObjectReferenceElementInfo adtObjectInfo) {
     super(adtObjectInfo);
-  }
-
-  @Override
-  public Object getResult() {
-    return new Object[] { node };
-  }
-
-  public void updateWhereUsedProvider(final boolean showSelectUses, final boolean showAssocUses) {
-    this.showAssocUses = showAssocUses;
-    showSelectFromUses = showSelectUses;
-    rootWhereUsedProvider.updateSearchParameters(showSelectUses, showAssocUses);
-  }
-
-  public void setLocalAssociationsOnly(final boolean localAssociationsOnly) {
-    this.localAssociationsOnly = localAssociationsOnly;
-    rootWhereUsedProvider.setLocalAssociationsOnly(localAssociationsOnly);
-  }
-
-  @Override
-  public Image getImage() {
-    return SearchAndAnalysisPlugin.getDefault().getImage(IImages.WHERE_USED_IN);
-  }
-
-  @Override
-  public String getLabel() {
-    if (rootWhereUsedCount.equals(INDETERMINATE_COUNT)) {
-      return super.getLabel();
-    }
-    return String.format("%s  -  %s", super.getLabel(), rootWhereUsedCount); //$NON-NLS-1$
-  }
-
-  @Override
-  protected String getLabelPrefix() {
-    if (showAssocUses && showSelectFromUses) {
-      return Messages.WhereUsedInCdsAnalysisView_ViewLabel_xfld;
-    }
-    if (showAssocUses) {
-      return Messages.WhereUsedInCdsAnalysisView_ViewLabelAssocSearch_xfld;
-    }
-    return Messages.WhereUsedInCdsAnalysisView_ViewLabelSelectFromSearch_xlfd;
-  }
-
-  @Override
-  public CdsAnalysisType getType() {
-    return CdsAnalysisType.WHERE_USED;
-  }
-
-  @Override
-  public ImageDescriptor getImageDescriptor() {
-    return SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.WHERE_USED_IN);
-  }
-
-  @Override
-  public void refreshAnalysis() {
-    if (cdsWhereUsedNode == null) {
-      return;
-    }
-    cdsWhereUsedNode.resetLoadedState();
-    rootWhereUsedCount = INDETERMINATE_COUNT;
+    settings = CdsAnalysisSettingsFactory.createWhereUsedInCdsSettings();
   }
 
   /**
@@ -110,11 +51,69 @@ public class WhereUsedInCdsAnalysis extends CdsAnalysis {
     final IDestinationProvider destProvider = adtObjectInfo.getAdapter(IDestinationProvider.class);
     rootWhereUsedProvider = new WhereUsedInCdsElementInfoProvider(destProvider != null
         ? destProvider.getDestinationId()
-        : null, adtObjectInfo.getName(), showSelectFromUses, showAssocUses);
+        : null, adtObjectInfo.getName(), settings);
     cdsWhereUsedNode = node;
-    rootWhereUsedProvider.setLocalAssociationsOnly(localAssociationsOnly);
     node.setElementInfoProvider(rootWhereUsedProvider);
     node.addLazyLoadingListener(lazyLoadingListener);
     node.addLazyLoadingListener(l);
+  }
+
+  @Override
+  public Image getImage() {
+    return SearchAndAnalysisPlugin.getDefault().getImage(IImages.WHERE_USED_IN);
+  }
+
+  @Override
+  public ImageDescriptor getImageDescriptor() {
+    return SearchAndAnalysisPlugin.getDefault().getImageDescriptor(IImages.WHERE_USED_IN);
+  }
+
+  @Override
+  public String getLabel() {
+    if (rootWhereUsedCount.equals(INDETERMINATE_COUNT)) {
+      return super.getLabel();
+    }
+    return String.format("%s  -  %s", super.getLabel(), rootWhereUsedCount); //$NON-NLS-1$
+  }
+
+  @Override
+  public Object getResult() {
+    return new Object[] { node };
+  }
+
+  /**
+   * @return the settings for Where
+   */
+  public IWhereUsedInCdsSettings getSettings() {
+    return settings;
+  }
+
+  @Override
+  public CdsAnalysisType getType() {
+    return CdsAnalysisType.WHERE_USED;
+  }
+
+  @Override
+  public void refreshAnalysis() {
+    if (cdsWhereUsedNode == null) {
+      return;
+    }
+    cdsWhereUsedNode.resetLoadedState();
+    rootWhereUsedCount = INDETERMINATE_COUNT;
+  }
+
+  public void updateWhereUsedProvider() {
+    rootWhereUsedProvider.updateSearchParameters();
+  }
+
+  @Override
+  protected String getLabelPrefix() {
+    if (settings.isSearchAssociations() && settings.isSearchFromPart()) {
+      return Messages.WhereUsedInCdsAnalysisView_ViewLabel_xfld;
+    }
+    if (settings.isSearchAssociations()) {
+      return Messages.WhereUsedInCdsAnalysisView_ViewLabelAssocSearch_xfld;
+    }
+    return Messages.WhereUsedInCdsAnalysisView_ViewLabelSelectFromSearch_xlfd;
   }
 }

@@ -29,21 +29,19 @@ import com.sap.adt.communication.message.IMessageBody;
  */
 public class FieldAnalysisContentHandler extends AdtObjectElementInfoContentHandlerBase {
 
-  private final boolean searchCalcFields;
-  private final boolean searchDbViews;
   protected final AdtStaxContentHandlerUtility utility = new AdtStaxContentHandlerUtility();
   private final boolean topDown;
+  private ICdsFieldAnalysisSettings settings;
 
   public FieldAnalysisContentHandler(final String destinationId, final boolean topDown) {
-    this(destinationId, topDown, false, false);
+    this(destinationId, topDown, null);
   }
 
   public FieldAnalysisContentHandler(final String destinationId, final boolean topDown,
-      final boolean searchCalcFields, final boolean searchDbViews) {
+      ICdsFieldAnalysisSettings settings) {
     super(destinationId);
     this.topDown = topDown;
-    this.searchCalcFields = searchCalcFields;
-    this.searchDbViews = searchDbViews;
+    this.settings = settings;
   }
 
   @Override
@@ -121,7 +119,7 @@ public class FieldAnalysisContentHandler extends AdtObjectElementInfoContentHand
         final IAdtObjectReferenceElementInfo adtObjRefInfo = createAdtObjectRefInfo(name,
             displayName, type, uri, fieldName, true, properties);
         adtObjRefInfo.setElementInfoProvider(new FieldWhereUsedInCdsElementInfoProvider(
-            destinationId, displayName, fieldName, searchCalcFields, searchDbViews));
+            destinationId, displayName, fieldName, settings));
         elementInfo = adtObjRefInfo;
       }
     }

@@ -26,9 +26,12 @@ import com.sap.adt.tools.core.model.adtcore.IAdtObjectReference;
  * @author stockbal
  */
 public class CdsTopDownAnalysisContentHandler extends AdtObjectElementInfoContentHandlerBase {
+  private ICdsTopDownSettings settings;
 
-  public CdsTopDownAnalysisContentHandler(final String destinationId) {
+  public CdsTopDownAnalysisContentHandler(final String destinationId,
+      ICdsTopDownSettings settings) {
     super(destinationId);
+    this.settings = settings;
   }
 
   @Override
@@ -64,8 +67,8 @@ public class CdsTopDownAnalysisContentHandler extends AdtObjectElementInfoConten
       if (objectType != null && objectType != ObjectType.DATA_DEFINITION) {
         adtObjRefInfo.setLazyLoadingSupport(false);
       } else {
-        adtObjRefInfo.setElementInfoProvider(new CdsTopDownElementInfoProvider(destinationId,
-            name));
+        adtObjRefInfo.setElementInfoProvider(new CdsTopDownElementInfoProvider(destinationId, name,
+            settings));
       }
       elementInfo = adtObjRefInfo;
     } else {

@@ -20,36 +20,25 @@ public class FieldWhereUsedInCdsElementInfoProvider implements IElementInfoProvi
   private final String objectName;
   private final String field;
   private final String destinationId;
-  private boolean searchCalcFields;
-  private boolean searchDbViews;
+  private ICdsFieldAnalysisSettings settings;
 
   public FieldWhereUsedInCdsElementInfoProvider(final String destinationId, final String objectName,
       final String field) {
-    this(destinationId, objectName, field, false, false);
+    this(destinationId, objectName, field, null);
   }
 
   public FieldWhereUsedInCdsElementInfoProvider(final String destinationId, final String objectName,
-      final String field, final boolean searchCalcFields, final boolean searchDbViews) {
+      final String field, ICdsFieldAnalysisSettings settings) {
     this.objectName = objectName;
+    this.settings = settings;
     this.field = field;
     this.destinationId = destinationId;
-    this.searchCalcFields = searchCalcFields;
-    this.searchDbViews = searchDbViews;
-  }
-
-  public void setSearchCalcFields(final boolean searchCalcFields) {
-    this.searchCalcFields = searchCalcFields;
-  }
-
-  public void setSearchDbViews(final boolean searchDbViews) {
-    this.searchDbViews = searchDbViews;
   }
 
   @Override
   public List<IElementInfo> getElements() {
     final IElementInfo whereUsedInCdsInfo = CdsAnalysisServiceFactory.createCdsAnalysisService()
-        .loadWhereUsedFieldAnalysis(objectName, field, searchCalcFields, searchDbViews,
-            destinationId);
+        .loadWhereUsedFieldAnalysis(objectName, field, settings, destinationId);
     if (whereUsedInCdsInfo instanceof IElementInfoCollection) {
       return ((IElementInfoCollection) whereUsedInCdsInfo).getChildren();
     }

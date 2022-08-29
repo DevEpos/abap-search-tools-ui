@@ -5,8 +5,8 @@ import org.eclipse.jface.viewers.TreeViewer;
 import com.devepos.adt.base.destinations.IDestinationProvider;
 import com.devepos.adt.base.ui.tree.ILazyLoadingNode;
 import com.devepos.adt.base.ui.tree.LazyLoadingFolderNode;
-import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.cdsanalysis.FieldWhereUsedInCdsElementInfoProvider;
+import com.devepos.adt.saat.internal.cdsanalysis.ICdsFieldAnalysisSettings;
 
 /**
  * Input for the Field Hierarchy Tree Viewer
@@ -15,7 +15,6 @@ import com.devepos.adt.saat.internal.cdsanalysis.FieldWhereUsedInCdsElementInfoP
  */
 public class FieldHierarchyViewerInput {
   private final TreeViewer viewer;
-  private boolean searchCalcFields;
   private FieldHierarchyViewerNode currentNode;
   private final FieldHierarchyViewerNode topDownNode;
   private FieldHierarchyViewerNode whereUsedNode;
@@ -29,25 +28,9 @@ public class FieldHierarchyViewerInput {
       final IDestinationProvider destinationProvider) {
     this.viewer = viewer;
     this.topDownNode = new FieldHierarchyViewerNode(topDownNode);
-    searchCalcFields = false;
     this.baseEntityName = baseEntityName;
     this.baseFieldName = baseFieldName;
     this.destinationProvider = destinationProvider;
-    SearchAndAnalysisPlugin.getDefault().getPreferenceStore().addPropertyChangeListener(event -> {
-      if (FieldAnalysisView.SEARCH_DB_VIEWS_WHERE_USED_PREF_KEY.equals(event.getProperty())
-          && whereUsedProvider != null) {
-        whereUsedProvider.setSearchDbViews((boolean) event.getNewValue());
-      }
-    });
-  }
-
-  public void setSearchCalcFields(final boolean searchCalcFields) {
-    this.searchCalcFields = searchCalcFields;
-    whereUsedProvider.setSearchCalcFields(searchCalcFields);
-  }
-
-  public boolean isSearchCalcFieldsActive() {
-    return searchCalcFields;
   }
 
   public void setViewerInput(final boolean topDown) {
@@ -97,12 +80,9 @@ public class FieldHierarchyViewerInput {
   /**
    * Creates the Where-Used node for the Where-Used analysis
    */
-  public void createWhereUsedNode() {
+  public void createWhereUsedNode(final ICdsFieldAnalysisSettings settings) {
     whereUsedProvider = new FieldWhereUsedInCdsElementInfoProvider(destinationProvider
-        .getDestinationId(), baseEntityName, baseFieldName, false, SearchAndAnalysisPlugin
-            .getDefault()
-            .getPreferenceStore()
-            .getBoolean(FieldAnalysisView.SEARCH_DB_VIEWS_WHERE_USED_PREF_KEY));
+        .getDestinationId(), baseEntityName, baseFieldName, settings);
     whereUsedNode = new FieldHierarchyViewerNode(new LazyLoadingFolderNode(baseFieldName,
         whereUsedProvider, null, null));
   }

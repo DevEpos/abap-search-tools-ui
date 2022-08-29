@@ -16,17 +16,17 @@ import com.sap.adt.communication.resources.ResourceException;
 import com.sap.adt.communication.session.ISystemSession;
 
 /**
- * Service for analysing CDS Views
+ * Service for analyzing CDS Views
  *
- * @author stockbal
+ * @author Ludwig Stockbauer-Muhr
  */
 public class CdsAnalysisService implements ICdsAnalysisService {
 
   @Override
   public IAdtObjectReferenceElementInfo loadTopDownAnalysis(final String cdsView,
-      final boolean loadAssociations, final String destinationId) {
+      final ICdsTopDownSettings settings, final String destinationId) {
     final Map<String, Object> parameters = new HashMap<>();
-    if (loadAssociations) {
+    if (settings != null && settings.isLoadAssociations()) {
       parameters.put("withAssociations", "X"); //$NON-NLS-1$ //$NON-NLS-2$
     }
     if (cdsView == null) {
@@ -38,8 +38,8 @@ public class CdsAnalysisService implements ICdsAnalysisService {
     }
     final URI resourceUri = new CdsAnalysisUriDiscovery(destinationId)
         .createTopDownAnalysisResourceUri(cdsView, parameters);
-    return analyzeCdsView(resourceUri, new CdsTopDownAnalysisContentHandler(destinationId),
-        destinationId, projectProvider);
+    return analyzeCdsView(resourceUri, new CdsTopDownAnalysisContentHandler(destinationId,
+        settings), destinationId, projectProvider);
   }
 
   @Override
@@ -80,7 +80,7 @@ public class CdsAnalysisService implements ICdsAnalysisService {
 
   @Override
   public IElementInfo loadWhereUsedFieldAnalysis(final String objectName, final String field,
-      final boolean searchCalcFields, final boolean searchDbViews, final String destinationId) {
+      final ICdsFieldAnalysisSettings settings, final String destinationId) {
     if (objectName == null || field == null) {
       return null;
     }
@@ -89,12 +89,18 @@ public class CdsAnalysisService implements ICdsAnalysisService {
       return null;
     }
     final IContentHandler<IAdtObjectReferenceElementInfo> adtObjectHandler = new FieldAnalysisContentHandler(
-        destinationId, false, searchCalcFields, searchDbViews);
+        destinationId, false, settings);
     final FieldAnalysisUriDiscovery uriDiscovery = new FieldAnalysisUriDiscovery(projectProvider
         .getDestinationId());
 
+    boolean isSearchCalcFields = false;
+    boolean isSearchDbViews = false;
+    if (settings != null) {
+      isSearchCalcFields = settings.isSearchInCalcFields();
+      isSearchDbViews = settings.isSearchInDatabaseViews();
+    }
     final URI resourceUri = uriDiscovery.createWhereUsedAnalysisResourceUri(objectName, field,
-        searchCalcFields, searchDbViews);
+        isSearchCalcFields, isSearchDbViews);
 
     return getFieldAnalysis(projectProvider, adtObjectHandler, resourceUri);
   }

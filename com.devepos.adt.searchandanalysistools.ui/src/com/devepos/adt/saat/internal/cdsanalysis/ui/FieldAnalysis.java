@@ -13,6 +13,7 @@ import com.devepos.adt.base.elementinfo.IElementInfoProvider;
 import com.devepos.adt.base.ui.tree.LazyLoadingAdtObjectReferenceNode;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
 import com.devepos.adt.saat.internal.cdsanalysis.CdsAnalysisType;
+import com.devepos.adt.saat.internal.cdsanalysis.ICdsFieldAnalysisSettings;
 import com.devepos.adt.saat.internal.ddicaccess.DdicRepositoryAccessFactory;
 import com.devepos.adt.saat.internal.ddicaccess.IDdicRepositoryAccess;
 import com.devepos.adt.saat.internal.messages.Messages;
@@ -25,6 +26,7 @@ import com.devepos.adt.saat.internal.util.IImages;
  */
 public class FieldAnalysis extends CdsAnalysis {
 
+  private ICdsFieldAnalysisSettings settings;
   private LazyLoadingAdtObjectReferenceNode node;
 
   public FieldAnalysis(final IAdtObjectReferenceElementInfo adtObjectInfo) {
@@ -35,23 +37,19 @@ public class FieldAnalysis extends CdsAnalysis {
     final IDestinationProvider destProvider = adtObjectInfo.getAdapter(IDestinationProvider.class);
     node.setElementInfoProvider(new IElementInfoProvider() {
       @Override
-      public String getProviderDescription() {
-        return NLS.bind(Messages.FieldAnalysisView_FieldLoadingProviderDesc_xmsg, adtObjectInfo
-            .getDisplayName());
-      }
-
-      @Override
       public List<IElementInfo> getElements() {
         final IDdicRepositoryAccess ddicRepoAccess = DdicRepositoryAccessFactory.createDdicAccess();
         return ddicRepoAccess.getElementColumnInformation(destProvider.getDestinationId(),
             adtObjectInfo.getUri());
       }
-    });
-  }
 
-  @Override
-  protected String getLabelPrefix() {
-    return Messages.FieldAnalysisView_ViewLabel_xfld;
+      @Override
+      public String getProviderDescription() {
+        return NLS.bind(Messages.FieldAnalysisView_FieldLoadingProviderDesc_xmsg, adtObjectInfo
+            .getDisplayName());
+      }
+    });
+    settings = CdsAnalysisSettingsFactory.createFieldAnalysisSettings();
   }
 
   @Override
@@ -65,18 +63,30 @@ public class FieldAnalysis extends CdsAnalysis {
   }
 
   @Override
+  public Object getResult() {
+    return new Object[] { node };
+  }
+
+  /**
+   * @return the settings for the current analysis
+   */
+  public ICdsFieldAnalysisSettings getSettings() {
+    return settings;
+  }
+
+  @Override
   public CdsAnalysisType getType() {
     return CdsAnalysisType.FIELD_ANALYSIS;
   }
 
   @Override
-  public Object getResult() {
-    return new Object[] { node };
+  public void refreshAnalysis() {
+    node.resetLoadedState();
   }
 
   @Override
-  public void refreshAnalysis() {
-    node.resetLoadedState();
+  protected String getLabelPrefix() {
+    return Messages.FieldAnalysisView_ViewLabel_xfld;
   }
 
 }

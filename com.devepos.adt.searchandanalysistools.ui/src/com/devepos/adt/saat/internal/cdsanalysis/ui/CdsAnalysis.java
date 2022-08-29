@@ -40,63 +40,6 @@ public abstract class CdsAnalysis {
   }
 
   /**
-   * Returns the label for this CDS Analysis page
-   *
-   * @return
-   */
-  public String getLabel() {
-    String systemId = null;
-    final IDestinationProvider destProvider = adtObjectInfo.getAdapter(IDestinationProvider.class);
-    if (destProvider != null) {
-      systemId = destProvider.getSystemId();
-    }
-
-    if (systemId == null) {
-      return String.format("%s: '%s'", getLabelPrefix(), adtObjectInfo.getDisplayName()); //$NON-NLS-1$
-    }
-    return String.format("%s: '%s' [%s]", getLabelPrefix(), adtObjectInfo.getDisplayName(), //$NON-NLS-1$
-        systemId);
-
-  }
-
-  /**
-   * Refreshes this analysis
-   */
-  public abstract void refreshAnalysis();
-
-  /**
-   * Returns <code>true</code> if the result of the analysis was already
-   * determined
-   *
-   * @return <code>true</code> if the result of the analysis was already
-   *         determined
-   */
-  public boolean isResultLoaded() {
-    return isResultLoaded;
-  }
-
-  /**
-   * Updates the loaded status of the result
-   *
-   * @param isResultLoaded <code>true</code> if the result is loaded
-   */
-  public void setResultLoaded(final boolean isResultLoaded) {
-    this.isResultLoaded = isResultLoaded;
-  }
-
-  /**
-   * @return the type of CDS analysis
-   */
-  public abstract CdsAnalysisType getType();
-
-  /**
-   * Returns a prefix for the label of this analysis
-   *
-   * @return
-   */
-  protected abstract String getLabelPrefix();
-
-  /**
    * Returns an image descriptor to proper the purpose of this analysis page
    * <p>
    * The default implementation returns <code>null</code>. <br>
@@ -123,9 +66,66 @@ public abstract class CdsAnalysis {
   }
 
   /**
+   * Returns the label for this CDS Analysis page
+   *
+   * @return
+   */
+  public String getLabel() {
+    String systemId = null;
+    final IDestinationProvider destProvider = adtObjectInfo.getAdapter(IDestinationProvider.class);
+    if (destProvider != null) {
+      systemId = destProvider.getSystemId();
+    }
+
+    if (systemId == null) {
+      return String.format("%s: '%s'", getLabelPrefix(), adtObjectInfo.getDisplayName()); //$NON-NLS-1$
+    }
+    return String.format("%s: '%s' [%s]", getLabelPrefix(), adtObjectInfo.getDisplayName(), //$NON-NLS-1$
+        systemId);
+
+  }
+
+  /**
    * Returns the current Input for
    *
    * @return
    */
   public abstract Object getResult();
+
+  /**
+   * @return the type of CDS analysis
+   */
+  public abstract CdsAnalysisType getType();
+
+  /**
+   * Returns <code>true</code> if the result of the analysis was already
+   * determined
+   *
+   * @return <code>true</code> if the result of the analysis was already
+   *         determined
+   */
+  public boolean isResultLoaded() {
+    return isResultLoaded;
+  }
+
+  /**
+   * Refreshes this analysis
+   */
+  public abstract void refreshAnalysis();
+
+  /**
+   * Updates the loaded status of the result
+   *
+   * @param isResultLoaded <code>true</code> if the result is loaded
+   */
+  public void setResultLoaded(final boolean isResultLoaded) {
+    this.isResultLoaded = isResultLoaded;
+  }
+
+  /**
+   * Returns a prefix for the label of this analysis
+   *
+   * @return
+   */
+  protected abstract String getLabelPrefix();
 }
