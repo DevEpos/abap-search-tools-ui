@@ -128,6 +128,13 @@ public class Messages extends NLS {
   public static String CdsAnalysis_SqlRelationLeftOuterJoin;
   public static String CdsAnalysis_SqlRelationRightOuterJoin;
   public static String CdsAnalysis_SwitchAnalysisPages_xtol;
+  public static String CdsAnalysisPreferencePage_fieldAnalysisBottomUpGroup_xtit;
+  public static String CdsAnalysisPreferencePage_fieldAnalysisGroup_xtit;
+  public static String CdsAnalysisPreferencePage_fieldAnalysisMode_xlbl;
+  public static String CdsAnalysisPreferencePage_topDownAnalysisGroup_xtit;
+  public static String CdsAnalysisPreferencePage_whereUsedInAnalysisGroup_xtit;
+  public static String CdsAnalysisPreferencePage_whereUsedInPartError_xmsg;
+  public static String CdsAnalysisPreferencePage_whereUsedInSearchInDbViewSetting_xchk;
   public static String CdsAnalysisType_fieldAnalysis_xlbl;
   public static String CdsAnalysisType_topDownAnalysis_xlbl;
   public static String CdsAnalysisType_usedEntitiesAnalysis_xlbl;
@@ -180,6 +187,8 @@ public class Messages extends NLS {
   public static String ElementInformation_TechSettings_xtit;
   public static String ExportFavoritesAction_ActionTitle_xmit;
   public static String FieldAnalysisContentHandler_CalculatedField_xmsg;
+  public static String FieldAnalysisType_bottomUpName_xlbl;
+  public static String FieldAnalysisType_topDownName_xlbl;
   public static String FieldAnalysisView_FieldLoadingProviderDesc_xmsg;
   public static String FieldAnalysisView_SearchDbViewsInWhereUsed_xmit;
   public static String FieldAnalysisView_ViewLabel_xfld;

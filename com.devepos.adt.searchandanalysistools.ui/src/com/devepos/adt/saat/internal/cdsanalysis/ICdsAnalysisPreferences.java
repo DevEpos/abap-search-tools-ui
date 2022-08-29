@@ -46,9 +46,9 @@ public interface ICdsAnalysisPreferences {
    */
   String FIELD_ANALYSIS_SEARCH_IN_DB_VIEWS = "com.devepos.adt.saat.fieldanalysis.searchDbViewUsages"; //$NON-NLS-1$
   /**
-   * Preference for analyzing fields in the top down direction
+   * Preference for field analysis mode (top-down or bottom-up)
    */
-  String FIELD_ANALYSIS_TOP_DOWN_ACTIVE = "com.devepos.adt.saat.fieldanalysis.topDownAnalysisActive"; //$NON-NLS-1$
+  String FIELD_ANALYSIS_ANALYSIS_DIRECTION = "com.devepos.adt.saat.fieldanalysis.analysisDirection"; //$NON-NLS-1$
   /**
    * Preference for searching in calculated fields during bottom up direction
    */

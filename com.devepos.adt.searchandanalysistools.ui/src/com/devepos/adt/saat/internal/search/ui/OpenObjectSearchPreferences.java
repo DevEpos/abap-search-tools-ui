@@ -19,7 +19,7 @@ public class OpenObjectSearchPreferences extends Action {
 
   @Override
   public void run() {
-    PreferencesUtil.createPreferenceDialogOn(null, IPreferences.MAIN_PREF_PAGE_ID, new String[] {
-        IPreferences.MAIN_PREF_PAGE_ID }, (Object) null).open();
+    PreferencesUtil.createPreferenceDialogOn(null, IPreferences.OBJECT_SEARCH_PREF_PAGE_ID,
+        new String[] { IPreferences.OBJECT_SEARCH_PREF_PAGE_ID }, (Object) null).open();
   }
 }

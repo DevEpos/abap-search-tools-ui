@@ -14,6 +14,14 @@ public interface IPreferences {
    */
   String MAIN_PREF_PAGE_ID = "com.devepos.adt.saat.ui.internal.MainPreferencePage"; //$NON-NLS-1$
   /**
+   * Id to the object search preference page
+   */
+  String OBJECT_SEARCH_PREF_PAGE_ID = "com.devepos.adt.saat.ui.prefs.ObjectSearchPreferences"; //$NON-NLS-1$
+  /**
+   * Id to the CDS analysis preference page
+   */
+  String CDS_ANALYSIS_PREF_PAGE_ID = "com.devepos.adt.saat.ui.prefs.CdsAnalysisPreferences"; //$NON-NLS-1$
+  /**
    * Boolean Setting for Object Search.<br>
    * if <code>true</code> the cursor will point to the end of entered search
    * string instead of selecting the whole text

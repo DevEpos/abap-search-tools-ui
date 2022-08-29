@@ -4,6 +4,7 @@ import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
 
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
+import com.devepos.adt.saat.internal.cdsanalysis.FieldAnalysisType;
 import com.devepos.adt.saat.internal.cdsanalysis.ICdsAnalysisPreferences;
 import com.devepos.adt.saat.internal.search.SearchType;
 
@@ -37,8 +38,9 @@ public class PreferenceInitializer extends AbstractPreferenceInitializer {
     store.setDefault(ICdsAnalysisPreferences.WHERE_USED_LOCAL_ASSOCIATIONS_ONLY, false);
     store.setDefault(ICdsAnalysisPreferences.WHERE_USED_ONLY_RELEASED_USAGES, false);
 
+    store.setDefault(ICdsAnalysisPreferences.FIELD_ANALYSIS_ANALYSIS_DIRECTION,
+        FieldAnalysisType.TOP_DOWN.getPrefKey());
     store.setDefault(ICdsAnalysisPreferences.FIELD_ANALYSIS_SEARCH_IN_DB_VIEWS, false);
-    store.setDefault(ICdsAnalysisPreferences.FIELD_ANALYSIS_TOP_DOWN_ACTIVE, true);
     store.setDefault(ICdsAnalysisPreferences.FIELD_ANALYSIS_SEARCH_IN_CALC_FIELDS, false);
   }
 

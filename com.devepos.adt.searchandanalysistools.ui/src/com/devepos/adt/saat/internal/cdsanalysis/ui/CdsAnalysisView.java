@@ -38,6 +38,7 @@ import com.devepos.adt.base.ui.IAdtBaseImages;
 import com.devepos.adt.base.ui.IGeneralMenuConstants;
 import com.devepos.adt.base.ui.IPinnableView;
 import com.devepos.adt.base.ui.action.CommandFactory;
+import com.devepos.adt.base.ui.action.OpenPreferencesAction;
 import com.devepos.adt.base.ui.action.PinViewAction;
 import com.devepos.adt.saat.internal.ICommandConstants;
 import com.devepos.adt.saat.internal.IContextMenuConstants;
@@ -79,6 +80,7 @@ public class CdsAnalysisView extends PageBookView implements ICdsAnalysisListene
   private RefreshCurrentAnalysisAction refreshAnalysisAction;
   private CdsAnalysisHistoryDropDownAction analysesHistoryAction;
   private PinViewAction pinViewAction;
+  private Action openPreferencesAction;
 
   private DummyPart defaultPart;
 
@@ -421,6 +423,7 @@ public class CdsAnalysisView extends PageBookView implements ICdsAnalysisListene
     analysesHistoryAction = new CdsAnalysisHistoryDropDownAction(this);
     refreshAnalysisAction.setEnabled(false);
     pinViewAction = new PinViewAction(this);
+    openPreferencesAction = new OpenPreferencesAction(IPreferences.CDS_ANALYSIS_PREF_PAGE_ID);
   }
 
   private void initializePageSwitcher() {
@@ -465,6 +468,11 @@ public class CdsAnalysisView extends PageBookView implements ICdsAnalysisListene
     tbm.appendToGroup(IGeneralMenuConstants.GROUP_SEARCH, refreshAnalysisAction);
     tbm.appendToGroup(IGeneralMenuConstants.GROUP_GOTO, analysesHistoryAction);
     tbm.appendToGroup(IGeneralMenuConstants.GROUP_ADDITIONS, pinViewAction);
+
+    IMenuManager viewMenuMgr = actionBars.getMenuManager();
+    createViewMenuGroups(viewMenuMgr);
+    viewMenuMgr.add(new Separator());
+    viewMenuMgr.add(openPreferencesAction);
   }
 
   private void internalShowCdsAnalysisPage(final CdsAnalysisPage<?> page,

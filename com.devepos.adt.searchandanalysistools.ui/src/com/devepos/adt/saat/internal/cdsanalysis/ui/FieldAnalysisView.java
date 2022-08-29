@@ -21,6 +21,7 @@ import org.eclipse.ui.IActionBars;
 import com.devepos.adt.base.ObjectType;
 import com.devepos.adt.base.destinations.IDestinationProvider;
 import com.devepos.adt.base.elementinfo.IAdtObjectReferenceElementInfo;
+import com.devepos.adt.base.ui.IGeneralMenuConstants;
 import com.devepos.adt.base.ui.action.ActionFactory;
 import com.devepos.adt.base.ui.action.ToggleViewLayoutAction;
 import com.devepos.adt.base.ui.action.ViewLayoutOrientation;
@@ -34,6 +35,7 @@ import com.devepos.adt.base.ui.tree.SimpleInfoTreeNode;
 import com.devepos.adt.saat.internal.ICommandConstants;
 import com.devepos.adt.saat.internal.IContextMenuConstants;
 import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
+import com.devepos.adt.saat.internal.cdsanalysis.FieldAnalysisType;
 import com.devepos.adt.saat.internal.cdsanalysis.FieldAnalysisUriDiscovery;
 import com.devepos.adt.saat.internal.cdsanalysis.ICdsAnalysisPreferences;
 import com.devepos.adt.saat.internal.cdsanalysis.ICdsFieldAnalysisSettings;
@@ -112,9 +114,9 @@ public class FieldAnalysisView extends CdsAnalysisPage<FieldAnalysis> {
   public void setActionBars(final IActionBars actionBars) {
     super.setActionBars(actionBars);
     final IMenuManager menu = actionBars.getMenuManager();
-    menu.add(searchDbViewUsages);
-    menu.add(new Separator());
-    menu.add(viewLayoutToggleAction);
+    menu.appendToGroup(IGeneralMenuConstants.GROUP_PROPERTIES, searchDbViewUsages);
+    menu.appendToGroup(IGeneralMenuConstants.GROUP_PROPERTIES, new Separator());
+    menu.appendToGroup(IGeneralMenuConstants.GROUP_PROPERTIES, viewLayoutToggleAction);
   }
 
   @Override
@@ -323,8 +325,8 @@ public class FieldAnalysisView extends CdsAnalysisPage<FieldAnalysis> {
     if (analysisResult != null) {
       ICdsFieldAnalysisSettings settings = analysisResult.getSettings();
       settings.setSearchInDatabaseViews(isSearchInDbViews);
-      settings.setTopDown(prefStore.getBoolean(
-          ICdsAnalysisPreferences.FIELD_ANALYSIS_TOP_DOWN_ACTIVE));
+      settings.setTopDown(FieldAnalysisType.TOP_DOWN.getPrefKey()
+          .equals(prefStore.getString(ICdsAnalysisPreferences.FIELD_ANALYSIS_ANALYSIS_DIRECTION)));
       settings.setSearchInCalcFields(prefStore.getBoolean(
           ICdsAnalysisPreferences.FIELD_ANALYSIS_SEARCH_IN_CALC_FIELDS));
     }
