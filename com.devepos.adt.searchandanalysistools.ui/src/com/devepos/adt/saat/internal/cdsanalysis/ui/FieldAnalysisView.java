@@ -23,7 +23,9 @@ import com.devepos.adt.base.destinations.IDestinationProvider;
 import com.devepos.adt.base.elementinfo.IAdtObjectReferenceElementInfo;
 import com.devepos.adt.base.ui.IGeneralMenuConstants;
 import com.devepos.adt.base.ui.action.ActionFactory;
+import com.devepos.adt.base.ui.action.IToggleViewLayoutActionSettings;
 import com.devepos.adt.base.ui.action.ToggleViewLayoutAction;
+import com.devepos.adt.base.ui.action.ViewLayoutActionFactory;
 import com.devepos.adt.base.ui.action.ViewLayoutOrientation;
 import com.devepos.adt.base.ui.controls.FilterableComposite;
 import com.devepos.adt.base.ui.controls.FilterableComposite.IWordMatcher;
@@ -169,8 +171,13 @@ public class FieldAnalysisView extends CdsAnalysisPage<FieldAnalysis> {
         Messages.FieldAnalysisView_SearchDbViewsInWhereUsed_xmit, null, Action.AS_CHECK_BOX, () -> {
           analysisResult.getSettings().setSearchInDatabaseViews(searchDbViewUsages.isChecked());
         });
-    viewLayoutToggleAction = new ToggleViewLayoutAction(fieldsHierarchySplitter, getControl(),
-        prefStore, VIEW_LAYOUT_PREF_KEY, true, true, true);
+    IToggleViewLayoutActionSettings viewLayoutActionSettings = ViewLayoutActionFactory
+        .getInstance()
+        .createDefaultSettings();
+    viewLayoutActionSettings.setLayoutPrefOptions(prefStore, VIEW_LAYOUT_PREF_KEY);
+    viewLayoutToggleAction = ViewLayoutActionFactory.getInstance()
+        .createToggleViewLayoutAction(fieldsHierarchySplitter, getControl(),
+            viewLayoutActionSettings);
   }
 
   @Override
