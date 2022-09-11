@@ -3,7 +3,7 @@ package com.devepos.adt.saat.internal;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.osgi.framework.BundleContext;
 
-import com.devepos.adt.base.plugin.AbstractAdtUIPlugin;
+import com.devepos.adt.base.ui.plugin.AbstractAdtUIPlugin;
 import com.devepos.adt.saat.internal.search.favorites.IObjectSearchFavorites;
 import com.devepos.adt.saat.internal.search.favorites.ObjectSearchFavoriteStorage;
 import com.devepos.adt.saat.internal.search.favorites.ObjectSearchFavorites;
