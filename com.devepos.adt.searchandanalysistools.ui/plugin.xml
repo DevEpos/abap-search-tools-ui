@@ -341,28 +341,6 @@
               parentId="com.devepos.adt.saat">
         </themeElementCategory>
      </extension>
-	    <extension
-         point="org.eclipse.help.toc">
-      <toc
-            file="toc.xml">
-      </toc>
-      <toc
-            file="primaryToc.xml"
-            primary="true">
-      </toc>
-      <tocIcon
-            closedIcon="icons/toc/toc_closed.gif"
-            id="com.devepos.adt.saat.ui.tocIcon"
-            openIcon="icons/toc/toc_open.gif">
-      </tocIcon>
-   </extension>
-     <extension
-           point="org.eclipse.help.contexts">
-        <contexts
-              file="contexts.xml"
-              plugin="com.devepos.adt.searchandanalysistools.ui">
-        </contexts>
-     </extension>
      <extension
            point="com.sap.adt.activation.ui.activationSuccessListener">
         <onActivationSuccess

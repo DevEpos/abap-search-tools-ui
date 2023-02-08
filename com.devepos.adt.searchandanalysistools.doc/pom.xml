@@ -3,7 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns="http://maven.apache.org/POM/4.0.0">
 	<modelVersion>4.0.0</modelVersion>
-	<artifactId>com.devepos.adt.searchandanalysistools.ui</artifactId>
+	<artifactId>com.devepos.adt.searchandanalysistools.doc</artifactId>
 	<packaging>eclipse-plugin</packaging>
 
 	<parent>

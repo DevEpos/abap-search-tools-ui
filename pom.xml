@@ -11,6 +11,7 @@
 		<module>com.devepos.adt.searchandanalysistools.feature</module>
 		<module>com.devepos.adt.searchandanalysistools.model</module>
 		<module>com.devepos.adt.searchandanalysistools.ui</module>
+		<module>com.devepos.adt.searchandanalysistools.doc</module>
 	</modules>
 	<profiles>
 		<profile>

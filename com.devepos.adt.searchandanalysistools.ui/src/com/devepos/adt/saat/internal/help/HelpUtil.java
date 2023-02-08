@@ -3,8 +3,6 @@ package com.devepos.adt.saat.internal.help;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.ui.PlatformUI;
 
-import com.devepos.adt.saat.internal.SearchAndAnalysisPlugin;
-
 /**
  * Utility for easily setting help context to controls
  *
@@ -22,9 +20,7 @@ public class HelpUtil {
     if (control == null || control.isDisposed()) {
       return;
     }
-    PlatformUI.getWorkbench()
-        .getHelpSystem()
-        .setHelp(control, SearchAndAnalysisPlugin.PLUGIN_ID + "." + context.getHelpContextId());
+    PlatformUI.getWorkbench().getHelpSystem().setHelp(control, getFullyQualifiedContextId(context));
   }
 
   /**
@@ -34,6 +30,6 @@ public class HelpUtil {
    * @return
    */
   public static String getFullyQualifiedContextId(final HelpContexts context) {
-    return SearchAndAnalysisPlugin.PLUGIN_ID + "." + context.getHelpContextId();
+    return "com.devepos.adt.searchandanalysistools.doc." + context.getHelpContextId();
   }
 }
