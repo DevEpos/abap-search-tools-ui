@@ -317,7 +317,7 @@
            point="org.eclipse.search.searchResultViewPages">
         <viewPage
               class="com.devepos.adt.saat.internal.search.ui.ObjectSearchResultPage"
-              helpContextId="com.devepos.adt.searchandanalysistools.object_search"
+              helpContextId="com.devepos.adt.searchandanalysistools.doc.object_search"
               icon="icons/ABAPSearch.png"
               id="com.devepos.adt.saat.internal.search.ui.ObjectSearchResultPage"
               searchResultClass="com.devepos.adt.saat.internal.search.ui.ObjectSearchResult">
