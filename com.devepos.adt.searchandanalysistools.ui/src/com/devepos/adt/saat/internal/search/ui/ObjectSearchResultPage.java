@@ -5,6 +5,8 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.GroupMarker;
+import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
@@ -41,6 +43,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IMemento;
+import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchCommandConstants;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.Page;
@@ -70,6 +73,7 @@ import com.devepos.adt.base.ui.tree.ITreeNode;
 import com.devepos.adt.base.ui.tree.LazyLoadingTreeContentProvider;
 import com.devepos.adt.base.ui.tree.LoadingTreeItemsNode;
 import com.devepos.adt.base.ui.tree.PackageNode;
+import com.devepos.adt.base.ui.tree.launchable.ILaunchableNode;
 import com.devepos.adt.base.ui.util.AdtTypeUtil;
 import com.devepos.adt.base.ui.util.WorkbenchUtil;
 import com.devepos.adt.saat.internal.ICommandConstants;
@@ -111,6 +115,7 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage,
   private boolean isDbBrowserIntegrationAvailable;
   private boolean isCdsTopDownAnalysisAvailable;
   private boolean isCdsUsedEntitiesAnalysisAvailable;
+  private boolean isCdsAnalysisAvailable;
   private final IPreferenceStore prefStore;
   private ContextHelper contextHelper;
 
@@ -293,6 +298,7 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage,
     isDbBrowserIntegrationAvailable = false;
     isCdsTopDownAnalysisAvailable = false;
     isCdsUsedEntitiesAnalysisAvailable = false;
+    isCdsAnalysisAvailable = false;
     if (projectProvider != null && projectProvider.ensureLoggedOn()) {
       isDbBrowserIntegrationAvailable = FeatureTester.isSapGuiDbBrowserAvailable(projectProvider
           .getProject());
@@ -300,6 +306,8 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage,
           .getProject());
       isCdsUsedEntitiesAnalysisAvailable = FeatureTester.isCdsUsedEntitiesAnalysisAvailable(
           projectProvider.getProject());
+      isCdsAnalysisAvailable = new CdsAnalysisUriDiscovery(projectProvider.getDestinationId())
+          .getCdsAnalysisUri() != null;
     }
 
   }
@@ -375,8 +383,15 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage,
 
   private void fillContextMenu(final IMenuManager menu) {
     menu.add(new Separator(IContextMenuConstants.GROUP_NEW));
-    menu.add(new Separator(IContextMenuConstants.GROUP_OPEN));
-    menu.add(new Separator(IContextMenuConstants.GROUP_SEARCH));
+    menu.add(new Separator(IContextMenuConstants.GROUP_EDIT));
+    menu.add(new GroupMarker(IContextMenuConstants.GROUP_OPEN));
+    menu.add(new GroupMarker(com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_DB_BROWSER));
+    menu.add(new GroupMarker(
+        com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_CDS_ANALYSIS));
+    menu.add(new GroupMarker(IGeneralMenuConstants.GROUP_NODE_ACTIONS));
+    menu.add(new GroupMarker(IContextMenuConstants.GROUP_SEARCH));
+
+    var additionalItems = new ArrayList<IContributionItem>();
 
     final IStructuredSelection selection = searchResultTree.getStructuredSelection();
     if (selection == null || selection.isEmpty()) {
@@ -386,11 +401,16 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage,
     final List<IAdtObjectReference> adtObjRefs = new ArrayList<>();
     final List<IAdtObjectReference> previewAdtObjRefs = new ArrayList<>();
     final int selectionSize = selection.size();
+    int launchableNodeCount = 0;
     boolean singleDataPreviewObjectSelected = false;
     boolean singleCdsViewSelected = false;
     boolean hasCollapsedPackages = false;
 
+    // determine overall action availability depending on the selection
     for (final Object selectedObject : selection.toList()) {
+      if (selectedObject instanceof ILaunchableNode) {
+        launchableNodeCount++;
+      }
       if (selectedObject instanceof IAdtObjectReferenceNode) {
         final IAdtObjectReferenceNode objRefNode = (IAdtObjectReferenceNode) selectedObject;
         final IAdtObjectReference adtObjectRef = objRefNode.getObjectReference();
@@ -415,33 +435,45 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage,
       }
     }
 
+    // fill Open object action
     if (!adtObjRefs.isEmpty()) {
+      menu.appendToGroup(IContextMenuConstants.GROUP_OPEN, new Separator());
       menu.appendToGroup(IContextMenuConstants.GROUP_OPEN, new OpenAdtObjectAction(projectProvider
           .getProject(), adtObjRefs));
     }
+    // Fill Data Preview actions
     if (!previewAdtObjRefs.isEmpty()) {
       menu.appendToGroup(IContextMenuConstants.GROUP_OPEN, new ExecuteAdtObjectAction(
           projectProvider.getProject(), previewAdtObjRefs, true));
-
       if (isDbBrowserIntegrationAvailable) {
-        menu.add(new Separator(
-            com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_DB_BROWSER));
-        SaatMenuItemFactory.addOpenInDbBrowserCommand(menu, false);
-        SaatMenuItemFactory.addOpenInDbBrowserCommand(menu, true);
+        menu.appendToGroup(com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_DB_BROWSER,
+            new Separator());
+        SaatMenuItemFactory.addOpenInDbBrowserCommand(menu,
+            com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_DB_BROWSER, false);
+        SaatMenuItemFactory.addOpenInDbBrowserCommand(menu,
+            com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_DB_BROWSER, true);
+      }
+
+      // is a separator at the end of the group needed?
+      if (!singleDataPreviewObjectSelected) {
+        if (isDbBrowserIntegrationAvailable) {
+          menu.appendToGroup(com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_DB_BROWSER,
+              new Separator());
+        } else {
+          menu.appendToGroup(IContextMenuConstants.GROUP_OPEN, new Separator());
+        }
       }
     }
 
-    if (!adtObjRefs.isEmpty()) {
-      menu.add(new Separator(IContextMenuConstants.GROUP_ADDITIONS));
-      menu.appendToGroup(IContextMenuConstants.GROUP_ADDITIONS, CommandFactory
-          .createContribItemById(IGeneralCommandConstants.WHERE_USED_IN, true, null));
+    if (!adtObjRefs.isEmpty() && selectionSize == 1) {
+      additionalItems.add(CommandFactory.createContribItemById(
+          IGeneralCommandConstants.WHERE_USED_IN, true, null));
     }
 
-    // check if action is supported in the current project
-    if (singleDataPreviewObjectSelected && new CdsAnalysisUriDiscovery(projectProvider
-        .getDestinationId()).getCdsAnalysisUri() != null) {
-      menu.add(new Separator(
-          com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_CDS_ANALYSIS));
+    // fill CDS analysis actions
+    if (singleDataPreviewObjectSelected && isCdsAnalysisAvailable) {
+      menu.appendToGroup(com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_CDS_ANALYSIS,
+          new Separator());
       if (singleCdsViewSelected && isCdsTopDownAnalysisAvailable) {
         SaatMenuItemFactory.addCdsAnalyzerCommandItem(menu,
             com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_CDS_ANALYSIS,
@@ -462,20 +494,40 @@ public class ObjectSearchResultPage extends Page implements ISearchResultPage,
             com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_CDS_ANALYSIS,
             ICommandConstants.FIELD_ANALYSIS);
       }
-
+      // is a separator at the end of the group needed?
+      if (!additionalItems.isEmpty() && !selectionHasExpandedNodes && !hasCollapsedPackages) {
+        menu.appendToGroup(com.devepos.adt.saat.internal.IContextMenuConstants.GROUP_CDS_ANALYSIS,
+            new Separator());
+      }
     }
+
+    // fill folder actions like expand/collapse
     if (selectionHasExpandedNodes || hasCollapsedPackages) {
-      menu.add(new Separator(IGeneralMenuConstants.GROUP_NODE_ACTIONS));
+      menu.appendToGroup(IGeneralMenuConstants.GROUP_NODE_ACTIONS, new Separator());
       if (hasCollapsedPackages) {
-        menu.add(expandPackageNodesAction);
+        menu.appendToGroup(IGeneralMenuConstants.GROUP_NODE_ACTIONS, expandPackageNodesAction);
       }
       if (selectionHasExpandedNodes) {
-        menu.add(collapseNodesAction);
+        menu.appendToGroup(IGeneralMenuConstants.GROUP_NODE_ACTIONS, collapseNodesAction);
+      }
+      // is a separator at the end of the group needed?
+      if (!additionalItems.isEmpty()) {
+        menu.appendToGroup(IGeneralMenuConstants.GROUP_NODE_ACTIONS, new Separator());
       }
     }
 
-    menu.add(new Separator(IContextMenuConstants.GROUP_EDIT));
     menu.appendToGroup(IContextMenuConstants.GROUP_EDIT, copyToClipBoardAction);
+
+    if (!additionalItems.isEmpty()) {
+      // if 'additions' node is created as separator if it is not needed than the context menu will
+      // end with a separator which is not pretty
+      menu.add(launchableNodeCount == selectionSize ? new Separator(
+          IWorkbenchActionConstants.MB_ADDITIONS)
+          : new GroupMarker(IWorkbenchActionConstants.MB_ADDITIONS));
+      for (var item : additionalItems) {
+        menu.insertBefore(IWorkbenchActionConstants.MB_ADDITIONS, item);
+      }
+    }
   }
 
   private void updateUiState() {
