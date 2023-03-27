@@ -27,6 +27,7 @@ import com.devepos.adt.base.elementinfo.LazyLoadingRefreshMode;
 import com.devepos.adt.base.ui.IGeneralMenuConstants;
 import com.devepos.adt.base.ui.StylerFactory;
 import com.devepos.adt.base.ui.action.ActionFactory;
+import com.devepos.adt.base.ui.action.OpenColorPreferencePageAction;
 import com.devepos.adt.base.ui.tree.IAdtObjectReferenceNode;
 import com.devepos.adt.base.ui.tree.IStyledTreeNode;
 import com.devepos.adt.base.ui.tree.ITreeNode;
@@ -41,7 +42,6 @@ import com.devepos.adt.saat.internal.cdsanalysis.ISqlRelationInfo;
 import com.devepos.adt.saat.internal.menu.SaatMenuItemFactory;
 import com.devepos.adt.saat.internal.messages.Messages;
 import com.devepos.adt.saat.internal.ui.NativeColumnViewerToolTipSupport;
-import com.devepos.adt.saat.internal.ui.OpenColorPreferencePageAction;
 import com.devepos.adt.saat.internal.ui.TreeViewUiState;
 import com.devepos.adt.saat.internal.ui.ViewUiState;
 import com.devepos.adt.saat.internal.util.CommandPossibleChecker;
@@ -231,8 +231,10 @@ public class CdsTopDownAnalysisView extends CdsAnalysisPage<CdsTopDownAnalysis> 
           analysisResult.getSettings().setLoadAssociations(loadAssociations.isChecked());
           refreshAnalysis();
         });
-    showColorsAndFontsPrefs = new OpenColorPreferencePageAction(
-        IColorConstants.CDS_ANALYSIS_ALIAS_NAME);
+    showColorsAndFontsPrefs = new OpenColorPreferencePageAction();
+    showColorsAndFontsPrefs.setColorId(IColorConstants.CDS_ANALYSIS_ALIAS_NAME);
+    showColorsAndFontsPrefs.setCategories(IColorConstants.SAAT_COLOR_CATEGORY,
+        IColorConstants.CDS_ANALYSIS_CATEGORY);
   }
 
   @Override

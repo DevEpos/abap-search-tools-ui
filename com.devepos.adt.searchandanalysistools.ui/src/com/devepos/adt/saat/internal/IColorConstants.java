@@ -1,10 +1,11 @@
 package com.devepos.adt.saat.internal;
 
 public interface IColorConstants {
-  String COLOR_NAMESPACE = "com.devepos.adt.saat."; //$NON-NLS-1$
+  String SAAT_COLOR_CATEGORY = "com.devepos.adt.saat";
+  String CDS_ANALYSIS_CATEGORY = SAAT_COLOR_CATEGORY + ".cdsanalysis";
   /**
    * Name of the color for the Alias name in the Top-Down analysis in CDS Analysis
    * view
    */
-  String CDS_ANALYSIS_ALIAS_NAME = COLOR_NAMESPACE + "cdsanalysis.AliasNameForegroundColor"; //$NON-NLS-1$
+  String CDS_ANALYSIS_ALIAS_NAME = CDS_ANALYSIS_CATEGORY + ".AliasNameForegroundColor";
 }

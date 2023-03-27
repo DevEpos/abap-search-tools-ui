@@ -326,7 +326,7 @@
      <extension
            point="org.eclipse.ui.themes">
         <colorDefinition
-              categoryId="com.devepos.adt.saat.cdsAnalysis"
+              categoryId="com.devepos.adt.saat.cdsanalysis"
               id="com.devepos.adt.saat.cdsanalysis.AliasNameForegroundColor"
               label="%colorDefinition.sqlEntityAliasForegroundColor.label"
               value="128,128,128">
@@ -336,7 +336,7 @@
               label="%themeElementCategory.label">
         </themeElementCategory>
         <themeElementCategory
-              id="com.devepos.adt.saat.cdsAnalysis"
+              id="com.devepos.adt.saat.cdsanalysis"
               label="%themeElementCategory.cdsanalysis.label"
               parentId="com.devepos.adt.saat">
         </themeElementCategory>

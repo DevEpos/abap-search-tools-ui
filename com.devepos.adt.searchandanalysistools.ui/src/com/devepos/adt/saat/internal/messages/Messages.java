@@ -67,7 +67,6 @@ public class Messages extends NLS {
   public static String ObjectSearch_InfoSearchString_Negation_xmsg;
   public static String ObjectSearch_InfoSearchString_Notes_xmsg;
   public static String ObjectSearch_NoProjectFound_xmsg;
-  public static String OpenColorPreferencePageAction_ActionName_xtol;
   public static String OpenInUtil_AnalysisForOfficeNotActive_xmsg;
   public static String SearchHistorySelectionDialog_AddFavorite_xbut;
   public static String SearchHistorySelectionDialog_DeleteHistoryEntry_xbut;
