@@ -21,11 +21,7 @@ view
 - Field Analysis for a CDS View/Database table/Database view
    </description>
 
-   <copyright url="http://www.example.com/copyright">
-      [Enter Copyright Description here.]
-   </copyright>
-
-   <license url="">
+   <license url="https://github.com/stockbal/abap-search-tools-ui/blob/main/LICENSE">
       The MIT License (MIT)
 
 Copyright (c) 2019 Ludwig Stockbauer-Muhr
