@@ -255,6 +255,14 @@ public interface IImages {
    */
   String SOURCE_TYPE_CUSTOM_ENTITY_OVR = "IMG_SOURCE_TYPE_CUSTOM_ENTITY";
   /**
+   * Image id for a projection CDS view
+   */
+  String SOURCE_TYPE_PROJECTION_ENTITY_OVR = "IMG_SOURCE_TYPE_PROJECTION_ENTITY";
+  /**
+   * Image id for a hierarchy CDS view
+   */
+  String SOURCE_TYPE_HIERARCHY_ENTITY_OVR = "IMG_SOURCE_TYPE_HIERARCHY_ENTITY";
+  /**
    * Image which identifies the Field Analysis page in the CDS Analyzer
    */
   String FIELD_ANALYSIS = "IMG_FIELD_ANALYSIS";

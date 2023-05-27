@@ -121,6 +121,10 @@ public class SearchAndAnalysisPlugin extends AbstractAdtUIPlugin {
     registerImage(imageRegistry, IImages.SOURCE_TYPE_FUNCTION_OVR, "icons/ovr/Function.png");
     registerImage(imageRegistry, IImages.SOURCE_TYPE_ABSTRACT_ENTITY_OVR,
         "icons/ovr/AbstractEntity.png");
+    registerImage(imageRegistry, IImages.SOURCE_TYPE_PROJECTION_ENTITY_OVR,
+        "icons/ovr/ProjectionEntity.png");
+    registerImage(imageRegistry, IImages.SOURCE_TYPE_HIERARCHY_ENTITY_OVR,
+        "icons/ovr/HierarchyEntity.png");
     registerImage(imageRegistry, IImages.SOURCE_TYPE_CUSTOM_ENTITY_OVR,
         "icons/ovr/CustomEntity.png");
 
@@ -130,8 +134,7 @@ public class SearchAndAnalysisPlugin extends AbstractAdtUIPlugin {
     registerImage(imageRegistry, IImages.PACKAGE_PARAM, "icons/obj/package_obj.png",
         "com.sap.adt.tools.core.ui");
     registerImage(imageRegistry, IImages.USER_PARAM, "icons/User.png");
-    registerImage(imageRegistry, IImages.API_PARAM, "icons/obj/facet_api_state.png",
-        "com.sap.adt.ris.search.ui");
+    registerImage(imageRegistry, IImages.API_PARAM, "icons/APIState.png");
     registerImage(imageRegistry, IImages.SELECT_FROM_PARAM, "icons/SelectFromSource.png");
     registerImage(imageRegistry, IImages.FIELD_PARAM, "icons/Column.png");
     registerImage(imageRegistry, IImages.ANNOTATION_PARAM, "icons/Annotation.png");

@@ -16,7 +16,9 @@ public enum CdsSourceType implements IDataSourceType {
   ABSTRACT("A", IImages.SOURCE_TYPE_ABSTRACT_ENTITY_OVR),
   FUNCTION("F", IImages.SOURCE_TYPE_FUNCTION_OVR),
   EXTEND("E", null),
-  EXTEND2("X", null);
+  EXTEND2("X", null),
+  PROJECTION("P", IImages.SOURCE_TYPE_PROJECTION_ENTITY_OVR),
+  HIERARCHY("H", IImages.SOURCE_TYPE_HIERARCHY_ENTITY_OVR);
 
   private String imageId;
   private String id;
